@@ -1,5 +1,10 @@
 (function(win, doc)
 {
+    /**
+     * @author Michał Baniowski michal.baniowski@gmail.com
+     * @version 0.0.1
+     */
+
     win.Imagizer = {};
 
     /**
