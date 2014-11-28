@@ -2,7 +2,7 @@
 {
     /**
      * @author Michał Baniowski michal.baniowski@gmail.com
-     * @version 0.0.1
+     * @version 0.0.2
      */
 
     win.Imagizer = {};
@@ -102,9 +102,9 @@
 
     /**
      * Merge 2 arrays.
-     * @param arr1
-     * @param arr2
-     * @returns {object}
+     * @param {Array} arr1
+     * @param {Array} arr2
+     * @returns {Array}
      */
     var arrMerge = function arrMerge(arr1, arr2)
     {
@@ -114,48 +114,6 @@
             arr1.push(arr2[i]);
         }
         return arr1;
-    };
-
-    /**
-     * Apply effect on ImageData.
-     * @param {ImageData} imageData
-     * @param {function} effect
-     * @param {object} params
-     * @returns {ImageData}
-     */
-    var applyEffect = function applyEffect(imageData, effect, params)
-    {
-        var x, y,
-            firstPixelIndex,
-            result,
-            args,
-            i;
-        for(y = 0; y < imageData.height; y += 1)
-        {
-            for(x = 0; x < imageData.width; x += 1)
-            {
-                firstPixelIndex = y * imageData.width * 4 + x * 4;
-
-                args = arrMerge([
-                    {
-                        r: imageData.data[firstPixelIndex],
-                        g: imageData.data[firstPixelIndex + 1],
-                        b: imageData.data[firstPixelIndex + 2],
-                        a: imageData.data[firstPixelIndex + 3]
-                    },
-                    x,
-                    y
-                ], params);
-
-                result = effect.apply(null, args);
-
-                imageData.data[firstPixelIndex] = result.r;
-                imageData.data[firstPixelIndex + 1] = result.g;
-                imageData.data[firstPixelIndex + 2] = result.b;
-                imageData.data[firstPixelIndex + 3] = result.a;
-            }
-        }
-        return imageData;
     };
 
     var Canvas = function()
@@ -179,7 +137,7 @@
             canvas.style.left = "-9999px";
             canvas.style.top = "-9999px";
 
-            if (width && height)
+            if(width && height)
             {
                 this.setWidth(width);
                 this.setHeight(height);
@@ -218,7 +176,7 @@
          */
         this.getContext = function()
         {
-            if (!context)
+            if(!context)
             {
                 context = canvas.getContext("2d");
             }
@@ -421,7 +379,7 @@
 
             for(i = 0; i < effects.length; i++)
             {
-                imageData = applyEffect(imageData, effects[i].effect, effects[i].params);
+                imageData = effects[i].effect.run(imageData, effects[i].params);
             }
 
             canvas.getContext().putImageData(imageData, 0, 0);
@@ -429,15 +387,15 @@
             container.appendChild(exportedImage);
         };
 
-        this.applyEffect = function(effect)
+        /**
+         * Apply effect on whole project.
+         * @param effectName
+         */
+        this.applyEffect = function(effectName)
         {
-            if(typeof effect === "string")
-            {
-                effect = Effects.get(effect);
-            }
             effects.push({
-                effect: effect,
-                params: Array.prototype.splice.call(arguments, 1, arguments.length)
+                effect: Effects.get(effectName),
+                params: Array.prototype.slice.call(arguments, 1, arguments.length)
             });
         };
 
@@ -456,11 +414,12 @@
     var LayerObject = function(obj, x, y, opts)
     {
         var data = {
-            obj: obj,
-            x: x,
-            y: y,
-            opts: opts
-        };
+                obj: obj,
+                x: x,
+                y: y,
+                opts: opts
+            },
+            effects = [];
 
         /**
          * Getter for object placed on layer.
@@ -513,8 +472,24 @@
          */
         this.exportObject = function()
         {
-            // TODO: apply effects
-            return data.obj.getImageData();
+            var imageData = data.obj.getImageData(), i;
+            for(i = 0; i < effects.length; i++)
+            {
+                imageData = effects[i].effect.run(imageData, effects[i].params);
+            }
+            return imageData;
+        };
+
+        /**
+         * Apply effect object put on layer.
+         * @param effectName
+         */
+        this.applyEffect = function(effectName)
+        {
+            effects.push({
+                effect: Effects.get(effectName),
+                params: Array.prototype.slice.call(arguments, 1, arguments.length)
+            });
         };
     };
 
@@ -526,7 +501,8 @@
     {
         var canvas,
             imageData,
-            objects = [];
+            objects = [],
+            effects = [];
 
         /**
          * Initializer.
@@ -550,6 +526,7 @@
         {
             var put = new LayerObject(obj, startX, startY, {});
             objects.push(put);
+            return put;
         };
 
         /**
@@ -595,20 +572,120 @@
                 }, mergeCallback);
             }
 
+            for(i = 0; i < effects.length; i++)
+            {
+                imageData = effects[i].effect.run(imageData, effects[i].params);
+            }
+
             return imageData;
+        };
+
+        /**
+         * Apply effect on whole layer.
+         * @param effectName
+         */
+        this.applyEffect = function(effectName)
+        {
+            effects.push({
+                effect: Effects.get(effectName),
+                params: Array.prototype.slice.call(arguments, 1, arguments.length)
+            });
         };
 
         // call initializer
         this.initialize.apply(this, arguments);
     };
 
+    /**
+     * Effect - wrapper for callback function
+     * @constructor
+     */
+    var Effect = function(params)
+    {
+        var callback = params.callback;
+
+        /**
+         * Run effect
+         * @param {ImageData} imageData
+         * @param {Array} parameters
+         * @returns {ImageData}
+         */
+        this.run = function(imageData, parameters)
+        {
+            var x, y,
+                firstPixelIndex,
+                result,
+                args,
+                i,
+                getIndex = function getIndex(x, y)
+                {
+                    return y * imageData.width * 4 + x * 4;
+                },
+                sandbox = { // object invoked as this in effect callback
+                    getPixel: function(x, y)
+                    {
+                        var index = getIndex(x, y);
+                        return {
+                            r: imageData.data[index],
+                            g: imageData.data[index + 1],
+                            b: imageData.data[index + 2],
+                            a: imageData.data[index + 3]
+                        };
+                    },
+                    setPixel: function(x, y, rgba)
+                    {
+                        var index = getIndex(x, y);
+                        imageData.data[index] = rgba.r;
+                        imageData.data[index + 1] = rgba.g;
+                        imageData.data[index + 2] = rgba.b;
+                        imageData.data[index + 3] = rgba.a;
+                    }
+                };
+
+            for(y = 0; y < imageData.height; y += 1)
+            {
+                for(x = 0; x < imageData.width; x += 1)
+                {
+                    firstPixelIndex = y * imageData.width * 4 + x * 4;
+
+                    args = arrMerge([
+                        {
+                            r: imageData.data[firstPixelIndex],
+                            g: imageData.data[firstPixelIndex + 1],
+                            b: imageData.data[firstPixelIndex + 2],
+                            a: imageData.data[firstPixelIndex + 3]
+                        },
+                        x,
+                        y
+                    ], parameters);
+
+                    result = callback.apply(sandbox, args);
+
+                    if (typeof result === "object")
+                    {
+                        imageData.data[firstPixelIndex] = result.r;
+                        imageData.data[firstPixelIndex + 1] = result.g;
+                        imageData.data[firstPixelIndex + 2] = result.b;
+                        imageData.data[firstPixelIndex + 3] = result.a;
+                    }
+                }
+            }
+            return imageData;
+        };
+    };
+
+    /**
+     * Helper for creating effect object.
+     */
     var Effects = new function()
     {
         var effects = {};
 
         this.define = function(name, pixelCallback)
         {
-            effects[name] = pixelCallback;
+            effects[name] = new Effect({
+                callback: pixelCallback
+            });
         };
 
         this.get = function(name)
