@@ -70,6 +70,7 @@
         {
             return false; // skip change - opacity is full
         }
+        // alpha compositing
         var mergedA = mergedPixel.a / 255;
         var rootA = rootPixel.a / 255 * (1 - mergedA);
         var outA = (mergedA + rootPixel.a * (1 - mergedA) / 255);
@@ -99,16 +100,29 @@
         }
     };
 
+    /**
+     * Merge 2 arrays.
+     * @param arr1
+     * @param arr2
+     * @returns {object}
+     */
     var arrMerge = function arrMerge(arr1, arr2)
     {
         var i;
-        for (i = 0; i < arr2.length; i += 1)
+        for(i = 0; i < arr2.length; i += 1)
         {
             arr1.push(arr2[i]);
         }
         return arr1;
     };
 
+    /**
+     * Apply effect on ImageData.
+     * @param {ImageData} imageData
+     * @param {function} effect
+     * @param {object} params
+     * @returns {ImageData}
+     */
     var applyEffect = function applyEffect(imageData, effect, params)
     {
         var x, y,
@@ -116,9 +130,9 @@
             result,
             args,
             i;
-        for (y = 0; y < imageData.height; y += 1)
+        for(y = 0; y < imageData.height; y += 1)
         {
-            for (x = 0; x < imageData.width; x += 1)
+            for(x = 0; x < imageData.width; x += 1)
             {
                 firstPixelIndex = y * imageData.width * 4 + x * 4;
 
@@ -144,6 +158,95 @@
         return imageData;
     };
 
+    var Canvas = function()
+    {
+        var canvas,
+            context,
+            width,
+            height;
+
+        /**
+         * Initializer.
+         * @param {int} width
+         * @param {int} height
+         */
+        this.initialize = function(width, height)
+        {
+            canvas = doc.createElement("canvas");
+
+            // hide from viewport
+            canvas.style.position = "absolute";
+            canvas.style.left = "-9999px";
+            canvas.style.top = "-9999px";
+
+            if (width && height)
+            {
+                this.setWidth(width);
+                this.setHeight(height);
+            }
+
+            doc.body.appendChild(canvas);
+        };
+
+        /**
+         * Setter for width.
+         * @param {int} value
+         * @returns {Canvas}
+         */
+        this.setWidth = function(value)
+        {
+            canvas.setAttribute("width", "" + value);
+            width = value;
+            return this;
+        };
+
+        /**
+         * Setter for height.
+         * @param {int} value
+         * @returns {Canvas}
+         */
+        this.setHeight = function(value)
+        {
+            canvas.setAttribute("height", "" + value);
+            height = value;
+            return this;
+        };
+
+        /**
+         * Getter for context.
+         * @returns {*}
+         */
+        this.getContext = function()
+        {
+            if (!context)
+            {
+                context = canvas.getContext("2d");
+            }
+            return context;
+        };
+
+        /**
+         * Export canvas to data url
+         * @param {string} type
+         * @returns {string|*}
+         */
+        this.toDataURL = function(type)
+        {
+            return canvas.toDataURL(type);
+        };
+
+        /**
+         * Removes canvas from DOM.
+         */
+        this.destroy = function()
+        {
+            doc.body.removeChild(canvas);
+        };
+
+        // call initializer
+        this.initialize.apply(this, arguments);
+    };
+
     /**
      * Image object.
      * @constructor
@@ -161,6 +264,11 @@
         this.initialize = function()
         {
             this.url = null;
+
+            // hide from viewport
+            image.style.position = "absolute";
+            image.style.left = "-9999px";
+            image.style.top = "-9999px";
         };
 
         /**
@@ -188,39 +296,33 @@
          */
         this.load = function(url, callback)
         {
-            var canvas = doc.createElement("canvas"),
-                _this = this;
+            var _this = this;
 
             this.url = url;
             image.src = url;
 
-            doc.body.appendChild(canvas);
             doc.body.appendChild(image);
 
             image.onload = function()
             {
-                var ctx;
+                var canvas;
 
                 width = image.clientWidth;
                 height = image.clientHeight;
 
-                canvas.setAttribute("width", "" + width);
-                canvas.setAttribute("height", "" + height);
-                doc.body.appendChild(canvas);
-
                 // get image data
-                ctx = canvas.getContext("2d");
-                ctx.drawImage(image, 0, 0, width, height);
-                imageData = ctx.getImageData(0, 0, width, height);
+                canvas = new Canvas(width, height);
+                canvas.getContext().drawImage(image, 0, 0, width, height);
+                imageData = canvas.getContext().getImageData(0, 0, width, height);
 
                 if(typeof callback === "function")
                 {
                     callback.call(_this);
                 }
 
-                // remove, we don't need this
+                // clean
                 doc.body.removeChild(image);
-                doc.body.removeChild(canvas);
+                canvas.destroy();
             };
         };
 
@@ -263,15 +365,8 @@
             this.height = height;
 
             // create tmp canvas
-            canvas = doc.createElement("canvas");
-            canvas.setAttribute("width", "" + this.width);
-            canvas.setAttribute("height", "" + this.height);
-
-            doc.body.appendChild(canvas);
-            canvas.style.display = "none";
-
-            ctx = canvas.getContext("2d");
-            imageData = ctx.getImageData(0, 0, this.width, this.height);
+            canvas = new Canvas(width, height);
+            imageData = canvas.getContext().getImageData(0, 0, width, height);
         };
 
         /**
@@ -309,7 +404,6 @@
                 exportedImage = new Image(),
                 args;
 
-
             for(i = 0; i < layers.length; i++)
             {
                 imageData = mergeImageData({
@@ -330,14 +424,14 @@
                 imageData = applyEffect(imageData, effects[i].effect, effects[i].params);
             }
 
-            ctx.putImageData(imageData, 0, 0);
+            canvas.getContext().putImageData(imageData, 0, 0);
             exportedImage.src = canvas.toDataURL(imageType);
             container.appendChild(exportedImage);
         };
 
         this.applyEffect = function(effect)
         {
-            if (typeof effect === "string")
+            if(typeof effect === "string")
             {
                 effect = Effects.get(effect);
             }
@@ -431,7 +525,6 @@
     var Layer = function()
     {
         var canvas,
-            ctx,
             imageData,
             objects = [];
 
@@ -443,15 +536,8 @@
             this.width = arguments[0];
             this.height = arguments[1];
 
-            canvas = doc.createElement("canvas");
-            canvas.setAttribute("width", "" + this.width);
-            canvas.setAttribute("height", "" + this.height);
-
-            doc.body.appendChild(canvas);
-            canvas.style.display = "none";
-
-            ctx = canvas.getContext("2d");
-            imageData = ctx.createImageData(this.width, this.height);
+            canvas = new Canvas(this.width, this.height);
+            imageData = canvas.getContext().createImageData(this.width, this.height);
         };
 
         /**
@@ -532,7 +618,11 @@
     };
 
     /*
-    EFFECTS DEFINITIONS
+     EFFECTS DEFINITIONS
+     */
+
+    /**
+     * Gray Scale
      */
     Effects.define("grayscale", function(pixel, x, y)
     {
@@ -545,6 +635,9 @@
         };
     });
 
+    /**
+     * Sepia
+     */
     Effects.define("sepia", function(pixel, x, y, sepiaValue)
     {
         var tmp = 0.299 * pixel.r + 0.587 * pixel.g + 0.114 * pixel.b;
