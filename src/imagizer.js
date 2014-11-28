@@ -99,6 +99,51 @@
         }
     };
 
+    var arrMerge = function arrMerge(arr1, arr2)
+    {
+        var i;
+        for (i = 0; i < arr2.length; i += 1)
+        {
+            arr1.push(arr2[i]);
+        }
+        return arr1;
+    };
+
+    var applyEffect = function applyEffect(imageData, effect, params)
+    {
+        var x, y,
+            firstPixelIndex,
+            result,
+            args,
+            i;
+        for (y = 0; y < imageData.height; y += 1)
+        {
+            for (x = 0; x < imageData.width; x += 1)
+            {
+                firstPixelIndex = y * imageData.width * 4 + x * 4;
+
+                args = arrMerge([
+                    {
+                        r: imageData.data[firstPixelIndex],
+                        g: imageData.data[firstPixelIndex + 1],
+                        b: imageData.data[firstPixelIndex + 2],
+                        a: imageData.data[firstPixelIndex + 3]
+                    },
+                    x,
+                    y
+                ], params);
+
+                result = effect.apply(null, args);
+
+                imageData.data[firstPixelIndex] = result.r;
+                imageData.data[firstPixelIndex + 1] = result.g;
+                imageData.data[firstPixelIndex + 2] = result.b;
+                imageData.data[firstPixelIndex + 3] = result.a;
+            }
+        }
+        return imageData;
+    };
+
     /**
      * Image object.
      * @constructor
@@ -201,6 +246,7 @@
     var Project = function(width, height)
     {
         var layers = [],
+            effects = [],
             startTime = new Date(),
             canvas,
             ctx,
@@ -260,7 +306,8 @@
 
             var i,
                 container = doc.querySelector(selector),
-                exportedImage = new Image();
+                exportedImage = new Image(),
+                args;
 
 
             for(i = 0; i < layers.length; i++)
@@ -278,9 +325,26 @@
                 }, mergeCallback);
             }
 
+            for(i = 0; i < effects.length; i++)
+            {
+                imageData = applyEffect(imageData, effects[i].effect, effects[i].params);
+            }
+
             ctx.putImageData(imageData, 0, 0);
             exportedImage.src = canvas.toDataURL(imageType);
             container.appendChild(exportedImage);
+        };
+
+        this.applyEffect = function(effect)
+        {
+            if (typeof effect === "string")
+            {
+                effect = Effects.get(effect);
+            }
+            effects.push({
+                effect: effect,
+                params: Array.prototype.splice.call(arguments, 1, arguments.length)
+            });
         };
 
         // call initializer
@@ -452,8 +516,65 @@
         this.initialize.apply(this, arguments);
     };
 
+    var Effects = new function()
+    {
+        var effects = {};
+
+        this.define = function(name, pixelCallback)
+        {
+            effects[name] = pixelCallback;
+        };
+
+        this.get = function(name)
+        {
+            return effects[name];
+        };
+    };
+
+    /*
+    EFFECTS DEFINITIONS
+     */
+    Effects.define("grayscale", function(pixel, x, y)
+    {
+        var newRGB = 0.299 * pixel.r + 0.587 * pixel.g + 0.114 * pixel.b;
+        return {
+            r: newRGB,
+            g: newRGB,
+            b: newRGB,
+            a: pixel.a
+        };
+    });
+
+    Effects.define("sepia", function(pixel, x, y, sepiaValue)
+    {
+        var tmp = 0.299 * pixel.r + 0.587 * pixel.g + 0.114 * pixel.b;
+
+        if(tmp + 2 * sepiaValue > 255)
+        {
+            pixel.r = 255;
+        }
+        else
+        {
+            pixel.r = tmp + 2 * sepiaValue;
+        }
+
+        if(tmp + sepiaValue > 255)
+        {
+            pixel.g = 255;
+        }
+        else
+        {
+            pixel.g = tmp + sepiaValue;
+        }
+
+        pixel.b = tmp;
+
+        return pixel;
+    });
+
     win.Imagizer.Project = Project;
     win.Imagizer.Layer = Layer;
     win.Imagizer.Image = ImageObj;
+    win.Imagizer.Effects = Effects;
 
 }(window, document));
