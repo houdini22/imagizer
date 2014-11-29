@@ -1,6 +1,6 @@
 /**
  * @author Michał Baniowski michal.baniowski@gmail.com
- * @version 0.0.3
+ * @version 0.0.4
  */
 ;
 (function(win, doc)
@@ -100,6 +100,13 @@
         }
     };
 
+    /**
+     * Resize ImageData by nearest neighbour algorithm.
+     * Shared method.
+     * @param newWidth
+     * @param newHeight
+     * @returns {resizeNearestNeighbour}
+     */
     var resizeNearestNeighbour = function(newWidth, newHeight)
     {
         var oldImageData = this.getImageData(),
@@ -138,18 +145,16 @@
     };
 
     /**
-     * Container for shared methods.
+     * Shared method. Adds effect to an array.
      * @type {Object}
      */
-    var proxy = {
-        applyEffect: function()
-        {
-            this.effects.push({
-                name: arguments[0],
-                effect: Effects.get(arguments[0]),
-                params: Array.prototype.slice.call(arguments, 1, arguments.length)
-            });
-        }
+    var applyEffect = function()
+    {
+        this.effects.push({
+            name: arguments[0],
+            effect: Effects.get(arguments[0]),
+            params: Array.prototype.slice.call(arguments, 1, arguments.length)
+        });
     };
 
     /**
@@ -478,7 +483,7 @@
          */
         this.applyEffect = function()
         {
-            proxy.applyEffect.apply(this, arguments);
+            applyEffect.apply(this, arguments);
         };
 
         // call initializer
@@ -569,7 +574,7 @@
          */
         this.applyEffect = function()
         {
-            proxy.applyEffect.apply(this, arguments);
+            applyEffect.apply(this, arguments);
         };
 
         /**
@@ -577,13 +582,23 @@
          * @param {int} newWidth
          * @param {int} newHeight
          * @param {string} mode
+         * @aaram {boolean} isLayerResize
          * @returns {LayerObject}
          */
-        this.resize = function(newWidth, newHeight, mode)
+        this.resize = function(newWidth, newHeight, mode, isLayerResize)
         {
-            this.width = newWidth;
-            this.height = newHeight;
+            var oldWidth = this.getWidth(),
+                oldHeight = this.getHeight(),
+                ratioX = newWidth / oldWidth,
+                ratioY = newHeight / oldHeight;
+
+            if(isLayerResize)
+            {
+                this.moveXY(- this.getX() * ratioX, - this.getY() * ratioY);
+            }
+
             this.getObject().resize(newWidth, newHeight, mode);
+
             return this;
         };
 
@@ -607,7 +622,7 @@
          */
         this.moveX = function(x)
         {
-            data.x += x;
+            data.x += (x | 0);
             return this;
         };
 
@@ -618,13 +633,13 @@
          */
         this.moveY = function(y)
         {
-            data.y += y;
+            data.y += (y | 0);
             return this;
         };
     };
 
     /**
-     * Layer object. Holds object and effect (TODO)
+     * Layer object. Holds object and effect.
      * @constructor
      */
     var Layer = function()
@@ -717,7 +732,7 @@
          */
         this.applyEffect = function()
         {
-            proxy.applyEffect.apply(this, arguments);
+            applyEffect.apply(this, arguments);
         };
 
         /**
@@ -729,7 +744,7 @@
 
             for (i = 0; i < this.objects.length; i += 1)
             {
-                this.objects[i].resize(newWidth, newHeight, mode);
+                this.objects[i].resize(newWidth, newHeight, mode, true);
             }
 
             return this;

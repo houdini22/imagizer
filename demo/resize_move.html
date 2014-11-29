@@ -27,6 +27,25 @@
     }, false);
 </script>
 
+<div class="test test-2">
+    <p class="time"></p>
+</div>
+<script>
+    document.addEventListener("DOMContentLoaded", function()
+    {
+        var project = new Imagizer.Project(400, 300);
+        var layer1 = project.createLayer();
+        var image1 = new Imagizer.Image();
+        image1.load("img/pencils.jpg", function()
+        {
+            var obj = layer1.put(image1, 200, 150);
+            layer1.resize(200, 150);
+            project.exportTo(".test-2");
+            document.querySelector(".test-2 .time").textContent = project.getTime();
+        });
+    }, false);
+</script>
+
 <script src="../src/imagizer.js"></script>
 </body>
 </html>
