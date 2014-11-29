@@ -136,8 +136,8 @@
 
             // hide from viewport
             this.canvas.style.position = "absolute";
-            this.canvas.style.left = "9999px";
-            this.canvas.style.top = "9999px";
+            this.canvas.style.left = "-99999px";
+            this.canvas.style.top = "-99999px";
 
             if(width && height)
             {
@@ -227,8 +227,8 @@
 
             // hide from viewport
             this.image.style.position = "absolute";
-            this.image.style.left = "9999px";
-            this.image.style.top = "9999px";
+            this.image.style.left = "-99999px";
+            this.image.style.top = "-99999px";
         };
 
         /**
