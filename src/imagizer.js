@@ -1,10 +1,10 @@
+/**
+ * @author Michał Baniowski michal.baniowski@gmail.com
+ * @version 0.0.3
+ */
+;
 (function(win, doc)
 {
-    /**
-     * @author Michał Baniowski michal.baniowski@gmail.com
-     * @version 0.0.2
-     */
-
     win.Imagizer = {};
 
     /**
@@ -101,21 +101,9 @@
     };
 
     /**
-     * Merge 2 arrays.
-     * @param {Array} arr1
-     * @param {Array} arr2
-     * @returns {Array}
+     * HTML canvas wrapper
+     * @constructor
      */
-    var arrMerge = function arrMerge(arr1, arr2)
-    {
-        var i;
-        for(i = 0; i < arr2.length; i += 1)
-        {
-            arr1.push(arr2[i]);
-        }
-        return arr1;
-    };
-
     var Canvas = function()
     {
         var canvas,
@@ -602,7 +590,8 @@
      */
     var Effect = function(params)
     {
-        var callback = params.callback;
+        var callback = params.callback,
+            additionalParameters = params.opts;
 
         /**
          * Run effect
@@ -616,12 +605,25 @@
                 firstPixelIndex,
                 result,
                 args,
+                imageDataCopy = new Uint8ClampedArray(imageData.data), // copy image data
                 i,
+                /**
+                 * Get ImageData array index from x and y position
+                 * @param x
+                 * @param y
+                 * @returns {number}
+                 */
                 getIndex = function getIndex(x, y)
                 {
                     return y * imageData.width * 4 + x * 4;
                 },
                 sandbox = { // object invoked as this in effect callback
+                    /**
+                     * Get original pixel
+                     * @param {int} x
+                     * @param {int} y
+                     * @returns {{r: *, g: *, b: *, a: *}}
+                     */
                     getPixel: function(x, y)
                     {
                         var index = getIndex(x, y);
@@ -632,14 +634,32 @@
                             a: imageData.data[index + 3]
                         };
                     },
+                    /**
+                     * Set new pixel
+                     * @param {int} x
+                     * @param {int} y
+                     * @param {object} rgba
+                     */
                     setPixel: function(x, y, rgba)
                     {
                         var index = getIndex(x, y);
-                        imageData.data[index] = rgba.r;
-                        imageData.data[index + 1] = rgba.g;
-                        imageData.data[index + 2] = rgba.b;
-                        imageData.data[index + 3] = rgba.a;
-                    }
+                        imageDataCopy[index] = rgba.r;
+                        imageDataCopy[index + 1] = rgba.g;
+                        imageDataCopy[index + 2] = rgba.b;
+                        imageDataCopy[index + 3] = rgba.a;
+                    },
+                    /**
+                     * Data created by effect init function
+                     */
+                    data: (additionalParameters && typeof additionalParameters.before === "function") ? additionalParameters.before.call(this, parameters, imageData.width, imageData.height) : {},
+                    /**
+                     * ImageData width
+                     */
+                    width: imageData.width,
+                    /**
+                     * ImageData height
+                     */
+                    height: imageData.height
                 };
 
             for(y = 0; y < imageData.height; y += 1)
@@ -648,7 +668,7 @@
                 {
                     firstPixelIndex = y * imageData.width * 4 + x * 4;
 
-                    args = arrMerge([
+                    result = callback.apply(sandbox, [
                         {
                             r: imageData.data[firstPixelIndex],
                             g: imageData.data[firstPixelIndex + 1],
@@ -656,20 +676,23 @@
                             a: imageData.data[firstPixelIndex + 3]
                         },
                         x,
-                        y
-                    ], parameters);
+                        y,
+                        parameters,
+                        imageData.width,
+                        imageData.height
+                    ]);
 
-                    result = callback.apply(sandbox, args);
-
-                    if (typeof result === "object")
+                    if(typeof result === "object")
                     {
-                        imageData.data[firstPixelIndex] = result.r;
-                        imageData.data[firstPixelIndex + 1] = result.g;
-                        imageData.data[firstPixelIndex + 2] = result.b;
-                        imageData.data[firstPixelIndex + 3] = result.a;
+                        imageDataCopy[firstPixelIndex] = result.r;
+                        imageDataCopy[firstPixelIndex + 1] = result.g;
+                        imageDataCopy[firstPixelIndex + 2] = result.b;
+                        imageDataCopy[firstPixelIndex + 3] = result.a;
                     }
                 }
             }
+
+            imageData.data.set(imageDataCopy);
             return imageData;
         };
     };
@@ -681,16 +704,73 @@
     {
         var effects = {};
 
-        this.define = function(name, pixelCallback)
+        /**
+         * Creates effect
+         * @param {string} name
+         * @param {function} pixelCallback
+         * @param {Object} opts
+         */
+        this.define = function(name, pixelCallback, opts)
         {
             effects[name] = new Effect({
-                callback: pixelCallback
+                callback: pixelCallback,
+                opts: opts
             });
         };
 
+        /**
+         * Getter for effect - get by given name
+         * @param {string} name
+         * @returns {Effect}
+         */
         this.get = function(name)
         {
+            if(!effects[name])
+            {
+                throw "Effect: " + name + " doesn't exists."
+            }
             return effects[name];
+        };
+
+        /**
+         * Computes filter data by given array
+         * @param matrix
+         * @returns {{matrix: *, norm: number, size: number, margin: number}}
+         */
+        this.createFilterData = function(matrix)
+        {
+            var norm = 0,
+                i, j;
+
+            for(i = 0; i < matrix.length; i += 1)
+            {
+                norm += matrix[i];
+            }
+            if(norm === 0)
+            {
+                norm = 1;
+            }
+
+            return {
+                matrix: matrix,
+                norm: norm,
+                size: Math.sqrt(matrix.length),
+                margin: (Math.sqrt(matrix.length) - 1) / 2
+            };
+        };
+
+        /**
+         * Filter matrixes definitions.
+         * @type {Object}}
+         */
+        this.filterDefinitions = {
+            "averaging": [1, 1, 1, 1, 1, 1, 1, 1, 1],
+            "averaging-square": [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+            "averaging-circle": [0, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 0],
+            "averaging-lp1": [1, 1, 1, 1, 2, 1, 1, 1, 1],
+            "averaging-lp2": [1, 1, 1, 1, 4, 1, 1, 1, 1],
+            "averaging-lp3": [1, 1, 1, 1, 12, 1, 1, 1, 1],
+            "averaging-pyramidal": [1, 2, 3, 2, 1, 2, 4, 6, 4, 2, 3, 6, 9, 6, 3, 2, 4, 6, 4, 2, 1, 2, 3, 2, 1]
         };
     };
 
@@ -698,10 +778,8 @@
      EFFECTS DEFINITIONS
      */
 
-    /**
-     * Gray Scale
-     */
-    Effects.define("grayscale", function(pixel, x, y)
+    // gray scale
+    Effects.define("gray-scale", function(pixel, x, y)
     {
         var newRGB = 0.299 * pixel.r + 0.587 * pixel.g + 0.114 * pixel.b;
         return {
@@ -712,34 +790,76 @@
         };
     });
 
-    /**
-     * Sepia
-     */
-    Effects.define("sepia", function(pixel, x, y, sepiaValue)
+    // sepia
+    Effects.define("sepia", function(pixel, x, y, parameters)
     {
         var tmp = 0.299 * pixel.r + 0.587 * pixel.g + 0.114 * pixel.b;
 
-        if(tmp + 2 * sepiaValue > 255)
-        {
-            pixel.r = 255;
-        }
-        else
-        {
-            pixel.r = tmp + 2 * sepiaValue;
-        }
-
-        if(tmp + sepiaValue > 255)
-        {
-            pixel.g = 255;
-        }
-        else
-        {
-            pixel.g = tmp + sepiaValue;
-        }
-
+        pixel.r = tmp + 2 * parameters[0];
+        pixel.g = tmp + parameters[0];
         pixel.b = tmp;
 
+        pixel.r = Math.min(pixel.r, 255);
+        pixel.g = Math.min(pixel.g, 255);
+        pixel.b = Math.min(pixel.b, 255);
+
         return pixel;
+    });
+
+    /*
+     FILTERS DEFINITIONS
+     */
+
+    Effects.define("filter-linear", function(pixel, x, y, parameters, width, height)
+    {
+        var filter = this.data,
+            i, j,
+            sumR = 0, sumG = 0, sumB = 0;
+
+        if(x < filter.margin || y < filter.margin)
+        {
+            return false;
+        }
+        if(x > width - filter.margin || y > height - filter.margin)
+        {
+            return false;
+        }
+
+        for(i = 0; i < filter.size; i += 1)
+        {
+            for(j = 0; j < filter.size; j += 1)
+            {
+                sumR += (filter.matrix[i + j * filter.size] * this.getPixel(x + j - filter.margin, y + i - filter.margin).r);
+                sumG += (filter.matrix[i + j * filter.size] * this.getPixel(x + j - filter.margin, y + i - filter.margin).g);
+                sumB += (filter.matrix[i + j * filter.size] * this.getPixel(x + j - filter.margin, y + i - filter.margin).b);
+            }
+        }
+
+        sumR /= filter.norm;
+        sumG /= filter.norm;
+        sumB /= filter.norm;
+
+        sumR = Math.min(sumR, 255);
+        sumR = Math.max(sumR, 0);
+        sumG = Math.min(sumG, 255);
+        sumG = Math.max(sumG, 0);
+        sumB = Math.min(sumB, 255);
+        sumB = Math.max(sumB, 0);
+
+        pixel.r = sumR;
+        pixel.g = sumG;
+        pixel.b = sumB;
+        return pixel;
+    }, {
+        before: function(parameters, width, height)
+        {
+            var matrix = parameters[0];
+            if(typeof matrix === "string")
+            {
+                matrix = win.Imagizer.Effects.filterDefinitions[parameters[0]];
+            }
+            return win.Imagizer.Effects.createFilterData(matrix);
+        }
     });
 
     win.Imagizer.Project = Project;

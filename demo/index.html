@@ -29,6 +29,7 @@
             position: absolute;
         }
     </style>
+
     <script src="../src/imagizer.js"></script>
 </head>
 <body>
@@ -37,9 +38,8 @@
 <div class="test test-1">
     <p class="time"></p>
 </div>
-
 <script>
-    !function()
+    document.addEventListener("DOMContentLoaded", function()
     {
         var project = new Imagizer.Project(352, 352);
         var layer = project.createLayer();
@@ -51,69 +51,66 @@
             project.exportTo(".test-1");
             document.querySelector(".test-1 .time").textContent = "" + project.getTime();
         });
-
-    }();
+    }, false);
 </script>
 
-    <div class="test test-2">
-        <p class="time"></p>
-    </div>
-
-    <script>
-        !function()
+<div class="test test-2">
+    <p class="time"></p>
+</div>
+<script>
+    document.addEventListener("DOMContentLoaded", function()
+    {
+        var project = new Imagizer.Project(352, 352);
+        var layer = project.createLayer();
+        var layer2 = project.createLayer();
+        var image = new Imagizer.Image();
+        image.load("img/pattern-1.png", function()
         {
-            var project = new Imagizer.Project(352, 352);
-            var layer = project.createLayer();
-            var layer2 = project.createLayer();
-            var image = new Imagizer.Image();
-            image.load("img/pattern-1.png", function()
+            layer.put(image, 0, 0);
+            var image2 = new Imagizer.Image();
+            image2.load("img/dot.png", function()
             {
-                layer.put(image, 0, 0);
-                var image2 = new Imagizer.Image();
-                image2.load("img/dot.png", function()
+                layer2.put(image2, 60, 80);
+                project.exportTo(".test-2");
+                document.querySelector(".test-2 .time").textContent = "" + project.getTime();
+            });
+        });
+    }, false);
+</script>
+
+<div class="test test-3">
+    <p class="time"></p>
+</div>
+<script>
+    document.addEventListener("DOMContentLoaded", function()
+    {
+        var project = new Imagizer.Project(352, 352);
+        var layer1 = project.createLayer();
+        var layer2 = project.createLayer();
+        var layer3 = project.createLayer();
+        var image1 = new Imagizer.Image();
+        image1.load("img/pattern-1.png", function()
+        {
+            layer1.put(image1, 0, 0);
+            var image2 = new Imagizer.Image();
+            image2.load("img/pattern-2.png", function()
+            {
+                layer2.put(image2, 0, 0);
+                var image3 = new Imagizer.Image();
+                image3.load("img/dot.png", function()
                 {
-                    layer2.put(image2, 60, 80);
-                    project.exportTo(".test-2");
-                    document.querySelector(".test-2 .time").textContent = "" + project.getTime();
+                    layer3.put(image3, 0, 0);
+                    layer3.put(image3, 50, 50);
+                    layer3.put(image3, 100, 100);
+                    layer3.put(image3, 0, 100);
+                    layer3.put(image3, 100, 0);
+                    project.exportTo(".test-3");
+                    document.querySelector(".test-3 .time").textContent = "" + project.getTime();
                 });
             });
+        });
+    }, false);
+</script>
 
-        }();
-    </script>
-
-    <div class="test test-3">
-        <p class="time"></p>
-    </div>
-
-    <script>
-        !function()
-        {
-            var project = new Imagizer.Project(352, 352);
-            var layer1 = project.createLayer();
-            var layer2 = project.createLayer();
-            var layer3 = project.createLayer();
-            var image1 = new Imagizer.Image();
-            image1.load("img/pattern-1.png", function()
-            {
-                layer1.put(image1, 0, 0);
-                var image2 = new Imagizer.Image();
-                image2.load("img/pattern-2.png", function()
-                {
-                    layer2.put(image2, 0, 0);
-                    var image3 = new Imagizer.Image();
-                    image3.load("img/dot.png", function()
-                    {
-                        layer3.put(image3, 0, 0);
-                        layer3.put(image3, 50, 50);
-                        layer3.put(image3, 100, 100);
-                        layer3.put(image3, 0, 100);
-                        layer3.put(image3, 100, 0);
-                        project.exportTo(".test-3");
-                        document.querySelector(".test-3 .time").textContent = "" + project.getTime();
-                    });
-                });
-            });
-        }();
-    </script>
 </body>
 </html>
