@@ -1159,16 +1159,14 @@
         sumG /= filter.norm;
         sumB /= filter.norm;
 
-        sumR = Math.min(sumR, 255);
-        sumR = Math.max(sumR, 0);
-        sumG = Math.min(sumG, 255);
-        sumG = Math.max(sumG, 0);
-        sumB = Math.min(sumB, 255);
-        sumB = Math.max(sumB, 0);
+        sumR = Math.min(Math.max(sumR, 0), 255);
+        sumG = Math.min(Math.max(sumG, 0), 255);
+        sumB = Math.min(Math.max(sumB, 0), 255);
 
         pixel.r = sumR;
         pixel.g = sumG;
         pixel.b = sumB;
+
         return pixel;
     }, {
         before: function(parameters, width, height)
