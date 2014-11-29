@@ -1,11 +1,17 @@
 /**
- * @author Michał Baniowski <michal.baniowski@gmail.com>
+ * @author Michał Baniowski michal.baniowski@gmail.com
  * @version 0.0.4
  */
 ;
 (function(win, doc)
 {
     win.Imagizer = {};
+
+    /**
+     * Helper functions
+     * @type {Object}
+     */
+    var Helpers = {};
 
     /**
      * Function used to merge layers and layer objects.
@@ -144,7 +150,7 @@
      * @param width
      * @param height
      */
-    var crop = function(oldImageData, newImageData, startX, startY, width, height)
+    var cropImageData = function(oldImageData, newImageData, startX, startY, width, height)
     {
         var oldWidth = oldImageData.width,
             newWidth = newImageData.width,
@@ -206,11 +212,8 @@
             this.canvas.style.left = "-99999px";
             this.canvas.style.top = "-99999px";
 
-            if(width && height)
-            {
-                this.setWidth(width);
-                this.setHeight(height);
-            }
+            width && this.setWidth(width);
+            height && this.setHeight(height);
 
             doc.body.appendChild(this.canvas);
         };
@@ -292,14 +295,13 @@
         this.imageData = null;
         this.width = 0;
         this.height = 0;
+        this.url = null;
 
         /**
          * Initializer
          */
         this.initialize = function()
         {
-            this.url = null;
-
             // hide from viewport
             this.image.style.position = "absolute";
             this.image.style.left = "-99999px";
@@ -733,7 +735,7 @@
                 canvas = new Canvas(width, height),
                 newImageData = canvas.getContext().createImageData(width, height);
 
-            newImageData = crop(oldImageData, newImageData, startX, startY, width, height);
+            newImageData = cropImageData(oldImageData, newImageData, startX, startY, width, height);
 
             object
                 .setImageData(newImageData)
@@ -747,7 +749,7 @@
     };
 
     /**
-     * Layer object. Holds object and effect.
+     * Layer object. Holds object and effects.
      * @constructor
      */
     var Layer = function()
@@ -936,6 +938,10 @@
                 {
                     return y * imageData.width * 4 + x * 4;
                 },
+                normalizePixelValue = function(value)
+                {
+                    return Math.min(Math.max(value, 0), 255);
+                },
                 sandbox = { // object invoked as this in effect callback
                     /**
                      * Get original pixel
@@ -962,10 +968,10 @@
                     setPixel: function(x, y, rgba)
                     {
                         var index = getIndex(x, y);
-                        imageDataCopy[index] = rgba.r;
-                        imageDataCopy[index + 1] = rgba.g;
-                        imageDataCopy[index + 2] = rgba.b;
-                        imageDataCopy[index + 3] = rgba.a;
+                        imageDataCopy[index + 0] = normalizePixelValue(rgba.r);
+                        imageDataCopy[index + 1] = normalizePixelValue(rgba.g);
+                        imageDataCopy[index + 2] = normalizePixelValue(rgba.b);
+                        imageDataCopy[index + 3] = normalizePixelValue(rgba.a);
                     },
                     /**
                      * Data created by effect init function
@@ -991,7 +997,7 @@
 
                     result = callback.apply(sandbox, [
                         {
-                            r: imageData.data[firstPixelIndex],
+                            r: imageData.data[firstPixelIndex + 0],
                             g: imageData.data[firstPixelIndex + 1],
                             b: imageData.data[firstPixelIndex + 2],
                             a: imageData.data[firstPixelIndex + 3]
@@ -1005,14 +1011,13 @@
 
                     if(typeof result === "object")
                     {
-                        imageDataCopy[firstPixelIndex] = result.r;
-                        imageDataCopy[firstPixelIndex + 1] = result.g;
-                        imageDataCopy[firstPixelIndex + 2] = result.b;
-                        imageDataCopy[firstPixelIndex + 3] = result.a;
+                        imageDataCopy[firstPixelIndex + 0] = normalizePixelValue(result.r);
+                        imageDataCopy[firstPixelIndex + 1] = normalizePixelValue(result.g);
+                        imageDataCopy[firstPixelIndex + 2] = normalizePixelValue(result.b);
+                        imageDataCopy[firstPixelIndex + 3] = normalizePixelValue(result.a);
                     }
                 }
             }
-
             imageData.data.set(imageDataCopy);
             return imageData;
         };
@@ -1029,7 +1034,7 @@
          * Creates effect
          * @param {string} name
          * @param {function} pixelCallback
-         * @param {Object} opts
+         * @param {Object} [opts]
          */
         this.define = function(name, pixelCallback, opts)
         {
@@ -1120,10 +1125,6 @@
         pixel.g = tmp + parameters[0];
         pixel.b = tmp;
 
-        pixel.r = Math.min(pixel.r, 255);
-        pixel.g = Math.min(pixel.g, 255);
-        pixel.b = Math.min(pixel.b, 255);
-
         return pixel;
     });
 
@@ -1159,10 +1160,6 @@
         sumG /= filter.norm;
         sumB /= filter.norm;
 
-        sumR = Math.min(Math.max(sumR, 0), 255);
-        sumG = Math.min(Math.max(sumG, 0), 255);
-        sumB = Math.min(Math.max(sumB, 0), 255);
-
         pixel.r = sumR;
         pixel.g = sumG;
         pixel.b = sumB;
@@ -1184,5 +1181,6 @@
     win.Imagizer.Layer = Layer;
     win.Imagizer.Image = ImageObj;
     win.Imagizer.Effects = Effects;
+    win.Imagizer.Helpers = Helpers;
 
 }(window, document));

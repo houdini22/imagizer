@@ -23,3 +23,11 @@ body {
     bottom: 0;
     position: absolute;
 }
+
+.clearfix {
+    border-top: 1px solid black;
+    width: 100%;
+    height: 1px;
+    clear: both;
+    padding: 10px;
+}

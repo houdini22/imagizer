@@ -4,19 +4,50 @@
     <meta charset="UTF-8">
     <title>Effects demo</title>
     <link rel="stylesheet" href="css/main.css" />
+    <style>
+        .test {
+            width: 151px !important;
+            height: 151px !important;
+        }
+    </style>
 </head>
 <body>
 
+<script>
+    var imageURL = "img/girl.png",
+        imageWidth = 151,
+        imageHeight = 151;
+</script>
+
+<div class="test test-0">
+    <p class="time"></p>
+</div>
+<script>
+    document.addEventListener("DOMContentLoaded", function()
+    {
+        var project = new Imagizer.Project(imageWidth, imageHeight);
+        var layer1 = project.createLayer();
+        var image1 = new Imagizer.Image();
+        image1.load(imageURL, function()
+        {
+            layer1.put(image1, 0, 0);
+            project.exportTo(".test-0");
+            document.querySelector(".test-0 .time").textContent = project.getTime();
+        });
+    }, false);
+</script>
+
+<div class="clearfix"></div>
 <div class="test test-1">
     <p class="time"></p>
 </div>
 <script>
     document.addEventListener("DOMContentLoaded", function()
     {
-        var project = new Imagizer.Project(400, 300);
+        var project = new Imagizer.Project(imageWidth, imageHeight);
         var layer1 = project.createLayer();
         var image1 = new Imagizer.Image();
-        image1.load("img/pencils.jpg", function()
+        image1.load(imageURL, function()
         {
             layer1.put(image1, 0, 0);
             project.applyEffect("filter-linear", "averaging");
@@ -32,10 +63,10 @@
 <script>
     document.addEventListener("DOMContentLoaded", function()
     {
-        var project = new Imagizer.Project(400, 300);
+        var project = new Imagizer.Project(imageWidth, imageHeight);
         var layer1 = project.createLayer();
         var image1 = new Imagizer.Image();
-        image1.load("img/pencils.jpg", function()
+        image1.load(imageURL, function()
         {
             layer1.put(image1, 0, 0);
             project.applyEffect("filter-linear", "averaging-square");
@@ -51,10 +82,10 @@
 <script>
     document.addEventListener("DOMContentLoaded", function()
     {
-        var project = new Imagizer.Project(400, 300);
+        var project = new Imagizer.Project(imageWidth, imageHeight);
         var layer1 = project.createLayer();
         var image1 = new Imagizer.Image();
-        image1.load("img/pencils.jpg", function()
+        image1.load(imageURL, function()
         {
             layer1.put(image1, 0, 0);
             project.applyEffect("filter-linear", "averaging-circle");
@@ -70,10 +101,10 @@
 <script>
     document.addEventListener("DOMContentLoaded", function()
     {
-        var project = new Imagizer.Project(400, 300);
+        var project = new Imagizer.Project(imageWidth, imageHeight);
         var layer1 = project.createLayer();
         var image1 = new Imagizer.Image();
-        image1.load("img/pencils.jpg", function()
+        image1.load(imageURL, function()
         {
             layer1.put(image1, 0, 0);
             project.applyEffect("filter-linear", "averaging-lp1");
@@ -89,10 +120,10 @@
 <script>
     document.addEventListener("DOMContentLoaded", function()
     {
-        var project = new Imagizer.Project(400, 300);
+        var project = new Imagizer.Project(imageWidth, imageHeight);
         var layer1 = project.createLayer();
         var image1 = new Imagizer.Image();
-        image1.load("img/pencils.jpg", function()
+        image1.load(imageURL, function()
         {
             layer1.put(image1, 0, 0);
             project.applyEffect("filter-linear", "averaging-lp2");
@@ -109,10 +140,10 @@
 <script>
     document.addEventListener("DOMContentLoaded", function()
     {
-        var project = new Imagizer.Project(400, 300);
+        var project = new Imagizer.Project(imageWidth, imageHeight);
         var layer1 = project.createLayer();
         var image1 = new Imagizer.Image();
-        image1.load("img/pencils.jpg", function()
+        image1.load(imageURL, function()
         {
             layer1.put(image1, 0, 0);
             project.applyEffect("filter-linear", "averaging-lp3");
@@ -129,10 +160,10 @@
 <script>
     document.addEventListener("DOMContentLoaded", function()
     {
-        var project = new Imagizer.Project(400, 300);
+        var project = new Imagizer.Project(imageWidth, imageHeight);
         var layer1 = project.createLayer();
         var image1 = new Imagizer.Image();
-        image1.load("img/pencils.jpg", function()
+        image1.load(imageURL, function()
         {
             layer1.put(image1, 0, 0);
             project.applyEffect("filter-linear", "averaging-lp3");
@@ -148,10 +179,10 @@
 <script>
     document.addEventListener("DOMContentLoaded", function()
     {
-        var project = new Imagizer.Project(400, 300);
+        var project = new Imagizer.Project(imageWidth, imageHeight);
         var layer1 = project.createLayer();
         var image1 = new Imagizer.Image();
-        image1.load("img/pencils.jpg", function()
+        image1.load(imageURL, function()
         {
             layer1.put(image1, 0, 0);
             project.applyEffect("filter-linear", "averaging-pyramidal");
@@ -160,6 +191,8 @@
         });
     }, false);
 </script>
+
+<div class="clearfix"></div>
 
 <script src="../src/imagizer.js"></script>
 </body>
