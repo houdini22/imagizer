@@ -856,7 +856,7 @@
             var matrix = parameters[0];
             if(typeof matrix === "string")
             {
-                matrix = win.Imagizer.Effects.filterDefinitions[parameters[0]];
+                matrix = win.Imagizer.Effects.filterDefinitions[matrix];
             }
             return win.Imagizer.Effects.createFilterData(matrix);
         }
