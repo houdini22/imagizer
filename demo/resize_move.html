@@ -7,6 +7,25 @@
 </head>
 <body>
 
+<div class="test test-0">
+    <p class="time"></p>
+</div>
+<script>
+    document.addEventListener("DOMContentLoaded", function()
+    {
+        var project = new Imagizer.Project(400, 300);
+        var layer1 = project.createLayer();
+        var image1 = new Imagizer.Image();
+        image1.load("img/pencils.jpg", function()
+        {
+            layer1.put(image1, 0, 0);
+            project.exportTo(".test-0");
+            document.querySelector(".test-0 .time").textContent = project.getTime();
+        });
+    }, false);
+</script>
+
+
 <div class="test test-1">
     <p class="time"></p>
 </div>
@@ -42,6 +61,25 @@
             layer1.resize(200, 150);
             project.exportTo(".test-2");
             document.querySelector(".test-2 .time").textContent = project.getTime();
+        });
+    }, false);
+</script>
+
+<div class="test test-3">
+    <p class="time"></p>
+</div>
+<script>
+    document.addEventListener("DOMContentLoaded", function()
+    {
+        var project = new Imagizer.Project(400, 300);
+        var layer1 = project.createLayer();
+        var image1 = new Imagizer.Image();
+        image1.load("img/pencils.jpg", function()
+        {
+            var obj = layer1.put(image1, 0, 0);
+            obj.crop(100, 100, 100, 100);
+            project.exportTo(".test-3");
+            document.querySelector(".test-3 .time").textContent = project.getTime();
         });
     }, false);
 </script>

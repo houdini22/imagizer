@@ -1,5 +1,5 @@
 /**
- * @author Michał Baniowski michal.baniowski@gmail.com
+ * @author Michał Baniowski <michal.baniowski@gmail.com>
  * @version 0.0.4
  */
 ;
@@ -12,7 +12,7 @@
      * @param {object} root Result layer.
      * @param {object} toMerge Layer to merge on
      * @param {function} pixelCallback
-     * @returns {*|Window.Imagizer.imageData}
+     * @returns {ImageData}
      */
     var mergeImageData = function mergeImageData(root, toMerge, pixelCallback)
     {
@@ -42,7 +42,7 @@
                         a: toMerge.imageData.data[firstNewPixelIndex + 3]
                     }, x, y);
 
-                    if(pixelResult !== false) // skip change
+                    if(pixelResult !== false) // if skip change
                     {
                         root.imageData.data[firstOldPixelIndex] = pixelResult.r;
                         root.imageData.data[firstOldPixelIndex + 1] = pixelResult.g;
@@ -93,37 +93,30 @@
         mergedB = outA == 0 ? 0 : mergedB / outA;
 
         return {
-            r: (mergedR > 255) ? 255 : ( (mergedR < 0) ? 0 : mergedR ) | 0,
-            g: (mergedG > 255) ? 255 : ( (mergedG < 0) ? 0 : mergedG ) | 0,
-            b: (mergedB > 255) ? 255 : ( (mergedB < 0) ? 0 : mergedB ) | 0,
+            r: Math.min(Math.max(0, mergedR), 255) | 0,
+            g: Math.min(Math.max(0, mergedG), 255) | 0,
+            b: Math.min(Math.max(0, mergedB), 255) | 0,
             a: (255 * outA) | 0
         }
     };
 
     /**
-     * Resize ImageData by nearest neighbour algorithm.
-     * Shared method.
+     * Simple resize.
+     * @param oldImageData
+     * @param newImageData
      * @param newWidth
      * @param newHeight
-     * @returns {resizeNearestNeighbour}
+     * @returns {*}
      */
-    var resizeNearestNeighbour = function(newWidth, newHeight)
+    var resizeNearestNeighbour = function(oldImageData, newImageData, newWidth, newHeight)
     {
-        var oldImageData = this.getImageData(),
-            oldWidth = oldImageData.width,
+        var oldWidth = oldImageData.width,
             oldHeight = oldImageData.height,
-            oldPixelIndex,
-            tmpCanvas = new Canvas(newWidth, newHeight),
-            newImageData = tmpCanvas.getContext().createImageData(newWidth, newHeight),
-            newPixelIndex,
-            x, y,
             ratioX = newWidth / oldWidth,
-            ratioY = newHeight / oldHeight;
-
-        tmpCanvas.destroy();
-
-        this.setWidth(newWidth);
-        this.setHeight(newHeight);
+            ratioY = newHeight / oldHeight,
+            oldPixelIndex,
+            newPixelIndex,
+            x, y;
 
         for(y = 0; y < newHeight; y += 1)
         {
@@ -139,9 +132,40 @@
             }
         }
 
-        this.setImageData(newImageData);
+        return newImageData;
+    };
 
-        return this;
+    /**
+     * Crop given image data.
+     * @param oldImageData
+     * @param newImageData
+     * @param startX
+     * @param startY
+     * @param width
+     * @param height
+     */
+    var crop = function(oldImageData, newImageData, startX, startY, width, height)
+    {
+        var oldWidth = oldImageData.width,
+            newWidth = newImageData.width,
+            x, y, xx, yy,
+            firstOldPixelIndex, firstNewPixelIndex;
+
+        for(y = startY, yy = 0; y < startY + height && yy < height; y += 1, yy += 1)
+        {
+            for(x = startX, xx = 0; x < startX + width && xx < width; x += 1, xx += 1)
+            {
+                firstOldPixelIndex = y * oldWidth * 4 + x * 4;
+                firstNewPixelIndex = yy * newWidth * 4 + xx * 4;
+
+                newImageData.data[firstNewPixelIndex] = oldImageData.data[firstOldPixelIndex];
+                newImageData.data[firstNewPixelIndex + 1] = oldImageData.data[firstOldPixelIndex + 1];
+                newImageData.data[firstNewPixelIndex + 2] = oldImageData.data[firstOldPixelIndex + 2];
+                newImageData.data[firstNewPixelIndex + 3] = oldImageData.data[firstOldPixelIndex + 3];
+            }
+        }
+
+        return newImageData;
     };
 
     /**
@@ -226,6 +250,14 @@
                 this.context = this.canvas.getContext("2d");
             }
             return this.context;
+        };
+
+        /**
+         * Get HTML element.
+         */
+        this.getCanvas = function()
+        {
+            return this.canvas;
         };
 
         /**
@@ -367,6 +399,7 @@
         this.setImageData = function(imageData)
         {
             this.imageData = imageData;
+            return this;
         };
 
         /**
@@ -375,14 +408,27 @@
         this.resize = function(newWidth, newHeight, mode)
         {
             mode = mode || "nearest-neighbour";
+
+            var oldImageData = this.getImageData(),
+                canvas = new Canvas(newWidth, newHeight),
+                newImageData = canvas.getContext().createImageData(newWidth, newHeight);
+
             switch(mode)
             {
                 case "nearest-neighbour":
-                    return resizeNearestNeighbour.call(this, newWidth, newHeight);
+                    newImageData = resizeNearestNeighbour(oldImageData, newImageData, newWidth, newHeight);
+                    break;
 
                 default:
+                    canvas.destroy();
                     return this;
             }
+
+            canvas.destroy();
+
+            return this.setWidth(newWidth)
+                .setHeight(newHeight)
+                .setImageData(newImageData);
         };
 
         // call initializer
@@ -493,18 +539,20 @@
     /**
      * Wrapper for object placed on layer.
      * @param {Window.Imagizer.Image} obj
+     * @param {Layer} layer
      * @param {int} x
      * @param {int} y
      * @param {object} opts
      * @constructor
      */
-    var LayerObject = function(obj, x, y, opts)
+    var LayerObject = function(obj, layer, x, y, opts)
     {
         var data = {
             obj: obj,
             x: x,
             y: y,
-            opts: opts
+            opts: opts,
+            layer: layer
         };
 
         this.effects = [];
@@ -578,31 +626,6 @@
         };
 
         /**
-         * Resize wrapped object.
-         * @param {int} newWidth
-         * @param {int} newHeight
-         * @param {string} mode
-         * @aaram {boolean} isLayerResize
-         * @returns {LayerObject}
-         */
-        this.resize = function(newWidth, newHeight, mode, isLayerResize)
-        {
-            var oldWidth = this.getWidth(),
-                oldHeight = this.getHeight(),
-                ratioX = newWidth / oldWidth,
-                ratioY = newHeight / oldHeight;
-
-            if(isLayerResize)
-            {
-                this.moveXY(- this.getX() * ratioX, - this.getY() * ratioY);
-            }
-
-            this.getObject().resize(newWidth, newHeight, mode);
-
-            return this;
-        };
-
-        /**
          * Move object.
          * @param x
          * @param y
@@ -634,6 +657,91 @@
         this.moveY = function(y)
         {
             data.y += (y | 0);
+            return this;
+        };
+
+        /**
+         * Set position.
+         * @param x
+         * @param y
+         */
+        this.setXY = function(x, y)
+        {
+            this.setX(x);
+            this.setY(y);
+            return this;
+        };
+
+        /**
+         * Set horizontal position
+         * @param x
+         * @returns {LayerObject}
+         */
+        this.setX = function(x)
+        {
+            data.x = x;
+            return this;
+        };
+
+        /**
+         * Set vertical position
+         * @param y
+         * @returns {LayerObject}
+         */
+        this.setY = function(y)
+        {
+            data.y = y;
+            return this;
+        };
+
+        /**
+         * Resize wrapped object.
+         * @param {int} newWidth
+         * @param {int} newHeight
+         * @param {string} mode
+         * @param {boolean} isLayerResize
+         * @returns {LayerObject}
+         */
+        this.resize = function(newWidth, newHeight, mode, isLayerResize)
+        {
+            var oldWidth = this.getWidth(),
+                oldHeight = this.getHeight(),
+                ratioX = newWidth / oldWidth,
+                ratioY = newHeight / oldHeight;
+
+            if(isLayerResize)
+            {
+                this.moveXY(-this.getX() * ratioX, -this.getY() * ratioY);
+            }
+
+            this.getObject().resize(newWidth, newHeight, mode);
+
+            return this;
+        };
+
+        /**
+         * Crop an object,
+         * @param {int} startX
+         * @param {int} startY
+         * @param {int} width
+         * @param {int} height
+         */
+        this.crop = function(startX, startY, width, height)
+        {
+            var object = this.getObject(),
+                oldImageData = object.getImageData(),
+                canvas = new Canvas(width, height),
+                newImageData = canvas.getContext().createImageData(width, height);
+
+            newImageData = crop(oldImageData, newImageData, startX, startY, width, height);
+
+            object
+                .setImageData(newImageData)
+                .setWidth(width)
+                .setHeight(height);
+
+            this.setXY(startX, startY);
+
             return this;
         };
     };
@@ -671,7 +779,7 @@
          */
         this.put = function(obj, startX, startY)
         {
-            var put = new LayerObject(obj, startX, startY, {});
+            var put = new LayerObject(obj, this, startX, startY, {});
             this.objects.push(put);
             return put;
         };
@@ -742,7 +850,7 @@
         {
             var i;
 
-            for (i = 0; i < this.objects.length; i += 1)
+            for(i = 0; i < this.objects.length; i += 1)
             {
                 this.objects[i].resize(newWidth, newHeight, mode, true);
             }
@@ -770,7 +878,7 @@
         this.moveX = function(x)
         {
             var i;
-            for (i = 0; i < this.objects.length; i += 1)
+            for(i = 0; i < this.objects.length; i += 1)
             {
                 this.objects[i].moveX(x);
             }
