@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <link rel="stylesheet" href="css/main.css" />
+</head>
+<body>
+
+<div class="test test-1">
+    <p class="time"></p>
+</div>
+<script>
+    document.addEventListener("DOMContentLoaded", function()
+    {
+        var project = new Imagizer.Project(352, 352);
+        var layer1 = project.createLayer();
+        var layer2 = project.createLayer();
+        var image1 = new Imagizer.Image();
+        image1.load("../demo/img/pattern-1.png", function()
+        {
+            layer1.put(image1, 0, 0);
+            var image2 = new Imagizer.Image();
+            image2.load("../demo/img/pattern-2.png", function()
+            {
+                layer2.put(image2, 0, 0);
+                project.exportTo(".test-1");
+                document.querySelector(".test-1 .time").textContent = project.getTime();
+                ;
+            });
+        });
+    }, false);
+</script>
+
+<div class="test test-2">
+    <p class="time"></p>
+</div>
+<script>
+    document.addEventListener("DOMContentLoaded", function()
+    {
+        var project = new Imagizer.Project(352, 352);
+        var layer1 = project.createLayer();
+        var layer2 = project.createLayer();
+        var image1 = new Imagizer.Image();
+        image1.load("../demo/img/pattern-1.png", function()
+        {
+            layer1.put(image1, 0, 0);
+            var image2 = new Imagizer.Image();
+            image2.load("../demo/img/pattern-2.png", function()
+            {
+                layer2.put(image2, 0, 0);
+                var image3 = new Imagizer.Image();
+                image3.load("../demo/img/dot.png", function()
+                {
+                    layer2.put(image3, 0, 0);
+                    project.exportTo(".test-2");
+                    document.querySelector(".test-2 .time").textContent = project.getTime();
+                });
+            });
+        });
+    }, false);
+</script>
+
+<div class="test test-3">
+    <p class="time"></p>
+</div>
+<script>
+    document.addEventListener("DOMContentLoaded", function()
+    {
+        var project = new Imagizer.Project(352, 352);
+        var layer1 = project.createLayer();
+        var layer2 = project.createLayer();
+        var layer3 = project.createLayer();
+        var image1 = new Imagizer.Image();
+        image1.load("../demo/img/pattern-1.png", function()
+        {
+            layer1.put(image1, 0, 0);
+            var image2 = new Imagizer.Image();
+            image2.load("../demo/img/pattern-2.png", function()
+            {
+                layer2.put(image2, 0, 0);
+                var image3 = new Imagizer.Image();
+                image3.load("../demo/img/dot.png", function()
+                {
+                    layer3.put(image3, 0, 0);
+                    project.exportTo(".test-3");
+                    document.querySelector(".test-3 .time").textContent = project.getTime();
+                });
+            });
+        });
+    }, false);
+</script>
+
+
+<div class="test test-4">
+    <p class="time"></p>
+</div>
+<script>
+    document.addEventListener("DOMContentLoaded", function()
+    {
+        var project = new Imagizer.Project(352, 352);
+        var layer1 = project.createLayer();
+        var layer2 = project.createLayer();
+        var layer3 = project.createLayer();
+        var image1 = new Imagizer.Image();
+
+        image1.load("../demo/img/pattern-1.png", function()
+        {
+            layer1.put(image1, 0, 0);
+            var image2 = new Imagizer.Image();
+            image2.load("../demo/img/pattern-2.png", function()
+            {
+                layer2.put(image2, 0, 0);
+                var image3 = new Imagizer.Image();
+                image3.load("../demo/img/dot.png", function()
+                {
+                    layer3.put(image3, 0, 0);
+                    project.applyEffect("gray-scale");
+                    project.exportTo(".test-4");
+                    document.querySelector(".test-4 .time").textContent = project.getTime();
+                });
+            });
+        });
+    }, false);
+</script>
+
+<script src="../src/imagizer.js"></script>
+</body>
+</html>

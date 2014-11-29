@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>Effects demo</title>
+    <link rel="stylesheet" href="css/main.css" />
+</head>
+<body>
+
+<div class="test test-1">
+    <p class="time"></p>
+</div>
+<script>
+    document.addEventListener("DOMContentLoaded", function()
+    {
+        var project = new Imagizer.Project(400, 300);
+        var layer1 = project.createLayer();
+        var image1 = new Imagizer.Image();
+        image1.load("img/pencils.jpg", function()
+        {
+            layer1.put(image1, 0, 0);
+            project.applyEffect("filter-linear", "averaging");
+            project.exportTo(".test-1");
+            document.querySelector(".test-1 .time").textContent = project.getTime();
+        });
+    }, false);
+</script>
+
+<div class="test test-2">
+    <p class="time"></p>
+</div>
+<script>
+    document.addEventListener("DOMContentLoaded", function()
+    {
+        var project = new Imagizer.Project(400, 300);
+        var layer1 = project.createLayer();
+        var image1 = new Imagizer.Image();
+        image1.load("img/pencils.jpg", function()
+        {
+            layer1.put(image1, 0, 0);
+            project.applyEffect("filter-linear", "averaging-square");
+            project.exportTo(".test-2");
+            document.querySelector(".test-2 .time").textContent = project.getTime();
+        });
+    }, false);
+</script>
+
+<div class="test test-3">
+    <p class="time"></p>
+</div>
+<script>
+    document.addEventListener("DOMContentLoaded", function()
+    {
+        var project = new Imagizer.Project(400, 300);
+        var layer1 = project.createLayer();
+        var image1 = new Imagizer.Image();
+        image1.load("img/pencils.jpg", function()
+        {
+            layer1.put(image1, 0, 0);
+            project.applyEffect("filter-linear", "averaging-circle");
+            project.exportTo(".test-3");
+            document.querySelector(".test-3 .time").textContent = project.getTime();
+        });
+    }, false);
+</script>
+
+<div class="test test-4">
+    <p class="time"></p>
+</div>
+<script>
+    document.addEventListener("DOMContentLoaded", function()
+    {
+        var project = new Imagizer.Project(400, 300);
+        var layer1 = project.createLayer();
+        var image1 = new Imagizer.Image();
+        image1.load("img/pencils.jpg", function()
+        {
+            layer1.put(image1, 0, 0);
+            project.applyEffect("filter-linear", "averaging-lp1");
+            project.exportTo(".test-4");
+            document.querySelector(".test-4 .time").textContent = project.getTime();
+        });
+    }, false);
+</script>
+
+<div class="test test-5">
+    <p class="time"></p>
+</div>
+<script>
+    document.addEventListener("DOMContentLoaded", function()
+    {
+        var project = new Imagizer.Project(400, 300);
+        var layer1 = project.createLayer();
+        var image1 = new Imagizer.Image();
+        image1.load("img/pencils.jpg", function()
+        {
+            layer1.put(image1, 0, 0);
+            project.applyEffect("filter-linear", "averaging-lp2");
+            project.exportTo(".test-5");
+            document.querySelector(".test-5 .time").textContent = project.getTime();
+        });
+    }, false);
+</script>
+
+
+<div class="test test-6">
+    <p class="time"></p>
+</div>
+<script>
+    document.addEventListener("DOMContentLoaded", function()
+    {
+        var project = new Imagizer.Project(400, 300);
+        var layer1 = project.createLayer();
+        var image1 = new Imagizer.Image();
+        image1.load("img/pencils.jpg", function()
+        {
+            layer1.put(image1, 0, 0);
+            project.applyEffect("filter-linear", "averaging-lp3");
+            project.exportTo(".test-6");
+            document.querySelector(".test-6 .time").textContent = project.getTime();
+        });
+    }, false);
+</script>
+
+
+<div class="test test-7">
+    <p class="time"></p>
+</div>
+<script>
+    document.addEventListener("DOMContentLoaded", function()
+    {
+        var project = new Imagizer.Project(400, 300);
+        var layer1 = project.createLayer();
+        var image1 = new Imagizer.Image();
+        image1.load("img/pencils.jpg", function()
+        {
+            layer1.put(image1, 0, 0);
+            project.applyEffect("filter-linear", "averaging-lp3");
+            project.exportTo(".test-7");
+            document.querySelector(".test-7 .time").textContent = project.getTime();
+        });
+    }, false);
+</script>
+
+<div class="test test-8">
+    <p class="time"></p>
+</div>
+<script>
+    document.addEventListener("DOMContentLoaded", function()
+    {
+        var project = new Imagizer.Project(400, 300);
+        var layer1 = project.createLayer();
+        var image1 = new Imagizer.Image();
+        image1.load("img/pencils.jpg", function()
+        {
+            layer1.put(image1, 0, 0);
+            project.applyEffect("filter-linear", "averaging-pyramidal");
+            project.exportTo(".test-8");
+            document.querySelector(".test-8 .time").textContent = project.getTime();
+        });
+    }, false);
+</script>
+
+<script src="../src/imagizer.js"></script>
+</body>
+</html>
