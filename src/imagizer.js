@@ -100,6 +100,43 @@
         }
     };
 
+    var resizeNearestNeighbour = function(newWidth, newHeight)
+    {
+        var oldImageData = this.getImageData(),
+            oldWidth = oldImageData.width,
+            oldHeight = oldImageData.height,
+            oldPixelIndex,
+            tmpCanvas = new Canvas(newWidth, newHeight),
+            newImageData = tmpCanvas.getContext().createImageData(newWidth, newHeight),
+            newPixelIndex,
+            x, y,
+            ratioX = newWidth / oldWidth,
+            ratioY = newHeight / oldHeight;
+
+        tmpCanvas.destroy();
+
+        this.setWidth(newWidth);
+        this.setHeight(newHeight);
+
+        for(y = 0; y < newHeight; y += 1)
+        {
+            for(x = 0; x < newWidth; x += 1)
+            {
+                oldPixelIndex = Math.floor(y / ratioY) * oldWidth * 4 + Math.floor(x / ratioX) * 4;
+                newPixelIndex = y * newWidth * 4 + x * 4;
+
+                newImageData.data[newPixelIndex] = oldImageData.data[oldPixelIndex];
+                newImageData.data[newPixelIndex + 1] = oldImageData.data[oldPixelIndex + 1];
+                newImageData.data[newPixelIndex + 2] = oldImageData.data[oldPixelIndex + 2];
+                newImageData.data[newPixelIndex + 3] = oldImageData.data[oldPixelIndex + 3];
+            }
+        }
+
+        this.setImageData(newImageData);
+
+        return this;
+    };
+
     /**
      * Container for shared methods.
      * @type {Object}
@@ -125,6 +162,7 @@
         this.context = null;
         this.width = 0;
         this.height = 0;
+
         /**
          * Initializer.
          * @param {int} width
@@ -315,6 +353,31 @@
         this.getImageData = function()
         {
             return this.imageData;
+        };
+
+        /**
+         * Set image data
+         * @param {ImageData} imageData
+         */
+        this.setImageData = function(imageData)
+        {
+            this.imageData = imageData;
+        };
+
+        /**
+         * Resize by given mode
+         */
+        this.resize = function(newWidth, newHeight, mode)
+        {
+            mode = mode || "nearest-neighbour";
+            switch(mode)
+            {
+                case "nearest-neighbour":
+                    return resizeNearestNeighbour.call(this, newWidth, newHeight);
+
+                default:
+                    return this;
+            }
         };
 
         // call initializer
@@ -508,6 +571,56 @@
         {
             proxy.applyEffect.apply(this, arguments);
         };
+
+        /**
+         * Resize wrapped object.
+         * @param {int} newWidth
+         * @param {int} newHeight
+         * @param {string} mode
+         * @returns {LayerObject}
+         */
+        this.resize = function(newWidth, newHeight, mode)
+        {
+            this.width = newWidth;
+            this.height = newHeight;
+            this.getObject().resize(newWidth, newHeight, mode);
+            return this;
+        };
+
+        /**
+         * Move object.
+         * @param x
+         * @param y
+         * @returns {LayerObject}
+         */
+        this.moveXY = function(x, y)
+        {
+            this.moveX(x);
+            this.moveY(y);
+            return this;
+        };
+
+        /**
+         * Move horizontal object.
+         * @param x
+         * @returns {LayerObject}
+         */
+        this.moveX = function(x)
+        {
+            data.x += x;
+            return this;
+        };
+
+        /**
+         * Move horizontal object.
+         * @param y
+         * @returns {LayerObject}
+         */
+        this.moveY = function(y)
+        {
+            data.y += y;
+            return this;
+        };
     };
 
     /**
@@ -593,7 +706,7 @@
 
             for(i = 0; i < this.effects.length; i++)
             {
-                this.imageData = this.effects[i].effect.run(imageData, this.effects[i].params);
+                this.imageData = this.effects[i].effect.run(this.imageData, this.effects[i].params);
             }
 
             return this.imageData;
@@ -605,6 +718,62 @@
         this.applyEffect = function()
         {
             proxy.applyEffect.apply(this, arguments);
+        };
+
+        /**
+         * Resize all objects on layer.
+         */
+        this.resize = function(newWidth, newHeight, mode)
+        {
+            var i;
+
+            for (i = 0; i < this.objects.length; i += 1)
+            {
+                this.objects[i].resize(newWidth, newHeight, mode);
+            }
+
+            return this;
+        };
+
+        /**
+         * Move all objects on layer.
+         * @param {int} x
+         * @param {int} y
+         * @returns {Layer}
+         */
+        this.moveXY = function(x, y)
+        {
+            this.moveX(x);
+            this.moveY(y);
+            return this;
+        };
+
+        /**
+         * Move horizontal all objects on layer.
+         * @param x
+         */
+        this.moveX = function(x)
+        {
+            var i;
+            for (i = 0; i < this.objects.length; i += 1)
+            {
+                this.objects[i].moveX(x);
+            }
+            return this;
+        };
+
+        /**
+         * Move vertical all objects on layer.
+         * @param y
+         */
+        this.moveY = function(y)
+        {
+            var i;
+            for(i = 0; i < this.objects.length; i += 1)
+            {
+                this.objects[i].moveY(y);
+            }
+            return this;
         };
 
         // call initializer

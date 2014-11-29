@@ -2,7 +2,7 @@
 <html>
 <head lang="en">
     <meta charset="UTF-8">
-    <title></title>
+    <title>Layer demo</title>
     <link rel="stylesheet" href="css/main.css" />
 </head>
 <body>
@@ -20,14 +20,8 @@
         image1.load("../demo/img/pattern-1.png", function()
         {
             layer1.put(image1, 0, 0);
-            var image2 = new Imagizer.Image();
-            image2.load("../demo/img/pattern-2.png", function()
-            {
-                layer2.put(image2, 0, 0);
-                project.exportTo(".test-1");
-                document.querySelector(".test-1 .time").textContent = project.getTime();
-                ;
-            });
+            project.exportTo(".test-1");
+            document.querySelector(".test-1 .time").textContent = project.getTime();
         });
     }, false);
 </script>
@@ -46,16 +40,11 @@
         {
             layer1.put(image1, 0, 0);
             var image2 = new Imagizer.Image();
-            image2.load("../demo/img/pattern-2.png", function()
+            image2.load("../demo/img/dot.png", function()
             {
                 layer2.put(image2, 0, 0);
-                var image3 = new Imagizer.Image();
-                image3.load("../demo/img/dot.png", function()
-                {
-                    layer2.put(image3, 0, 0);
-                    project.exportTo(".test-2");
-                    document.querySelector(".test-2 .time").textContent = project.getTime();
-                });
+                project.exportTo(".test-2");
+                document.querySelector(".test-2 .time").textContent = project.getTime();
             });
         });
     }, false);
