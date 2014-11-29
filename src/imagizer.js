@@ -101,16 +101,30 @@
     };
 
     /**
+     * Container for shared methods.
+     * @type {Object}
+     */
+    var proxy = {
+        applyEffect: function()
+        {
+            this.effects.push({
+                name: arguments[0],
+                effect: Effects.get(arguments[0]),
+                params: Array.prototype.slice.call(arguments, 1, arguments.length)
+            });
+        }
+    };
+
+    /**
      * HTML canvas wrapper
      * @constructor
      */
     var Canvas = function()
     {
-        var canvas,
-            context,
-            width,
-            height;
-
+        this.canvas = null;
+        this.context = null;
+        this.width = 0;
+        this.height = 0;
         /**
          * Initializer.
          * @param {int} width
@@ -118,12 +132,12 @@
          */
         this.initialize = function(width, height)
         {
-            canvas = doc.createElement("canvas");
+            this.canvas = doc.createElement("canvas");
 
             // hide from viewport
-            canvas.style.position = "absolute";
-            canvas.style.left = "-9999px";
-            canvas.style.top = "-9999px";
+            this.canvas.style.position = "absolute";
+            this.canvas.style.left = "9999px";
+            this.canvas.style.top = "9999px";
 
             if(width && height)
             {
@@ -131,7 +145,7 @@
                 this.setHeight(height);
             }
 
-            doc.body.appendChild(canvas);
+            doc.body.appendChild(this.canvas);
         };
 
         /**
@@ -141,8 +155,8 @@
          */
         this.setWidth = function(value)
         {
-            canvas.setAttribute("width", "" + value);
-            width = value;
+            this.canvas.setAttribute("width", "" + value);
+            this.width = value;
             return this;
         };
 
@@ -153,8 +167,8 @@
          */
         this.setHeight = function(value)
         {
-            canvas.setAttribute("height", "" + value);
-            height = value;
+            this.canvas.setAttribute("height", "" + value);
+            this.height = value;
             return this;
         };
 
@@ -164,11 +178,11 @@
          */
         this.getContext = function()
         {
-            if(!context)
+            if(!this.context)
             {
-                context = canvas.getContext("2d");
+                this.context = this.canvas.getContext("2d");
             }
-            return context;
+            return this.context;
         };
 
         /**
@@ -178,7 +192,7 @@
          */
         this.toDataURL = function(type)
         {
-            return canvas.toDataURL(type);
+            return this.canvas.toDataURL(type);
         };
 
         /**
@@ -186,7 +200,7 @@
          */
         this.destroy = function()
         {
-            doc.body.removeChild(canvas);
+            doc.body.removeChild(this.canvas);
         };
 
         // call initializer
@@ -199,10 +213,10 @@
      */
     var ImageObj = function()
     {
-        var image = new Image(),
-            imageData = null,
-            width = 0,
-            height = 0;
+        this.image = new Image();
+        this.imageData = null;
+        this.width = 0;
+        this.height = 0;
 
         /**
          * Initializer
@@ -212,9 +226,9 @@
             this.url = null;
 
             // hide from viewport
-            image.style.position = "absolute";
-            image.style.left = "-9999px";
-            image.style.top = "-9999px";
+            this.image.style.position = "absolute";
+            this.image.style.left = "9999px";
+            this.image.style.top = "9999px";
         };
 
         /**
@@ -223,7 +237,18 @@
          */
         this.getWidth = function()
         {
-            return width;
+            return this.width;
+        };
+
+        /**
+         * Width setter
+         * @param {int} val
+         * @returns {ImageObj}
+         */
+        this.setWidth = function(val)
+        {
+            this.width = val;
+            return this;
         };
 
         /**
@@ -232,7 +257,18 @@
          */
         this.getHeight = function()
         {
-            return height;
+            return this.height;
+        };
+
+        /**
+         * Height setter;
+         * @param val
+         * @returns {ImageObj}
+         */
+        this.setHeight = function(val)
+        {
+            this.height = val;
+            return this;
         };
 
         /**
@@ -245,21 +281,21 @@
             var _this = this;
 
             this.url = url;
-            image.src = url;
+            this.image.src = url;
 
-            doc.body.appendChild(image);
+            doc.body.appendChild(this.image);
 
-            image.onload = function()
+            this.image.onload = function()
             {
                 var canvas;
 
-                width = image.clientWidth;
-                height = image.clientHeight;
+                _this.setWidth(_this.image.clientWidth);
+                _this.setHeight(_this.image.clientHeight);
 
                 // get image data
-                canvas = new Canvas(width, height);
-                canvas.getContext().drawImage(image, 0, 0, width, height);
-                imageData = canvas.getContext().getImageData(0, 0, width, height);
+                canvas = new Canvas(_this.getWidth(), _this.getHeight());
+                canvas.getContext().drawImage(_this.image, 0, 0, _this.getWidth(), _this.getHeight());
+                _this.imageData = canvas.getContext().getImageData(0, 0, _this.getWidth(), _this.getHeight());
 
                 if(typeof callback === "function")
                 {
@@ -267,7 +303,7 @@
                 }
 
                 // clean
-                doc.body.removeChild(image);
+                doc.body.removeChild(_this.image);
                 canvas.destroy();
             };
         };
@@ -278,7 +314,7 @@
          */
         this.getImageData = function()
         {
-            return imageData;
+            return this.imageData;
         };
 
         // call initializer
@@ -293,12 +329,11 @@
      */
     var Project = function(width, height)
     {
-        var layers = [],
-            effects = [],
-            startTime = new Date(),
-            canvas,
-            ctx,
-            imageData;
+        this.canvas = null;
+        this.imageData = null;
+        this.effects = [];
+        this.layers = [];
+        this.startTime = new Date();
 
         /**
          * Initializer.
@@ -311,8 +346,8 @@
             this.height = height;
 
             // create tmp canvas
-            canvas = new Canvas(width, height);
-            imageData = canvas.getContext().getImageData(0, 0, width, height);
+            this.canvas = new Canvas(width, height);
+            this.imageData = this.canvas.getContext().getImageData(0, 0, width, height);
         };
 
         /**
@@ -322,7 +357,7 @@
         this.createLayer = function()
         {
             var layer = new Imagizer.Layer(this.width, this.height);
-            layers.push(layer);
+            this.layers.push(layer);
             return layer;
         };
 
@@ -333,7 +368,7 @@
         this.getTime = function()
         {
             var end = new Date();
-            return end.getTime() - startTime.getTime();
+            return end.getTime() - this.startTime.getTime();
         };
 
         /**
@@ -350,41 +385,37 @@
                 exportedImage = new Image(),
                 args;
 
-            for(i = 0; i < layers.length; i++)
+            for(i = 0; i < this.layers.length; i++)
             {
-                imageData = mergeImageData({
+                this.imageData = mergeImageData({
                     width: this.width,
                     height: this.height,
-                    imageData: imageData
+                    imageData: this.imageData
                 }, {
                     x: 0,
                     y: 0,
                     width: this.width,
                     height: this.height,
-                    imageData: layers[i].exportLayer()
+                    imageData: this.layers[i].exportLayer()
                 }, mergeCallback);
             }
 
-            for(i = 0; i < effects.length; i++)
+            for(i = 0; i < this.effects.length; i++)
             {
-                imageData = effects[i].effect.run(imageData, effects[i].params);
+                this.imageData = this.effects[i].effect.run(this.imageData, this.effects[i].params);
             }
 
-            canvas.getContext().putImageData(imageData, 0, 0);
-            exportedImage.src = canvas.toDataURL(imageType);
+            this.canvas.getContext().putImageData(this.imageData, 0, 0);
+            exportedImage.src = this.canvas.toDataURL(imageType);
             container.appendChild(exportedImage);
         };
 
         /**
          * Apply effect on whole project.
-         * @param effectName
          */
-        this.applyEffect = function(effectName)
+        this.applyEffect = function()
         {
-            effects.push({
-                effect: Effects.get(effectName),
-                params: Array.prototype.slice.call(arguments, 1, arguments.length)
-            });
+            proxy.applyEffect.apply(this, arguments);
         };
 
         // call initializer
@@ -402,12 +433,13 @@
     var LayerObject = function(obj, x, y, opts)
     {
         var data = {
-                obj: obj,
-                x: x,
-                y: y,
-                opts: opts
-            },
-            effects = [];
+            obj: obj,
+            x: x,
+            y: y,
+            opts: opts
+        };
+
+        this.effects = [];
 
         /**
          * Getter for object placed on layer.
@@ -461,23 +493,20 @@
         this.exportObject = function()
         {
             var imageData = data.obj.getImageData(), i;
-            for(i = 0; i < effects.length; i++)
+            for(i = 0; i < this.effects.length; i++)
             {
-                imageData = effects[i].effect.run(imageData, effects[i].params);
+                imageData = this.effects[i].effect.run(imageData, this.effects[i].params);
             }
             return imageData;
         };
 
         /**
          * Apply effect object put on layer.
-         * @param effectName
+         * @param
          */
-        this.applyEffect = function(effectName)
+        this.applyEffect = function()
         {
-            effects.push({
-                effect: Effects.get(effectName),
-                params: Array.prototype.slice.call(arguments, 1, arguments.length)
-            });
+            proxy.applyEffect.apply(this, arguments);
         };
     };
 
@@ -487,10 +516,12 @@
      */
     var Layer = function()
     {
-        var canvas,
-            imageData,
-            objects = [],
-            effects = [];
+        this.canvas = null;
+        this.imageData = null;
+        this.objects = [];
+        this.effects = [];
+        this.width = 0;
+        this.height = 0;
 
         /**
          * Initializer.
@@ -500,8 +531,8 @@
             this.width = arguments[0];
             this.height = arguments[1];
 
-            canvas = new Canvas(this.width, this.height);
-            imageData = canvas.getContext().createImageData(this.width, this.height);
+            this.canvas = new Canvas(this.width, this.height);
+            this.imageData = this.canvas.getContext().createImageData(this.width, this.height);
         };
 
         /**
@@ -513,7 +544,7 @@
         this.put = function(obj, startX, startY)
         {
             var put = new LayerObject(obj, startX, startY, {});
-            objects.push(put);
+            this.objects.push(put);
             return put;
         };
 
@@ -531,7 +562,7 @@
             var container = doc.querySelector(selector),
                 exportedImage = new Image();
 
-            exportedImage.src = canvas.toDataURL(imageType);
+            exportedImage.src = this.canvas.toDataURL(imageType);
             container.appendChild(exportedImage);
         };
 
@@ -544,40 +575,36 @@
             var i,
                 layerObject;
 
-            for(i = 0; i < objects.length; i += 1)
+            for(i = 0; i < this.objects.length; i += 1)
             {
-                layerObject = objects[i];
-                imageData = mergeImageData({
+                layerObject = this.objects[i];
+                this.imageData = mergeImageData({
                     width: this.width,
                     height: this.height,
-                    imageData: imageData
+                    imageData: this.imageData
                 }, {
                     x: layerObject.getX(),
                     y: layerObject.getY(),
                     width: layerObject.getWidth(),
                     height: layerObject.getHeight(),
-                    imageData: layerObject.exportObject() // TODO?
+                    imageData: layerObject.exportObject()
                 }, mergeCallback);
             }
 
-            for(i = 0; i < effects.length; i++)
+            for(i = 0; i < this.effects.length; i++)
             {
-                imageData = effects[i].effect.run(imageData, effects[i].params);
+                this.imageData = this.effects[i].effect.run(imageData, this.effects[i].params);
             }
 
-            return imageData;
+            return this.imageData;
         };
 
         /**
          * Apply effect on whole layer.
-         * @param effectName
          */
-        this.applyEffect = function(effectName)
+        this.applyEffect = function()
         {
-            effects.push({
-                effect: Effects.get(effectName),
-                params: Array.prototype.slice.call(arguments, 1, arguments.length)
-            });
+            proxy.applyEffect.apply(this, arguments);
         };
 
         // call initializer
@@ -651,7 +678,9 @@
                     /**
                      * Data created by effect init function
                      */
-                    data: (additionalParameters && typeof additionalParameters.before === "function") ? additionalParameters.before.call(this, parameters, imageData.width, imageData.height) : {},
+                    data: (additionalParameters && typeof additionalParameters.before === "function")
+                        ? additionalParameters.before.call(this, parameters, imageData.width, imageData.height)
+                        : {},
                     /**
                      * ImageData width
                      */
@@ -666,7 +695,7 @@
             {
                 for(x = 0; x < imageData.width; x += 1)
                 {
-                    firstPixelIndex = y * imageData.width * 4 + x * 4;
+                    firstPixelIndex = getIndex(x, y);
 
                     result = callback.apply(sandbox, [
                         {
@@ -727,7 +756,7 @@
         {
             if(!effects[name])
             {
-                throw "Effect: " + name + " doesn't exists."
+                throw "Effect '" + name + "' doesn't exists."
             }
             return effects[name];
         };
@@ -810,17 +839,15 @@
      FILTERS DEFINITIONS
      */
 
+    // linear filter
     Effects.define("filter-linear", function(pixel, x, y, parameters, width, height)
     {
         var filter = this.data,
             i, j,
-            sumR = 0, sumG = 0, sumB = 0;
+            sumR = 0, sumG = 0, sumB = 0,
+            tmpPixel;
 
-        if(x < filter.margin || y < filter.margin)
-        {
-            return false;
-        }
-        if(x > width - filter.margin || y > height - filter.margin)
+        if(x < filter.margin || y < filter.margin || x > width - filter.margin || y > height - filter.margin)
         {
             return false;
         }
@@ -829,9 +856,10 @@
         {
             for(j = 0; j < filter.size; j += 1)
             {
-                sumR += (filter.matrix[i + j * filter.size] * this.getPixel(x + j - filter.margin, y + i - filter.margin).r);
-                sumG += (filter.matrix[i + j * filter.size] * this.getPixel(x + j - filter.margin, y + i - filter.margin).g);
-                sumB += (filter.matrix[i + j * filter.size] * this.getPixel(x + j - filter.margin, y + i - filter.margin).b);
+                tmpPixel = this.getPixel(x + j - filter.margin, y + i - filter.margin);
+                sumR += (filter.matrix[i + j * filter.size] * tmpPixel.r);
+                sumG += (filter.matrix[i + j * filter.size] * tmpPixel.g);
+                sumB += (filter.matrix[i + j * filter.size] * tmpPixel.b);
             }
         }
 
