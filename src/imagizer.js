@@ -11,7 +11,63 @@
      * Helper functions
      * @type {Object}
      */
-    var Helpers = {};
+    var Helpers = {
+        Inherit: function()
+        {
+            var name, i,
+                args = arguments,
+                Class = function()
+                {
+                    if(this.__constructor)
+                    {
+                        this.__constructor.apply(this, arguments);
+                    }
+                };
+
+            for(i = 0; i < args.length; i += 1)
+            {
+                for(name in args[i])
+                {
+                    if(args[i].hasOwnProperty(name))
+                    {
+                        if(typeof Class.prototype[name] === "function")
+                        {
+
+                            Class.prototype[name] = (function(superMethod, childMethod)
+                            {
+                                return function()
+                                {
+                                    this.__super = superMethod;
+                                    var result = childMethod.apply(this, arguments);
+                                    delete this.__super;
+                                    return result;
+                                }
+                            }(Class.prototype[name], args[i][name]))
+                        }
+                        else
+                        {
+                            if(typeof args[i][name] === "function")
+                            {
+                                Class.prototype[name] = (function(method)
+                                {
+                                    return function()
+                                    {
+                                        delete this.__super;
+                                        return method.apply(this, arguments);
+                                    }
+                                }(args[i][name]))
+                            }
+                            else
+                            {
+                                Class.prototype[name] = args[i][name];
+                            }
+                        }
+                    }
+                }
+            }
+            return Class;
+        }
+    };
 
     /**
      * Function used to merge layers and layer objects.
@@ -285,129 +341,79 @@
         this.initialize.apply(this, arguments);
     };
 
-    /**
-     * Image object.
-     * @constructor
-     */
-    var ImageObj = function()
-    {
-        this.image = new Image();
-        this.imageData = null;
-        this.width = 0;
-        this.height = 0;
-        this.url = null;
-
-        /**
-         * Initializer
-         */
-        this.initialize = function()
+    var baseOnLayerObject = {
+        __constructor: function()
         {
-            // hide from viewport
-            this.image.style.position = "absolute";
-            this.image.style.left = "-99999px";
-            this.image.style.top = "-99999px";
-        };
+            this.imageData = null;
+            this.canvas = null;
+            this.width = 0;
+            this.height = 0;
+        },
 
         /**
          * Width getter.
          * @returns {number}
          */
-        this.getWidth = function()
+        getWidth: function()
         {
             return this.width;
-        };
+        },
 
         /**
          * Width setter
          * @param {int} val
-         * @returns {ImageObj}
+         * @returns {baseOnLayerObject}
          */
-        this.setWidth = function(val)
+        setWidth: function(val)
         {
             this.width = val;
             return this;
-        };
+        },
 
         /**
          * Height getter.
          * @returns {number}
          */
-        this.getHeight = function()
+        getHeight: function()
         {
             return this.height;
-        };
+        },
 
         /**
          * Height setter;
          * @param val
-         * @returns {ImageObj}
+         * @returns {baseOnLayerObject}
          */
-        this.setHeight = function(val)
+        setHeight: function(val)
         {
             this.height = val;
             return this;
-        };
-
-        /**
-         * Load image and execute callback on load.
-         * @param {string} url
-         * @param {function} callback
-         */
-        this.load = function(url, callback)
-        {
-            var _this = this;
-
-            this.url = url;
-            this.image.src = url;
-
-            doc.body.appendChild(this.image);
-
-            this.image.onload = function()
-            {
-                var canvas;
-
-                _this.setWidth(_this.image.clientWidth);
-                _this.setHeight(_this.image.clientHeight);
-
-                // get image data
-                canvas = new Canvas(_this.getWidth(), _this.getHeight());
-                canvas.getContext().drawImage(_this.image, 0, 0, _this.getWidth(), _this.getHeight());
-                _this.imageData = canvas.getContext().getImageData(0, 0, _this.getWidth(), _this.getHeight());
-
-                if(typeof callback === "function")
-                {
-                    callback.call(_this);
-                }
-
-                // clean
-                doc.body.removeChild(_this.image);
-                canvas.destroy();
-            };
-        };
+        },
 
         /**
          * Get ImageData of *loaded* image.
          * @returns {ImageData}
          */
-        this.getImageData = function()
+        getImageData: function()
         {
+            this.imageData = this.canvas.getContext().getImageData(0, 0, this.getWidth(), this.getHeight());
             return this.imageData;
-        };
+        },
 
         /**
          * Set image data
-         * @param {ImageData} imageData
+         * @param {ImageData} val
          */
-        this.setImageData = function(imageData)
+        setImageData: function(val)
         {
-            this.imageData = imageData;
+            this.imageData = val;
             return this;
-        };
+        },
 
         /**
          * Resize by given mode
          */
-        this.resize = function(newWidth, newHeight, mode)
+        resize: function(newWidth, newHeight, mode)
         {
             mode = mode || "nearest-neighbour";
 
@@ -431,11 +437,74 @@
             return this.setWidth(newWidth)
                 .setHeight(newHeight)
                 .setImageData(newImageData);
-        };
-
-        // call initializer
-        this.initialize.apply(this, arguments);
+        }
     };
+
+    var ImageObj = Helpers.Inherit(baseOnLayerObject, {
+        __constructor: function()
+        {
+            this.__super();
+
+            this.image = new Image();
+            this.url = null;
+
+            // hide from viewport
+            this.image.style.position = "absolute";
+            this.image.style.left = "-99999px";
+            this.image.style.top = "-99999px";
+        },
+        /**
+         * Load image and execute callback on load.
+         * @param {string} url
+         * @param {function} callback
+         */
+        load: function(url, callback)
+        {
+            var _this = this;
+
+            this.url = url;
+            this.image.src = url;
+
+            doc.body.appendChild(this.image);
+
+            this.image.onload = function()
+            {
+                _this.setWidth(_this.image.clientWidth);
+                _this.setHeight(_this.image.clientHeight);
+
+                // get image data
+                _this.canvas = new Canvas(_this.getWidth(), _this.getHeight());
+                _this.canvas.getContext().drawImage(_this.image, 0, 0, _this.getWidth(), _this.getHeight());
+
+                if(typeof callback === "function")
+                {
+                    callback.call(_this);
+                }
+
+                // clean
+                doc.body.removeChild(_this.image);
+                _this.canvas.destroy();
+            };
+        }
+    });
+
+    var TextObj = Helpers.Inherit(baseOnLayerObject, {
+        __constructor: function(width, height)
+        {
+            this.__super();
+
+            this.width = width;
+            this.height = height;
+            this.canvas = new Canvas(width, height);
+        },
+        write: function(text, x, y)
+        {
+            this.canvas.getContext().font = "bold 20px Calibri";
+            this.canvas.getContext().fillStyle = "black";
+            this.canvas.getContext().fillText(text, x, y);
+            return this;
+        }
+    });
 
     /**
      * Project object. Holds dimensions and layers.
@@ -775,7 +844,7 @@
 
         /**
          * Put object on layer
-         * @param {Window.Imagizer.Image} obj Object that we want to put on layer
+         * @param {Window.Imagizer.Image|Window.Imagizer.Text} obj Object that we want to put on layer
          * @param {int} startX Start x position of object on layer
          * @param {int} startY Start y position of object on layer
          */
@@ -1180,7 +1249,9 @@
     win.Imagizer.Project = Project;
     win.Imagizer.Layer = Layer;
     win.Imagizer.Image = ImageObj;
+    win.Imagizer.Text = TextObj;
     win.Imagizer.Effects = Effects;
     win.Imagizer.Helpers = Helpers;
+    win.Imagizer.BaseOnLayerObject = baseOnLayerObject;
 
 }(window, document));
