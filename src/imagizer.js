@@ -488,6 +488,67 @@
         }
     });
 
+    /**
+     * Style object for text.
+     * @constructor
+     */
+    var StyleObj = function()
+    {
+        this.fontFamily = "Arial";
+        this.fontSize = "12px";
+        this.fontStyle = "normal";
+        this.fillStyle = "black";
+
+        /**
+         *
+         * @param val
+         * @returns {StyleObj}
+         */
+        this.setFontStyle = function(val)
+        {
+            this.fontStyle = val;
+            return this;
+        };
+        /**
+         *
+         * @param val
+         * @returns {StyleObj}
+         */
+        this.setFontSize = function(val)
+        {
+            this.fontSize = val;
+            return this;
+        };
+        /**
+         *
+         * @param val
+         * @returns {StyleObj}
+         */
+        this.setFontFamily = function(val)
+        {
+            this.fontFamily = val;
+            return this;
+        };
+
+        /**
+         *
+         * @returns {string}
+         */
+        this.getFontStyle = function()
+        {
+            return this.fontStyle + " " + this.fontSize + " " + this.fontFamily;
+        };
+
+        /**
+         *
+         * @returns {String}
+         */
+        this.getFillStyle = function()
+        {
+            return this.fillStyle;
+        };
+    };
+
     var TextObj = Helpers.Inherit(baseOnLayerObject, {
         __constructor: function(width, height)
         {
@@ -496,11 +557,36 @@
             this.width = width;
             this.height = height;
             this.canvas = new Canvas(width, height);
+            this.context = this.canvas.getContext();
+
+            this.style = (new StyleObj());
         },
-        write: function(text, x, y)
+        /**
+         * Getter for style object. If createNew is true then get the new style.
+         * @param {Boolean} [createNew]
+         * @returns {StyleObj}
+         */
+        getStyle: function(createNew)
         {
-            this.canvas.getContext().font = "bold 20px Calibri";
-            this.canvas.getContext().fillStyle = "black";
+            if (createNew)
+            {
+                return (new StyleObj());
+            }
+            return this.style;
+        },
+        /**
+         *
+         * @param {String} text
+         * @param {int} x
+         * @param {int} y
+         * @param {StyleObj} style
+         * @returns {TextObj}
+         */
+        write: function(text, x, y, style)
+        {
+            style = style || this.getStyle();
+            this.canvas.getContext().font = style.getFontStyle();
+            this.canvas.getContext().fillStyle = style.getFillStyle();
             this.canvas.getContext().fillText(text, x, y);
             return this;
         }
@@ -844,7 +930,7 @@
 
         /**
          * Put object on layer
-         * @param {Window.Imagizer.Image|Window.Imagizer.Text} obj Object that we want to put on layer
+         * @param {Window.Imagizer.Image|Window.Imagizer.SimpleText} obj Object that we want to put on layer
          * @param {int} startX Start x position of object on layer
          * @param {int} startY Start y position of object on layer
          */
@@ -1249,7 +1335,7 @@
     win.Imagizer.Project = Project;
     win.Imagizer.Layer = Layer;
     win.Imagizer.Image = ImageObj;
-    win.Imagizer.Text = TextObj;
+    win.Imagizer.SimpleText = TextObj;
     win.Imagizer.Effects = Effects;
     win.Imagizer.Helpers = Helpers;
     win.Imagizer.BaseOnLayerObject = baseOnLayerObject;

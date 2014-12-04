@@ -25,7 +25,7 @@
     {
         var project = new Imagizer.Project(300, 300);
         var layer1 = project.createLayer();
-        var text = new Imagizer.Text(200, 200);
+        var text = new Imagizer.SimpleText(200, 200);
         text.write("Hello world!", 20, 20);
         text.write("Hello world!", 20, 40);
         var obj = layer1.put(text, 0, 0);
