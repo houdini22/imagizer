@@ -71,80 +71,231 @@
 
     /**
      * Function used to merge layers and layer objects.
-     * @param {object} root Result layer.
-     * @param {object} toMerge Layer to merge on
+     * @param {object} bottom Result layer.
+     * @param {object} top Layer to merge on
      * @param {function} pixelCallback
      * @returns {ImageData}
      */
-    var mergeImageData = function mergeImageData(root, toMerge, pixelCallback)
+    var mergeImageData = function mergeImageData(bottom, top, pixelCallback)
     {
         var x, y,
             xx, yy,
             firstOldPixelIndex, firstNewPixelIndex,
             pixelResult;
 
-        for(y = toMerge.y, yy = 0; y < root.height && yy < toMerge.height; y += 1, yy += 1)
+        for(y = top.y, yy = 0; y < bottom.height && yy < top.height; y += 1, yy += 1)
         {
-            for(x = toMerge.x, xx = 0; x < root.width && xx < toMerge.width; x += 1, xx += 1)
+            for(x = top.x, xx = 0; x < bottom.width && xx < top.width; x += 1, xx += 1)
             {
-                if(xx < toMerge.width && yy < toMerge.height) // overwrite only rect-size of current layer
+                if(xx < top.width && yy < top.height) // overwrite only rect-size of current layer
                 {
-                    firstOldPixelIndex = y * root.width * 4 + x * 4;
-                    firstNewPixelIndex = yy * toMerge.width * 4 + xx * 4;
+                    firstOldPixelIndex = y * bottom.width * 4 + x * 4;
+                    firstNewPixelIndex = yy * top.width * 4 + xx * 4;
 
                     pixelResult = pixelCallback({
-                        r: root.imageData.data[firstOldPixelIndex],
-                        g: root.imageData.data[firstOldPixelIndex + 1],
-                        b: root.imageData.data[firstOldPixelIndex + 2],
-                        a: root.imageData.data[firstOldPixelIndex + 3]
+                        r: bottom.imageData.data[firstOldPixelIndex],
+                        g: bottom.imageData.data[firstOldPixelIndex + 1],
+                        b: bottom.imageData.data[firstOldPixelIndex + 2],
+                        a: bottom.imageData.data[firstOldPixelIndex + 3]
                     }, {
-                        r: toMerge.imageData.data[firstNewPixelIndex],
-                        g: toMerge.imageData.data[firstNewPixelIndex + 1],
-                        b: toMerge.imageData.data[firstNewPixelIndex + 2],
-                        a: toMerge.imageData.data[firstNewPixelIndex + 3]
-                    }, x, y);
+                        r: top.imageData.data[firstNewPixelIndex],
+                        g: top.imageData.data[firstNewPixelIndex + 1],
+                        b: top.imageData.data[firstNewPixelIndex + 2],
+                        a: top.imageData.data[firstNewPixelIndex + 3]
+                    }, x, y, {
+                        blendingMode: top.blendingMode
+                    });
 
                     if(pixelResult !== false) // if skip change
                     {
-                        root.imageData.data[firstOldPixelIndex] = pixelResult.r;
-                        root.imageData.data[firstOldPixelIndex + 1] = pixelResult.g;
-                        root.imageData.data[firstOldPixelIndex + 2] = pixelResult.b;
-                        root.imageData.data[firstOldPixelIndex + 3] = pixelResult.a;
+                        bottom.imageData.data[firstOldPixelIndex] = pixelResult.r;
+                        bottom.imageData.data[firstOldPixelIndex + 1] = pixelResult.g;
+                        bottom.imageData.data[firstOldPixelIndex + 2] = pixelResult.b;
+                        bottom.imageData.data[firstOldPixelIndex + 3] = pixelResult.a;
                     }
                 }
             }
         }
-        return root.imageData;
+        return bottom.imageData;
+    };
+
+    /**
+     * Object with blending modes definitions.
+     * @type {Object}
+     */
+    var blendingModes = {
+        lighten: function(bottomPixel, topPixel)
+        {
+            return topPixel > bottomPixel ? topPixel : bottomPixel;
+        },
+        darken: function(bottomPixel, topPixel)
+        {
+            return topPixel > bottomPixel ? bottomPixel : topPixel;
+        },
+        multiply: function(bottomPixel, topPixel)
+        {
+            return bottomPixel * topPixel / 255;
+        },
+        average: function(bottomPixel, topPixel)
+        {
+            return bottomPixel + topPixel / 2;
+        },
+        add: function(bottomPixel, topPixel)
+        {
+            return Math.min(255, bottomPixel + topPixel);
+        },
+        subtract: function(bottomPixel, topPixel)
+        {
+            return bottomPixel + topPixel < 255 ? 0 : bottomPixel + topPixel - 255;
+        },
+        difference: function(bottomPixel, topPixel)
+        {
+            return Math.abs(bottomPixel - topPixel);
+        },
+        negation: function(bottomPixel, topPixel)
+        {
+            return 255 - Math.abs(255 - bottomPixel - topPixel);
+        },
+        screen: function(bottomPixel, topPixel)
+        {
+            return 255 - (((255 - bottomPixel) * (255 - topPixel)) >> 8);
+        },
+        exclusion: function(bottomPixel, topPixel)
+        {
+            return bottomPixel + topPixel - 2 * bottomPixel * topPixel / 255;
+        },
+        overlay: function(bottomPixel, topPixel)
+        {
+            return topPixel < 128
+                ? (2 * bottomPixel * topPixel / 255)
+                : (255 - 2 * (255 - bottomPixel) * (255 - topPixel) / 255);
+        },
+        softLight: function(bottomPixel, topPixel)
+        {
+            return topPixel < 128
+                ? (2 * ((bottomPixel >> 1) + 64)) * (topPixel / 255)
+                : 255 - (2 * (255 - (( bottomPixel >> 1) + 64)) * (255 - topPixel) / 255);
+        },
+        hardLight: function(bottomPixel, topPixel)
+        {
+            return blendingModes.softLight(topPixel, bottomPixel);
+        },
+        colorDodge: function(bottomPixel, topPixel)
+        {
+            return topPixel == 255 ? topPixel : Math.min(255, ((bottomPixel << 8 ) / (255 - topPixel)));
+        },
+        colorBurn: function(bottomPixel, topPixel)
+        {
+            return topPixel == 0 ? topPixel : Math.max(0, (255 - ((255 - bottomPixel) << 8 ) / topPixel));
+        },
+        linearDodge: function(bottomPixel, topPixel)
+        {
+            return blendingModes.add(bottomPixel, topPixel);
+        },
+        linearBurn: function(bottomPixel, topPixel)
+        {
+            return blendingModes.subtract(bottomPixel, topPixel);
+        },
+        linearLight: function(bottomPixel, topPixel)
+        {
+            return topPixel < 128
+                ? blendingModes.linearBurn(bottomPixel, 2 * topPixel)
+                : blendingModes.linearDodge(bottomPixel, (2 * (topPixel - 128)));
+        },
+        vividLight: function(bottomPixel, topPixel)
+        {
+            return topPixel < 128
+                ? blendingModes.colorBurn(bottomPixel, 2 * topPixel)
+                : blendingModes.colorDodge(bottomPixel, (2 * (topPixel - 128)));
+        },
+        pinLight: function(bottomPixel, topPixel)
+        {
+            return topPixel < 128
+                ? blendingModes.darken(bottomPixel, 2 * topPixel)
+                : blendingModes.lighten(bottomPixel, (2 * (topPixel - 128)));
+        },
+        hardMix: function(bottomPixel, topPixel)
+        {
+            return blendingModes.vividLight(bottomPixel, topPixel) < 128 ? 0 : 255;
+        },
+        reflect: function(bottomPixel, topPixel)
+        {
+            return topPixel == 255 ? topPixel : Math.min(255, (bottomPixel * bottomPixel / (255 - topPixel)))
+        },
+        glow: function(bottomPixel, topPixel)
+        {
+            return blendingModes.reflect(topPixel, bottomPixel);
+        },
+        phoenix: function(bottomPixel, topPixel)
+        {
+            return Math.min(bottomPixel, topPixel) - Math.max(bottomPixel, topPixel) + 255
+        }
     };
 
     /**
      * Pixel callback for merging layers and layer objects.
      * rootPixel and mergedPixel is object literal with r, g, b and a properties.
-     * @param {object} rootPixel Pixel placed on result layer
-     * @param {object} mergedPixel Pixel to merge on
+     * @param {object} bottomPixel Pixel placed on result layer
+     * @param {object} topPixel Pixel to merge on
      * @param {int} x Current x position
      * @param {int} y Current y position
+     * @param {Object} parameters
      * @returns {object|boolean}
      */
-    var mergeCallback = function mergeCallback(rootPixel, mergedPixel, x, y)
+    var mergeCallback = function mergeCallback(bottomPixel, topPixel, x, y, parameters)
     {
-        if(mergedPixel.a === 0)
+        if(topPixel.a === 0)
         {
             return false; // skip change - opacity is full
         }
+
         // alpha compositing
-        var mergedA = mergedPixel.a / 255;
-        var rootA = rootPixel.a / 255 * (1 - mergedA);
-        var outA = (mergedA + rootPixel.a * (1 - mergedA) / 255);
+        var mergedA = topPixel.a / 255;
+        var rootA = bottomPixel.a / 255 * (1 - mergedA);
+        var outA = (mergedA + bottomPixel.a * (1 - mergedA) / 255);
 
-        var rootR = rootPixel.r;
-        var rootG = rootPixel.g;
-        var rootB = rootPixel.b;
+        switch (parameters.blendingMode)
+        {
+            case "lighten":
+            case "darken":
+            case "multiply":
+            case "average":
+            case "add":
+            case "subtract":
+            case "difference":
+            case "negation":
+            case "screen":
+            case "exclusion":
+            case "overlay":
+            case "softLight":
+            case "hardLight":
+            case "colorDodge":
+            case "colorBurn":
+            case "linearDodge":
+            case "linearBurn":
+            case "linearLight":
+            case "vividLight":
+            case "pinLight":
+            case "hardMix":
+            case "reflect":
+            case "glow":
+            case "phoenix":
+                topPixel.r = blendingModes[parameters.blendingMode](bottomPixel.r, topPixel.r);
+                topPixel.g = blendingModes[parameters.blendingMode](bottomPixel.g, topPixel.g);
+                topPixel.b = blendingModes[parameters.blendingMode](bottomPixel.b, topPixel.b);
+                break;
 
-        // todo: blending modes
-        var mergedR = mergedPixel.r;
-        var mergedG = mergedPixel.g;
-        var mergedB = mergedPixel.b;
+            default:
+                break;
+        }
+
+        var rootR = bottomPixel.r;
+        var rootG = bottomPixel.g;
+        var rootB = bottomPixel.b;
+
+        var mergedR = topPixel.r;
+        var mergedG = topPixel.g;
+        var mergedB = topPixel.b;
 
         mergedR = mergedR * mergedA + rootR * rootA;
         mergedG = mergedG * mergedA + rootG * rootA;
@@ -623,11 +774,12 @@
 
         /**
          * Create new layer.
+         * @params {Object} [params] Additional parameters such as: blending mode
          * @returns {Window.Imagizer.Layer}
          */
-        this.createLayer = function()
+        this.createLayer = function(params)
         {
-            var layer = new Imagizer.Layer(this.width, this.height);
+            var layer = new Imagizer.Layer(this.width, this.height, params);
             this.layers.push(layer);
             return layer;
         };
@@ -667,7 +819,8 @@
                     y: 0,
                     width: this.width,
                     height: this.height,
-                    imageData: this.layers[i].exportLayer()
+                    imageData: this.layers[i].exportLayer(),
+                    blendingMode: this.layers[i].parameters.blendingMode
                 }, mergeCallback);
             }
 
@@ -915,6 +1068,7 @@
         this.effects = [];
         this.width = 0;
         this.height = 0;
+        this.parameters = {};
 
         /**
          * Initializer.
@@ -923,6 +1077,8 @@
         {
             this.width = arguments[0];
             this.height = arguments[1];
+
+            this.parameters = arguments[2] || {};
 
             this.canvas = new Canvas(this.width, this.height);
             this.imageData = this.canvas.getContext().createImageData(this.width, this.height);
