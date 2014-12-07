@@ -1538,28 +1538,31 @@
         tmpGreen = green1 - green2;
         tmpBlue = blue1 - blue2;
 
-        for(i = -1; i <= 1; i += 1)
+        if (parameters.granulate)
         {
-            iy = i + y;
-            if(iy < 0 || iy >= height)
+            for(i = -1; i <= 1; i += 1)
             {
-                continue;
-            }
-            for(j = -1; j <= 1; j += 1)
-            {
-                jx = j + x;
-                if(jx < 0 || jx >= width)
+                iy = i + y;
+                if(iy < 0 || iy >= height)
                 {
                     continue;
                 }
-                w = parameters.matrix[(i + 1) * 3 + j + 1];
-                if (w !== 0)
+                for(j = -1; j <= 1; j += 1)
                 {
-                    tmpPixel = this.getPixel(jx, iy);
-                    tmpPixel.r += (tmpRed * w / data.sum);
-                    tmpPixel.g += (tmpGreen * w / data.sum);
-                    tmpPixel.b += (tmpBlue * w / data.sum);
-                    this.setPixel(jx, iy, tmpPixel);
+                    jx = j + x;
+                    if(jx < 0 || jx >= width)
+                    {
+                        continue;
+                    }
+                    w = parameters.matrix[(i + 1) * 3 + j + 1];
+                    if(w !== 0)
+                    {
+                        tmpPixel = this.getPixel(jx, iy);
+                        tmpPixel.r += (tmpRed * w / data.sum);
+                        tmpPixel.g += (tmpGreen * w / data.sum);
+                        tmpPixel.b += (tmpBlue * w / data.sum);
+                        this.setPixel(jx, iy, tmpPixel);
+                    }
                 }
             }
         }
