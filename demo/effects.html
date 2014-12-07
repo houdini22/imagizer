@@ -204,16 +204,36 @@
         image1.load(imageURL, function()
         {
             layer1.put(image1, 0, 0);
-            project.applyEffect("sepia", {
-                sepiaValue: 2
-            });
+            project.applyEffect("gray-scale");
             project.exportTo(".test-9");
             document.querySelector(".test-9 .time").textContent = project.getTime();
         });
     }, false);
 </script>
 
+
 <div class="test test-10">
+    <p class="time"></p>
+</div>
+<script>
+    document.addEventListener("DOMContentLoaded", function()
+    {
+        var project = new Imagizer.Project(imageWidth, imageHeight);
+        var layer1 = project.createLayer();
+        var image1 = new Imagizer.Image();
+        image1.load(imageURL, function()
+        {
+            layer1.put(image1, 0, 0);
+            project.applyEffect("sepia", {
+                sepiaValue: 50
+            });
+            project.exportTo(".test-10");
+            document.querySelector(".test-10 .time").textContent = project.getTime();
+        });
+    }, false);
+</script>
+
+<div class="test test-11">
     <p class="time"></p>
 </div>
 <script>
@@ -229,8 +249,29 @@
                 brightness: 0.5,
                 contrast: 1.5
             });
-            project.exportTo(".test-10");
-            document.querySelector(".test-10 .time").textContent = project.getTime();
+            project.exportTo(".test-11");
+            document.querySelector(".test-11 .time").textContent = project.getTime();
+        });
+    }, false);
+</script>
+
+<div class="test test-12">
+    <p class="time"></p>
+</div>
+<script>
+    document.addEventListener("DOMContentLoaded", function()
+    {
+        var project = new Imagizer.Project(imageWidth, imageHeight);
+        var layer1 = project.createLayer();
+        var image1 = new Imagizer.Image();
+        image1.load(imageURL, function()
+        {
+            layer1.put(image1, 0, 0);
+            project.applyEffect("diffusion", {
+
+            });
+            project.exportTo(".test-12");
+            document.querySelector(".test-12 .time").textContent = project.getTime();
         });
     }, false);
 </script>

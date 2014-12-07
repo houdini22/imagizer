@@ -78,7 +78,7 @@
                 {
                     if(arguments[i].hasOwnProperty(j))
                     {
-                        if(typeof arguments[i][j] === "object")
+                        if(typeof arguments[i][j] === "object" && Object.prototype.toString.call(arguments[i][j]) !== "[object Array]")
                         {
                             if(!result[j])
                             {
@@ -1260,7 +1260,7 @@
          */
         this.run = function(imageData, parameters)
         {
-            additionalParameters.defaults && (parameters = Helpers.extend(additionalParameters.defaults, parameters));
+            additionalParameters && additionalParameters.defaults && (parameters = Helpers.extend(additionalParameters.defaults, parameters));
 
             var x, y,
                 firstPixelIndex,
@@ -1284,12 +1284,28 @@
                 },
                 sandbox = { // object invoked as this in effect callback
                     /**
-                     * Get original pixel
+                     * Get changed pixel
                      * @param {int} x
                      * @param {int} y
                      * @returns {{r: *, g: *, b: *, a: *}}
                      */
                     getPixel: function(x, y)
+                    {
+                        var index = getIndex(x, y);
+                        return {
+                            r: imageDataCopy[index + 0],
+                            g: imageDataCopy[index + 1],
+                            b: imageDataCopy[index + 2],
+                            a: imageDataCopy[index + 3]
+                        };
+                    },
+                    /**
+                     * Get original pixel.
+                     * @param {int} x
+                     * @param {int} y
+                     * @returns {{r: *, g: *, b: *, a: *}}
+                     */
+                    getOriginalPixel: function(x, y)
                     {
                         var index = getIndex(x, y);
                         return {
@@ -1337,10 +1353,10 @@
 
                     result = callback.apply(sandbox, [
                         {
-                            r: imageData.data[firstPixelIndex + 0],
-                            g: imageData.data[firstPixelIndex + 1],
-                            b: imageData.data[firstPixelIndex + 2],
-                            a: imageData.data[firstPixelIndex + 3]
+                            r: imageDataCopy[firstPixelIndex + 0],
+                            g: imageDataCopy[firstPixelIndex + 1],
+                            b: imageDataCopy[firstPixelIndex + 2],
+                            a: imageDataCopy[firstPixelIndex + 3]
                         },
                         x,
                         y,
@@ -1489,6 +1505,102 @@
         defaults: {
             contrast: 1,
             brightness: 1
+        }
+    });
+
+    // diffusion
+    Effects.define("diffusion", function(pixel, x, y, parameters, width, height)
+    {
+        var red1 = pixel.r,
+            green1 = pixel.g,
+            blue1 = pixel.b,
+            red2, green2, blue2,
+            data = this.data,
+            tmpPixel,
+            tmpRed, tmpGreen, tmpBlue,
+            i, j,
+            iy, jx,
+            w;
+
+        if(!parameters.colorDither)
+        {
+            var grayScale = (red1 + green1 + blue1) / 3;
+            red1 = grayScale;
+            green1 = grayScale;
+            blue1 = grayScale;
+        }
+
+        red2 = data.map[data.div[red1]];
+        green2 = data.map[data.div[green1]];
+        blue2 = data.map[data.div[blue1]];
+
+        tmpRed = red1 - red2;
+        tmpGreen = green1 - green2;
+        tmpBlue = blue1 - blue2;
+
+        for(i = -1; i <= 1; i += 1)
+        {
+            iy = i + y;
+            if(iy < 0 || iy >= height)
+            {
+                continue;
+            }
+            for(j = -1; j <= 1; j += 1)
+            {
+                jx = j + x;
+                if(jx < 0 || jx >= width)
+                {
+                    continue;
+                }
+                w = parameters.matrix[(i + 1) * 3 + j + 1];
+                if (w !== 0)
+                {
+                    tmpPixel = this.getPixel(jx, iy);
+                    tmpPixel.r += (tmpRed * w / data.sum);
+                    tmpPixel.g += (tmpGreen * w / data.sum);
+                    tmpPixel.b += (tmpBlue * w / data.sum);
+                    this.setPixel(jx, iy, tmpPixel);
+                }
+            }
+        }
+
+        return {
+            r: red2,
+            g: green2,
+            b: blue2,
+            a: pixel.a
+        };
+    }, {
+        defaults: {
+            matrix: [0, 0, 0, 0, 0, 7, 3, 5, 1],
+            levels: 6,
+            colorDither: true,
+            granulate: true
+        },
+        before: function(parameters, width, height)
+        {
+            var i, sum = 0, map = [], div = [];
+
+            for(i = 0; i < parameters.matrix.length; i += 1)
+            {
+                sum += parameters.matrix[i];
+            }
+
+            for(i = 0; i < parameters.levels; i += 1)
+            {
+                map[i] = parseInt(255 * i / (parameters.levels - 1));
+            }
+
+            for(i = 0; i < 256; i += 1)
+            {
+                div[i] = parseInt(parameters.levels * i / 256);
+            }
+
+            return {
+                sum: sum,
+                map: map,
+                div: div
+            };
         }
     });
 
