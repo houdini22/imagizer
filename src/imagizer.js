@@ -69,7 +69,7 @@
         },
         extend: function(obj1, obj2)
         {
-            var result = {},
+            var result = Object.prototype.toString.call(obj1) === "[object Array]" ? [] : {},
                 i, j;
 
             for(i = 0; i < arguments.length; i += 1)
@@ -78,17 +78,20 @@
                 {
                     if(arguments[i].hasOwnProperty(j))
                     {
-                        if(typeof arguments[i][j] === "object" && Object.prototype.toString.call(arguments[i][j]) !== "[object Array]")
+                        if(Object.prototype.toString.call(arguments[i][j]) === "[object Object]")
                         {
-                            if(!result[j])
-                            {
-                                result[j] = {};
-                            }
-                            result[j] = Helpers.extend(result[j], arguments[i][j]);
+                            result[j] = Helpers.extend({}, arguments[i][j]);
                         }
                         else
                         {
-                            result[j] = arguments[i][j];
+                            if(Object.prototype.toString.call(arguments[i][j]) === "[object Array]")
+                            {
+                                result[j] = Helpers.extend([], arguments[i][j]);
+                            }
+                            else
+                            {
+                                result[j] = arguments[i][j];
+                            }
                         }
                     }
                 }
@@ -1538,7 +1541,7 @@
         tmpGreen = green1 - green2;
         tmpBlue = blue1 - blue2;
 
-        if (parameters.granulate)
+        if(parameters.granulate)
         {
             for(i = -1; i <= 1; i += 1)
             {
