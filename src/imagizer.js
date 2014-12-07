@@ -417,7 +417,7 @@
         this.effects.push({
             name: arguments[0],
             effect: Effects.get(arguments[0]),
-            params: Array.prototype.slice.call(arguments, 1, arguments.length)
+            params: arguments[1]
         });
     };
 
@@ -1461,11 +1461,35 @@
     {
         var tmp = 0.299 * pixel.r + 0.587 * pixel.g + 0.114 * pixel.b;
 
-        pixel.r = tmp + 2 * parameters[0];
-        pixel.g = tmp + parameters[0];
+        pixel.r = tmp + 2 * parameters.sepiaValue;
+        pixel.g = tmp + parameters.sepiaValue;
         pixel.b = tmp;
 
         return pixel;
+    }, {
+        defaults: {
+            sepiaValue: 1
+        }
+    });
+
+    // brightness and contrast adjust
+    Effects.define("adjust-contrast-brightness", function(pixel, x, y, parameters)
+    {
+        pixel.r = pixel.r * parameters.brightness;
+        pixel.r = (pixel.r - 0.5) * parameters.contrast + 0.5;
+
+        pixel.g = pixel.g * parameters.brightness;
+        pixel.g = (pixel.g - 0.5) * parameters.contrast + 0.5;
+
+        pixel.b = pixel.b * parameters.brightness;
+        pixel.b = (pixel.b - 0.5) * parameters.contrast + 0.5;
+
+        return pixel
+    }, {
+        defaults: {
+            contrast: 1,
+            brightness: 1
+        }
     });
 
     /*
@@ -1508,7 +1532,7 @@
     }, {
         before: function(parameters, width, height)
         {
-            var matrix = parameters[0];
+            var matrix = parameters;
             if(typeof matrix === "string")
             {
                 matrix = win.Imagizer.Effects.filterDefinitions[matrix];
