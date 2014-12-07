@@ -66,6 +66,34 @@
                 }
             }
             return Class;
+        },
+        extend: function(obj1, obj2)
+        {
+            var result = {},
+                i, j;
+
+            for(i = 0; i < arguments.length; i += 1)
+            {
+                for(j in arguments[i])
+                {
+                    if(arguments[i].hasOwnProperty(j))
+                    {
+                        if(typeof arguments[i][j] === "object")
+                        {
+                            if(!result[j])
+                            {
+                                result[j] = {};
+                            }
+                            result[j] = Helpers.extend(result[j], arguments[i][j]);
+                        }
+                        else
+                        {
+                            result[j] = arguments[i][j];
+                        }
+                    }
+                }
+            }
+            return result;
         }
     };
 
@@ -250,11 +278,14 @@
         }
 
         // alpha compositing
-        var mergedA = topPixel.a / 255;
-        var rootA = bottomPixel.a / 255 * (1 - mergedA);
-        var outA = (mergedA + bottomPixel.a * (1 - mergedA) / 255);
+        var mergedR,
+            mergedG,
+            mergedB,
+            mergedA = topPixel.a / 255,
+            rootA = bottomPixel.a / 255 * (1 - mergedA),
+            outA = (mergedA + bottomPixel.a * (1 - mergedA) / 255);
 
-        switch (parameters.blendingMode)
+        switch(parameters.blendingMode)
         {
             case "lighten":
             case "darken":
@@ -293,13 +324,9 @@
         var rootG = bottomPixel.g;
         var rootB = bottomPixel.b;
 
-        var mergedR = topPixel.r;
-        var mergedG = topPixel.g;
-        var mergedB = topPixel.b;
-
-        mergedR = mergedR * mergedA + rootR * rootA;
-        mergedG = mergedG * mergedA + rootG * rootA;
-        mergedB = mergedB * mergedA + rootB * rootA;
+        mergedR = topPixel.r * mergedA + rootR * rootA;
+        mergedG = topPixel.g * mergedA + rootG * rootA;
+        mergedB = topPixel.b * mergedA + rootB * rootA;
 
         mergedR = outA == 0 ? 0 : mergedR / outA;
         mergedG = outA == 0 ? 0 : mergedG / outA;
@@ -719,7 +746,7 @@
          */
         getStyle: function(createNew)
         {
-            if (createNew)
+            if(createNew)
             {
                 return (new StyleObj());
             }
@@ -1233,6 +1260,8 @@
          */
         this.run = function(imageData, parameters)
         {
+            additionalParameters.defaults && (parameters = Helpers.extend(additionalParameters.defaults, parameters));
+
             var x, y,
                 firstPixelIndex,
                 result,
