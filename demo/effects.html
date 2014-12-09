@@ -133,7 +133,6 @@
     }, false);
 </script>
 
-
 <div class="test test-6">
     <p class="time"></p>
 </div>
@@ -152,7 +151,6 @@
         });
     }, false);
 </script>
-
 
 <div class="test test-7">
     <p class="time"></p>
@@ -210,7 +208,6 @@
         });
     }, false);
 </script>
-
 
 <div class="test test-10">
     <p class="time"></p>
@@ -316,7 +313,6 @@
     }, false);
 </script>
 
-
 <div class="test test-15">
     <p class="time"></p>
 </div>
@@ -361,6 +357,7 @@
         });
     }, false);
 </script>
+
 <div class="test test-17">
     <p class="time"></p>
 </div>
@@ -378,7 +375,6 @@
             document.querySelector(".test-17 .time").textContent = project.getTime();
         });
     }, false);
-
 </script>
 
 <div class="test test-18">
@@ -402,7 +398,6 @@
             document.querySelector(".test-18 .time").textContent = project.getTime();
         });
     }, false);
-
 </script>
 
 <div class="test test-19">
@@ -422,9 +417,7 @@
             document.querySelector(".test-19 .time").textContent = project.getTime();
         });
     }, false);
-
 </script>
-
 
 <div class="test test-20">
     <p class="time"></p>
@@ -443,9 +436,7 @@
             document.querySelector(".test-20 .time").textContent = project.getTime();
         });
     }, false);
-
 </script>
-
 
 <div class="test test-21">
     <p class="time"></p>
@@ -459,11 +450,87 @@
         image1.load(imageURL, function()
         {
             layer1.put(image1, 0, 0);
-            project.applyEffect("posterize", {
-                levels: 5
+            project.applyEffect("rescale", {
+                scale: 0.5
             });
             project.exportTo(".test-21");
             document.querySelector(".test-21 .time").textContent = project.getTime();
+        });
+    }, false);
+</script>
+
+<div class="test test-22">
+    <p class="time"></p>
+</div>
+<script>
+    document.addEventListener("DOMContentLoaded", function()
+    {
+        var project = new Imagizer.Project(imageWidth, imageHeight);
+        var layer1 = project.createLayer();
+        var image1 = new Imagizer.Image();
+        image1.load(imageURL, function()
+        {
+            layer1.put(image1, 0, 0);
+            project.applyEffect("solarize");
+            project.exportTo(".test-22");
+            document.querySelector(".test-22 .time").textContent = project.getTime();
+        });
+    }, false);
+</script>
+
+<div class="test test-23">
+    <p class="time"></p>
+</div>
+<script>
+    document.addEventListener("DOMContentLoaded", function()
+    {
+        var project = new Imagizer.Project(imageWidth, imageHeight);
+        var layer1 = project.createLayer();
+        var image1 = new Imagizer.Image();
+        image1.load(imageURL, function()
+        {
+            layer1.put(image1, 0, 0);
+            project.applyEffect("threshold");
+            project.exportTo(".test-23");
+            document.querySelector(".test-23 .time").textContent = project.getTime();
+        });
+    }, false);
+</script>
+
+<div class="test test-24">
+    <p class="time"></p>
+</div>
+<script>
+    document.addEventListener("DOMContentLoaded", function()
+    {
+        var project = new Imagizer.Project(imageWidth, imageHeight);
+        var layer1 = project.createLayer();
+        var image1 = new Imagizer.Image();
+        image1.load(imageURL, function()
+        {
+            layer1.put(image1, 0, 0);
+            project.applyEffect("tritone", {
+                shadowColor: {
+                    r: 255,
+                    g: 0,
+                    b: 0,
+                    a: 255
+                },
+                midColor: {
+                    r: 136,
+                    g: 136,
+                    b: 136,
+                    a: 255
+                },
+                highColor: {
+                    r: 0,
+                    g: 255,
+                    b: 255,
+                    a: 255
+                }
+            });
+            project.exportTo(".test-24");
+            document.querySelector(".test-24 .time").textContent = project.getTime();
         });
     }, false);
 </script>

@@ -221,6 +221,15 @@
                     g: parseInt(green),
                     b: parseInt(blue)
                 };
+            },
+            mixColors: function(t, rgb1, rgb2)
+            {
+                return {
+                    r: rgb1.r + t * (rgb2.r - rgb1.r),
+                    g: rgb1.g + t * (rgb2.g - rgb1.g),
+                    b: rgb1.b + t * (rgb2.b - rgb1.b),
+                    a: rgb1.a + t * (rgb2.a - rgb1.a)
+                }
             }
         }
     };
@@ -1461,7 +1470,7 @@
                      * Data created by effect init function
                      */
                     data: (additionalParameters && typeof additionalParameters.before === "function")
-                        ? additionalParameters.before.call(this, parameters, imageData.width, imageData.height)
+                        ? additionalParameters.before.call(this, parameters, imageData.width, imageData.height, imageData)
                         : {},
                     /**
                      * ImageData width
@@ -2109,6 +2118,7 @@
         }
     });
 
+
     Effects.define("quantize", function(pixel, x, y, parameters)
     {
         // TODO
@@ -2123,7 +2133,7 @@
             numColors: 256,
             serpentine: true
         },
-        before: function(parameters, width, height)
+        before: function(parameters, width, height, imageData)
         {
             var sum = 0,
                 i = parameters.matrix.length;
@@ -2135,6 +2145,106 @@
 
             return {
                 sum: sum
+            };
+        }
+    });
+
+    Effects.define("rescale", function(pixel, x, y, parameters)
+    {
+        pixel.r = parameters.scale * pixel.r;
+        pixel.g = parameters.scale * pixel.g;
+        pixel.b = parameters.scale * pixel.b;
+
+        return pixel;
+    }, {
+        defaults: {
+            scale: 1
+        }
+    });
+
+    Effects.define("solarize", function(pixel, x, y, parameters)
+    {
+        var red = pixel.r / 255 > 0.5 ? 2 * ((pixel.r / 255) - 0.5) : 2 * (0.5 - (pixel.r / 255)),
+            green = pixel.g / 255 > 0.5 ? 2 * ((pixel.g / 255) - 0.5) : 2 * (0.5 - (pixel.g / 255)),
+            blue = pixel.b / 255 > 0.5 ? 2 * ((pixel.b / 255) - 0.5) : 2 * (0.5 - (pixel.b / 255));
+
+        return {
+            r: red * 255,
+            g: green * 255,
+            b: blue * 255,
+            a: pixel.a
+        }
+    }, {
+        defaults: {}
+    });
+
+    Effects.define("threshold", function(pixel, x, y, parameters)
+    {
+        var grayscale = (pixel.r + pixel.g + pixel.b) / 3;
+
+        if (grayscale >= 127)
+        {
+            return {
+                r: 255,
+                g: 255,
+                b: 255,
+                a: pixel.a
+            };
+        }
+
+        return {
+            r: 0,
+            g: 0,
+            b: 0,
+            a: pixel.a
+        };
+    }, {
+        defaults: {}
+    });
+
+    Effects.define("tritone", function(pixel, x, y, parameters)
+    {
+        var brightness = Math.floor((pixel.r + pixel.g + pixel.b) / 3);
+        return this.data.lut[brightness];
+    }, {
+        defaults: {
+            shadowColor: {
+                r: 0,
+                g: 0,
+                b: 0,
+                a: 255
+            },
+            midColor: {
+                r: 136,
+                g: 136,
+                b: 136,
+                a: 255
+            },
+            highColor: {
+                r: 255,
+                g: 255,
+                b: 255,
+                a: 255
+            }
+        },
+        before: function(parameters)
+        {
+            var lut = [],
+                i, t;
+
+            for (i = 0; i < 128; i += 1)
+            {
+                t = i / 127;
+                lut[i] = Helpers.Color.mixColors(t, parameters.shadowColor, parameters.midColor);
+            }
+            for (i = 128; i < 256; i += 1)
+            {
+                t = (i - 127) / 128;
+                lut[i] = Helpers.Color.mixColors(t, parameters.midColor, parameters.highColor);
+            }
+            console.log(lut);
+            return {
+                lut: lut
             };
         }
     });
