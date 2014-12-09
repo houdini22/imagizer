@@ -97,6 +97,131 @@
                 }
             }
             return result;
+        },
+        Color: {
+            RGBtoHSB: function(r, g, b)
+            {
+                var hue, saturation, brightness,
+                    cmax = Math.max(r, g, b),
+                    cmin = Math.min(r, g, b);
+
+                brightness = cmax / 255;
+                if(cmax !== 0)
+                {
+                    saturation = (cmax - cmin) / cmax;
+                }
+                else
+                {
+                    saturation = 0;
+                }
+
+                if(saturation === 0)
+                {
+                    hue = 0;
+                }
+                else
+                {
+                    var redc = (cmax - r) / (cmax - cmin),
+                        greenc = (cmax - g) / (cmax - cmin),
+                        bluec = (cmax - b) / (cmax - cmin);
+
+                    if(r === cmax)
+                    {
+                        hue = bluec - greenc;
+                    }
+                    else
+                    {
+                        if(g === cmax)
+                        {
+                            hue = 2 + redc - bluec;
+                        }
+                        else
+                        {
+                            hue = 4 + greenc - redc;
+                        }
+                    }
+
+                    hue /= 6;
+                    if(hue < 0)
+                    {
+                        hue += 1;
+                    }
+                }
+
+                return {
+                    h: hue,
+                    s: saturation,
+                    b: brightness
+                };
+            },
+            HSBtoRGB: function(hue, saturation, brightness)
+            {
+                var red, green, blue;
+                if(saturation === 0)
+                {
+                    red = brightness * 255 + 0.5;
+                    green = brightness * 255 + 0.5;
+                    blue = brightness * 255 + 0.5;
+                }
+                else
+                {
+                    var h = (hue - Math.floor(hue)) * 6,
+                        f = h - Math.floor(h),
+                        p = brightness * (1 - saturation),
+                        q = brightness * (1 - saturation * f),
+                        t = brightness * (1 - (saturation * (1 - f)));
+
+                    switch(parseInt(h))
+                    {
+                        case 0:
+                            red = (brightness * 255 + 0.5);
+                            green = (t * 255 + 0.5);
+                            blue = (p * 255 + 0.5);
+                            break;
+
+                        case 1:
+                            red = (q * 255 + 0.5);
+                            green = (brightness * 255 + 0.5);
+                            blue = (p * 255 + 0.5);
+                            break;
+
+                        case 2:
+                            red = (p * 255 + 0.5);
+                            green = (brightness * 255 + 0.5);
+                            blue = (t * 255 + 0.5);
+                            break;
+
+                        case 3:
+                            red = (p * 255 + 0.5);
+                            green = (q * 255 + 0.5);
+                            blue = (brightness * 255 + 0.5);
+                            break;
+
+                        case 4:
+                            red = (t * 255 + 0.5);
+                            green = (p * 255 + 0.5);
+                            blue = (brightness * 255 + 0.5);
+                            break;
+
+                        case 5:
+                            red = (brightness * 255 + 0.5);
+                            green = (p * 255 + 0.5);
+                            blue = (q * 255 + 0.5);
+                            break;
+
+                        default:
+                            red = 0;
+                            green = 0;
+                            blue = 0;
+                            break;
+                    }
+                }
+                return {
+                    r: parseInt(red),
+                    g: parseInt(green),
+                    b: parseInt(blue)
+                };
+            }
         }
     };
 
@@ -1871,6 +1996,147 @@
         }
     }, {
         defaults: {}
+    });
+
+    Effects.define("HSBAdjust", function(pixel, x, y, parameters, width, height)
+    {
+        var hsb = Helpers.Color.RGBtoHSB(pixel.r, pixel.g, pixel.b);
+
+        hsb.h += parameters.h;
+        while(hsb.h < 0)
+        {
+            hsb.h += Math.PI * 2;
+        }
+
+        hsb.s += parameters.s;
+        hsb.s = Math.max(Math.min(hsb.s, 1), 0);
+
+        hsb.b += parameters.b;
+        hsb.b = Math.max(Math.min(hsb.b, 1), 0);
+
+        var result = Helpers.Color.HSBtoRGB(hsb.h, hsb.s, hsb.b);
+        pixel.r = result.r;
+        pixel.g = result.g;
+        pixel.b = result.b;
+
+        return pixel;
+    }, {
+        defaults: {
+            h: 1,
+            s: 1,
+            b: 1
+        }
+    });
+
+    Effects.define("invertAlpha", function(pixel)
+    {
+        pixel.a = 255 - pixel.a;
+        return pixel;
+    });
+
+    Effects.define("invert", function(pixel)
+    {
+        pixel.r = 255 - pixel.r;
+        pixel.g = 255 - pixel.g;
+        pixel.b = 255 - pixel.b;
+        return pixel;
+    });
+
+    Effects.define("levels", function(pixel, x, y, parameters)
+    {
+        // TODO
+    }, {
+        defaults: {
+            low: 0,
+            high: 1,
+            lowOutput: 0,
+            highOutput: 1
+        },
+        before: function(parameters, width, height)
+        {
+
+        }
+    });
+
+    Effects.define("lookup", function(pixel, x, y, parameters)
+    {
+        // TODO
+    }, {
+        defaults: {},
+        before: function(parameters, width, height)
+        {
+
+        }
+    });
+
+    Effects.define("mapColors", function(pixel, x, y, parameters)
+    {
+        // TODO
+    }, {
+        defaults: {},
+        before: function(parameters, width, height)
+        {
+
+        }
+    });
+
+    Effects.define("posterize", function(pixel, x, y, parameters)
+    {
+        // TODO
+        return {
+            r: this.data.levels[pixel.r],
+            g: this.data.levels[pixel.g],
+            b: this.data.levels[pixel.b],
+            a: pixel.a
+        };
+    }, {
+        defaults: {
+            levels: 6
+        },
+        before: function(parameters, width, height)
+        {
+            var levels = [],
+                i;
+
+            for(i = 0; i < 256; i += 1)
+            {
+                levels[i] = parseInt(255 * (parameters.levels * i / 256) / (parameters.levels - 1));
+            }
+
+            return {
+                levels: levels
+            };
+        }
+    });
+
+    Effects.define("quantize", function(pixel, x, y, parameters)
+    {
+        // TODO
+    }, {
+        defaults: {
+            matrix: [
+                0, 0, 0,
+                0, 0, 7,
+                3, 5, 1
+            ],
+            dither: true,
+            numColors: 256,
+            serpentine: true
+        },
+        before: function(parameters, width, height)
+        {
+            var sum = 0,
+                i = parameters.matrix.length;
+
+            while(i--)
+            {
+                sum += parameters.matrix[i]
+            }
+
+            return {
+                sum: sum
+            };
+        }
     });
 
     Effects.define("filter-linear", function(pixel, x, y, parameters, width, height)

@@ -378,6 +378,96 @@
             document.querySelector(".test-17 .time").textContent = project.getTime();
         });
     }, false);
-</script><script src="../src/imagizer.js"></script>
+
+</script>
+
+<div class="test test-18">
+    <p class="time"></p>
+</div>
+<script>
+    document.addEventListener("DOMContentLoaded", function()
+    {
+        var project = new Imagizer.Project(imageWidth, imageHeight);
+        var layer1 = project.createLayer();
+        var image1 = new Imagizer.Image();
+        image1.load(imageURL, function()
+        {
+            layer1.put(image1, 0, 0);
+            project.applyEffect("HSBAdjust", {
+                h: 0.5,
+                s: 0.2,
+                b: 1
+            });
+            project.exportTo(".test-18");
+            document.querySelector(".test-18 .time").textContent = project.getTime();
+        });
+    }, false);
+
+</script>
+
+<div class="test test-19">
+    <p class="time"></p>
+</div>
+<script>
+    document.addEventListener("DOMContentLoaded", function()
+    {
+        var project = new Imagizer.Project(imageWidth, imageHeight);
+        var layer1 = project.createLayer();
+        var image1 = new Imagizer.Image();
+        image1.load(imageURL, function()
+        {
+            layer1.put(image1, 0, 0);
+            project.applyEffect("invertAlpha");
+            project.exportTo(".test-19");
+            document.querySelector(".test-19 .time").textContent = project.getTime();
+        });
+    }, false);
+
+</script>
+
+
+<div class="test test-20">
+    <p class="time"></p>
+</div>
+<script>
+    document.addEventListener("DOMContentLoaded", function()
+    {
+        var project = new Imagizer.Project(imageWidth, imageHeight);
+        var layer1 = project.createLayer();
+        var image1 = new Imagizer.Image();
+        image1.load(imageURL, function()
+        {
+            layer1.put(image1, 0, 0);
+            project.applyEffect("invert");
+            project.exportTo(".test-20");
+            document.querySelector(".test-20 .time").textContent = project.getTime();
+        });
+    }, false);
+
+</script>
+
+
+<div class="test test-21">
+    <p class="time"></p>
+</div>
+<script>
+    document.addEventListener("DOMContentLoaded", function()
+    {
+        var project = new Imagizer.Project(imageWidth, imageHeight);
+        var layer1 = project.createLayer();
+        var image1 = new Imagizer.Image();
+        image1.load(imageURL, function()
+        {
+            layer1.put(image1, 0, 0);
+            project.applyEffect("posterize", {
+                levels: 5
+            });
+            project.exportTo(".test-21");
+            document.querySelector(".test-21 .time").textContent = project.getTime();
+        });
+    }, false);
+</script>
+
+<script src="../src/imagizer.js"></script>
 </body>
 </html>
