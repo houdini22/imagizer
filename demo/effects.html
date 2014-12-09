@@ -246,8 +246,8 @@
         {
             layer1.put(image1, 0, 0);
             project.applyEffect("adjust-contrast-brightness", {
-                brightness: 0.5,
-                contrast: 1.5
+                brightness: 3,
+                contrast: 0.2
             });
             project.exportTo(".test-11");
             document.querySelector(".test-11 .time").textContent = project.getTime();
@@ -294,6 +294,90 @@
     }, false);
 </script>
 
-<script src="../src/imagizer.js"></script>
+
+<div class="test test-14">
+    <p class="time"></p>
+</div>
+<script>
+    document.addEventListener("DOMContentLoaded", function()
+    {
+        var project = new Imagizer.Project(imageWidth, imageHeight);
+        var layer1 = project.createLayer();
+        var image1 = new Imagizer.Image();
+        image1.load(imageURL, function()
+        {
+            layer1.put(image1, 0, 0);
+            project.applyEffect("exposure", {
+                exposure: 4
+            });
+            project.exportTo(".test-14");
+            document.querySelector(".test-14 .time").textContent = project.getTime();
+        });
+    }, false);
+</script>
+
+
+<div class="test test-15">
+    <p class="time"></p>
+</div>
+<script>
+    document.addEventListener("DOMContentLoaded", function()
+    {
+        var project = new Imagizer.Project(imageWidth, imageHeight);
+        var layer1 = project.createLayer();
+        var image1 = new Imagizer.Image();
+        image1.load(imageURL, function()
+        {
+            layer1.put(image1, 0, 0);
+            project.applyEffect("gain", {
+                gain: 0.6,
+                bias: 0.5
+            });
+            project.exportTo(".test-15");
+            document.querySelector(".test-15 .time").textContent = project.getTime();
+        });
+    }, false);
+</script>
+
+<div class="test test-16">
+    <p class="time"></p>
+</div>
+<script>
+    document.addEventListener("DOMContentLoaded", function()
+    {
+        var project = new Imagizer.Project(imageWidth, imageHeight);
+        var layer1 = project.createLayer();
+        var image1 = new Imagizer.Image();
+        image1.load(imageURL, function()
+        {
+            layer1.put(image1, 0, 0);
+            project.applyEffect("gamma", {
+                gammaRed: 1,
+                gammaGreen: 1,
+                gammaBlue: 5
+            });
+            project.exportTo(".test-16");
+            document.querySelector(".test-16 .time").textContent = project.getTime();
+        });
+    }, false);
+</script>
+<div class="test test-17">
+    <p class="time"></p>
+</div>
+<script>
+    document.addEventListener("DOMContentLoaded", function()
+    {
+        var project = new Imagizer.Project(imageWidth, imageHeight);
+        var layer1 = project.createLayer();
+        var image1 = new Imagizer.Image();
+        image1.load(imageURL, function()
+        {
+            layer1.put(image1, 0, 0);
+            project.applyEffect("gray");
+            project.exportTo(".test-17");
+            document.querySelector(".test-17 .time").textContent = project.getTime();
+        });
+    }, false);
+</script><script src="../src/imagizer.js"></script>
 </body>
 </html>

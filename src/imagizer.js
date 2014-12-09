@@ -1283,7 +1283,7 @@
                 },
                 normalizePixelValue = function(value)
                 {
-                    return Math.min(Math.max(value, 0), 255);
+                    return Math.min(Math.max(value, 0), 255) | 0;
                 },
                 sandbox = { // object invoked as this in effect callback
                     /**
@@ -1461,9 +1461,10 @@
 
     /*
      EFFECTS DEFINITIONS
+     Thanks to Jerry and his Java Image Filters.
+     http://www.jhlabs.com/ip/filters/index.html
      */
 
-    // gray scale
     Effects.define("gray-scale", function(pixel, x, y)
     {
         var newRGB = 0.299 * pixel.r + 0.587 * pixel.g + 0.114 * pixel.b;
@@ -1475,7 +1476,6 @@
         };
     });
 
-    // sepia
     Effects.define("sepia", function(pixel, x, y, parameters)
     {
         var tmp = 0.299 * pixel.r + 0.587 * pixel.g + 0.114 * pixel.b;
@@ -1491,7 +1491,6 @@
         }
     });
 
-    // brightness and contrast adjust
     Effects.define("adjust-contrast-brightness", function(pixel, x, y, parameters)
     {
         pixel.r = pixel.r * parameters.brightness;
@@ -1511,7 +1510,6 @@
         }
     });
 
-    // diffusion
     Effects.define("diffusion", function(pixel, x, y, parameters, width, height)
     {
         var red1 = pixel.r,
@@ -1610,7 +1608,6 @@
         }
     });
 
-    // dither
     Effects.define("dither", function(pixel, x, y, parameters, width, height)
     {
         var col = x % this.data.cols,
@@ -1767,11 +1764,115 @@
         }
     });
 
-    /*
-     FILTERS DEFINITIONS
-     */
+    Effects.define("exposure", function(pixel, x, y, parameters, width, height)
+    {
+        pixel.r = (1 - Math.exp(-pixel.r / 255 * parameters.exposure)) * 255;
+        pixel.g = (1 - Math.exp(-pixel.g / 255 * parameters.exposure)) * 255;
+        pixel.b = (1 - Math.exp(-pixel.b / 255 * parameters.exposure)) * 255;
 
-    // linear filter
+        return pixel;
+    }, {
+        defaults: {
+            exposure: 1
+        }
+    });
+
+    Effects.define("gain", function(pixel, x, y, parameters, width, height)
+    {
+        var red = (1 / parameters.gain - 2) * (1 - 2 * pixel.r / 255),
+            green = (1 / parameters.gain - 2) * (1 - 2 * pixel.g / 255),
+            blue = (1 / parameters.gain - 2) * (1 - 2 * pixel.b / 255);
+
+        if(pixel.r / 255 < 0.5)
+        {
+            red = (pixel.r / 255) / red + 1;
+        }
+        else
+        {
+            red = (red - (pixel.r / 255)) / (red - 1);
+        }
+
+        if(pixel.g / 255 < 0.5)
+        {
+            green = (pixel.g / 255) / green + 1;
+        }
+        else
+        {
+            green = (green - (pixel.g / 255)) / (green - 1);
+        }
+
+        if(pixel.b / 255 < 0.5)
+        {
+            blue = (pixel.b / 255) / blue + 1;
+        }
+        else
+        {
+            blue = (blue - (pixel.b / 255)) / (blue - 1);
+        }
+
+        red = red / ((1 / parameters.bias - 2) * (1 - red) + 1);
+        green = green / ((1 / parameters.bias - 2) * (1 - green) + 1);
+        blue = blue / ((1 / parameters.bias - 2) * (1 - blue) + 1);
+
+        pixel.r = red * 255;
+        pixel.g = green * 255;
+        pixel.b = blue * 255;
+
+        return pixel;
+    }, {
+        defaults: {
+            gain: 1,
+            bias: 1
+        }
+    });
+
+    Effects.define("gamma", function(pixel, x, y, parameters, width, height)
+    {
+        return {
+            r: this.data.table.r[pixel.r],
+            g: this.data.table.g[pixel.g],
+            b: this.data.table.b[pixel.b],
+            a: pixel.a
+        };
+    }, {
+        defaults: {
+            gammaRed: 1,
+            gammaGreen: 1,
+            gammaBlue: 1
+        },
+        before: function(parameters, width, height)
+        {
+            var table = {
+                r: [],
+                g: [],
+                b: []
+            }, i;
+
+            for(i = 0; i < 256; i += 1)
+            {
+                table.r[i] = parseInt(((255 * Math.pow(i / 255, 1 / parameters.gammaRed)) + 0.5));
+                table.g[i] = parseInt(((255 * Math.pow(i / 255, 1 / parameters.gammaGreen)) + 0.5));
+                table.b[i] = parseInt(((255 * Math.pow(i / 255, 1 / parameters.gammaBlue)) + 0.5));
+            }
+
+            return {
+                table: table
+            };
+        }
+    });
+
+    Effects.define("gray", function(pixel, x, y, parameters, width, height)
+    {
+        return {
+            r: (pixel.r + 255) / 2,
+            g: (pixel.g + 255) / 2,
+            b: (pixel.b + 255) / 2,
+            a: pixel.a
+        }
+    }, {
+        defaults: {}
+    });
+
     Effects.define("filter-linear", function(pixel, x, y, parameters, width, height)
     {
         var filter = this.data,
