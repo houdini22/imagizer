@@ -1381,10 +1381,10 @@
     };
 
     /**
-     * Effect - wrapper for callback function
+     * PointEffect - wrapper for callback function executed on each pixel
      * @constructor
      */
-    var Effect = function(params)
+    var PointEffect = function(params)
     {
         var callback = params.callback,
             additionalParameters = params.opts;
@@ -1446,7 +1446,7 @@
                     {
                         var index = getIndex(x, y);
                         return {
-                            r: imageData.data[index],
+                            r: imageData.data[index + 0],
                             g: imageData.data[index + 1],
                             b: imageData.data[index + 2],
                             a: imageData.data[index + 3]
@@ -1517,6 +1517,57 @@
     };
 
     /**
+     * TransformEffect - used in effects where we move pixels
+     * @param params
+     * @constructor
+     */
+    var TransformEffect = function(params)
+    {
+        var callback = params.callback,
+            additionalParameters = params.opts;
+
+        /**
+         * Run effect
+         * @param {ImageData} imageData
+         * @param {Array} parameters
+         * @returns {ImageData}
+         */
+        this.run = function(imageData, parameters)
+        {
+            additionalParameters && additionalParameters.defaults && (parameters = Helpers.extend(additionalParameters.defaults, parameters));
+
+            var x, y,
+                sandbox = {
+                    data: (additionalParameters && typeof additionalParameters.before === "function")
+                        ? additionalParameters.before.call(null, parameters, imageData.width, imageData.height, imageData)
+                        : {}
+                },
+                imageDataCopy = new Uint8ClampedArray(imageData.data);
+
+            for(y = 0; y < imageData.height; y += 1)
+            {
+                for(x = 0; x < imageData.width; x += 1)
+                {
+                    var newXY = callback.call(sandbox, x, y),
+                        newX = Math.floor(newXY[0]),
+                        newY = Math.floor(newXY[1]),
+                        oldPixelIndex = y * imageData.width * 4 + x * 4,
+                        newPixelIndex = newY * imageData.width * 4 + newX * 4;
+
+                    imageDataCopy[oldPixelIndex + 0] = imageData.data[newPixelIndex + 0];
+                    imageDataCopy[oldPixelIndex + 1] = imageData.data[newPixelIndex + 1];
+                    imageDataCopy[oldPixelIndex + 2] = imageData.data[newPixelIndex + 2];
+                    imageDataCopy[oldPixelIndex + 3] = imageData.data[newPixelIndex + 3];
+                }
+            }
+
+            imageData.data.set(imageDataCopy);
+            return imageData;
+        };
+
+    };
+
+    /**
      * Helper for creating effect object.
      */
     var Effects = new function()
@@ -1524,15 +1575,29 @@
         var effects = {};
 
         /**
-         * Creates effect
-         * @param {string} name
-         * @param {function} pixelCallback
-         * @param {Object} [opts]
+         * Defines a single pixel effects. Most used by filters.
+         * @param name
+         * @param pixelCallback
+         * @param [opts]
          */
-        this.define = function(name, pixelCallback, opts)
+        this.definePoint = function(name, pixelCallback, opts)
         {
-            effects[name] = new Effect({
+            effects[name] = new PointEffect({
                 callback: pixelCallback,
+                opts: opts
+            });
+        };
+
+        /**
+         * Define effect that distort image in some way.
+         * @param name
+         * @param callback
+         * @param opts
+         */
+        this.defineTransform = function(name, callback, opts)
+        {
+            effects[name] = new TransformEffect({
+                callback: callback,
                 opts: opts
             });
         };
@@ -1599,7 +1664,7 @@
      http://www.jhlabs.com/ip/filters/index.html
      */
 
-    Effects.define("gray-scale", function(pixel, x, y)
+    Effects.definePoint("gray-scale", function(pixel, x, y)
     {
         var newRGB = 0.299 * pixel.r + 0.587 * pixel.g + 0.114 * pixel.b;
         return {
@@ -1610,7 +1675,7 @@
         };
     });
 
-    Effects.define("sepia", function(pixel, x, y, parameters)
+    Effects.definePoint("sepia", function(pixel, x, y, parameters)
     {
         var tmp = 0.299 * pixel.r + 0.587 * pixel.g + 0.114 * pixel.b;
 
@@ -1625,7 +1690,7 @@
         }
     });
 
-    Effects.define("adjust-contrast-brightness", function(pixel, x, y, parameters)
+    Effects.definePoint("adjust-contrast-brightness", function(pixel, x, y, parameters)
     {
         pixel.r = pixel.r * parameters.brightness;
         pixel.r = (pixel.r - 0.5) * parameters.contrast + 0.5;
@@ -1644,7 +1709,7 @@
         }
     });
 
-    Effects.define("diffusion", function(pixel, x, y, parameters, width, height)
+    Effects.definePoint("diffusion", function(pixel, x, y, parameters, width, height)
     {
         var red1 = pixel.r,
             green1 = pixel.g,
@@ -1742,7 +1807,7 @@
         }
     });
 
-    Effects.define("dither", function(pixel, x, y, parameters, width, height)
+    Effects.definePoint("dither", function(pixel, x, y, parameters, width, height)
     {
         var col = x % this.data.cols,
             row = y % this.data.rows,
@@ -1898,7 +1963,7 @@
         }
     });
 
-    Effects.define("exposure", function(pixel, x, y, parameters, width, height)
+    Effects.definePoint("exposure", function(pixel, x, y, parameters, width, height)
     {
         pixel.r = (1 - Math.exp(-pixel.r / 255 * parameters.exposure)) * 255;
         pixel.g = (1 - Math.exp(-pixel.g / 255 * parameters.exposure)) * 255;
@@ -1911,7 +1976,7 @@
         }
     });
 
-    Effects.define("gain", function(pixel, x, y, parameters, width, height)
+    Effects.definePoint("gain", function(pixel, x, y, parameters, width, height)
     {
         var red = (1 / parameters.gain - 2) * (1 - 2 * pixel.r / 255),
             green = (1 / parameters.gain - 2) * (1 - 2 * pixel.g / 255),
@@ -1960,7 +2025,7 @@
         }
     });
 
-    Effects.define("gamma", function(pixel, x, y, parameters, width, height)
+    Effects.definePoint("gamma", function(pixel, x, y, parameters, width, height)
     {
         return {
             r: this.data.table.r[pixel.r],
@@ -1995,7 +2060,7 @@
         }
     });
 
-    Effects.define("gray", function(pixel, x, y, parameters, width, height)
+    Effects.definePoint("gray", function(pixel, x, y, parameters, width, height)
     {
         return {
             r: (pixel.r + 255) / 2,
@@ -2007,7 +2072,7 @@
         defaults: {}
     });
 
-    Effects.define("HSBAdjust", function(pixel, x, y, parameters, width, height)
+    Effects.definePoint("HSBAdjust", function(pixel, x, y, parameters, width, height)
     {
         var hsb = Helpers.Color.RGBtoHSB(pixel.r, pixel.g, pixel.b);
 
@@ -2037,13 +2102,13 @@
         }
     });
 
-    Effects.define("invertAlpha", function(pixel)
+    Effects.definePoint("invertAlpha", function(pixel)
     {
         pixel.a = 255 - pixel.a;
         return pixel;
     });
 
-    Effects.define("invert", function(pixel)
+    Effects.definePoint("invert", function(pixel)
     {
         pixel.r = 255 - pixel.r;
         pixel.g = 255 - pixel.g;
@@ -2051,7 +2116,7 @@
         return pixel;
     });
 
-    Effects.define("levels", function(pixel, x, y, parameters)
+    Effects.definePoint("levels", function(pixel, x, y, parameters)
     {
         return {
             r: this.data.lut[0][pixel.r],
@@ -2276,7 +2341,7 @@
         }
     });
 
-    Effects.define("lookup", function(pixel, x, y, parameters)
+    Effects.definePoint("lookup", function(pixel, x, y, parameters)
     {
         // TODO
     }, {
@@ -2287,7 +2352,7 @@
         }
     });
 
-    Effects.define("mapColors", function(pixel, x, y, parameters)
+    Effects.definePoint("mapColors", function(pixel, x, y, parameters)
     {
         // TODO
     }, {
@@ -2298,7 +2363,7 @@
         }
     });
 
-    Effects.define("posterize", function(pixel, x, y, parameters)
+    Effects.definePoint("posterize", function(pixel, x, y, parameters)
     {
         // TODO
         return {
@@ -2327,7 +2392,7 @@
         }
     });
 
-    Effects.define("quantize", function(pixel, x, y, parameters)
+    Effects.definePoint("quantize", function(pixel, x, y, parameters)
     {
         // TODO
     }, {
@@ -2357,7 +2422,7 @@
         }
     });
 
-    Effects.define("rescale", function(pixel, x, y, parameters)
+    Effects.definePoint("rescale", function(pixel, x, y, parameters)
     {
         pixel.r = parameters.scale * pixel.r;
         pixel.g = parameters.scale * pixel.g;
@@ -2370,7 +2435,7 @@
         }
     });
 
-    Effects.define("solarize", function(pixel, x, y, parameters)
+    Effects.definePoint("solarize", function(pixel, x, y, parameters)
     {
         var red = pixel.r / 255 > 0.5 ? 2 * ((pixel.r / 255) - 0.5) : 2 * (0.5 - (pixel.r / 255)),
             green = pixel.g / 255 > 0.5 ? 2 * ((pixel.g / 255) - 0.5) : 2 * (0.5 - (pixel.g / 255)),
@@ -2386,7 +2451,7 @@
         defaults: {}
     });
 
-    Effects.define("threshold", function(pixel, x, y, parameters)
+    Effects.definePoint("threshold", function(pixel, x, y, parameters)
     {
         var grayscale = (pixel.r + pixel.g + pixel.b) / 3;
 
@@ -2410,7 +2475,7 @@
         defaults: {}
     });
 
-    Effects.define("tritone", function(pixel, x, y, parameters)
+    Effects.definePoint("tritone", function(pixel, x, y, parameters)
     {
         var brightness = Math.floor((pixel.r + pixel.g + pixel.b) / 3);
         return this.data.lut[brightness];
@@ -2456,7 +2521,7 @@
         }
     });
 
-    Effects.define("filter-linear", function(pixel, x, y, parameters, width, height)
+    Effects.definePoint("filter-linear", function(pixel, x, y, parameters, width, height)
     {
         var filter = this.data,
             i, j,
@@ -2500,16 +2565,36 @@
         }
     });
 
-    Effects.define("block", function(pixel, x, y)
+    // Distortion and Warping Filters
+    Effects.defineTransform("diffuse", function(x, y, parameters)
     {
+        var angle = parseInt(Math.random() * 255),
+            distance = Math.random();
 
+        return [
+            x + distance * this.data.sinTable[angle],
+            y + distance * this.data.cosTable[angle]
+        ];
     }, {
         defaults: {
-            blockSize: 13
+            scale: 4
         },
-        before: function(parameters, width, height)
+        before: function(parameters, x, y)
         {
-
+            var sinTable = new Array(256),
+                cosTable = new Array(256),
+                i,
+                angle;
+            for(i = 0; i < 256; i += 1)
+            {
+                angle = Math.PI * 2 * i / 256;
+                sinTable[i] = parameters.scale * Math.sin(angle);
+                cosTable[i] = parameters.scale * Math.cos(angle);
+            }
+            return {
+                sinTable: sinTable,
+                cosTable: cosTable
+            };
         }
     });
 
