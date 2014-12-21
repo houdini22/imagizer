@@ -231,6 +231,124 @@
                     a: rgb1.a + t * (rgb2.a - rgb1.a)
                 }
             }
+        },
+        Noise: {
+            parameters: {},
+            init: function()
+            {
+                if(Helpers.Noise.isInited)
+                {
+                    return false;
+                }
+                Helpers.Noise.isInited = true;
+
+                Helpers.Noise.parameters.B = 0x100;
+                Helpers.Noise.parameters.BM = 0xff;
+                Helpers.Noise.parameters.N = 0x1000;
+
+                Helpers.Noise.parameters.P = new Array(Helpers.Noise.parameters.B + Helpers.Noise.parameters.B + 2);
+                Helpers.Noise.parameters.G1 = new Array(Helpers.Noise.parameters.B + Helpers.Noise.parameters.B + 2);
+                Helpers.Noise.parameters.G2 = new Array(Helpers.Noise.parameters.B + Helpers.Noise.parameters.B + 2);
+                for(i = 0; i < Helpers.Noise.parameters.G2.length; i += 1)
+                {
+                    Helpers.Noise.parameters.G2[i] = new Array(2);
+                }
+
+                var i, j, k;
+
+                for(i = 0; i < Helpers.Noise.parameters.B; i += 1)
+                {
+                    Helpers.Noise.parameters.P[i] = i;
+                    Helpers.Noise.parameters.G1[i] = ((Helpers.Noise.random() % (Helpers.Noise.parameters.B + Helpers.Noise.parameters.B)) - Helpers.Noise.parameters.B) / Helpers.Noise.parameters.B;
+                    Helpers.Noise.parameters.G2[i] = [];
+                    for(j = 0; j < 2; j += 1)
+                    {
+                        Helpers.Noise.parameters.G2[i][j] = ((Helpers.Noise.random() % (Helpers.Noise.parameters.B + Helpers.Noise.parameters.B)) - Helpers.Noise.parameters.B) / Helpers.Noise.parameters.B;
+                    }
+                    Helpers.Noise.parameters.G2[i] = Helpers.Noise.normalize2(Helpers.Noise.parameters.G2[i]);
+                }
+
+                for(i = Helpers.Noise.parameters.B - 1; i >= 0; i -= 1)
+                {
+                    k = Helpers.Noise.parameters.P[i];
+                    Helpers.Noise.parameters.P[i] = Helpers.Noise.parameters.P[j = Helpers.Noise.random() % Helpers.Noise.parameters.B];
+                    Helpers.Noise.parameters.P[j] = k;
+                }
+
+                for(i = 0; i < Helpers.Noise.parameters.B + 2; i += 1)
+                {
+                    Helpers.Noise.parameters.P[Helpers.Noise.parameters.B + i] = Helpers.Noise.parameters.P[i];
+                    Helpers.Noise.parameters.G1[Helpers.Noise.parameters.B + i] = Helpers.Noise.parameters.G1[i];
+                    for(j = 0; j < 2; j += 1)
+                    {
+                        Helpers.Noise.parameters.G2[Helpers.Noise.parameters.B + i][j] = Helpers.Noise.parameters.G2[i][j];
+                    }
+                }
+            },
+            normalize2: function(arr)
+            {
+                var s = Math.sqrt(arr[0] * arr[0] + arr[1] * arr[1]);
+                arr[0] = arr[0] / s;
+                arr[1] = arr[1] / s;
+                return arr;
+            },
+            sCurve: function(t)
+            {
+                return t * t * (3.0 - 2.0 * t);
+            },
+            lerp: function(t, a, b)
+            {
+                return a + t * (b - a);
+            },
+            random: function()
+            {
+                return parseInt(Math.random() * 256 * 256) & 0x7fffffff;
+            },
+            noise2: function(x, y)
+            {
+                var bx0, bx1, by0, by1, b00, b10, b01, b11,
+                    rx0, rx1, ry0, ry1, q = [], sx, sy, a, b, t, u, v,
+                    i, j;
+
+                Helpers.Noise.init();
+
+                t = x + Helpers.Noise.parameters.N;
+                bx0 = parseInt(t) & Helpers.Noise.parameters.BM;
+                bx1 = (bx0 + 1) & Helpers.Noise.parameters.BM;
+                rx0 = t - parseInt(t);
+                rx1 = rx0 - 1;
+
+                t = y + Helpers.Noise.parameters.N;
+                by0 = parseInt(t) & Helpers.Noise.parameters.BM;
+                by1 = (by0 + 1) & Helpers.Noise.parameters.BM;
+                ry0 = t - parseInt(t);
+                ry1 = ry0 - 1;
+
+                i = Helpers.Noise.parameters.P[bx0];
+                j = Helpers.Noise.parameters.P[bx1];
+
+                b00 = Helpers.Noise.parameters.P[i + by0];
+                b10 = Helpers.Noise.parameters.P[j + by0];
+                b01 = Helpers.Noise.parameters.P[i + by1];
+                b11 = Helpers.Noise.parameters.P[j + by1];
+
+                sx = Helpers.Noise.sCurve(rx0);
+                sy = Helpers.Noise.sCurve(ry0);
+
+                q = Helpers.Noise.parameters.G2[b00];
+                u = rx0 * q[0] + ry0 * q[1];
+                q = Helpers.Noise.parameters.G2[b10];
+                v = rx1 * q[0] + ry0 * q[1];
+                a = Helpers.Noise.lerp(sx, u, v);
+
+                q = Helpers.Noise.parameters.G2[b01];
+                u = rx0 * q[0] + ry1 * q[1];
+                q = Helpers.Noise.parameters.G2[b11];
+                v = rx1 * q[0] + ry1 * q[1];
+                b = Helpers.Noise.lerp(sx, u, v);
+
+                return 1.5 * Helpers.Noise.lerp(sy, a, b);
+            }
         }
     };
 
@@ -1548,7 +1666,7 @@
             {
                 for(x = 0; x < imageData.width; x += 1)
                 {
-                    var newXY = callback.call(sandbox, x, y),
+                    var newXY = callback.call(sandbox, x, y, parameters),
                         newX = Math.floor(newXY[0]),
                         newY = Math.floor(newXY[1]),
                         oldPixelIndex = y * imageData.width * 4 + x * 4,
@@ -2579,7 +2697,7 @@
         defaults: {
             scale: 4
         },
-        before: function(parameters, x, y)
+        before: function(parameters, width, height)
         {
             var sinTable = new Array(256),
                 cosTable = new Array(256),
@@ -2594,6 +2712,99 @@
             return {
                 sinTable: sinTable,
                 cosTable: cosTable
+            };
+        }
+    });
+
+    Effects.defineTransform("kaleidoscope", function(x, y, parameters)
+    {
+        var dx = x - this.data.icentreX,
+            dy = y - this.data.icentreY,
+            r = Math.sqrt(dx * dx + dy * dy),
+            theta = Math.atan2(dy, dx) - parameters.angle - parameters.angle2;
+
+        theta = this.data.triangle(theta / Math.PI * parameters.sides * 0.5);
+
+        if(parameters.radius !== 0)
+        {
+            var c = Math.cos(theta),
+                radiusC = parameters.radius / c;
+            r = radiusC * this.data.triangle(r / radiusC);
+        }
+
+        theta += parameters.angle;
+
+        return [
+            this.data.icentreX + r * Math.cos(theta),
+            this.data.icentreY + r * Math.sin(theta)
+        ];
+    }, {
+        defaults: {
+            centreX: 0.5,
+            centreY: 0.5,
+            angle: 0,
+            angle2: 0,
+            sides: 3,
+            radius: 0
+        },
+        before: function(parameters, width, height)
+        {
+            return {
+                icentreX: width * parameters.centreX,
+                icentreY: height * parameters.centreY,
+                triangle: function(x)
+                {
+                    var r = (function(a, b)
+                    {
+                        var n = Math.floor(a / b);
+                        a -= n * b;
+                        if(a < 0)
+                        {
+                            return a + b;
+                        }
+                        return a;
+                    }(x, 1));
+                    return 2 * (r < 0.5 ? r : 1 - r);
+                }
+            };
+        }
+    });
+
+    Effects.defineTransform("marble", function(x, y, parameters)
+    {
+        var displacement = this.data.displacementMap(x, y);
+        return [
+            x + this.data.sinTable[displacement],
+            y + this.data.cosTable[displacement]
+        ];
+    }, {
+        defaults: {
+            xScale: 4,
+            yScale: 4,
+            amount: 1,
+            turbulence: 1
+        },
+        before: function(parameters, width, height)
+        {
+            var sinTable = new Array(256),
+                cosTable = new Array(256),
+                i = 0,
+                angle;
+
+            for(i = 0; i < 256; i += 1)
+            {
+                angle = Math.PI * 2 * i / 256 * parameters.turbulence;
+                sinTable[i] = -parameters.yScale * Math.sin(angle);
+                cosTable[i] = parameters.yScale * Math.cos(angle);
+            }
+            return {
+                sinTable: sinTable,
+                cosTable: cosTable,
+                displacementMap: function(x, y)
+                {
+                    var result = 127 * (1 + Helpers.Noise.noise2(x / parameters.xScale, y / parameters.yScale));
+                    return Math.min(255, Math.max(0, result));
+                }
             };
         }
     });
