@@ -458,6 +458,7 @@
 </script>
 
 
+
 <div class="test test-28">
     <p class="time"></p>
 </div>
@@ -478,6 +479,31 @@
             });
             project.exportTo(".test-28");
             document.querySelector(".test-28 .time").textContent = project.getTime();
+        });
+    }, false);
+</script>
+
+<div class="test test-29">
+    <p class="time"></p>
+</div>
+<script>
+    document.addEventListener("DOMContentLoaded", function()
+    {
+        var project = new Imagizer.Project(imageWidth, imageHeight);
+        var layer1 = project.createLayer();
+        var image1 = new Imagizer.Image();
+        image1.load(imageURL, function()
+        {
+            layer1.put(image1, 0, 0);
+            project.applyEffect("pinch", {
+                angle: 0,
+                centreX: 0.5,
+                centreY: 0.5,
+                radius: 100,
+                amount: 0.5
+            });
+            project.exportTo(".test-29");
+            document.querySelector(".test-29 .time").textContent = project.getTime();
         });
     }, false);
 </script>
