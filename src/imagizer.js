@@ -2772,7 +2772,7 @@
 
     Effects.defineTransform("marble", function(x, y, parameters)
     {
-        var displacement = this.data.displacementMap(x, y);
+        var displacement = Math.floor(this.data.displacementMap(x, y));
         return [
             x + this.data.sinTable[displacement],
             y + this.data.cosTable[displacement]

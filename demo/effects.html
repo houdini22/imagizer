@@ -471,10 +471,10 @@
         {
             layer1.put(image1, 0, 0);
             project.applyEffect("marble", {
-                xScale: 10,
-                yScale: 10,
-                amount: 5,
-                turbulence: 5
+                xScale: 5,
+                yScale: 5,
+                amount: 1,
+                turbulence: 1
             });
             project.exportTo(".test-28");
             document.querySelector(".test-28 .time").textContent = project.getTime();
