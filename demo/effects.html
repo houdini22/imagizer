@@ -508,6 +508,83 @@
     }, false);
 </script>
 
+
+<div class="test test-30">
+    <p class="time"></p>
+</div>
+<script>
+    document.addEventListener("DOMContentLoaded", function()
+    {
+        var project = new Imagizer.Project(imageWidth, imageHeight);
+        var layer1 = project.createLayer();
+        var image1 = new Imagizer.Image();
+        image1.load(imageURL, function()
+        {
+            layer1.put(image1, 0, 0);
+            project.applyEffect("ripple", {
+                xAmplitude: 5,
+                yAmplitute: 0,
+                xWaveLength: 16,
+                yWaveLength: 16,
+                waveType: "NOISE"
+            });
+            project.exportTo(".test-30");
+            document.querySelector(".test-30 .time").textContent = project.getTime();
+        });
+    }, false);
+</script>
+
+
+<div class="test test-31">
+    <p class="time"></p>
+</div>
+<script>
+    document.addEventListener("DOMContentLoaded", function()
+    {
+        var project = new Imagizer.Project(imageWidth, imageHeight);
+        var layer1 = project.createLayer();
+        var image1 = new Imagizer.Image();
+        image1.load(imageURL, function()
+        {
+            layer1.put(image1, 0, 0);
+            project.applyEffect("shear", {
+                xAngle: 30,
+                yAngle: 15,
+                xOffset: 0,
+                yOffset: 0
+            });
+            project.exportTo(".test-31");
+            document.querySelector(".test-31 .time").textContent = project.getTime();
+        });
+    }, false);
+</script>
+
+
+<div class="test test-32">
+    <p class="time"></p>
+</div>
+<script>
+    document.addEventListener("DOMContentLoaded", function()
+    {
+        var project = new Imagizer.Project(imageWidth, imageHeight);
+        var layer1 = project.createLayer();
+        var image1 = new Imagizer.Image();
+        image1.load(imageURL, function()
+        {
+            layer1.put(image1, 0, 0);
+            project.applyEffect("sphere", {
+                a: 0,
+                b: 0,
+                centreX: 0.5,
+                centreY: 0.5,
+                refractionIndex: 1.5
+            });
+            project.exportTo(".test-32");
+            document.querySelector(".test-32 .time").textContent = project.getTime();
+        });
+    }, false);
+</script>
+
 <script src="../src/imagizer.js"></script>
 </body>
 </html>

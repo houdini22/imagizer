@@ -336,6 +336,30 @@
                 return parseInt(Math.random() * 256 * 256) & 0x7fffffff;
             },
             /**
+             * Compute 1-dimensional Perlin noise.
+             * @param x
+             */
+            noise1: function(x)
+            {
+                var bx0, bx1,
+                    rx0, rx1, sx, t, u, v;
+
+                Helpers.Noise.init();
+
+                t = x + Helpers.Noise.parameters.N;
+                bx0 = parseInt(t) & Helpers.Noise.parameters.BM;
+                bx1 = (bx0 + 1) & Helpers.Noise.parameters.BM;
+                rx0 = t - parseInt(t);
+                rx1 = rx0 - 1;
+
+                sx = Helpers.Noise.sCurve(rx0);
+
+                u = rx0 * Helpers.Noise.parameters.G1[Helpers.Noise.parameters.P[bx0]];
+                v = rx1 * Helpers.Noise.parameters.G1[Helpers.Noise.parameters.P[bx1]];
+
+                return 2.3 * Helpers.Noise.lerp(sx, u, v);
+            },
+            /**
              * Compute 2-dimensional Perlin noise
              * @param x
              * @param y
@@ -386,6 +410,21 @@
 
                 return 1.5 * Helpers.Noise.lerp(sy, a, b);
             }
+        },
+        mod: function(a, b)
+        {
+            var n = Math.floor(a / b);
+            a -= n * b;
+            if (a < 0)
+            {
+                return a + b;
+            }
+            return a;
+        },
+        triangle: function(x)
+        {
+            var r = Helpers.mod(x, 1);
+            return 2 * (r < 0.5 ? r : 1 - r);
         }
     };
 
@@ -2773,13 +2812,13 @@
             r = Math.sqrt(dx * dx + dy * dy),
             theta = Math.atan2(dy, dx) - parameters.angle - parameters.angle2;
 
-        theta = this.data.triangle(theta / Math.PI * parameters.sides * 0.5);
+        theta = Helpers.triangle(theta / Math.PI * parameters.sides * 0.5);
 
         if(parameters.radius !== 0)
         {
             var c = Math.cos(theta),
                 radiusC = parameters.radius / c;
-            r = radiusC * this.data.triangle(r / radiusC);
+            r = radiusC * Helpers.triangle(r / radiusC);
         }
 
         theta += parameters.angle;
@@ -2801,21 +2840,7 @@
         {
             return {
                 icentreX: width * parameters.centreX,
-                icentreY: height * parameters.centreY,
-                triangle: function(x)
-                {
-                    var r = (function(a, b)
-                    {
-                        var n = Math.floor(a / b);
-                        a -= n * b;
-                        if(a < 0)
-                        {
-                            return a + b;
-                        }
-                        return a;
-                    }(x, 1));
-                    return 2 * (r < 0.5 ? r : 1 - r);
-                }
+                icentreY: height * parameters.centreY
             };
         }
     });
@@ -2910,6 +2935,150 @@
                 icentreY: icentreY,
                 radius: radius,
                 radius2: radius2
+            };
+        }
+    });
+
+    Effects.defineTransform("polar", function(x, y, parameters)
+    {
+        // TODO
+    }, {
+        defaults: {
+
+        },
+        before: function(parameters, width, height)
+        {
+
+        }
+    });
+
+    Effects.defineTransform("ripple", function(x, y, parameters)
+    {
+        var nx = y / parameters.xWaveLength,
+            ny = x / parameters.yWaveLength,
+            fx, fy;
+
+        switch(parameters.waveType)
+        {
+            case "SINE":
+            default:
+                fx = Math.sin(nx);
+                fy = Math.sin(ny);
+                break;
+
+            case "SAWTOOTH":
+                fx = Helpers.mod(nx, 1);
+                fy = Helpers.mod(ny, 1);
+                break;
+
+            case "TRIANGLE":
+                fx = Helpers.triangle(nx);
+                fy = Helpers.triangle(ny);
+                break;
+
+            case "NOISE":
+                fx = Helpers.Noise.noise1(nx);
+                fy = Helpers.Noise.noise1(ny);
+                break;
+        }
+
+        return [
+            x + parameters.xAmplitude * fx,
+            y + parameters.yAmplitute * fy
+        ];
+    }, {
+        defaults: {
+            xAmplitude: 5,
+            yAmplitute: 0,
+            xWaveLength: 16,
+            yWaveLength: 16,
+            waveType: "SINE" // SAWTOOTH TRIANGLE NOISE
+        }
+    });
+
+    Effects.defineTransform("shear", function(x, y, parameters)
+    {
+        return [
+            x + parameters.xOffset + (y * this.data.shx),
+            y + parameters.yOffset + (x * this.data.shy)
+        ];
+    }, {
+        defaults: {
+            xAngle: 0,
+            yAngle: 0,
+            xOffset: 0,
+            yOffset: 0
+        },
+        before: function(parameters, width, height)
+        {
+            return {
+                shx: Math.sin(parameters.xAngle),
+                shy: Math.sin(parameters.yAngle)
+            };
+        }
+    });
+
+    Effects.defineTransform("sphere", function(x, y, parameters)
+    {
+        var dx = x - this.data.icentreX,
+            dy = y - this.data.icentreY,
+            x2 = dx * dx,
+            y2 = dy * dy,
+            rRefraction = 1 / parameters.refractionIndex,
+            z = Math.sqrt((1 - x2 / this.data.a2 - y2 / this.data.b2) * (this.data.a * this.data.b)),
+            z2 = z * z,
+            xAngle = Math.acos(dx / Math.sqrt(x2 + z2)),
+            angle1 = Math.PI / 2 - xAngle,
+            angle2 = Math.asin(Math.sin(angle1) * rRefraction),
+            yAngle = Math.acos(dy / Math.sqrt(y2 + z2)),
+            ret = new Array(2);
+
+        if (y2 >= (this.data.b2 - (this.data.b2 / x2) / this.data.a2))
+        {
+            return [x, y];
+        }
+
+        angle2 = (Math.PI / 2) - xAngle - angle2;
+        ret[0] = x - Math.tan(angle2) * z;
+
+        angle1 = (Math.PI / 2) - yAngle;
+        angle2 = Math.asin(Math.sin(angle1) * rRefraction);
+        angle2 = (Math.PI / 2) - yAngle - angle2;
+        ret[1] = y - Math.tan(angle2) * z;
+        return ret;
+    }, {
+        defaults: {
+            a: 0,
+            b: 0,
+            centreX: 0.5,
+            centreY: 0.5,
+            refractionIndex: 1.5
+        },
+        before: function(parameters, width, height)
+        {
+            var icentreX = width * parameters.centreX,
+                icentreY = height * parameters.centreY,
+                a = parameters.a,
+                b = parameters.b,
+                a2, b2;
+            if (a === 0)
+            {
+                a = width / 2;
+            }
+            if (b === 0)
+            {
+                b = height / 2;
+            }
+            a2 = a * a;
+            b2 = b * b;
+
+            return {
+                icentreX: icentreX,
+                icentreY: icentreY,
+                a: a,
+                b: b,
+                a2: a2,
+                b2: b2
             };
         }
     });
