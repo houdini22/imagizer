@@ -585,6 +585,33 @@
     }, false);
 </script>
 
+
+<div class="test test-33">
+    <p class="time"></p>
+</div>
+<script>
+    document.addEventListener("DOMContentLoaded", function()
+    {
+        var project = new Imagizer.Project(imageWidth, imageHeight);
+        var layer1 = project.createLayer();
+        var image1 = new Imagizer.Image();
+        image1.load(imageURL, function()
+        {
+            layer1.put(image1, 0, 0);
+            project.applyEffect("swim", {
+                scale: 60,
+                turbulence: 10,
+                amount: 3,
+                time: 100,
+                angle: 10,
+                stretch: 5
+            });
+            project.exportTo(".test-33");
+            document.querySelector(".test-33 .time").textContent = project.getTime();
+        });
+    }, false);
+</script>
+
 <script src="../src/imagizer.js"></script>
 </body>
 </html>

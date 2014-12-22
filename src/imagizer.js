@@ -284,7 +284,11 @@
                 {
                     Helpers.Noise.parameters.G2[i] = new Array(2);
                 }
-
+                Helpers.Noise.parameters.G3 = new Array(Helpers.Noise.parameters.B + Helpers.Noise.parameters.B + 2);
+                for(i = 0; i < Helpers.Noise.parameters.G3.length; i += 1)
+                {
+                    Helpers.Noise.parameters.G3[i] = new Array(3);
+                }
                 var i, j, k;
 
                 for(i = 0; i < Helpers.Noise.parameters.B; i += 1)
@@ -297,6 +301,13 @@
                         Helpers.Noise.parameters.G2[i][j] = ((Helpers.Noise.random() % (Helpers.Noise.parameters.B + Helpers.Noise.parameters.B)) - Helpers.Noise.parameters.B) / Helpers.Noise.parameters.B;
                     }
                     Helpers.Noise.parameters.G2[i] = Helpers.Noise.normalize2(Helpers.Noise.parameters.G2[i]);
+
+                    Helpers.Noise.parameters.G3[i] = [];
+                    for(j = 0; j < 3; j += 1)
+                    {
+                        Helpers.Noise.parameters.G3[i][j] = ((Helpers.Noise.random() % (Helpers.Noise.parameters.B + Helpers.Noise.parameters.B)) - Helpers.Noise.parameters.B) / Helpers.Noise.parameters.B;
+                    }
+                    Helpers.Noise.parameters.G3[i] = Helpers.Noise.normalize3(Helpers.Noise.parameters.G3[i]);
                 }
 
                 for(i = Helpers.Noise.parameters.B - 1; i >= 0; i -= 1)
@@ -314,9 +325,21 @@
                     {
                         Helpers.Noise.parameters.G2[Helpers.Noise.parameters.B + i][j] = Helpers.Noise.parameters.G2[i][j];
                     }
+                    for(j = 0; j < 3; j++)
+                    {
+                        Helpers.Noise.parameters.G3[Helpers.Noise.parameters.B + i][j] = Helpers.Noise.parameters.G3[i][j];
+                    }
                 }
             },
             normalize2: function(arr)
+            {
+                var s = Math.sqrt(arr[0] * arr[0] + arr[1] * arr[1] + arr[2] * arr[2]);
+                arr[0] = arr[0] / s;
+                arr[1] = arr[1] / s;
+                arr[2] = arr[2] / s;
+                return arr;
+            },
+            normalize3: function(arr)
             {
                 var s = Math.sqrt(arr[0] * arr[0] + arr[1] * arr[1]);
                 arr[0] = arr[0] / s;
@@ -409,13 +432,105 @@
                 b = Helpers.Noise.lerp(sx, u, v);
 
                 return 1.5 * Helpers.Noise.lerp(sy, a, b);
+            },
+            /**
+             * Compute 3-dimensional Perlin noise.
+             * @param x
+             * @param y
+             * @param z
+             */
+            noise3: function(x, y, z)
+            {
+                var bx0, bx1, by0, by1, bz0, bz1, b00, b10, b01, b11,
+                    rx0, rx1, ry0, ry1, rz0, rz1, q, sy, sz, a, b, c, d, t, u, v,
+                    i, j;
+
+                Helpers.Noise.init();
+
+                t = x + Helpers.Noise.parameters.N;
+                bx0 = parseInt(t) & Helpers.Noise.parameters.BM;
+                bx1 = (bx0 + 1) & Helpers.Noise.parameters.BM;
+                rx0 = t - parseInt(t);
+                rx1 = rx0 - 1;
+
+                t = y + Helpers.Noise.parameters.N;
+                by0 = parseInt(t) & Helpers.Noise.parameters.BM;
+                by1 = (by0 + 1) & Helpers.Noise.parameters.BM;
+                ry0 = t - parseInt(t);
+                ry1 = ry0 - 1;
+
+                t = z + Helpers.Noise.parameters.N;
+                bz0 = parseInt(t) & Helpers.Noise.parameters.BM;
+                bz1 = (bz0 + 1) & Helpers.Noise.parameters.BM;
+                rz0 = t - parseInt(t);
+                rz1 = rz0 - 1;
+
+                i = Helpers.Noise.parameters.P[bx0];
+                j = Helpers.Noise.parameters.P[bx1];
+
+                b00 = Helpers.Noise.parameters.P[i + by0];
+                b10 = Helpers.Noise.parameters.P[j + by0];
+                b01 = Helpers.Noise.parameters.P[i + by1];
+                b11 = Helpers.Noise.parameters.P[j + by1];
+
+                t = Helpers.Noise.sCurve(rx0);
+                sy = Helpers.Noise.sCurve(ry0);
+                sz = Helpers.Noise.sCurve(rz0);
+
+                q = Helpers.Noise.parameters.G3[b00 + bz0];
+                u = rx0 * q[0] + ry0 * q[1] + rz0 * q[2];
+                q = Helpers.Noise.parameters.G3[b10 + bz0];
+                v = rx1 * q[0] + ry0 * q[1] + rz0 * q[2];
+                a = Helpers.Noise.lerp(t, u, v);
+
+                q = Helpers.Noise.parameters.G3[b01 + bz0];
+                u = rx0 * q[0] + ry1 * q[1] + rz0 * q[2];
+                q = Helpers.Noise.parameters.G3[b11 + bz0];
+                v = rx1 * q[0] + ry1 * q[1] + rz0 * q[2];
+                b = Helpers.Noise.lerp(t, u, v);
+
+                c = Helpers.Noise.lerp(sy, a, b);
+
+                q = Helpers.Noise.parameters.G3[b00 + bz1];
+                u = rx0 * q[0] + ry0 * q[1] + rz1 * q[2];
+                q = Helpers.Noise.parameters.G3[b10 + bz1];
+                v = rx1 * q[0] + ry0 * q[1] + rz1 * q[2];
+                a = Helpers.Noise.lerp(t, u, v);
+
+                q = Helpers.Noise.parameters.G3[b01 + bz1];
+                u = rx0 * q[0] + ry1 * q[1] + rz1 * q[2];
+                q = Helpers.Noise.parameters.G3[b11 + bz1];
+                v = rx1 * q[0] + ry1 * q[1] + rz1 * q[2];
+                b = Helpers.Noise.lerp(t, u, v);
+
+                d = Helpers.Noise.lerp(sy, a, b);
+
+                return 1.5 * Helpers.Noise.lerp(sz, c, d);
+            },
+            /**
+             * Compute turbulence using Perlin noise.
+             * @param x
+             * @param y
+             * @param z
+             * @param octaves
+             * @returns {*}
+             */
+            turbulence3: function(x, y, z, octaves)
+            {
+                var t = 0,
+                    i;
+                for(i = 1; i <= octaves; i *= 2)
+                {
+                    t += Math.abs(Helpers.Noise.noise3(i * x, i * y, i * z)) / i;
+                }
+                return t;
             }
         },
         mod: function(a, b)
         {
             var n = Math.floor(a / b);
             a -= n * b;
-            if (a < 0)
+            if(a < 0)
             {
                 return a + b;
             }
@@ -2891,12 +3006,12 @@
             distance = dx * dx + dy * dy,
             d, t, e, a, s, c;
 
-        if (distance > this.data.radius2 || distance === 0)
+        if(distance > this.data.radius2 || distance === 0)
         {
             return [x, y];
         }
         d = Math.sqrt(distance / this.data.radius2);
-        t = Math.pow(Math.sin(Math.PI * 0.5 * d), - parameters.amount);
+        t = Math.pow(Math.sin(Math.PI * 0.5 * d), -parameters.amount);
 
         dx *= t;
         dy *= t;
@@ -2925,7 +3040,7 @@
                 icentreY = height * parameters.centreY,
                 radius = parameters.radius,
                 radius2;
-            if (radius === 0)
+            if(radius === 0)
             {
                 radius = Math.min(icentreX, icentreY);
             }
@@ -2943,9 +3058,7 @@
     {
         // TODO
     }, {
-        defaults: {
-
-        },
+        defaults: {},
         before: function(parameters, width, height)
         {
 
@@ -3033,7 +3146,7 @@
             yAngle = Math.acos(dy / Math.sqrt(y2 + z2)),
             ret = new Array(2);
 
-        if (y2 >= (this.data.b2 - (this.data.b2 / x2) / this.data.a2))
+        if(y2 >= (this.data.b2 - (this.data.b2 / x2) / this.data.a2))
         {
             return [x, y];
         }
@@ -3061,11 +3174,11 @@
                 a = parameters.a,
                 b = parameters.b,
                 a2, b2;
-            if (a === 0)
+            if(a === 0)
             {
                 a = width / 2;
             }
-            if (b === 0)
+            if(b === 0)
             {
                 b = height / 2;
             }
@@ -3079,6 +3192,48 @@
                 b: b,
                 a2: a2,
                 b2: b2
+            };
+        }
+    });
+
+    Effects.defineTransform("swim", function(x, y, parameters)
+    {
+        var nx = this.data.m00 * x + this.data.m01 * y,
+            ny = this.data.m10 * x + this.data.m11 * y;
+
+        nx /= parameters.scale;
+        ny /= parameters.scale * parameters.stretch;
+
+        if(parameters.turbulence === 1)
+        {
+            return [
+                x + parameters.amount * Helpers.Noise.noise3(nx + 0.5, ny, parameters.time),
+                y + parameters.amount * Helpers.Noise.noise3(nx, ny + 0.5, parameters.time)
+            ];
+        }
+        return [
+            x + parameters.amount * Helpers.Noise.turbulence3(nx + 0.5, ny, parameters.turbulence, parameters.time),
+            y + parameters.amount * Helpers.Noise.turbulence3(nx, ny + 0.5, parameters.turbulence, parameters.time)
+        ];
+    }, {
+        defaults: {
+            scale: 32,
+            turbulence: 0,
+            amount: 1,
+            time: 0,
+            angle: 0,
+            stretch: 1
+        },
+        before: function(parameters)
+        {
+            var cos = Math.cos(parameters.angle),
+                sin = Math.sin(parameters.angle);
+
+            return {
+                m00: cos,
+                m01: sin,
+                m10: -sin,
+                m11: cos
             };
         }
     });
