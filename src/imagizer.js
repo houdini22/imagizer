@@ -12,6 +12,11 @@
      * @type {Object}
      */
     var Helpers = {
+        /**
+         * Simple class inheriting
+         * @returns {Function}
+         * @constructor
+         */
         Inherit: function()
         {
             var name, i,
@@ -67,6 +72,12 @@
             }
             return Class;
         },
+        /**
+         * Merge two or more objects or arrays.
+         * @param obj1
+         * @param obj2
+         * @returns {Array|Object}
+         */
         extend: function(obj1, obj2)
         {
             var result = Object.prototype.toString.call(obj1) === "[object Array]" ? [] : {},
@@ -98,7 +109,17 @@
             }
             return result;
         },
+        /**
+         * Color Helpers
+         */
         Color: {
+            /**
+             * RGB to HSB color convert.
+             * @param r
+             * @param g
+             * @param b
+             * @returns {{h: number, s: number, b: number}}
+             */
             RGBtoHSB: function(r, g, b)
             {
                 var hue, saturation, brightness,
@@ -154,6 +175,13 @@
                     b: brightness
                 };
             },
+            /**
+             * HSB to RGB color convert.
+             * @param hue
+             * @param saturation
+             * @param brightness
+             * @returns {{r: Number, g: Number, b: Number}}
+             */
             HSBtoRGB: function(hue, saturation, brightness)
             {
                 var red, green, blue;
@@ -232,6 +260,9 @@
                 }
             }
         },
+        /**
+         * Noise generator
+         */
         Noise: {
             parameters: {},
             init: function()
@@ -304,6 +335,12 @@
             {
                 return parseInt(Math.random() * 256 * 256) & 0x7fffffff;
             },
+            /**
+             * Compute 2-dimensional Perlin noise
+             * @param x
+             * @param y
+             * @returns {number}
+             */
             noise2: function(x, y)
             {
                 var bx0, bx1, by0, by1, b00, b10, b01, b11,
@@ -774,6 +811,10 @@
         this.initialize.apply(this, arguments);
     };
 
+    /**
+     * Parent class for object put on layer.
+     * @type {Object}
+     */
     var baseOnLayerObject = {
         __constructor: function()
         {
@@ -873,6 +914,11 @@
         }
     };
 
+    /**
+     * Image object on layer.
+     * @type {Function}
+     * @constructor
+     */
     var ImageObj = Helpers.Inherit(baseOnLayerObject, {
         __constructor: function()
         {
@@ -982,6 +1028,10 @@
         };
     };
 
+    /**
+     * Text object put on layer.
+     * @type {Function}
+     */
     var TextObj = Helpers.Inherit(baseOnLayerObject, {
         __constructor: function(width, height)
         {
