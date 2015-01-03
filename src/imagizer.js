@@ -540,6 +540,19 @@
         {
             var r = Helpers.mod(x, 1);
             return 2 * (r < 0.5 ? r : 1 - r);
+        },
+        smoothStep: function(a, b, x)
+        {
+            if (x < a)
+            {
+                return 0;
+            }
+            if (x >= b)
+            {
+                return 1;
+            }
+            x = (x - a) / (b - a);
+            return x * x * (3 - 2 * x);
         }
     };
 
@@ -2920,6 +2933,27 @@
         }
     });
 
+    Effects.definePoint("dissolve", function(pixel, x, y, parameters)
+    {
+        var v = Math.random(),
+            f = Helpers.smoothStep(this.data.minDensity, this.data.maxDensity, v);
+        pixel.a = pixel.a * f;
+        return pixel;
+    }, {
+        defaults: {
+            density: 1,
+            softness: 0
+        },
+        before: function(parameters, width, height)
+        {
+            var d = (1 - parameters.density) * (1 + parameters.softness);
+            return {
+                minDensity: d - parameters.softness,
+                maxDensity: d
+            };
+        }
+    });
+
     Effects.defineTransform("kaleidoscope", function(x, y, parameters)
     {
         var dx = x - this.data.icentreX,
@@ -3234,6 +3268,105 @@
                 m01: sin,
                 m10: -sin,
                 m11: cos
+            };
+        }
+    });
+
+    Effects.defineTransform("twirl", function(x, y, parameters)
+    {
+        var dx = x - this.data.iCentreX,
+            dy = y - this.data.iCentreY,
+            distance = dx * dx + dy * dy,
+            a;
+
+        if(distance > parameters.radius2)
+        {
+            return [x, y];
+        }
+
+        distance = Math.sqrt(distance);
+        a = Math.atan2(dy, dx) + parameters.angle * (parameters.radius - distance) / parameters.radius;
+
+        return [
+            this.data.iCentreX + distance * Math.cos(a),
+            this.data.iCentreY + distance * Math.sin(a)
+        ];
+    }, {
+        defaults: {
+            angle: 0,
+            centreX: 0.5,
+            centreY: 0.5,
+            radius: 100
+        },
+        before: function(parameters, width, height)
+        {
+            var iCentreX = width * parameters.centreX,
+                iCentreY = height * parameters.centreY,
+                radius = parameters.radius,
+                radius2;
+
+            if(radius === 0)
+            {
+                radius = Math.min(iCentreX, iCentreY);
+            }
+            radius2 = radius * radius;
+
+            return {
+                iCentreX: iCentreX,
+                iCentreY: iCentreY,
+                radius: radius,
+                radius2: radius2
+            };
+        }
+    });
+
+    Effects.defineTransform("water", function(x, y, parameters)
+    {
+        var dx = x - this.data.iCentreX,
+            dy = y - this.data.iCentreY,
+            distance2 = dx * dx + dy * dy,
+            distance,
+            amount;
+
+        if(distance2 > this.data.radius2)
+        {
+            return [x, y];
+        }
+        distance = Math.sqrt(distance2);
+        amount = parameters.amplitude * Math.sin(distance / parameters.waveLength * Math.PI * 2 - parameters.phase);
+        amount *= (parameters.radius - distance) / parameters.radius;
+        if(distance !== 0)
+        {
+            amount *= parameters.waveLength / distance;
+        }
+        return [x + dx * amount, y + dy * amount];
+    }, {
+        defaults: {
+            waveLength: 16,
+            amplitude: 10,
+            phase: 0,
+            centreX: 0.5,
+            centreY: 0.5,
+            radius: 50
+        },
+        before: function(parameters, width, height)
+        {
+            var iCentreX = width * parameters.centreX,
+                iCentreY = height * parameters.centreY,
+                radius = parameters.radius,
+                radius2;
+
+            if(radius === 0)
+            {
+                radius = Math.min(iCentreX, iCentreY);
+            }
+            radius2 = radius * radius;
+
+            return {
+                iCentreX: iCentreX,
+                iCentreY: iCentreY,
+                radius: radius,
+                radius2: radius2
             };
         }
     });

@@ -612,6 +612,81 @@
     }, false);
 </script>
 
+
+<div class="test test-34">
+    <p class="time"></p>
+</div>
+<script>
+    document.addEventListener("DOMContentLoaded", function()
+    {
+        var project = new Imagizer.Project(imageWidth, imageHeight);
+        var layer1 = project.createLayer();
+        var image1 = new Imagizer.Image();
+        image1.load(imageURL, function()
+        {
+            layer1.put(image1, 0, 0);
+            project.applyEffect("twirl", {
+                angle: Math.PI / 8,
+                centreX: 0.5,
+                centreY: 0.5,
+                radius: 20
+            });
+            project.exportTo(".test-34");
+            document.querySelector(".test-34 .time").textContent = project.getTime();
+        });
+    }, false);
+</script>
+
+
+<div class="test test-35">
+    <p class="time"></p>
+</div>
+<script>
+    document.addEventListener("DOMContentLoaded", function()
+    {
+        var project = new Imagizer.Project(imageWidth, imageHeight);
+        var layer1 = project.createLayer();
+        var image1 = new Imagizer.Image();
+        image1.load(imageURL, function()
+        {
+            layer1.put(image1, 0, 0);
+            project.applyEffect("water", {
+                waveLength: 16,
+                amplitude: 4,
+                phase: 0,
+                centreX: 0.5,
+                centreY: 0.5,
+                radius: 50
+            });
+            project.exportTo(".test-35");
+            document.querySelector(".test-35 .time").textContent = project.getTime();
+        });
+    }, false);
+</script>
+
+
+<div class="test test-36">
+    <p class="time"></p>
+</div>
+<script>
+    document.addEventListener("DOMContentLoaded", function()
+    {
+        var project = new Imagizer.Project(imageWidth, imageHeight);
+        var layer1 = project.createLayer();
+        var image1 = new Imagizer.Image();
+        image1.load(imageURL, function()
+        {
+            layer1.put(image1, 0, 0);
+            project.applyEffect("dissolve", {
+                density: 0.8,
+                softness: 0.2
+            });
+            project.exportTo(".test-36");
+            document.querySelector(".test-36 .time").textContent = project.getTime();
+        });
+    }, false);
+</script>
+
 <script src="../src/imagizer.js"></script>
 </body>
 </html>
