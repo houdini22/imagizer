@@ -1,6 +1,6 @@
 /**
  * @author Michał Baniowski michal.baniowski@gmail.com
- * @version 0.0.4
+ * @version 0.1
  */
 ;
 (function(win, doc)
@@ -37,35 +37,25 @@
                     {
                         if(typeof Class.prototype[name] === "function")
                         {
-
                             Class.prototype[name] = (function(superMethod, childMethod)
                             {
                                 return function()
                                 {
+                                    var tmp = this.__super;
                                     this.__super = superMethod;
                                     var result = childMethod.apply(this, arguments);
-                                    delete this.__super;
+                                    this.__super = tmp;
+                                    if(!this.__super)
+                                    {
+                                        delete this.__super;
+                                    }
                                     return result;
                                 }
                             }(Class.prototype[name], args[i][name]))
                         }
                         else
                         {
-                            if(typeof args[i][name] === "function")
-                            {
-                                Class.prototype[name] = (function(method)
-                                {
-                                    return function()
-                                    {
-                                        delete this.__super;
-                                        return method.apply(this, arguments);
-                                    }
-                                }(args[i][name]))
-                            }
-                            else
-                            {
-                                Class.prototype[name] = args[i][name];
-                            }
+                            Class.prototype[name] = args[i][name];
                         }
                     }
                 }
@@ -87,22 +77,22 @@
             {
                 for(j in arguments[i])
                 {
-                    if(arguments[i].hasOwnProperty(j))
+                    if(Object.prototype.toString.call(arguments[i][j]) === "[object Object]")
                     {
-                        if(Object.prototype.toString.call(arguments[i][j]) === "[object Object]")
+                        if(arguments[i].hasOwnProperty(j))
                         {
                             result[j] = Helpers.extend({}, arguments[i][j]);
                         }
+                    }
+                    else
+                    {
+                        if(Object.prototype.toString.call(arguments[i][j]) === "[object Array]")
+                        {
+                            result[j] = Helpers.extend([], arguments[i][j]);
+                        }
                         else
                         {
-                            if(Object.prototype.toString.call(arguments[i][j]) === "[object Array]")
-                            {
-                                result[j] = Helpers.extend([], arguments[i][j]);
-                            }
-                            else
-                            {
-                                result[j] = arguments[i][j];
-                            }
+                            result[j] = arguments[i][j];
                         }
                     }
                 }
@@ -543,11 +533,11 @@
         },
         smoothStep: function(a, b, x)
         {
-            if (x < a)
+            if(x < a)
             {
                 return 0;
             }
-            if (x >= b)
+            if(x >= b)
             {
                 return 1;
             }
@@ -3368,6 +3358,123 @@
                 radius: radius,
                 radius2: radius2
             };
+        }
+    });
+
+    Effects.definePoint("edge", function(pixel, x, y, parameters, width, height)
+    {
+        var r = 0, g = 0, b = 0,
+            rh = 0, gh = 0, bh = 0,
+            rv = 0, gv = 0, bv = 0,
+            row, iy, col, ix, iOffset, mOffset,
+            pixel2, h, v;
+
+        for(row = -1; row <= 1; row += 1)
+        {
+            iy = y + row;
+            if(!(0 <= iy && iy < height))
+            {
+                iy = y;
+            }
+            mOffset = 3 * (row + 1) + 1;
+            for(col = -1; col <= 1; col += 1)
+            {
+                ix = x + col;
+                if(!(0 <= ix && ix < width))
+                {
+                    ix = x;
+                }
+                pixel2 = this.getOriginalPixel(ix, iy);
+                h = this.data.hEdgeMatrix[mOffset + col];
+                v = this.data.vEdgeMatrix[mOffset + col];
+
+                r = pixel2.r;
+                g = pixel2.g;
+                b = pixel2.b;
+
+                rh += Math.floor(h * r);
+                gh += Math.floor(h * g);
+                bh += Math.floor(h * b);
+
+                rv += Math.floor(v * r);
+                gv += Math.floor(v * g);
+                bv += Math.floor(v + b);
+            }
+        }
+        r = Math.floor(Math.sqrt(rh * rh + rv * rv) / 1.8);
+        g = Math.floor(Math.sqrt(gh * gh + gv * gv) / 1.8);
+        b = Math.floor(Math.sqrt(bh * bh + bv * bv) / 1.8);
+        return {
+            r: r,
+            g: g,
+            b: b,
+            a: pixel.a
+        };
+    }, {
+        defaults: {
+            matrixes: {
+                robertsV: [
+                    0, 0, -1,
+                    0, 1, 0,
+                    0, 0, 0
+                ],
+                robertsH: [
+                    -1, 0, 0,
+                    0, 1, 0,
+                    0, 0, 0
+                ],
+                prewittV: [
+                    -1, 0, 1,
+                    -1, 0, 1,
+                    -1, 0, 1
+                ],
+                prewittH: [
+                    -1, -1, -1,
+                    0, 0, 0,
+                    1, 1, 1
+                ],
+                sobelV: [
+                    -1, 0, 1,
+                    -2, 0, 2,
+                    -1, 0, 1
+                ],
+                sobelH: [
+                    -1, -2, -1,
+                    0, 0, 0,
+                    1, 2, 1
+                ],
+                freiChenV: [
+                    -1, 0, 1,
+                    -Math.sqrt(2), 0, Math.sqrt(2),
+                    -1, 0, 1
+                ],
+                freiChenH: [
+                    -1, -Math.sqrt(2), -1,
+                    0, 0, 0,
+                    1, Math.sqrt(2), 1
+                ]
+            },
+            hEdgeMatrix: "sobelV",
+            vEdgeMatrix: "sobelH"
+        },
+        before: function(parameters, width, height)
+        {
+            var hEdgeMatrix = parameters.hEdgeMatrix,
+                vEdgeMatrix = parameters.vEdgeMatrix;
+
+            if(typeof hEdgeMatrix === "string")
+            {
+                hEdgeMatrix = parameters.matrixes[parameters.hEdgeMatrix];
+            }
+            if(typeof vEdgeMatrix === "string")
+            {
+                vEdgeMatrix = parameters.matrixes[parameters.vEdgeMatrix];
+            }
+            return {
+                r2: Math.sqrt(2),
+                hEdgeMatrix: hEdgeMatrix,
+                vEdgeMatrix: vEdgeMatrix
+            }
         }
     });
 

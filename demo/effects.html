@@ -687,6 +687,48 @@
     }, false);
 </script>
 
+<div class="test test-37">
+    <p class="time"></p>
+</div>
+<script>
+    document.addEventListener("DOMContentLoaded", function()
+    {
+        var project = new Imagizer.Project(imageWidth, imageHeight);
+        var layer1 = project.createLayer();
+        var image1 = new Imagizer.Image();
+        image1.load(imageURL, function()
+        {
+            layer1.put(image1, 0, 0);
+            project.applyEffect("edge", {
+
+            });
+            project.exportTo(".test-37");
+            document.querySelector(".test-37 .time").textContent = project.getTime();
+        });
+    }, false);
+</script>
+
+<div class="test test-38">
+    <p class="time"></p>
+</div>
+<script>
+    document.addEventListener("DOMContentLoaded", function()
+    {
+        var project = new Imagizer.Project(imageWidth, imageHeight);
+        var layer1 = project.createLayer();
+        var image1 = new Imagizer.Image();
+        image1.load(imageURL, function()
+        {
+            layer1.put(image1, 0, 0);
+            project.applyEffect("edge", {});
+            project.applyEffect("gray-scale");
+            project.applyEffect("invert");
+            project.exportTo(".test-38");
+            document.querySelector(".test-38 .time").textContent = project.getTime();
+        });
+    }, false);
+</script>
+
 <script src="../src/imagizer.js"></script>
 </body>
 </html>
