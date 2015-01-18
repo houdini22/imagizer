@@ -7,7 +7,7 @@ Please check demo to get more examples - this documentation is under development
 
 Imagizer effect algorithms are based on a [Jerry's Java Image Proccesing Library](http://www.jhlabs.com/ip/filters/index.html)
 
-## Creating a Project
+## Usage
 To create a Project just execute following lines:
 ```javascript
 var project = new Imagizer.Project(projectWidth, projectHeight);
@@ -144,7 +144,7 @@ project.exportTo(".test-2");
 ```
 Just pass DOM selector to 'exportTo' method and (optionally) mime type of the image.
 
-Imagizer supports [Node Canvas](https://github.com/Automattic/node-canvas). That means when you have installed Node Canvas you can render your images on a server side! Just check /demo/node_cli.js file.
+Imagizer supports [Node canvas](https://github.com/Automattic/node-canvas). That means when you have installed Node canvas you can render your images on a server side! Just check /demo/node_cli.js file.
 
 Imagizer is under heavy development, feel free to ask or contribute!
 
