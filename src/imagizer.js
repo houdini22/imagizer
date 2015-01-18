@@ -3,9 +3,29 @@
  * @version 0.1
  */
 ;
-(function(win, doc)
+(function()
 {
-    win.Imagizer = {};
+    var isNode = typeof window === 'undefined';
+    var publish;
+    var nodeCanvas;
+
+    if(isNode)
+    {
+        publish = function(val)
+        {
+            module.exports = val;
+        };
+        nodeCanvas = require("canvas");
+    }
+    else
+    {
+        publish = function(val)
+        {
+            window.Imagizer = val;
+        };
+    }
+
+    var Imagizer = {};
 
     /**
      * Helper functions
@@ -570,12 +590,12 @@
                     firstNewPixelIndex = yy * top.width * 4 + xx * 4;
 
                     pixelResult = pixelCallback({
-                        r: bottom.imageData.data[firstOldPixelIndex],
+                        r: bottom.imageData.data[firstOldPixelIndex + 0],
                         g: bottom.imageData.data[firstOldPixelIndex + 1],
                         b: bottom.imageData.data[firstOldPixelIndex + 2],
                         a: bottom.imageData.data[firstOldPixelIndex + 3]
                     }, {
-                        r: top.imageData.data[firstNewPixelIndex],
+                        r: top.imageData.data[firstNewPixelIndex + 0],
                         g: top.imageData.data[firstNewPixelIndex + 1],
                         b: top.imageData.data[firstNewPixelIndex + 2],
                         a: top.imageData.data[firstNewPixelIndex + 3]
@@ -585,7 +605,7 @@
 
                     if(pixelResult !== false) // if skip change
                     {
-                        bottom.imageData.data[firstOldPixelIndex] = pixelResult.r;
+                        bottom.imageData.data[firstOldPixelIndex + 0] = pixelResult.r;
                         bottom.imageData.data[firstOldPixelIndex + 1] = pixelResult.g;
                         bottom.imageData.data[firstOldPixelIndex + 2] = pixelResult.b;
                         bottom.imageData.data[firstOldPixelIndex + 3] = pixelResult.a;
@@ -594,6 +614,86 @@
             }
         }
         return bottom.imageData;
+    };
+
+    /**
+     * Pixel callback for merging layers and layer objects.
+     * rootPixel and mergedPixel is object literal with r, g, b and a properties.
+     * @param {object} bottomPixel Pixel placed on result layer
+     * @param {object} topPixel Pixel to merge on
+     * @param {int} x Current x position
+     * @param {int} y Current y position
+     * @param {Object} parameters
+     * @returns {object|boolean}
+     */
+    var mergeCallback = function mergeCallback(bottomPixel, topPixel, x, y, parameters)
+    {
+        if(topPixel.a === 0)
+        {
+            return false; // skip change - opacity is full
+        }
+
+        // alpha compositing
+        var mergedR,
+            mergedG,
+            mergedB,
+            mergedA = topPixel.a / 255,
+            rootA = bottomPixel.a / 255 * (1 - mergedA),
+            outA = (mergedA + bottomPixel.a * (1 - mergedA) / 255);
+
+        switch(parameters.blendingMode)
+        {
+            case "lighten":
+            case "darken":
+            case "multiply":
+            case "average":
+            case "add":
+            case "subtract":
+            case "difference":
+            case "negation":
+            case "screen":
+            case "exclusion":
+            case "overlay":
+            case "softLight":
+            case "hardLight":
+            case "colorDodge":
+            case "colorBurn":
+            case "linearDodge":
+            case "linearBurn":
+            case "linearLight":
+            case "vividLight":
+            case "pinLight":
+            case "hardMix":
+            case "reflect":
+            case "glow":
+            case "phoenix":
+                topPixel.r = blendingModes[parameters.blendingMode](bottomPixel.r, topPixel.r);
+                topPixel.g = blendingModes[parameters.blendingMode](bottomPixel.g, topPixel.g);
+                topPixel.b = blendingModes[parameters.blendingMode](bottomPixel.b, topPixel.b);
+                break;
+
+            default:
+                break;
+        }
+
+        var rootR = bottomPixel.r;
+        var rootG = bottomPixel.g;
+        var rootB = bottomPixel.b;
+
+        mergedR = topPixel.r * mergedA + rootR * rootA;
+        mergedG = topPixel.g * mergedA + rootG * rootA;
+        mergedB = topPixel.b * mergedA + rootB * rootA;
+
+        mergedR = outA == 0 ? 0 : mergedR / outA;
+        mergedG = outA == 0 ? 0 : mergedG / outA;
+        mergedB = outA == 0 ? 0 : mergedB / outA;
+
+        return {
+            r: Math.min(Math.max(0, mergedR), 255) | 0,
+            g: Math.min(Math.max(0, mergedG), 255) | 0,
+            b: Math.min(Math.max(0, mergedB), 255) | 0,
+            a: (255 * outA) | 0
+        }
     };
 
     /**
@@ -710,86 +810,6 @@
     };
 
     /**
-     * Pixel callback for merging layers and layer objects.
-     * rootPixel and mergedPixel is object literal with r, g, b and a properties.
-     * @param {object} bottomPixel Pixel placed on result layer
-     * @param {object} topPixel Pixel to merge on
-     * @param {int} x Current x position
-     * @param {int} y Current y position
-     * @param {Object} parameters
-     * @returns {object|boolean}
-     */
-    var mergeCallback = function mergeCallback(bottomPixel, topPixel, x, y, parameters)
-    {
-        if(topPixel.a === 0)
-        {
-            return false; // skip change - opacity is full
-        }
-
-        // alpha compositing
-        var mergedR,
-            mergedG,
-            mergedB,
-            mergedA = topPixel.a / 255,
-            rootA = bottomPixel.a / 255 * (1 - mergedA),
-            outA = (mergedA + bottomPixel.a * (1 - mergedA) / 255);
-
-        switch(parameters.blendingMode)
-        {
-            case "lighten":
-            case "darken":
-            case "multiply":
-            case "average":
-            case "add":
-            case "subtract":
-            case "difference":
-            case "negation":
-            case "screen":
-            case "exclusion":
-            case "overlay":
-            case "softLight":
-            case "hardLight":
-            case "colorDodge":
-            case "colorBurn":
-            case "linearDodge":
-            case "linearBurn":
-            case "linearLight":
-            case "vividLight":
-            case "pinLight":
-            case "hardMix":
-            case "reflect":
-            case "glow":
-            case "phoenix":
-                topPixel.r = blendingModes[parameters.blendingMode](bottomPixel.r, topPixel.r);
-                topPixel.g = blendingModes[parameters.blendingMode](bottomPixel.g, topPixel.g);
-                topPixel.b = blendingModes[parameters.blendingMode](bottomPixel.b, topPixel.b);
-                break;
-
-            default:
-                break;
-        }
-
-        var rootR = bottomPixel.r;
-        var rootG = bottomPixel.g;
-        var rootB = bottomPixel.b;
-
-        mergedR = topPixel.r * mergedA + rootR * rootA;
-        mergedG = topPixel.g * mergedA + rootG * rootA;
-        mergedB = topPixel.b * mergedA + rootB * rootA;
-
-        mergedR = outA == 0 ? 0 : mergedR / outA;
-        mergedG = outA == 0 ? 0 : mergedG / outA;
-        mergedB = outA == 0 ? 0 : mergedB / outA;
-
-        return {
-            r: Math.min(Math.max(0, mergedR), 255) | 0,
-            g: Math.min(Math.max(0, mergedG), 255) | 0,
-            b: Math.min(Math.max(0, mergedB), 255) | 0,
-            a: (255 * outA) | 0
-        }
-    };
-
-    /**
      * Simple resize.
      * @param oldImageData
      * @param newImageData
@@ -797,12 +817,12 @@
      * @param newHeight
      * @returns {*}
      */
-    var resizeNearestNeighbour = function(oldImageData, newImageData, newWidth, newHeight)
+    var resizeNearestNeighbour = function resizeNearestNeighbour(oldImageData, newImageData, newWidth, newHeight)
     {
         var oldWidth = oldImageData.width,
             oldHeight = oldImageData.height,
-            ratioX = newWidth / oldWidth,
-            ratioY = newHeight / oldHeight,
+            ratioX = oldWidth / newWidth,
+            ratioY = oldHeight / newHeight,
             oldPixelIndex,
             newPixelIndex,
             x, y;
@@ -811,10 +831,10 @@
         {
             for(x = 0; x < newWidth; x += 1)
             {
-                oldPixelIndex = Math.floor(y / ratioY) * oldWidth * 4 + Math.floor(x / ratioX) * 4;
+                oldPixelIndex = Math.floor(y * ratioY) * oldWidth * 4 + Math.floor(x * ratioX) * 4;
                 newPixelIndex = y * newWidth * 4 + x * 4;
 
-                newImageData.data[newPixelIndex] = oldImageData.data[oldPixelIndex];
+                newImageData.data[newPixelIndex + 0] = oldImageData.data[oldPixelIndex + 0];
                 newImageData.data[newPixelIndex + 1] = oldImageData.data[oldPixelIndex + 1];
                 newImageData.data[newPixelIndex + 2] = oldImageData.data[oldPixelIndex + 2];
                 newImageData.data[newPixelIndex + 3] = oldImageData.data[oldPixelIndex + 3];
@@ -858,19 +878,6 @@
     };
 
     /**
-     * Shared method. Adds effect to an array.
-     * @type {Object}
-     */
-    var applyEffect = function()
-    {
-        this.effects.push({
-            name: arguments[0],
-            effect: Effects.get(arguments[0]),
-            params: arguments[1]
-        });
-    };
-
-    /**
      * HTML canvas wrapper
      * @constructor
      */
@@ -888,17 +895,25 @@
          */
         this.initialize = function(width, height)
         {
-            this.canvas = doc.createElement("canvas");
+            var canvas;
+            if(isNode)
+            {
+                this.canvas = new nodeCanvas(width, height);
+            }
+            else
+            {
+                this.canvas = document.createElement("canvas");
 
-            // hide from viewport
-            this.canvas.style.position = "absolute";
-            this.canvas.style.left = "-99999px";
-            this.canvas.style.top = "-99999px";
+                // hide from viewport
+                this.canvas.style.position = "absolute";
+                this.canvas.style.left = "-99999px";
+                this.canvas.style.top = "-99999px";
 
-            width && this.setWidth(width);
-            height && this.setHeight(height);
+                width && this.setWidth(width);
+                height && this.setHeight(height);
 
-            doc.body.appendChild(this.canvas);
+                document.body.appendChild(this.canvas);
+            }
         };
 
         /**
@@ -961,7 +976,10 @@
          */
         this.destroy = function()
         {
-            doc.body.removeChild(this.canvas);
+            if(!isNode)
+            {
+                document.body.removeChild(this.canvas);
+            }
         };
 
         // call initializer
@@ -1027,7 +1045,10 @@
          */
         getImageData: function()
         {
-            this.imageData = this.canvas.getContext().getImageData(0, 0, this.getWidth(), this.getHeight());
+            if(!this.imageData)
+            {
+                this.imageData = this.canvas.getContext().getImageData(0, 0, this.getWidth(), this.getHeight());
+            }
             return this.imageData;
         },
 
@@ -1080,14 +1101,21 @@
         __constructor: function()
         {
             this.__super();
-
-            this.image = new Image();
             this.url = null;
 
-            // hide from viewport
-            this.image.style.position = "absolute";
-            this.image.style.left = "-99999px";
-            this.image.style.top = "-99999px";
+            if(isNode)
+            {
+                this.image = new nodeCanvas.Image();
+            }
+            else
+            {
+                this.image = new Image();
+
+                // hide from viewport
+                this.image.style.position = "absolute";
+                this.image.style.left = "-99999px";
+                this.image.style.top = "-99999px";
+            }
         },
         /**
          * Load image and execute callback on load.
@@ -1096,31 +1124,47 @@
          */
         load: function(url, callback)
         {
-            var _this = this;
+            var _this = this,
+                fs,
+                load = function load()
+                {
+                    _this.setWidth(isNode ? _this.image.width : _this.image.clientWidth);
+                    _this.setHeight(isNode ? _this.image.height : _this.image.clientHeight);
+
+                    // get image data
+                    _this.canvas = new Canvas(_this.getWidth(), _this.getHeight());
+                    _this.canvas.getContext().drawImage(_this.image, 0, 0, _this.getWidth(), _this.getHeight());
+
+                    if(typeof callback === "function")
+                    {
+                        callback.call(_this);
+                    }
+
+                    // clean
+                    if(!isNode)
+                    {
+                        document.body.removeChild(_this.image);
+                    }
+                    _this.canvas.destroy();
+                };
 
             this.url = url;
-            this.image.src = url;
 
-            doc.body.appendChild(this.image);
-
-            this.image.onload = function()
+            if(!isNode)
             {
-                _this.setWidth(_this.image.clientWidth);
-                _this.setHeight(_this.image.clientHeight);
-
-                // get image data
-                _this.canvas = new Canvas(_this.getWidth(), _this.getHeight());
-                _this.canvas.getContext().drawImage(_this.image, 0, 0, _this.getWidth(), _this.getHeight());
-
-                if(typeof callback === "function")
+                document.body.appendChild(this.image);
+                this.image.src = url;
+                this.image.onload = function()
                 {
-                    callback.call(_this);
-                }
-
-                // clean
-                doc.body.removeChild(_this.image);
-                _this.canvas.destroy();
-            };
+                    load();
+                };
+            }
+            else
+            {
+                fs = require("fs");
+                this.image.src = fs.readFileSync(url);
+                load();
+            }
         }
     });
 
@@ -1293,8 +1337,8 @@
             imageType = imageType || "image/png";
 
             var i,
-                container = doc.querySelector(selector),
-                exportedImage = new Image(),
+                container,
+                exportedImage = isNode ? null : new Image(),
                 args;
 
             for(i = 0; i < this.layers.length; i++)
@@ -1319,8 +1363,22 @@
             }
 
             this.canvas.getContext().putImageData(this.imageData, 0, 0);
-            exportedImage.src = this.canvas.toDataURL(imageType);
-            container.appendChild(exportedImage);
+
+            if(isNode)
+            {
+                var fs = require("fs"),
+                    img = this.canvas.toDataURL(),
+                    data = img.replace(/^data:image\/\w+;base64,/, ""),
+                    buff = new Buffer(data, 'base64');
+
+                fs.writeFile(selector, buff);
+            }
+            else
+            {
+                container = document.querySelector(selector);
+                exportedImage.src = this.canvas.toDataURL(imageType);
+                container.appendChild(exportedImage);
+            }
         };
 
         /**
@@ -1328,7 +1386,11 @@
          */
         this.applyEffect = function()
         {
-            applyEffect.apply(this, arguments);
+            this.effects.push({
+                name: arguments[0],
+                effect: Effects.get(arguments[0]),
+                params: arguments[1]
+            });
         };
 
         // call initializer
@@ -1421,7 +1483,11 @@
          */
         this.applyEffect = function()
         {
-            applyEffect.apply(this, arguments);
+            this.effects.push({
+                name: arguments[0],
+                effect: Effects.get(arguments[0]),
+                params: arguments[1]
+            });
         };
 
         /**
@@ -1597,8 +1663,8 @@
 
             this.exportLayer();
 
-            var container = doc.querySelector(selector),
-                exportedImage = new Image();
+            var container = document.querySelector(selector),
+                exportedImage = isNode ? new nodeCanvas.Image() : new Image();
 
             exportedImage.src = this.canvas.toDataURL(imageType);
             container.appendChild(exportedImage);
@@ -1642,7 +1708,11 @@
          */
         this.applyEffect = function()
         {
-            applyEffect.apply(this, arguments);
+            this.effects.push({
+                name: arguments[0],
+                effect: Effects.get(arguments[0]),
+                params: arguments[1]
+            });
         };
 
         /**
@@ -1836,7 +1906,19 @@
                     }
                 }
             }
-            imageData.data.set(imageDataCopy);
+
+            // node canvas fix
+            if(isNode)
+            {
+                for(i = 0; i < imageDataCopy.length; i += 1)
+                {
+                    imageData.data[i] = imageDataCopy[i];
+                }
+            }
+            else
+            {
+                imageData.data.set(imageDataCopy);
+            }
             return imageData;
         };
     };
@@ -1862,6 +1944,7 @@
             additionalParameters && additionalParameters.defaults && (parameters = Helpers.extend(additionalParameters.defaults, parameters));
 
             var x, y,
+                i,
                 sandbox = {
                     data: (additionalParameters && typeof additionalParameters.before === "function")
                         ? additionalParameters.before.call(null, parameters, imageData.width, imageData.height, imageData)
@@ -1886,7 +1969,17 @@
                 }
             }
 
-            imageData.data.set(imageDataCopy);
+            if(isNode)
+            {
+                for(i = 0; i < imageDataCopy.length; i += 1)
+                {
+                    imageData.data[i] = imageDataCopy[i];
+                }
+            }
+            else
+            {
+                imageData.data.set(imageDataCopy);
+            }
             return imageData;
         };
 
@@ -3478,12 +3571,14 @@
         }
     });
 
-    win.Imagizer.Project = Project;
-    win.Imagizer.Layer = Layer;
-    win.Imagizer.Image = ImageObj;
-    win.Imagizer.SimpleText = TextObj;
-    win.Imagizer.Effects = Effects;
-    win.Imagizer.Helpers = Helpers;
-    win.Imagizer.BaseOnLayerObject = baseOnLayerObject;
+    Imagizer.Project = Project;
+    Imagizer.Layer = Layer;
+    Imagizer.Image = ImageObj;
+    Imagizer.SimpleText = TextObj;
+    Imagizer.Effects = Effects;
+    Imagizer.Helpers = Helpers;
+    Imagizer.BaseOnLayerObject = baseOnLayerObject;
 
-}(window, document));
+    publish(Imagizer);
+
+}());
