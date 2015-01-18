@@ -6,10 +6,10 @@ var image1 = new Imagizer.Image();
 
 image1.load("./img/test.png", function()
 {
-    layer1.put(image1, 0, 0);
-    project.applyEffect("edge", {});
-    project.applyEffect("gray-scale");
-    project.applyEffect("invert");
+    var obj = layer1.put(image1, 0, 0);
+    obj.applyEffect("edge", {});
+    obj.applyEffect("gray-scale");
+    obj.applyEffect("invert");
     project.exportTo("./test_result.png");
     console.log(project.getTime());
 });

@@ -25,8 +25,6 @@
         };
     }
 
-    var Imagizer = {};
-
     /**
      * Helper functions
      * @type {Object}
@@ -626,7 +624,7 @@
      * @param {Object} parameters
      * @returns {object|boolean}
      */
-    var mergeCallback = function mergeCallback(bottomPixel, topPixel, x, y, parameters)
+    var mergePixelCallback = function mergePixelCallback(bottomPixel, topPixel, x, y, parameters)
     {
         if(topPixel.a === 0)
         {
@@ -1354,7 +1352,7 @@
                     height: this.height,
                     imageData: this.layers[i].exportLayer(),
                     blendingMode: this.layers[i].parameters.blendingMode
-                }, mergeCallback);
+                }, mergePixelCallback);
             }
 
             for(i = 0; i < this.effects.length; i++)
@@ -1692,7 +1690,7 @@
                     width: layerObject.getWidth(),
                     height: layerObject.getHeight(),
                     imageData: layerObject.exportObject()
-                }, mergeCallback);
+                }, mergePixelCallback);
             }
 
             for(i = 0; i < this.effects.length; i++)
@@ -2032,47 +2030,6 @@
                 throw "Effect '" + name + "' doesn't exists."
             }
             return effects[name];
-        };
-
-        /**
-         * Computes filter data by given array
-         * @param matrix
-         * @returns {{matrix: *, norm: number, size: number, margin: number}}
-         */
-        this.createFilterData = function(matrix)
-        {
-            var norm = 0,
-                i, j;
-
-            for(i = 0; i < matrix.length; i += 1)
-            {
-                norm += matrix[i];
-            }
-            if(norm === 0)
-            {
-                norm = 1;
-            }
-
-            return {
-                matrix: matrix,
-                norm: norm,
-                size: Math.sqrt(matrix.length),
-                margin: (Math.sqrt(matrix.length) - 1) / 2
-            };
-        };
-
-        /**
-         * Filter matrixes definitions.
-         * @type {Object}}
-         */
-        this.filterDefinitions = {
-            "averaging": [1, 1, 1, 1, 1, 1, 1, 1, 1],
-            "averaging-square": [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-            "averaging-circle": [0, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 0],
-            "averaging-lp1": [1, 1, 1, 1, 2, 1, 1, 1, 1],
-            "averaging-lp2": [1, 1, 1, 1, 4, 1, 1, 1, 1],
-            "averaging-lp3": [1, 1, 1, 1, 12, 1, 1, 1, 1],
-            "averaging-pyramidal": [1, 2, 3, 2, 1, 2, 4, 6, 4, 2, 3, 6, 9, 6, 3, 2, 4, 6, 4, 2, 1, 2, 3, 2, 1]
         };
     };
 
@@ -2939,50 +2896,6 @@
         }
     });
 
-    Effects.definePoint("filter-linear", function(pixel, x, y, parameters, width, height)
-    {
-        var filter = this.data,
-            i, j,
-            sumR = 0, sumG = 0, sumB = 0,
-            tmpPixel;
-
-        if(x < filter.margin || y < filter.margin || x > width - filter.margin || y > height - filter.margin)
-        {
-            return false;
-        }
-
-        for(i = 0; i < filter.size; i += 1)
-        {
-            for(j = 0; j < filter.size; j += 1)
-            {
-                tmpPixel = this.getPixel(x + j - filter.margin, y + i - filter.margin);
-                sumR += (filter.matrix[i + j * filter.size] * tmpPixel.r);
-                sumG += (filter.matrix[i + j * filter.size] * tmpPixel.g);
-                sumB += (filter.matrix[i + j * filter.size] * tmpPixel.b);
-            }
-        }
-
-        sumR /= filter.norm;
-        sumG /= filter.norm;
-        sumB /= filter.norm;
-
-        pixel.r = sumR;
-        pixel.g = sumG;
-        pixel.b = sumB;
-
-        return pixel;
-    }, {
-        before: function(parameters, width, height)
-        {
-            var matrix = parameters;
-            if(typeof matrix === "string")
-            {
-                matrix = win.Imagizer.Effects.filterDefinitions[matrix];
-            }
-            return win.Imagizer.Effects.createFilterData(matrix);
-        }
-    });
-
     // Distortion and Warping Filters
     Effects.defineTransform("diffuse", function(x, y, parameters)
     {
@@ -3564,13 +3477,13 @@
                 vEdgeMatrix = parameters.matrixes[parameters.vEdgeMatrix];
             }
             return {
-                r2: Math.sqrt(2),
                 hEdgeMatrix: hEdgeMatrix,
                 vEdgeMatrix: vEdgeMatrix
             }
         }
     });
 
+    var Imagizer = {};
     Imagizer.Project = Project;
     Imagizer.Layer = Layer;
     Imagizer.Image = ImageObj;
