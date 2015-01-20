@@ -7,6 +7,8 @@ Please check demo to get more examples - this documentation is under development
 
 Imagizer effect algorithms are based on a [Jerry's Java Image Proccesing Library](http://www.jhlabs.com/ip/filters/index.html)
 
+Working demo you can find at [http://imagizer.baniczek.vipserv.org/](http://imagizer.baniczek.vipserv.org/)
+
 ## Usage
 To create a Project just execute following lines:
 ```javascript
