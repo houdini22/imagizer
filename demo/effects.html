@@ -729,6 +729,25 @@
     }, false);
 </script>
 
+<div class="test test-39">
+    <p class="time"></p>
+</div>
+<script>
+    document.addEventListener("DOMContentLoaded", function()
+    {
+        var project = new Imagizer.Project(imageWidth, imageHeight);
+        var layer1 = project.createLayer();
+        var image1 = new Imagizer.Image();
+        image1.load(imageURL, function()
+        {
+            layer1.put(image1, 0, 0);
+            project.applyEffect("fillColor", {color: "#ff0000"});
+            project.exportTo(".test-39");
+            document.querySelector(".test-39 .time").textContent = project.getTime();
+        });
+    }, false);
+</script>
+
 <script src="../src/imagizer.js"></script>
 </body>
 </html>

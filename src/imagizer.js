@@ -266,6 +266,16 @@
                     b: rgb1.b + t * (rgb2.b - rgb1.b),
                     a: rgb1.a + t * (rgb2.a - rgb1.a)
                 }
+            },
+            hexToRgb: function(hex)
+            {
+                var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+                return result ? {
+                    r: parseInt(result[1], 16),
+                    g: parseInt(result[2], 16),
+                    b: parseInt(result[3], 16),
+                    a: 255
+                } : null;
             }
         },
         /**
@@ -1278,10 +1288,13 @@
      * Project object. Holds dimensions and layers.
      * @param {int} width
      * @param {int} height
+     * @param {Object} params
      * @constructor
      */
-    var Project = function(width, height)
+    var Project = function(width, height, params)
     {
+        params = params || {};
+
         this.canvas = null;
         this.imageData = null;
         this.effects = [];
@@ -1292,8 +1305,9 @@
          * Initializer.
          * @param {int} width
          * @param {int} height
+         * @param params
          */
-        this.initialize = function(width, height)
+        this.initialize = function(width, height, params)
         {
             this.width = width;
             this.height = height;
@@ -1301,6 +1315,13 @@
             // create tmp canvas
             this.canvas = new Canvas(width, height);
             this.imageData = this.canvas.getContext().getImageData(0, 0, width, height);
+
+            if(params.background_color)
+            {
+                this.createLayer({
+                    background_color: params.background_color
+                });
+            }
         };
 
         /**
@@ -1392,7 +1413,7 @@
         };
 
         // call initializer
-        this.initialize(width, height);
+        this.initialize(width, height, params);
     };
 
     /**
@@ -1635,6 +1656,13 @@
 
             this.canvas = new Canvas(this.width, this.height);
             this.imageData = this.canvas.getContext().createImageData(this.width, this.height);
+
+            if(this.parameters.background_color && this.parameters.background_color !== "transparent")
+            {
+                /*this.applyEffect("colorFill", {
+                 color: this.parameters.background_color
+                 });*/
+            }
         };
 
         /**
@@ -1983,6 +2011,122 @@
 
     };
 
+    var CustomEffect = function(params)
+    {
+        var callback = params.callback,
+            additionalParameters = params.opts;
+
+        /**
+         * Run effect
+         * @param {ImageData} imageData
+         * @param {Array} parameters
+         * @returns {ImageData}
+         */
+        this.run = function(imageData, parameters)
+        {
+            additionalParameters && additionalParameters.defaults && (parameters = Helpers.extend(additionalParameters.defaults, parameters));
+
+            var x, y,
+                firstPixelIndex,
+                result,
+                pixelMap = [],
+                imageDataCopy = new Uint8ClampedArray(imageData.data), // copy image data
+                i,
+                /**
+                 * Get ImageData array index from x and y position
+                 * @param x
+                 * @param y
+                 * @returns {number}
+                 */
+                getIndex = function getIndex(x, y)
+                {
+                    return y * imageData.width * 4 + x * 4;
+                },
+                normalizePixelValue = function(value)
+                {
+                    return Math.min(Math.max(value, 0), 255) | 0;
+                },
+                sandbox = { // object invoked as this in effect callback
+                    /**
+                     * Get changed pixel
+                     * @param {int} x
+                     * @param {int} y
+                     * @returns {{r: *, g: *, b: *, a: *}}
+                     */
+                    getPixel: function(x, y)
+                    {
+                        var index = getIndex(x, y);
+                        return {
+                            r: imageDataCopy[index + 0],
+                            g: imageDataCopy[index + 1],
+                            b: imageDataCopy[index + 2],
+                            a: imageDataCopy[index + 3]
+                        };
+                    },
+                    /**
+                     * Get original pixel.
+                     * @param {int} x
+                     * @param {int} y
+                     * @returns {{r: *, g: *, b: *, a: *}}
+                     */
+                    getOriginalPixel: function(x, y)
+                    {
+                        var index = getIndex(x, y);
+                        return {
+                            r: imageData.data[index + 0],
+                            g: imageData.data[index + 1],
+                            b: imageData.data[index + 2],
+                            a: imageData.data[index + 3]
+                        };
+                    },
+                    /**
+                     * Set new pixel
+                     * @param {int} x
+                     * @param {int} y
+                     * @param {object} rgba
+                     */
+                    setPixel: function(x, y, rgba)
+                    {
+                        var index = getIndex(x, y);
+                        imageDataCopy[index + 0] = normalizePixelValue(rgba.r);
+                        imageDataCopy[index + 1] = normalizePixelValue(rgba.g);
+                        imageDataCopy[index + 2] = normalizePixelValue(rgba.b);
+                        imageDataCopy[index + 3] = normalizePixelValue(rgba.a);
+                    },
+                    /**
+                     * Data created by effect init function
+                     */
+                    data: (additionalParameters && typeof additionalParameters.before === "function")
+                        ? additionalParameters.before.call(this, parameters, imageData.width, imageData.height, imageData)
+                        : {},
+                    /**
+                     * ImageData width
+                     */
+                    width: imageData.width,
+                    /**
+                     * ImageData height
+                     */
+                    height: imageData.height
+                };
+
+            callback.call(sandbox, imageData.width, imageData.height, parameters);
+
+            if(isNode)
+            {
+                for(i = 0; i < imageDataCopy.length; i += 1)
+                {
+                    imageData.data[i] = imageDataCopy[i];
+                }
+            }
+            else
+            {
+                imageData.data.set(imageDataCopy);
+            }
+
+            return imageData;
+        };
+    };
+
     /**
      * Helper for creating effect object.
      */
@@ -2013,6 +2157,20 @@
         this.defineTransform = function(name, callback, opts)
         {
             effects[name] = new TransformEffect({
+                callback: callback,
+                opts: opts
+            });
+        };
+
+        /**
+         * Define custom effect - own loop on pixel map.
+         * @param name
+         * @param callback
+         * @param opts
+         */
+        this.defineCustom = function(name, callback, opts)
+        {
+            effects[name] = new CustomEffect({
                 callback: callback,
                 opts: opts
             });
@@ -3480,6 +3638,37 @@
                 hEdgeMatrix: hEdgeMatrix,
                 vEdgeMatrix: vEdgeMatrix
             }
+        }
+    });
+
+    Effects.defineCustom("fillColor", function(width, height, parameters)
+    {
+        var x, y, color;
+
+        if(parameters.color === "transparent")
+        {
+            color = {
+                r: 0,
+                g: 0,
+                b: 0,
+                a: 0
+            };
+        }
+        else
+        {
+            color = Helpers.Color.hexToRgb(parameters.color);
+        }
+
+        for(y = 0; y < height; y += 1)
+        {
+            for(x = 0; x < width; x += 1)
+            {
+                this.setPixel(x, y, color);
+            }
+        }
+    }, {
+        defaults: {
+            color: "transparent"
         }
     });
 
