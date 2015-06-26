@@ -1327,7 +1327,7 @@
         /**
          * Create new layer.
          * @params {Object} [params] Additional parameters such as: blending mode
-         * @returns {Window.Imagizer.Layer}
+         * @returns {Imagizer.Layer}
          */
         this.createLayer = function(params)
         {
@@ -1659,9 +1659,9 @@
 
             if(this.parameters.background_color && this.parameters.background_color !== "transparent")
             {
-                /*this.applyEffect("colorFill", {
-                 color: this.parameters.background_color
-                 });*/
+                this.applyEffect("fillColor", {
+                    color: this.parameters.background_color
+                });
             }
         };
 
@@ -1794,6 +1794,17 @@
             {
                 this.objects[i].moveY(y);
             }
+            return this;
+        };
+
+        /**
+         * Sets blending mode on layer.
+         * @param blendingMode
+         * @returns {Layer}
+         */
+        this.setBlendingMode = function(blendingMode)
+        {
+            this.parameters.blendingMode = blendingMode;
             return this;
         };
 
