@@ -88,9 +88,7 @@ image1.load("img/pencils.jpg", function()
 The following resize modes are supported:
 
 "nearest-neighbour" - default,
-
 "bilinear-interpolation",
-
 "biquadratic-interpolation".
 
 
