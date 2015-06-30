@@ -79,11 +79,16 @@ or resize image or whole layer:
 image1.load("img/pencils.jpg", function()
 {
     var obj = layer1.put(image1, 200, 150);
-    obj.resize(200, 150);
+    obj.resize(200, 150 /*, mode */);
     // or
-    layer1.resize(200, 150);
+    layer1.resize(200, 150 /*, mode */);
 });
 ```
+
+The following resize modes are supported:
+"nearest-neighbour" - default,
+"bilinear-interpolation",
+"biquadratic-interpolation".
 
 The following blending modes are supported:
 - lighten
