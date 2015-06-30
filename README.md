@@ -86,9 +86,14 @@ image1.load("img/pencils.jpg", function()
 ```
 
 The following resize modes are supported:
+
 "nearest-neighbour" - default,
+
 "bilinear-interpolation",
+
 "biquadratic-interpolation".
+
+
 
 The following blending modes are supported:
 - lighten
