@@ -1,5 +1,8 @@
 body {
     background-color: #d3d3d3;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 12px;
+    color: black;
 }
 
 .test {
@@ -22,6 +25,10 @@ body {
     line-height: 20px;;
     bottom: 0;
     position: absolute;
+}
+
+.test h4 {
+  text-align: center;
 }
 
 .clearfix {

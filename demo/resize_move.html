@@ -8,6 +8,7 @@
 <body>
 
 <div class="test test-0">
+    <h4>Original image</h4>
     <p class="time"></p>
 </div>
 <script>
@@ -27,6 +28,7 @@
 
 
 <div class="test test-1">
+    <h4>Layer resize and move object</h4>
     <p class="time"></p>
 </div>
 <script>
@@ -47,6 +49,7 @@
 </script>
 
 <div class="test test-2">
+    <h4>Simple layer resize (nearest neighbour)</h4>
     <p class="time"></p>
 </div>
 <script>
@@ -66,6 +69,7 @@
 </script>
 
 <div class="test test-3">
+    <h4>Crop (without move)</h4>
     <p class="time"></p>
 </div>
 <script>
@@ -80,6 +84,74 @@
             obj.crop(100, 100, 100, 100);
             project.exportTo(".test-3");
             document.querySelector(".test-3 .time").textContent = project.getTime();
+        });
+    }, false);
+</script>
+
+<div class="clearfix"></div>
+
+<div class="test test-4">
+    <h4>Crop, resize (zoom - nearest neighbour) and move to x = 0, y = 0</h4>
+    <p class="time"></p>
+</div>
+<script>
+    document.addEventListener("DOMContentLoaded", function()
+    {
+        var project = new Imagizer.Project(400, 300);
+        var layer1 = project.createLayer();
+        var image1 = new Imagizer.Image();
+        image1.load("img/pencils.jpg", function()
+        {
+            var obj = layer1.put(image1, 0, 0);
+            obj.crop(100, 100, 100, 100);
+            obj.resize(300, 300);
+            obj.setXY(0, 0);
+            project.exportTo(".test-4");
+            document.querySelector(".test-4 .time").textContent = project.getTime();
+        });
+    }, false);
+</script>
+
+<div class="test test-5">
+    <h4>Crop, resize (zoom - bilinear interpolation) and move to x = 0, y = 0</h4>
+    <p class="time"></p>
+</div>
+<script>
+    document.addEventListener("DOMContentLoaded", function()
+    {
+        var project = new Imagizer.Project(400, 300);
+        var layer1 = project.createLayer();
+        var image1 = new Imagizer.Image();
+        image1.load("img/pencils.jpg", function()
+        {
+            var obj = layer1.put(image1, 0, 0);
+            obj.crop(100, 100, 100, 100);
+            obj.resize(300, 300, "bilinear-interpolation");
+            obj.setXY(0, 0);
+            project.exportTo(".test-5");
+            document.querySelector(".test-5 .time").textContent = project.getTime();
+        });
+    }, false);
+</script>
+
+<div class="test test-6">
+    <h4>Crop, resize (zoom - biquadratic interpolation) and move to x = 0, y = 0</h4>
+    <p class="time"></p>
+</div>
+<script>
+    document.addEventListener("DOMContentLoaded", function()
+    {
+        var project = new Imagizer.Project(400, 300);
+        var layer1 = project.createLayer();
+        var image1 = new Imagizer.Image();
+        image1.load("img/pencils.jpg", function()
+        {
+            var obj = layer1.put(image1, 0, 0);
+            obj.crop(100, 100, 100, 100);
+            obj.resize(300, 300, "biquadratic-interpolation");
+            obj.setXY(0, 0);
+            project.exportTo(".test-6");
+            document.querySelector(".test-6 .time").textContent = project.getTime();
         });
     }, false);
 </script>
