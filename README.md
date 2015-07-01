@@ -17,7 +17,8 @@ var project = new Imagizer.Project(projectWidth, projectHeight);
 ```
 or in node.js:
 ```javascript
-var project = require("imagizer");
+var imagizer = require("imagizer");
+var project = new imagizer.Project(projectWidth, projectHeight);
 ```
 where projectWidth and projectHeight are x and y dimensions of result image.
 

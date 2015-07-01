@@ -1,6 +1,6 @@
 {
   "name": "imagizer",
-  "version": "0.1.1",
+  "version": "0.1.1.1",
   "description": "JavaScript library for image manipulation. Supports crop, resize, layers, blending modes, transform and color effects.",
   "main": "src/imagizer.js",
   "dependencies": {
