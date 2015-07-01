@@ -1,4 +1,4 @@
-var Imagizer = require("./../src/imagizer.js");
+var Imagizer = require("imagizer");
 
 var project = new Imagizer.Project(500, 375);
 var layer1 = project.createLayer();

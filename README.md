@@ -9,6 +9,14 @@ Imagizer effect algorithms are based on a [Jerry's Java Image Proccesing Library
 
 Working demo you can find at [http://imagizer.baniczek.vipserv.org/](http://imagizer.baniczek.vipserv.org/)
 
+## npm
+Imagizer is available as npm package.
+```
+npm install imagizer
+```
+
+Check ./demo/node_demo.js for example of usage.
+
 ## Usage
 To create a Project just execute following lines:
 In browser:
@@ -159,8 +167,6 @@ To export the Project (result image) you have to call:
 project.exportTo(".test-2");
 ```
 Just pass DOM selector to 'exportTo' method and (optionally) mime type of the image.
-
-Imagizer supports [Node canvas](https://github.com/Automattic/node-canvas). That means when you have installed Node canvas you can render your images on a server side! Just check /demo/node_cli.js file.
 
 Imagizer is under heavy development, feel free to ask or contribute!
 
