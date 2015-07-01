@@ -11,6 +11,8 @@ body {
     margin: 0 20px 20px 0;
     position: relative;
     padding-bottom: 20px;
+    min-height: 151px;
+    width: 151px;
 }
 
 .test .time {
