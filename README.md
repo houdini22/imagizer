@@ -11,8 +11,13 @@ Working demo you can find at [http://imagizer.baniczek.vipserv.org/](http://imag
 
 ## Usage
 To create a Project just execute following lines:
+In browser:
 ```javascript
 var project = new Imagizer.Project(projectWidth, projectHeight);
+```
+or in node.js:
+```javascript
+var project = require("imagizer");
 ```
 where projectWidth and projectHeight are x and y dimensions of result image.
 
