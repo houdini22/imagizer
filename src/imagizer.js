@@ -29,13 +29,13 @@
      * Helper functions
      * @type {Object}
      */
-    var Helpers = {
+    var helpers = {
         /**
          * Simple class inheriting
          * @returns {Function}
          * @constructor
          */
-        Inherit: function()
+        inherit: function()
         {
             var name, i,
                 args = arguments,
@@ -99,14 +99,14 @@
                     {
                         if(arguments[i].hasOwnProperty(j))
                         {
-                            result[j] = Helpers.extend({}, arguments[i][j]);
+                            result[j] = helpers.extend({}, arguments[i][j]);
                         }
                     }
                     else
                     {
                         if(Object.prototype.toString.call(arguments[i][j]) === "[object Array]")
                         {
-                            result[j] = Helpers.extend([], arguments[i][j]);
+                            result[j] = helpers.extend([], arguments[i][j]);
                         }
                         else
                         {
@@ -118,9 +118,9 @@
             return result;
         },
         /**
-         * Color Helpers
+         * color Helpers
          */
-        Color: {
+        color: {
             /**
              * RGB to HSB color convert.
              * @param r
@@ -289,9 +289,9 @@
             }
         },
         /**
-         * Noise generator
+         * noise generator
          */
-        Noise: (function()
+        noise: (function()
         {
             var parameters = {},
                 isInit = false;
@@ -571,7 +571,7 @@
         },
         triangle: function(x)
         {
-            var r = Helpers.mod(x, 1);
+            var r = helpers.mod(x, 1);
             return 2 * (r < 0.5 ? r : 1 - r);
         },
         smoothStep: function(a, b, x)
@@ -1334,7 +1334,7 @@
      * @type {Function}
      * @constructor
      */
-    var ImageObj = Helpers.Inherit(baseOnLayerObject, {
+    var ImageObj = helpers.inherit(baseOnLayerObject, {
         __constructor: function()
         {
             this.__super();
@@ -1470,7 +1470,7 @@
      * Text object put on layer.
      * @type {Function}
      */
-    var TextObj = Helpers.Inherit(baseOnLayerObject, {
+    var TextObj = helpers.inherit(baseOnLayerObject, {
         __constructor: function(width, height)
         {
             this.__super();
@@ -1888,7 +1888,7 @@
 
             if(this.parameters.background_color && this.parameters.background_color !== "transparent")
             {
-                this.applyEffect("fillColor", {
+                this.applyEffect("fill-color", {
                     color: this.parameters.background_color
                 });
             }
@@ -2058,7 +2058,7 @@
          */
         this.run = function(imageData, parameters)
         {
-            additionalParameters && additionalParameters.defaults && (parameters = Helpers.extend(additionalParameters.defaults, parameters));
+            additionalParameters && additionalParameters.defaults && (parameters = helpers.extend(additionalParameters.defaults, parameters));
 
             var x, y,
                 firstPixelIndex,
@@ -2207,7 +2207,7 @@
          */
         this.run = function(imageData, parameters)
         {
-            additionalParameters && additionalParameters.defaults && (parameters = Helpers.extend(additionalParameters.defaults, parameters));
+            additionalParameters && additionalParameters.defaults && (parameters = helpers.extend(additionalParameters.defaults, parameters));
 
             var x, y,
                 i,
@@ -2264,7 +2264,7 @@
          */
         this.run = function(imageData, parameters)
         {
-            additionalParameters && additionalParameters.defaults && (parameters = Helpers.extend(additionalParameters.defaults, parameters));
+            additionalParameters && additionalParameters.defaults && (parameters = helpers.extend(additionalParameters.defaults, parameters));
 
             var x, y,
                 firstPixelIndex,
@@ -2845,9 +2845,9 @@
         defaults: {}
     });
 
-    Effects.definePoint("HSBAdjust", function(pixel, x, y, parameters, width, height)
+    Effects.definePoint("hsb-adjust", function(pixel, x, y, parameters, width, height)
     {
-        var hsb = Helpers.Color.RGBtoHSB(pixel.r, pixel.g, pixel.b);
+        var hsb = helpers.color.RGBtoHSB(pixel.r, pixel.g, pixel.b);
 
         hsb.h += parameters.h;
         while(hsb.h < 0)
@@ -2861,7 +2861,7 @@
         hsb.b += parameters.b;
         hsb.b = Math.max(Math.min(hsb.b, 1), 0);
 
-        var result = Helpers.Color.HSBtoRGB(hsb.h, hsb.s, hsb.b);
+        var result = helpers.color.HSBtoRGB(hsb.h, hsb.s, hsb.b);
         pixel.r = result.r;
         pixel.g = result.g;
         pixel.b = result.b;
@@ -2875,7 +2875,7 @@
         }
     });
 
-    Effects.definePoint("invertAlpha", function(pixel)
+    Effects.definePoint("invert-alpha", function(pixel)
     {
         pixel.a = 255 - pixel.a;
         return pixel;
@@ -3125,7 +3125,7 @@
         }
     });
 
-    Effects.definePoint("mapColors", function(pixel, x, y, parameters)
+    Effects.definePoint("map-colors", function(pixel, x, y, parameters)
     {
         // TODO
     }, {
@@ -3281,12 +3281,12 @@
             for(i = 0; i < 128; i += 1)
             {
                 t = i / 127;
-                lut[i] = Helpers.Color.mixColors(t, parameters.shadowColor, parameters.midColor);
+                lut[i] = helpers.color.mixColors(t, parameters.shadowColor, parameters.midColor);
             }
             for(i = 128; i < 256; i += 1)
             {
                 t = (i - 127) / 128;
-                lut[i] = Helpers.Color.mixColors(t, parameters.midColor, parameters.highColor);
+                lut[i] = helpers.color.mixColors(t, parameters.midColor, parameters.highColor);
             }
             return {
                 lut: lut
@@ -3330,7 +3330,7 @@
     Effects.definePoint("dissolve", function(pixel, x, y, parameters)
     {
         var v = Math.random(),
-            f = Helpers.smoothStep(this.data.minDensity, this.data.maxDensity, v);
+            f = helpers.smoothStep(this.data.minDensity, this.data.maxDensity, v);
         pixel.a = pixel.a * f;
         return pixel;
     }, {
@@ -3355,13 +3355,13 @@
             r = Math.sqrt(dx * dx + dy * dy),
             theta = Math.atan2(dy, dx) - parameters.angle - parameters.angle2;
 
-        theta = Helpers.triangle(theta / Math.PI * parameters.sides * 0.5);
+        theta = helpers.triangle(theta / Math.PI * parameters.sides * 0.5);
 
         if(parameters.radius !== 0)
         {
             var c = Math.cos(theta),
                 radiusC = parameters.radius / c;
-            r = radiusC * Helpers.triangle(r / radiusC);
+            r = radiusC * helpers.triangle(r / radiusC);
         }
 
         theta += parameters.angle;
@@ -3420,7 +3420,7 @@
                 cosTable: cosTable,
                 displacementMap: function(x, y)
                 {
-                    var result = 127 * (1 + Helpers.Noise.noise2(x / parameters.xScale, y / parameters.yScale));
+                    var result = 127 * (1 + helpers.noise.noise2(x / parameters.xScale, y / parameters.yScale));
                     return Math.min(255, Math.max(0, result));
                 }
             };
@@ -3508,18 +3508,18 @@
                 break;
 
             case "SAWTOOTH":
-                fx = Helpers.mod(nx, 1);
-                fy = Helpers.mod(ny, 1);
+                fx = helpers.mod(nx, 1);
+                fy = helpers.mod(ny, 1);
                 break;
 
             case "TRIANGLE":
-                fx = Helpers.triangle(nx);
-                fy = Helpers.triangle(ny);
+                fx = helpers.triangle(nx);
+                fy = helpers.triangle(ny);
                 break;
 
             case "NOISE":
-                fx = Helpers.Noise.noise1(nx);
-                fy = Helpers.Noise.noise1(ny);
+                fx = helpers.noise.noise1(nx);
+                fy = helpers.noise.noise1(ny);
                 break;
         }
 
@@ -3635,13 +3635,13 @@
         if(parameters.turbulence === 1)
         {
             return [
-                x + parameters.amount * Helpers.Noise.noise3(nx + 0.5, ny, parameters.time),
-                y + parameters.amount * Helpers.Noise.noise3(nx, ny + 0.5, parameters.time)
+                x + parameters.amount * helpers.noise.noise3(nx + 0.5, ny, parameters.time),
+                y + parameters.amount * helpers.noise.noise3(nx, ny + 0.5, parameters.time)
             ];
         }
         return [
-            x + parameters.amount * Helpers.Noise.turbulence3(nx + 0.5, ny, parameters.turbulence, parameters.time),
-            y + parameters.amount * Helpers.Noise.turbulence3(nx, ny + 0.5, parameters.turbulence, parameters.time)
+            x + parameters.amount * helpers.noise.turbulence3(nx + 0.5, ny, parameters.turbulence, parameters.time),
+            y + parameters.amount * helpers.noise.turbulence3(nx, ny + 0.5, parameters.turbulence, parameters.time)
         ];
     }, {
         defaults: {
@@ -3881,7 +3881,7 @@
         }
     });
 
-    Effects.defineCustom("fillColor", function(width, height, parameters)
+    Effects.defineCustom("fill-color", function(width, height, parameters)
     {
         var x, y, color;
 
@@ -3896,7 +3896,7 @@
         }
         else
         {
-            color = Helpers.Color.hexToRGB(parameters.color);
+            color = helpers.color.hexToRGB(parameters.color);
             color.a = 255;
         }
 
@@ -3945,7 +3945,7 @@
             theta = Math.atan2(-dy, -dx) + parameters.angle,
             r = Math.sqrt(dx * dx + dy * dy);
 
-        theta = Helpers.mod(theta, 2 * Math.PI);
+        theta = helpers.mod(theta, 2 * Math.PI);
 
         return [
             this.data.width * theta / parameters.spreadAngle + 0.00001,
@@ -3970,13 +3970,34 @@
         }
     });
 
+    Effects.defineTransform("rotate", function(x, y, parameters, width, height)
+    {
+        return [
+            ((this.data.cos * (x - this.data.icentreX)) - (this.data.sin * (y - this.data.icentreY)) + this.data.icentreY),
+            ((this.data.sin * (x - this.data.icentreX)) - (this.data.cos * (y - this.data.icentreY)) + this.data.icentreY)
+        ];
+    }, {
+        defaults: {
+            angle: Math.PI
+        },
+        before: function(parameters, width, height)
+        {
+            return {
+                cos: Math.cos(parameters.angle),
+                sin: Math.sin(parameters.angle),
+                icentreX: width / 2,
+                icentreY: height / 2
+            };
+        }
+    });
+
     var Imagizer = {};
     Imagizer.Project = Project;
     Imagizer.Layer = Layer;
     Imagizer.Image = ImageObj;
     Imagizer.SimpleText = TextObj;
     Imagizer.Effects = Effects;
-    Imagizer.Helpers = Helpers;
+    Imagizer.helpers = helpers;
     Imagizer.BaseOnLayerObject = baseOnLayerObject;
 
     publish(Imagizer);

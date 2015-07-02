@@ -231,7 +231,7 @@
 </script>
 
 <div class="test test-18">
-    <h4>HSBAdjust effect</h4>
+    <h4>hsb-adjust effect</h4>
     <p class="time"></p>
 </div>
 <script>
@@ -243,7 +243,7 @@
         image1.load(imageURL, function()
         {
             layer1.put(image1, 0, 0);
-            project.applyEffect("HSBAdjust", {
+            project.applyEffect("hsb-adjust", {
                 h: 0.5,
                 s: 0.2,
                 b: 1
@@ -255,7 +255,7 @@
 </script>
 
 <div class="test test-19">
-    <h4>invertAlpha effect</h4>
+    <h4>invert-alpha effect</h4>
     <p class="time"></p>
 </div>
 <script>
@@ -267,7 +267,7 @@
         image1.load(imageURL, function()
         {
             layer1.put(image1, 0, 0);
-            project.applyEffect("invertAlpha");
+            project.applyEffect("invert-alpha");
             project.exportTo(".test-19");
             document.querySelector(".test-19 .time").textContent = project.getTime();
         });
@@ -767,7 +767,7 @@
         image1.load(imageURL, function()
         {
             layer1.put(image1, 0, 0);
-            project.applyEffect("fillColor", {color: "#ff0000"});
+            project.applyEffect("fill-color", {color: "#ff0000"});
             project.exportTo(".test-39");
             document.querySelector(".test-39 .time").textContent = project.getTime();
         });
@@ -803,7 +803,6 @@
 
 <div class="test test-41">
     <h4>circle effect</h4>
-
     <p class="time"></p>
 </div>
 <script>
@@ -818,6 +817,28 @@
             project.applyEffect("circle");
             project.exportTo(".test-41");
             document.querySelector(".test-41 .time").textContent = project.getTime();
+        });
+    }, false);
+</script>
+
+<div class="test test-42">
+    <h4>rotate effect</h4>
+    <p class="time"></p>
+</div>
+<script>
+    document.addEventListener("DOMContentLoaded", function()
+    {
+        var project = new Imagizer.Project(imageWidth, imageHeight);
+        var layer1 = project.createLayer();
+        var image1 = new Imagizer.Image();
+        image1.load(imageURL, function()
+        {
+            layer1.put(image1, 0, 0);
+            project.applyEffect("rotate", {
+                angle: Math.PI / 2
+            });
+            project.exportTo(".test-42");
+            document.querySelector(".test-42 .time").textContent = project.getTime();
         });
     }, false);
 </script>

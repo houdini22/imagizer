@@ -145,7 +145,7 @@ The following effects are supported:
 - gain
 - gamma
 - gray
-- invertAlpha
+- invert-alpha
 - invert
 - rescale
 - solarize
@@ -305,7 +305,7 @@ defaults: {
     gammaBlue: 1
 },
 ```
-##### HSBAdjust
+##### hsb-adjust
 ```
 defaults: {
     h: 1,
@@ -522,7 +522,7 @@ defaults: {
     vEdgeMatrix: "sobelH"
 },
 ```
-##### fillColor
+##### fill-color
 ```
 defaults: {
     color: "transparent"
@@ -548,6 +548,12 @@ defaults: {
     spreadAngle: Math.PI,
     centreX: 0.5,
     centreY: 0.5
+},
+```
+##### rotate
+```
+defaults: {
+    angle: Math.PI
 },
 ```
 
