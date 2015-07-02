@@ -774,6 +774,54 @@
     }, false);
 </script>
 
+<div class="test test-40">
+    <h4>channel-mix effect</h4>
+    <p class="time"></p>
+</div>
+<script>
+    document.addEventListener("DOMContentLoaded", function()
+    {
+        var project = new Imagizer.Project(imageWidth, imageHeight);
+        var layer1 = project.createLayer();
+        var image1 = new Imagizer.Image();
+        image1.load(imageURL, function()
+        {
+            layer1.put(image1, 0, 0);
+            project.applyEffect("channel-mix", {
+                blueGreen: 100,
+                redBlue: 150,
+                greenRed: 50,
+                intoR: 100,
+                intoG: 150,
+                intoB: 50
+            });
+            project.exportTo(".test-40");
+            document.querySelector(".test-40 .time").textContent = project.getTime();
+        });
+    }, false);
+</script>
+
+<div class="test test-41">
+    <h4>circle effect</h4>
+
+    <p class="time"></p>
+</div>
+<script>
+    document.addEventListener("DOMContentLoaded", function()
+    {
+        var project = new Imagizer.Project(imageWidth, imageHeight);
+        var layer1 = project.createLayer();
+        var image1 = new Imagizer.Image();
+        image1.load(imageURL, function()
+        {
+            layer1.put(image1, 0, 0);
+            project.applyEffect("circle");
+            project.exportTo(".test-41");
+            document.querySelector(".test-41 .time").textContent = project.getTime();
+        });
+    }, false);
+</script>
+
 <script src="../src/imagizer.js"></script>
 </body>
 </html>

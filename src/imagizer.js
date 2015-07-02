@@ -267,15 +267,25 @@
                     a: rgb1.a + t * (rgb2.a - rgb1.a)
                 }
             },
-            hexToRgb: function(hex)
+            hexToRGB: function(hex)
             {
-                var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
-                return result ? {
-                    r: parseInt(result[1], 16),
-                    g: parseInt(result[2], 16),
-                    b: parseInt(result[3], 16),
-                    a: 255
-                } : null;
+                hex = parseInt(hex.replace("#", ""), 16);
+                var r = hex >> 16;
+                var g = hex >> 8 & 0xFF;
+                var b = hex & 0xFF;
+                return {
+                    r: r,
+                    g: g,
+                    b: b
+                };
+            },
+            RGBtoHex: function(pixel)
+            {
+                var bin = pixel.r << 16 | pixel.g << 8 | pixel.b;
+                return (function(h)
+                {
+                    return new Array(7 - h.length).join("0") + h
+                })(bin.toString(16).toUpperCase())
             }
         },
         /**
@@ -964,7 +974,7 @@
             oldPixelIndex10, oldPixelIndex11, oldPixelIndex12,
             oldPixelIndex20, oldPixelIndex21, oldPixelIndex22,
             newPixelIndex,
-        i, j;
+            i, j;
 
         for(i = 0; i < newHeight; i += 1)
         {
@@ -2212,7 +2222,7 @@
             {
                 for(x = 0; x < imageData.width; x += 1)
                 {
-                    var newXY = callback.call(sandbox, x, y, parameters),
+                    var newXY = callback.call(sandbox, x, y, parameters, imageData.width, imageData.height),
                         newX = Math.floor(newXY[0]),
                         newY = Math.floor(newXY[1]),
                         oldPixelIndex = y * imageData.width * 4 + x * 4,
@@ -3886,7 +3896,8 @@
         }
         else
         {
-            color = Helpers.Color.hexToRgb(parameters.color);
+            color = Helpers.Color.hexToRGB(parameters.color);
+            color.a = 255;
         }
 
         for(y = 0; y < height; y += 1)
@@ -3899,6 +3910,63 @@
     }, {
         defaults: {
             color: "transparent"
+        }
+    });
+
+    Effects.definePoint("channel-mix", function(pixel, x, y, parameters)
+    {
+        var r = pixel.r,
+            g = pixel.g,
+            b = pixel.b,
+            a = pixel.a;
+
+        return {
+            r: ((parameters.intoR * (parameters.blueGreen * g + (255 - parameters.blueGreen) * b) / 255 + (255 - parameters.intoR) * r) / 255),
+            g: ((parameters.intoG * (parameters.redBlue * g + (255 - parameters.redBlue) * r) / 255 + (255 - parameters.intoG) * g) / 255),
+            b: ((parameters.intoB * (parameters.greenRed * g + (255 - parameters.greenRed) * g) / 255 + (255 - parameters.intoB) * b) / 255),
+            a: pixel.a
+        };
+
+    }, {
+        defaults: {
+            blueGreen: 1,
+            redBlue: 1,
+            greenRed: 1,
+            intoR: 1,
+            intoG: 1,
+            intoB: 1
+        }
+    });
+
+    Effects.defineTransform("circle", function(x, y, parameters, width, height)
+    {
+        var dx = x - this.data.icentreX,
+            dy = y - this.data.icentreX,
+            theta = Math.atan2(-dy, -dx) + parameters.angle,
+            r = Math.sqrt(dx * dx + dy * dy);
+
+        theta = Helpers.mod(theta, 2 * Math.PI);
+
+        return [
+            this.data.width * theta / parameters.spreadAngle + 0.00001,
+            height * (1 - (r - parameters.radius) / (height + 0.00001))
+        ];
+    }, {
+        defaults: {
+            radius: 10,
+            height: 20,
+            angle: 0,
+            spreadAngle: Math.PI,
+            centreX: 0.5,
+            centreY: 0.5
+        },
+        before: function(parameters, width, height)
+        {
+            return {
+                icentreX: width * parameters.centreX,
+                icentreY: height * parameters.centreY,
+                width: --width
+            };
         }
     });
 

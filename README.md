@@ -528,6 +528,28 @@ defaults: {
     color: "transparent"
 }
 ```
+##### channel-mix-filter
+```
+defaults: {
+    blueGreen: 1,
+    redBlue: 1,
+    greenRed: 1,
+    intoR: 1,
+    intoG: 1,
+    intoB: 1
+}
+```
+##### circle
+```
+defaults: {
+    radius: 10,
+    height: 20,
+    angle: 0,
+    spreadAngle: Math.PI,
+    centreX: 0.5,
+    centreY: 0.5
+},
+```
 
 ## Exporting result image
 To export the Project (result image) you have to call:
@@ -539,7 +561,7 @@ or in node.js:
 ```javascript
 project.exportTo("path/to/file.png");
 ```
-Just pass DOM selector to 'exportTo' method and (optionally) mime type of the image.
+Just pass DOM selector (browser) or path (node.js) to 'exportTo' method and (optionally) valid mime type of the image as a second parameter.
 
 Imagizer is under heavy development, feel free to ask or contribute!
 
