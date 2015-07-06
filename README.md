@@ -592,3 +592,10 @@ Just pass DOM selector (browser) or path (node.js) to 'exportTo' method and (opt
 Imagizer is under heavy development, feel free to ask or contribute!
 
 Enjoy!
+
+## Changelog
+
+0.1.3 Added effects: circle, mix-channels, rotate, flip, offset, polar. Updated node.js demo. Updated docs.
+0.1.2 ---
+0.1.1 ---
+0.1.0 Initial commit
