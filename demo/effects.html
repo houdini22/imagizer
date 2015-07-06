@@ -843,6 +843,69 @@
     }, false);
 </script>
 
+<div class="test test-43">
+    <h4>flip effect</h4>
+
+    <p class="time"></p>
+</div>
+<script>
+    document.addEventListener("DOMContentLoaded", function()
+    {
+        var project = new Imagizer.Project(imageWidth, imageHeight);
+        var layer1 = project.createLayer();
+        var image1 = new Imagizer.Image();
+        image1.load(imageURL, function()
+        {
+            layer1.put(image1, 0, 0);
+            project.applyEffect("flip");
+            project.exportTo(".test-43");
+            document.querySelector(".test-43 .time").textContent = project.getTime();
+        });
+    }, false);
+</script>
+
+<div class="test test-44">
+    <h4>offset effect</h4>
+
+    <p class="time"></p>
+</div>
+<script>
+    document.addEventListener("DOMContentLoaded", function()
+    {
+        var project = new Imagizer.Project(imageWidth, imageHeight);
+        var layer1 = project.createLayer();
+        var image1 = new Imagizer.Image();
+        image1.load(imageURL, function()
+        {
+            layer1.put(image1, 0, 0);
+            project.applyEffect("offset");
+            project.exportTo(".test-44");
+            document.querySelector(".test-44 .time").textContent = project.getTime();
+        });
+    }, false);
+</script>
+
+<div class="test test-45">
+    <h4>polar effect</h4>
+
+    <p class="time"></p>
+</div>
+<script>
+    document.addEventListener("DOMContentLoaded", function()
+    {
+        var project = new Imagizer.Project(imageWidth, imageHeight);
+        var layer1 = project.createLayer();
+        var image1 = new Imagizer.Image();
+        image1.load(imageURL, function()
+        {
+            layer1.put(image1, 0, 0);
+            project.applyEffect("polar");
+            project.exportTo(".test-45");
+            document.querySelector(".test-45 .time").textContent = project.getTime();
+        });
+    }, false);
+</script>
+
 <script src="../src/imagizer.js"></script>
 </body>
 </html>

@@ -3991,6 +3991,333 @@
         }
     });
 
+    Effects.defineCustom("flip", function(width, height, parameters)
+    {
+        var x = 0, y = 0,
+            w = width,
+            h = height,
+            newX = 0,
+            newY = 0,
+            newW = w,
+            newH = h,
+            newRow, newCol;
+
+        switch(parameters.operation)
+        {
+            case "FLIP_H":
+                newX = width - (x + w);
+                break;
+            case "FLIP_V":
+                newY = height - (y + h);
+                break;
+            case "FLIP_HV":
+                newW = h;
+                newH = w;
+                newX = y;
+                newY = x;
+                break;
+            case "FLIP_90CW":
+                newW = h;
+                newH = w;
+                newX = height - (y + h);
+                newY = x;
+                break;
+            case "FLIP_90CCW":
+                newW = h;
+                newH = w;
+                newX = y;
+                newY = width - (x + w);
+                break;
+            case "FLIP_180":
+                newX = width - (x + w);
+                newY = height - (y + h);
+                break;
+        }
+
+        for(y = 0; y < height; y += 1)
+        {
+            for(x = 0; x < width; x += 1)
+            {
+                newRow = y;
+                newCol = x;
+
+                switch(parameters.operation)
+                {
+                    case "FLIP_H":
+                        newCol = w - x - 1;
+                        break;
+                    case "FLIP_V":
+                        newRow = h - y - 1;
+                        break;
+                    case "FLIP_HV":
+                        newRow = x;
+                        newCol = y;
+                        break;
+                    case "FLIP_90CW":
+                        newRow = x;
+                        newCol = h - y - 1;
+                        break;
+                    case "FLIP_90CCW":
+                        newRow = w - x - 1;
+                        newCol = y;
+                        break;
+                    case "FLIP_180":
+                        newRow = h - y - 1;
+                        newCol = w - x - 1;
+                        break;
+                }
+
+                this.setPixel(newCol, newRow, this.getOriginalPixel(x, y));
+            }
+        }
+    }, {
+        defaults: {
+            operation: "FLIP_H" // FLIP_H, FLIP_V, FLIP_HV, FLIP_90CW, FLIP_90CCW, FLIP_180
+        }
+    });
+
+    Effects.defineTransform("offset", function(x, y, parameters, width, height)
+    {
+        if(parameters.wrap)
+        {
+            return [
+                (x + width - parameters.xOffset) % width,
+                (y + height - parameters.yOffset) % height
+            ];
+        }
+        else
+        {
+            return [
+                x - parameters.xOffset,
+                y - parameters.yOffset
+            ];
+        }
+    }, {
+        defaults: {
+            xOffset: 100,
+            yOffset: 100,
+            wrap: true
+        },
+        before: function(parameters, width, height)
+        {
+
+        }
+    });
+
+    Effects.defineTransform("polar", function(x, y, parameters, width, height)
+    {
+        var theta, theta2, t,
+            m, xMax, yMax, nx, ny, xmax, ymax,
+            dx, dy, distance,
+            r = 0;
+
+        switch(parameters.type)
+        {
+            case "RECT_TO_POLAR":
+                if(x >= this.data.centreX)
+                {
+                    if(y > this.data.centreY)
+                    {
+                        theta = Math.PI - Math.atan(((x - this.data.centreX)) / ((y - this.data.centreY)));
+                        r = Math.sqrt(this.data.sqr(x - this.data.centreX) + this.data.sqr(y - this.data.centreY));
+                    }
+                    else
+                    {
+                        if(y < this.data.centreY)
+                        {
+                            theta = Math.atan(((x - this.data.centreX)) / ((this.data.centreY - y)));
+                            r = Math.sqrt(this.data.sqr(x - this.data.centreX) + this.data.sqr(this.data.centreY - y));
+                        }
+                        else
+                        {
+                            theta = Math.PI / 2;
+                            r = x - this.data.centreX;
+                        }
+                    }
+                }
+                else
+                {
+                    if(x < this.data.centreX)
+                    {
+                        if(y < this.data.centreY)
+                        {
+                            theta = (Math.PI * 2) - Math.atan(((this.data.centreX - x)) / ((this.data.centreY - y)));
+                            r = Math.sqrt(this.data.sqr(this.data.centreX - x) + this.data.sqr(this.data.centreY - y));
+                        }
+                        else
+                        {
+                            if(y > this.data.centreY)
+                            {
+                                theta = Math.PI + Math.atan(((this.data.centreX - x)) / ((y - this.data.centreY)));
+                                r = Math.sqrt(this.data.sqr(this.data.centreX - x) + this.data.sqr(y - this.data.centreY));
+                            }
+                            else
+                            {
+                                theta = 1.5 * Math.PI;
+                                r = this.data.centreX - x;
+                            }
+                        }
+                    }
+                }
+                if(x != this.data.centreX)
+                {
+                    m = Math.abs(((y - this.data.centreY)) / ((x - this.data.centreX)));
+                }
+                else
+                {
+                    m = 0;
+                }
+
+                if(m <= ((height / width)))
+                {
+                    if(x == this.data.centreX)
+                    {
+                        xMax = 0;
+                        yMax = this.data.centreY;
+                    }
+                    else
+                    {
+                        xMax = this.data.centreX;
+                        yMax = m * xMax;
+                    }
+                }
+                else
+                {
+                    yMax = this.data.centreY;
+                    xMax = yMax / m;
+                }
+
+                return [
+                    (width - 1) - (width - 1) / (Math.PI * 2 * theta),
+                    height * r / this.data.radius
+                ];
+
+            case "POLAR_TO_RECT":
+
+                theta = x / width * Math.PI * 2;
+
+                if(theta >= 1.5 * Math.PI)
+                {
+                    theta2 = Math.PI * 2 - theta;
+                }
+                else
+                {
+                    if(theta >= Math.PI)
+                    {
+                        theta2 = theta - Math.PI;
+                    }
+                    else
+                    {
+                        if(theta >= 0.5 * Math.PI
+                        )
+                        {
+                            theta2 = Math.PI - theta;
+                        }
+                        else
+                        {
+                            theta2 = theta;
+                        }
+                    }
+                }
+
+                t = Math.tan(theta2);
+                if(t != 0)
+                {
+                    m = 1.0 / t;
+                }
+                else
+                {
+                    m = 0;
+                }
+
+                if(m <= ((height) / (width)))
+                {
+                    if(theta2 == 0)
+                    {
+                        xmax = 0;
+                        ymax = this.data.centreY;
+                    }
+                    else
+                    {
+                        xmax = this.data.centreX;
+                        ymax = m * xmax;
+                    }
+                }
+                else
+                {
+                    ymax = this.data.centreY;
+                    xmax = ymax / m;
+                }
+
+                r = this.data.radius * (y / (height));
+
+                nx = -r * Math.sin(theta2);
+                ny = r * Math.cos(theta2);
+
+                if(theta >= 1.5 * Math.PI)
+                {
+                    return [
+                        this.data.centreX - nx,
+                        this.data.centreY - ny
+                    ];
+                }
+                else
+                {
+                    if(theta >= Math.PI)
+                    {
+                        return [
+                            this.data.centreX - nx,
+                            this.data.centreY + ny
+                        ];
+                    }
+                    else
+                    {
+                        if(theta >= 0.5 * Math.PI)
+                        {
+                            return [
+                                this.data.centreX + nx,
+                                this.data.centreY + ny
+                            ];
+                        }
+                        else
+                        {
+                            return [
+                                this.data.centreX + nx,
+                                this.data.centreY - ny
+                            ];
+                        }
+                    }
+                }
+                break;
+
+            case "INVERT_IN_CIRCLE":
+                dx = x - this.data.centreX;
+                dy = y - this.data.centreY;
+                distance = dx * dx + dy * dy;
+
+                return [
+                    this.data.centreX + this.data.centreX * this.data.centreX * dx / distance,
+                    this.data.centreY + this.data.centreY * this.data.centreY * dy / distance
+                ];
+        }
+    }, {
+        defaults: {
+            type: "RECT_TO_POLAR" // RECT_TO_POLAR, POLAR_TO_RECT, INVERT_IN_CIRCLE
+        },
+        before: function(parameters, width, height)
+        {
+            return {
+                centreX: width / 2,
+                centreY: height / 2,
+                radius: Math.max(width / 2, height / 2),
+                sqr: function(x)
+                {
+                    return x * x;
+                }
+            };
+        }
+    });
+
     var Imagizer = {};
     Imagizer.Project = Project;
     Imagizer.Layer = Layer;

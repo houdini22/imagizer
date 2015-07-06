@@ -556,6 +556,26 @@ defaults: {
     angle: Math.PI
 },
 ```
+##### flip
+```
+defaults: {
+    operation: "FLIP_H" // FLIP_H, FLIP_V, FLIP_HV, FLIP_90CW, FLIP_90CCW, FLIP_180
+}
+```
+##### offset
+```
+defaults: {
+    xOffset: 100,
+    yOffset: 100,
+    wrap: true
+},
+```
+##### polar
+```
+defaults: {
+    type: "RECT_TO_POLAR" // RECT_TO_POLAR, POLAR_TO_RECT, INVERT_IN_CIRCLE
+},
+```
 
 ## Exporting result image
 To export the Project (result image) you have to call:
