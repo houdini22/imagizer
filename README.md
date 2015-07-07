@@ -102,10 +102,9 @@ image1.load("img/pencils.jpg", function()
 
 The following resize modes are supported:
 
-"nearest-neighbour" - default,
-"bilinear-interpolation",
-"biquadratic-interpolation".
-
+- "nearest-neighbour" - default
+- "bilinear-interpolation",
+- "biquadratic-interpolation".
 
 
 The following blending modes are supported:
@@ -163,6 +162,16 @@ The following effects are supported:
 - water
 - dissolve
 - edge
+- fill-color
+- channel-mix
+- circle
+- rotate
+- flip
+- offset
+- polar
+- block
+- border
+- emboss
 
 ### Effect parameters
 
@@ -576,6 +585,36 @@ defaults: {
     type: "RECT_TO_POLAR" // RECT_TO_POLAR, POLAR_TO_RECT, INVERT_IN_CIRCLE
 },
 ```
+##### block
+```
+defaults: {
+    blockSize: 5
+}
+```
+##### border 
+```
+defaults: {
+    leftBorder: 10,
+    rightBorder: 10,
+    topBorder: 10,
+    bottomBorder: 10,
+    borderColor: {
+        r: 0,
+        b: 0,
+        g: 0,
+        a: 255
+    }
+},
+```
+##### emboss
+```
+defaults: {
+    azimuth: 135 * Math.PI / 180,
+    elevation: 30 * Math.PI / 180,
+    width45: 3,
+    emboss: true
+},
+```
 
 ## Exporting result image
 To export the Project (result image) you have to call:
@@ -596,6 +635,9 @@ Enjoy!
 ## Changelog
 
 0.1.3 Added effects: circle, mix-channels, rotate, flip, offset, polar. Updated node.js demo. Updated docs.
+
 0.1.2 ---
+
 0.1.1 ---
+
 0.1.0 Initial commit

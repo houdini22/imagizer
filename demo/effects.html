@@ -77,7 +77,7 @@
 </script>
 
 <div class="test test-11">
-    <h4>adjust-contract-brightness effect</h4>
+    <h4>adjust-contrast-brightness effect</h4>
     <p class="time"></p>
 </div>
 <script>
@@ -902,6 +902,71 @@
             project.applyEffect("polar");
             project.exportTo(".test-45");
             document.querySelector(".test-45 .time").textContent = project.getTime();
+        });
+    }, false);
+</script>
+
+
+<div class="test test-46">
+    <h4>block effect</h4>
+
+    <p class="time"></p>
+</div>
+<script>
+    document.addEventListener("DOMContentLoaded", function()
+    {
+        var project = new Imagizer.Project(imageWidth, imageHeight);
+        var layer1 = project.createLayer();
+        var image1 = new Imagizer.Image();
+        image1.load(imageURL, function()
+        {
+            layer1.put(image1, 0, 0);
+            project.applyEffect("block");
+            project.exportTo(".test-46");
+            document.querySelector(".test-46 .time").textContent = project.getTime();
+        });
+    }, false);
+</script>
+
+
+<div class="test test-47">
+    <h4>border effect</h4>
+
+    <p class="time"></p>
+</div>
+<script>
+    document.addEventListener("DOMContentLoaded", function()
+    {
+        var project = new Imagizer.Project(imageWidth, imageHeight);
+        var layer1 = project.createLayer();
+        var image1 = new Imagizer.Image();
+        image1.load(imageURL, function()
+        {
+            layer1.put(image1, 0, 0);
+            project.applyEffect("border");
+            project.exportTo(".test-47");
+            document.querySelector(".test-47 .time").textContent = project.getTime();
+        });
+    }, false);
+</script>
+
+<div class="test test-48">
+    <h4>emboss effect</h4>
+
+    <p class="time"></p>
+</div>
+<script>
+    document.addEventListener("DOMContentLoaded", function()
+    {
+        var project = new Imagizer.Project(imageWidth, imageHeight);
+        var layer1 = project.createLayer();
+        var image1 = new Imagizer.Image();
+        image1.load(imageURL, function()
+        {
+            layer1.put(image1, 0, 0);
+            project.applyEffect("emboss");
+            project.exportTo(".test-48");
+            document.querySelector(".test-48 .time").textContent = project.getTime();
         });
     }, false);
 </script>

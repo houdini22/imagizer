@@ -586,6 +586,22 @@
             }
             x = (x - a) / (b - a);
             return x * x * (3 - 2 * x);
+        },
+        math: {
+            toRadians: function(deg)
+            {
+                return deg * Math.PI / 180
+            },
+            toDegrees: function(radians)
+            {
+                return radians * 180 / Math.PI
+            }
+        },
+        pixel: {
+            brightness: function(pixel)
+            {
+                return (pixel.r + pixel.g + pixel.b) / 3;
+            }
         }
     };
 
@@ -2304,6 +2320,20 @@
                         };
                     },
                     /**
+                     * Get pixel by its index
+                     * @param index
+                     */
+                    getOriginalPixelByIndex: function(index)
+                    {
+                        index *= 4;
+                        return {
+                            r: imageData.data[index],
+                            g: imageData.data[index + 1],
+                            b: imageData.data[index + 2],
+                            a: imageData.data[index + 3]
+                        };
+                    },
+                    /**
                      * Get original pixel.
                      * @param {int} x
                      * @param {int} y
@@ -2328,6 +2358,19 @@
                     setPixel: function(x, y, rgba)
                     {
                         var index = getIndex(x, y);
+                        imageDataCopy[index + 0] = normalizePixelValue(rgba.r);
+                        imageDataCopy[index + 1] = normalizePixelValue(rgba.g);
+                        imageDataCopy[index + 2] = normalizePixelValue(rgba.b);
+                        imageDataCopy[index + 3] = normalizePixelValue(rgba.a);
+                    },
+                    /**
+                     * Set pixel by index.
+                     * @param index
+                     * @param rgba
+                     */
+                    setPixelByIndex: function(index, rgba)
+                    {
+                        index *= 4;
                         imageDataCopy[index + 0] = normalizePixelValue(rgba.r);
                         imageDataCopy[index + 1] = normalizePixelValue(rgba.g);
                         imageDataCopy[index + 2] = normalizePixelValue(rgba.b);
@@ -4315,6 +4358,252 @@
                     return x * x;
                 }
             };
+        }
+    });
+
+    Effects.defineCustom("block", function(width, height, parameters)
+    {
+        var x, y,
+            w, h,
+            t,
+            r, g, b,
+            pixel,
+            by, bx;
+
+        for(y = 0; y < height; y += parameters.blockSize)
+        {
+            for(x = 0; x < width; x += parameters.blockSize)
+            {
+                w = Math.min(parameters.blockSize, width - x);
+                h = Math.min(parameters.blockSize, height - y);
+                t = w * h;
+
+                r = 0;
+                g = 0;
+                b = 0;
+
+                for(by = 0; by < h; by += 1)
+                {
+                    for(bx = 0; bx < w; bx += 1)
+                    {
+                        pixel = this.getOriginalPixel(x + bx, y + by);
+
+                        r += pixel.r & 0xFF;
+                        g += pixel.g & 0XFF;
+                        b += pixel.b & 0xFF;
+                    }
+                }
+
+                r = r / t;
+                g = g / t;
+                b = b / t;
+
+                for(by = 0; by < h; by += 1)
+                {
+                    for(bx = 0; bx < w; bx += 1)
+                    {
+                        this.setPixel(x + bx, y + by, {
+                            r: r,
+                            g: g,
+                            b: b,
+                            a: 255
+                        });
+                    }
+                }
+            }
+        }
+    }, {
+        defaults: {
+            blockSize: 5
+        }
+    });
+
+    Effects.defineCustom("border", function(width, height, parameters)
+    {
+        var x, y;
+
+        for(y = 0; y < height; y += 1)
+        {
+            for(x = 0; x < width; x += 1)
+            {
+                if(this.data.leftBorder > 0 && x < this.data.leftBorder)
+                {
+                    this.setPixel(x, y, parameters.borderColor);
+                }
+                if(this.data.rightBorder > 0 && width - this.data.rightBorder < x)
+                {
+                    this.setPixel(x, y, parameters.borderColor);
+                }
+                if(this.data.topBorder > 0 && y < this.data.topBorder)
+                {
+                    this.setPixel(x, y, parameters.borderColor);
+                }
+                if(this.data.bottomBorder > 0 && height - this.data.bottomBorder < y)
+                {
+                    this.setPixel(x, y, parameters.borderColor);
+                }
+            }
+        }
+    }, {
+        defaults: {
+            leftBorder: 10,
+            rightBorder: 10,
+            topBorder: 10,
+            bottomBorder: 10,
+            borderColor: {
+                r: 0,
+                b: 0,
+                g: 0,
+                a: 255
+            }
+        },
+        before: function(parameters, width, height)
+        {
+            return {
+                leftBorder: parameters.leftBorder | 0,
+                rightBorder: parameters.rightBorder | 0,
+                topBorder: parameters.rightBorder | 0,
+                bottomBorder: parameters.bottomBorder | 0
+            };
+        }
+    });
+
+    Effects.defineCustom("color-halftone", function(width, height, parameters)
+    {
+        var gridSize = 2 * parameters.dotRadius * 1.414,
+            angles = [this.data.cyanScreenAngle, this.data.magentaScreenAngle, this.data.yellowScreenAngle],
+            mx = [0, -1, 1, 0, 0],
+            my = [0, 0, 0, -1, 1],
+            halfGridSize = gridSize / 2,
+            x, y, ix,
+            originalPixel,
+            newPixel;
+
+        for(y = 0; y < height; y += 1)
+        {
+            for(x = 0, ix = y * width; x < width; x += 1, ix += 1)
+            {
+                // TODO
+            }
+        }
+    }, {
+        defaults: {
+            dotRadius: 2,
+            cyanScreenAngle: 108,
+            magentaScreenAngle: 162,
+            yellowScreenAngle: 90
+        },
+        before: function(parameters, width, height)
+        {
+            return {
+                cyanScreenAngle: helpers.math.toRadians(parameters.cyanScreenAngle),
+                magentaScreenAngle: helpers.math.toRadians(parameters.magentaScreenAngle),
+                yellowScreenAngle: helpers.math.toRadians(parameters.yellowScreenAngle)
+            };
+        }
+    });
+
+    Effects.defineCustom("emboss", function(width, height, parameters)
+    {
+        var x, y,
+            bumpMapWidth = width,
+            bumpMapHeight = height,
+            bumpPixels = [],
+            Nx, Ny, Nz, Lx, Ly, Lz, Nz2, NzLz, NdotL,
+            s1, s2, s3,
+            shade, background,
+            pixelScale = 255.9,
+            bumpIndex = 0,
+            index = 0,
+            pixel,
+            r, g, b;
+
+        Lx = (Math.cos(parameters.azimuth) * Math.cos(parameters.elevation) * pixelScale) | 0;
+        Ly = (Math.sin(parameters.azimuth) * Math.cos(parameters.elevation) * pixelScale) | 0;
+        Lz = (Math.sin(parameters.elevation) * pixelScale) | 0;
+
+        Nz = (6 * 255 / parameters.width45) | 0;
+        Nz2 = Nz * Nz;
+        NzLz = Nz * Lz;
+
+        background = Lz;
+
+        for(y = 0; y < height; y += 1)
+        {
+            for(x = 0; x < width; x += 1)
+            {
+                bumpPixels.push(helpers.pixel.brightness(this.getOriginalPixel(x, y)) | 0);
+            }
+        }
+
+        for(y = 0; y < height; y += 1, bumpIndex += bumpMapWidth)
+        {
+            s1 = bumpIndex;
+            s2 = s1 + bumpMapWidth;
+            s3 = s2 + bumpMapWidth;
+
+            for(x = 0; x < width; x += 1, s1 += 1, s2 += 1, s3 += 1)
+            {
+                if(y != 0 && y < height - 2 && x != 0 && x < width - 2)
+                {
+                    Nx = bumpPixels[s1 - 1] + bumpPixels[s2 - 1] + bumpPixels[s3 - 1] - bumpPixels[s1 + 1] - bumpPixels[s2 + 1] - bumpPixels[s3 + 1];
+                    Ny = bumpPixels[s3 - 1] + bumpPixels[s3] + bumpPixels[s3 + 1] - bumpPixels[s1 - 1] - bumpPixels[s1] - bumpPixels[s1 + 1];
+
+                    if(Nx == 0 && Ny == 0)
+                    {
+                        shade = background;
+                    }
+                    else
+                    {
+                        if((NdotL = Nx * Lx + Ny * Ly + NzLz) < 0)
+                        {
+                            shade = 0;
+                        }
+                        else
+                        {
+                            shade = (NdotL / Math.sqrt(Nx * Nx + Ny * Ny + Nz2));
+                        }
+                    }
+                }
+                else
+                {
+                    shade = background;
+                }
+
+                if(parameters.emboss)
+                {
+                    pixel = this.getOriginalPixelByIndex(index);
+                    r = (pixel.r * shade) >> 8;
+                    g = (pixel.g * shade) >> 8;
+                    b = (pixel.b * shade) >> 8;
+                    this.setPixelByIndex(index++, {
+                        r: r,
+                        g: g,
+                        b: b,
+                        a: pixel.a
+                    });
+                }
+                else
+                {
+                    this.setPixelByIndex(index++, {
+                        r: shade,
+                        g: shade << 8,
+                        b: shade << 16,
+                        a: 255
+                    });
+                }
+            }
+        }
+    }, {
+        defaults: {
+            azimuth: 135 * Math.PI / 180,
+            elevation: 30 * Math.PI / 180,
+            width45: 3,
+            emboss: true
+        },
+        before: function(parameters, width, height)
+        {
+
         }
     });
 
