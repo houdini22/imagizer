@@ -12,7 +12,7 @@ body {
     position: relative;
     padding-bottom: 20px;
     min-height: 151px;
-    width: 151px;
+    min-width: 151px;
 }
 
 .test .time {

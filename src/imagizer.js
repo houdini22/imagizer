@@ -1128,10 +1128,10 @@
      */
     var Canvas = function()
     {
-        this.canvas = null;
-        this.context = null;
-        this.width = 0;
-        this.height = 0;
+        var canvas = null,
+            context = null,
+            width = 0,
+            height = 0;
 
         /**
          * Initializer.
@@ -1140,24 +1140,23 @@
          */
         this.initialize = function(width, height)
         {
-            var canvas;
             if(isNode)
             {
-                this.canvas = new nodeCanvas(width, height);
+                canvas = new nodeCanvas(width, height);
             }
             else
             {
-                this.canvas = document.createElement("canvas");
+                canvas = document.createElement("canvas");
 
                 // hide from viewport
-                this.canvas.style.position = "absolute";
-                this.canvas.style.left = "-99999px";
-                this.canvas.style.top = "-99999px";
+                canvas.style.position = "absolute";
+                canvas.style.left = "-99999px";
+                canvas.style.top = "-99999px";
 
                 width && this.setWidth(width);
                 height && this.setHeight(height);
 
-                document.body.appendChild(this.canvas);
+                document.body.appendChild(canvas);
             }
         };
 
@@ -1168,8 +1167,8 @@
          */
         this.setWidth = function(value)
         {
-            this.canvas.setAttribute("width", "" + value);
-            this.width = value;
+            canvas.setAttribute("width", "" + value);
+            width = value;
             return this;
         };
 
@@ -1180,8 +1179,8 @@
          */
         this.setHeight = function(value)
         {
-            this.canvas.setAttribute("height", "" + value);
-            this.height = value;
+            canvas.setAttribute("height", "" + value);
+            height = value;
             return this;
         };
 
@@ -1191,11 +1190,11 @@
          */
         this.getContext = function()
         {
-            if(!this.context)
+            if(!context)
             {
-                this.context = this.canvas.getContext("2d");
+                context = canvas.getContext("2d");
             }
-            return this.context;
+            return context;
         };
 
         /**
@@ -1203,7 +1202,7 @@
          */
         this.getCanvas = function()
         {
-            return this.canvas;
+            return canvas;
         };
 
         /**
@@ -1213,7 +1212,7 @@
          */
         this.toDataURL = function(type)
         {
-            return this.canvas.toDataURL(type);
+            return canvas.toDataURL(type);
         };
 
         /**
@@ -1223,7 +1222,7 @@
         {
             if(!isNode)
             {
-                document.body.removeChild(this.canvas);
+                document.body.removeChild(canvas);
             }
         };
 
@@ -1540,11 +1539,14 @@
     {
         params = params || {};
 
-        this.canvas = null;
-        this.imageData = null;
-        this.effects = [];
-        this.layers = [];
-        this.startTime = new Date();
+        var canvas = null,
+            imageData = null,
+            effects = [],
+            layers = [],
+            startTime = new Date(),
+            parameters = {},
+            width,
+            height;
 
         /**
          * Initializer.
@@ -1552,21 +1554,16 @@
          * @param {int} height
          * @param params
          */
-        this.initialize = function(width, height, params)
+        this.initialize = function(paramWidth, paramHeight, params)
         {
-            this.width = width;
-            this.height = height;
+            width = paramWidth;
+            height = paramHeight;
 
             // create tmp canvas
-            this.canvas = new Canvas(width, height);
-            this.imageData = this.canvas.getContext().getImageData(0, 0, width, height);
+            canvas = new Canvas(width, height);
+            imageData = canvas.getContext().getImageData(0, 0, width, height);
 
-            if(params.background_color)
-            {
-                this.createLayer({
-                    background_color: params.background_color
-                });
-            }
+            parameters = params;
         };
 
         /**
@@ -1576,8 +1573,8 @@
          */
         this.createLayer = function(params)
         {
-            var layer = new Imagizer.Layer(this.width, this.height, params);
-            this.layers.push(layer);
+            var layer = new Imagizer.Layer(width, height, params);
+            layers.push(layer);
             return layer;
         };
 
@@ -1588,7 +1585,7 @@
         this.getTime = function()
         {
             var end = new Date();
-            return end.getTime() - this.startTime.getTime();
+            return end.getTime() - startTime.getTime();
         };
 
         /**
@@ -1602,36 +1599,35 @@
 
             var i,
                 container,
-                exportedImage = isNode ? null : new Image(),
-                args;
+                exportedImage = isNode ? null : new Image();
 
-            for(i = 0; i < this.layers.length; i++)
+            for(i = 0; i < layers.length; i++)
             {
-                this.imageData = mergeImageData({
-                    width: this.width,
-                    height: this.height,
-                    imageData: this.imageData
+                imageData = mergeImageData({
+                    width: width,
+                    height: height,
+                    imageData: imageData
                 }, {
-                    x: 0,
-                    y: 0,
-                    width: this.width,
-                    height: this.height,
-                    imageData: this.layers[i].exportLayer(),
-                    blendingMode: this.layers[i].parameters.blendingMode
+                    x: layers[i].getX(),
+                    y: layers[i].getY(),
+                    width: layers[i].getWidth(),
+                    height: layers[i].getHeight(),
+                    imageData: layers[i].exportLayer(),
+                    blendingMode: layers[i].getParameter("blendingMode")
                 }, mergePixelCallback);
             }
 
-            for(i = 0; i < this.effects.length; i++)
+            for(i = 0; i < effects.length; i++)
             {
-                this.imageData = this.effects[i].effect.run(this.imageData, this.effects[i].params);
+                imageData = effects[i].effect.run(imageData, effects[i].params);
             }
 
-            this.canvas.getContext().putImageData(this.imageData, 0, 0);
+            canvas.getContext().putImageData(imageData, 0, 0);
 
             if(isNode)
             {
                 var fs = require("fs"),
-                    img = this.canvas.toDataURL(),
+                    img = canvas.toDataURL(),
                     data = img.replace(/^data:image\/\w+;base64,/, ""),
                     buff = new Buffer(data, 'base64');
 
@@ -1640,7 +1636,7 @@
             else
             {
                 container = document.querySelector(selector);
-                exportedImage.src = this.canvas.toDataURL(imageType);
+                exportedImage.src = canvas.toDataURL(imageType);
                 container.appendChild(exportedImage);
             }
         };
@@ -1650,11 +1646,34 @@
          */
         this.applyEffect = function()
         {
-            this.effects.push({
+            effects.push({
                 name: arguments[0],
                 effect: Effects.get(arguments[0]),
                 params: arguments[1]
             });
+        };
+
+        /**
+         * Resize project. Its converts all canvases in layers to new canvases.
+         * @param {int} newWidth
+         * @param {int} newHeight
+         * @param {string} mode
+         * @returns {Project}
+         */
+        this.resize = function(newWidth, newHeight, mode)
+        {
+            var i;
+
+            canvas.destroy();
+
+            this.initialize(newWidth, newHeight, parameters);
+
+            for(i = 0; i < layers.length; i += 1)
+            {
+                layers[i].resize(width, height, mode);
+            }
+
+            return this;
         };
 
         // call initializer
@@ -1677,10 +1696,9 @@
             x: x,
             y: y,
             opts: opts,
-            layer: layer
+            layer: layer,
+            effects: []
         };
-
-        this.effects = [];
 
         /**
          * Getter for object placed on layer.
@@ -1734,20 +1752,19 @@
         this.exportObject = function()
         {
             var imageData = data.obj.getImageData(), i;
-            for(i = 0; i < this.effects.length; i++)
+            for(i = 0; i < data.effects.length; i++)
             {
-                imageData = this.effects[i].effect.run(imageData, this.effects[i].params);
+                imageData = data.effects[i].effect.run(imageData, data.effects[i].params);
             }
             return imageData;
         };
 
         /**
          * Apply effect object put on layer.
-         * @param
          */
         this.applyEffect = function()
         {
-            this.effects.push({
+            data.effects.push({
                 name: arguments[0],
                 effect: Effects.get(arguments[0]),
                 params: arguments[1]
@@ -1881,31 +1898,33 @@
      */
     var Layer = function()
     {
-        this.canvas = null;
-        this.imageData = null;
-        this.objects = [];
-        this.effects = [];
-        this.width = 0;
-        this.height = 0;
-        this.parameters = {};
+        var canvas = null,
+            imageData = null,
+            objects = [],
+            effects = [],
+            width = 0,
+            height = 0,
+            parameters = {},
+            x = 0,
+            y = 0;
 
         /**
          * Initializer.
          */
         this.initialize = function()
         {
-            this.width = arguments[0];
-            this.height = arguments[1];
+            width = arguments[0];
+            height = arguments[1];
 
-            this.parameters = arguments[2] || {};
+            parameters = arguments[2] || {};
 
-            this.canvas = new Canvas(this.width, this.height);
-            this.imageData = this.canvas.getContext().createImageData(this.width, this.height);
+            canvas = new Canvas(width, height);
+            imageData = canvas.getContext().createImageData(width, height);
 
-            if(this.parameters.background_color && this.parameters.background_color !== "transparent")
+            if(parameters.background_color && parameters.background_color !== "transparent")
             {
                 this.applyEffect("fill-color", {
-                    color: this.parameters.background_color
+                    color: parameters.background_color
                 });
             }
         };
@@ -1919,7 +1938,7 @@
         this.put = function(obj, startX, startY)
         {
             var put = new LayerObject(obj, this, startX, startY, {});
-            this.objects.push(put);
+            objects.push(put);
             return put;
         };
 
@@ -1937,7 +1956,7 @@
             var container = document.querySelector(selector),
                 exportedImage = isNode ? new nodeCanvas.Image() : new Image();
 
-            exportedImage.src = this.canvas.toDataURL(imageType);
+            exportedImage.src = canvas.toDataURL(imageType);
             container.appendChild(exportedImage);
         };
 
@@ -1950,13 +1969,13 @@
             var i,
                 layerObject;
 
-            for(i = 0; i < this.objects.length; i += 1)
+            for(i = 0; i < objects.length; i += 1)
             {
-                layerObject = this.objects[i];
-                this.imageData = mergeImageData({
-                    width: this.width,
-                    height: this.height,
-                    imageData: this.imageData
+                layerObject = objects[i];
+                imageData = mergeImageData({
+                    width: width,
+                    height: height,
+                    imageData: imageData
                 }, {
                     x: layerObject.getX(),
                     y: layerObject.getY(),
@@ -1966,12 +1985,12 @@
                 }, mergePixelCallback);
             }
 
-            for(i = 0; i < this.effects.length; i++)
+            for(i = 0; i < effects.length; i++)
             {
-                this.imageData = this.effects[i].effect.run(this.imageData, this.effects[i].params);
+                imageData = effects[i].effect.run(imageData, effects[i].params);
             }
 
-            return this.imageData;
+            return imageData;
         };
 
         /**
@@ -1979,7 +1998,7 @@
          */
         this.applyEffect = function()
         {
-            this.effects.push({
+            effects.push({
                 name: arguments[0],
                 effect: Effects.get(arguments[0]),
                 params: arguments[1]
@@ -1993,9 +2012,28 @@
         {
             var i;
 
-            for(i = 0; i < this.objects.length; i += 1)
+            canvas.destroy();
+
+            this.initialize(newWidth, newHeight, parameters);
+
+            for(i = 0; i < objects.length; i += 1)
             {
-                this.objects[i].resize(newWidth, newHeight, mode, true);
+                objects[i].resize(newWidth, newHeight, mode, true);
+            }
+
+            return this;
+        };
+
+        /**
+         * Crop all objects on layer.
+         */
+        this.crop = function(startX, startY, width, height)
+        {
+            var i;
+
+            for(i = 0; i < objects.length; i += 1)
+            {
+                objects[i].crop(startX, startY, width, height);
             }
 
             return this;
@@ -2020,11 +2058,7 @@
          */
         this.moveX = function(x)
         {
-            var i;
-            for(i = 0; i < this.objects.length; i += 1)
-            {
-                this.objects[i].moveX(x);
-            }
+            x += (x | 0);
             return this;
         };
 
@@ -2034,11 +2068,29 @@
          */
         this.moveY = function(y)
         {
-            var i;
-            for(i = 0; i < this.objects.length; i += 1)
-            {
-                this.objects[i].moveY(y);
-            }
+            y += (y | 0);
+            return this;
+        };
+
+        /**
+         * Setter for x.
+         * @param x
+         * @returns {Layer}
+         */
+        this.setX = function(x)
+        {
+            x = x | 0;
+            return this;
+        };
+
+        /**
+         * Setter for y.
+         * @param y
+         * @returns {Layer}
+         */
+        this.setY = function(y)
+        {
+            y = y | 0;
             return this;
         };
 
@@ -2049,9 +2101,55 @@
          */
         this.setBlendingMode = function(blendingMode)
         {
-            this.parameters.blendingMode = blendingMode;
+            parameters.blendingMode = blendingMode;
             return this;
         };
+
+        /**
+         * Getter for x.
+         * @returns {number}
+         */
+        this.getX = function()
+        {
+            return x;
+        };
+
+        /**
+         * Getter for y.
+         * @returns {number}
+         */
+        this.getY = function()
+        {
+            return y;
+        };
+
+        /**
+         * Getter for width.
+         * @returns {number}
+         */
+        this.getWidth = function()
+        {
+            return width;
+        };
+
+        /**
+         * Getter for height.
+         * @returns {number}
+         */
+        this.getHeight = function()
+        {
+            return height;
+        };
+
+        /**
+         * Getter for parameter with given name.
+         * @param name
+         * @returns {*}
+         */
+        this.getParameter = function(name)
+        {
+            return parameters[name];
+        }
 
         // call initializer
         this.initialize.apply(this, arguments);

@@ -144,6 +144,7 @@ The following effects are supported:
 - gain
 - gamma
 - gray
+- hsb-adjust
 - invert-alpha
 - invert
 - rescale
@@ -152,6 +153,7 @@ The following effects are supported:
 - tritone
 - levels
 - diffuse
+- kaleidoscope
 - marble
 - pinch
 - ripple
