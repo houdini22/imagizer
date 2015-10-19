@@ -2056,9 +2056,9 @@
          * Move horizontal all objects on layer.
          * @param x
          */
-        this.moveX = function(x)
+        this.moveX = function(xParam)
         {
-            x += (x | 0);
+            x += (xParam | 0);
             return this;
         };
 
@@ -2066,9 +2066,9 @@
          * Move vertical all objects on layer.
          * @param y
          */
-        this.moveY = function(y)
+        this.moveY = function(yParam)
         {
-            y += (y | 0);
+            y += (yParam | 0);
             return this;
         };
 
@@ -2077,9 +2077,9 @@
          * @param x
          * @returns {Layer}
          */
-        this.setX = function(x)
+        this.setX = function(xParam)
         {
-            x = x | 0;
+            x = xParam | 0;
             return this;
         };
 
@@ -2088,9 +2088,9 @@
          * @param y
          * @returns {Layer}
          */
-        this.setY = function(y)
+        this.setY = function(yParam)
         {
-            y = y | 0;
+            y = yParam | 0;
             return this;
         };
 
