@@ -2,7 +2,7 @@
 
 Imagizer is a JavaScript library for image manipulation.
 
-To run demo you have to create vhost that points on main repo directory - this is required to avoid cross-domain errors.
+To run demo in your browser locally you have to create vhost that points on main repo directory - this is required to avoid cross-domain errors.
 Please check demo to get more examples - this documentation is under development.
 
 Imagizer effect algorithms are based on a [Jerry's Java Image Proccesing Library](http://www.jhlabs.com/ip/filters/index.html)
@@ -29,7 +29,7 @@ or in node.js:
 var Imagizer = require("imagizer");
 var project = new Imagizer.Project(projectWidth, projectHeight);
 ```
-where projectWidth and projectHeight are x and y dimensions of result image.
+where projectWidth and projectHeight are dimensions of result image.
 
 To a project you can add a layer:
 ```javascript
@@ -48,6 +48,7 @@ Then you can add efects to a object (image):
 image1.load("my-image.png", function()
 {
     var obj = layer1.put(image1, 0, 0); // put image1 to a layer with position 0, 0
+    // edge detection combo
     obj.applyEffect("edge"/*, {parameter1: "someValue"}*/);
     obj.applyEffect("gray-scale");
     obj.applyEffect("invert");
@@ -81,32 +82,6 @@ var layer2 = project.createLayer({
 });
 ```
 
-You can also crop added image:
-```javascript
-image1.load("img/pencils.jpg", function()
-{
-    var obj = layer1.put(image1, 0, 0);
-    obj.crop(100, 100, 100, 100); // startX, startY, width, height
-});
-```
-or resize image or whole layer:
-```javascript
-image1.load("img/pencils.jpg", function()
-{
-    var obj = layer1.put(image1, 200, 150);
-    obj.resize(200, 150 /*, mode */);
-    // or
-    layer1.resize(200, 150 /*, mode */);
-});
-```
-
-The following resize modes are supported:
-
-- "nearest-neighbour" - default
-- "bilinear-interpolation",
-- "biquadratic-interpolation".
-
-
 The following blending modes are supported:
 - lighten
 - darken
@@ -132,6 +107,36 @@ The following blending modes are supported:
 - reflect
 - glow
 - phoenix
+
+You can also crop added image:
+```javascript
+image1.load("img/pencils.jpg", function()
+{
+    var obj = layer1.put(image1, 0, 0);
+    obj.crop(100, 100, 100, 100); // startX, startY, width, height
+});
+```
+or resize image, whole layer or project:
+```javascript
+image1.load("img/pencils.jpg", function()
+{
+    var obj = layer1.put(image1, 200, 150);
+    obj.resize(200, 150 /*, mode */);
+    // or
+    layer1.resize(200, 150 /*, mode */);
+    // or
+    project.resize(200, 150);
+});
+```
+
+Note that 'obj' and 'layer' resize do not modify result image dimensions. To rescale result image you have to change size o a project.
+
+The following resize modes are supported:
+
+- "nearest-neighbour" - default
+- "bilinear-interpolation",
+- "biquadratic-interpolation".
+
 
 ## Effects
 The following effects are supported:
@@ -618,6 +623,20 @@ defaults: {
 },
 ```
 
+##### perspective
+```
+defaults: {
+    x0: 0,
+    y0: 0,
+    x1: 1,
+    y1: 0,
+    x2: 1,
+    y2: 1,
+    x3: 0,
+    y3: 1
+},
+```
+
 ## Exporting result image
 To export the Project (result image) you have to call:
 In browser:
@@ -635,6 +654,8 @@ Imagizer is under heavy development, feel free to ask or contribute!
 Enjoy!
 
 ## Changelog
+
+0.1.5 Updated docs. Added effects: persective
 
 0.1.4 Refactoring, resize project, move layer in the project, resize layer fix
 
