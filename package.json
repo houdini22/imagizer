@@ -1,6 +1,6 @@
 {
   "name": "imagizer",
-  "version": "0.1.5",
+  "version": "0.1.6",
   "description": "JavaScript library for image manipulation. Supports crop, resize, layers, blending modes, transform and color effects.",
   "main": "src/imagizer.js",
   "dependencies": {
@@ -25,7 +25,7 @@
     "resize"
   ],
   "author": "Michał Baniowski <baniczek@gmail.com>",
-  "license": "MIT",
+  "license": "GPL 2.0",
   "bugs": {
     "url": "https://github.com/baniczek/imagizer/issues"
   },
