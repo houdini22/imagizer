@@ -655,7 +655,7 @@ Enjoy!
 
 ## Changelog
 
-0.1.5 Updated docs. Added effects: persective
+0.1.5 Updated docs. Added effects: perspective. Changed licence.
 
 0.1.4 Refactoring, resize project, move layer in the project, resize layer fix
 
