@@ -142,7 +142,8 @@ The following resize modes are supported:
 The following effects are supported:
 - gray-scale
 - sepia
-- adjust-contrast-brightness
+- contrast
+- brightness
 - diffusion
 - dither
 - exposure
@@ -189,12 +190,18 @@ onLayerObject.applyEffect("edge", {parameter1: "someValue"});
 ```
 
 #### Effect specific parameters:
-##### adjust-contract-brighness
+##### contrast
 defaults:
 ```
 defaults: {
-    contrast: 1,
-    brightness: 1
+    contrast: 0 // between -1 and 1
+}
+```
+##### brightness
+defaults:
+```
+defaults: {
+    brightness: 0 // between -1 and 1
 }
 ```
 ##### diffusion
@@ -654,6 +661,8 @@ Imagizer is under heavy development, feel free to ask or contribute!
 Enjoy!
 
 ## Changelog
+
+0.1.7 Splitted adjust-contrast-brightness effect to separate effects contrast and brightness
 
 0.1.6 ---
 

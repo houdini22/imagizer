@@ -2603,22 +2603,41 @@
         }
     });
 
-    Effects.definePoint("adjust-contrast-brightness", function(pixel, x, y, parameters)
+    Effects.definePoint("contrast", function(pixel)
     {
-        pixel.r = pixel.r * parameters.brightness;
-        pixel.r = (pixel.r - 0.5) * parameters.contrast + 0.5;
+        pixel.r = this.data.factor * (pixel.r - 128) + 128;
+        pixel.g = this.data.factor * (pixel.g - 128) + 128;
+        pixel.b = this.data.factor * (pixel.b - 128) + 128;
 
-        pixel.g = pixel.g * parameters.brightness;
-        pixel.g = (pixel.g - 0.5) * parameters.contrast + 0.5;
-
-        pixel.b = pixel.b * parameters.brightness;
-        pixel.b = (pixel.b - 0.5) * parameters.contrast + 0.5;
-
-        return pixel
+        return pixel;
     }, {
         defaults: {
-            contrast: 1,
-            brightness: 1
+            contrast: 0.5
+        },
+        before: function(parameters)
+        {
+            return {
+                factor: (259 * ((parameters.contrast * 255) + 255)) / (255 * (259 - (parameters.contrast * 255)))
+            };
+        }
+    });
+
+    Effects.definePoint("brightness", function(pixel)
+    {
+        pixel.r = pixel.r + this.data.brightness;
+        pixel.g = pixel.g + this.data.brightness;
+        pixel.b = pixel.b + this.data.brightness;
+
+        return pixel;
+    }, {
+        defaults: {
+            brightness: 0.5
+        },
+        before: function(parameters)
+        {
+            return {
+                brightness: 255 * parameters.brightness
+            };
         }
     });
 
