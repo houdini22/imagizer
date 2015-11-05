@@ -75,6 +75,48 @@
     }, false);
 </script>
 
+<div class="test test-53">
+    <h4>component stretching</h4>
+    <p class="time"></p>
+</div>
+<script>
+    document.addEventListener("DOMContentLoaded", function()
+    {
+        var project = new Imagizer.Project(imageWidth, imageHeight);
+        var layer1 = project.createLayer();
+        var image1 = new Imagizer.Image();
+        image1.load(imageURL, function()
+        {
+            layer1.put(image1, 0, 0);
+            project.applyEffect("component-stretching");
+            project.exportTo(".test-53");
+            document.querySelector(".test-53 .time").textContent = project.getTime();
+        });
+    }, false);
+</script>
+
+<div class="test test-52">
+    <h4>auto white balance + auto contrast + component stretching</h4>
+    <p class="time"></p>
+</div>
+<script>
+    document.addEventListener("DOMContentLoaded", function()
+    {
+        var project = new Imagizer.Project(imageWidth, imageHeight);
+        var layer1 = project.createLayer();
+        var image1 = new Imagizer.Image();
+        image1.load(imageURL, function()
+        {
+            layer1.put(image1, 0, 0);
+            project.applyEffect("auto-white-balance");
+            project.applyEffect("auto-contrast");
+            project.applyEffect("component-stretching");
+            project.exportTo(".test-52");
+            document.querySelector(".test-52 .time").textContent = project.getTime();
+        });
+    }, false);
+</script>
+
 <div class="test test-9">
     <h4>gray-scale effect</h4>
     <p class="time"></p>
