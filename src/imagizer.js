@@ -2344,7 +2344,6 @@
             var x, y,
                 firstPixelIndex,
                 result,
-                args,
                 imageDataCopy = new Uint8ClampedArray(imageData.data), // copy image data
                 i,
                 /**
@@ -2411,9 +2410,7 @@
                     /**
                      * Data created by effect init function
                      */
-                    data: (additionalParameters && typeof additionalParameters.before === "function")
-                        ? additionalParameters.before.call(this, parameters, imageData.width, imageData.height, imageData)
-                        : {},
+                    data: null,
                     /**
                      * ImageData width
                      */
@@ -2423,6 +2420,10 @@
                      */
                     height: imageData.height
                 };
+
+            sandbox.data = (additionalParameters && typeof additionalParameters.before === "function")
+                ? additionalParameters.before.call(sandbox, parameters, imageData.width, imageData.height, imageData)
+                : {};
 
             for(y = 0; y < imageData.height; y += 1)
             {
@@ -4971,47 +4972,39 @@
         }
     });
 
-    Effects.defineCustom("auto-contrast", function(width, height)
+    Effects.definePoint("auto-contrast", function(pixel, x, y, width, height)
     {
-        var x, y,
-            min = Infinity, max = -1,
-            pixel,
-            remap = function remap(value)
+        pixel.r = this.data.remap(pixel.r, this.data.min, this.data.max);
+        pixel.g = this.data.remap(pixel.g, this.data.min, this.data.max);
+        pixel.b = this.data.remap(pixel.b, this.data.min, this.data.max);
+
+        return pixel;
+    }, {
+        before: function(parameters, width, height)
+        {
+            var x, y,
+                pixel,
+                min = Infinity, max = -1;
+
+            for(y = 0; y < height; y += 1)
             {
-                return ((value) - min) * 255 / (max - min);
+                for(x = 0; x < width; x += 1)
+                {
+                    pixel = this.getPixel(x, y);
+
+                    min = Math.min((pixel.r + pixel.g + pixel.b) / 3, min);
+                    max = Math.max((pixel.r + pixel.g + pixel.b) / 3, max);
+                }
+            }
+
+            return {
+                min: min,
+                max: max,
+                remap: function(value)
+                {
+                    return ((value) - min) * 255 / (max - min);
+                }
             };
-
-        for(y = 0; y < height; y += 1)
-        {
-            for(x = 0; x < width; x += 1)
-            {
-                pixel = this.getPixel(x, y);
-
-                if((pixel.r + pixel.g + pixel.b) / 3 < min)
-                {
-                    min = (pixel.r + pixel.g + pixel.b) / 3;
-                }
-
-                if((pixel.r + pixel.g + pixel.b) / 3 > max)
-                {
-                    max = (pixel.r + pixel.g + pixel.b) / 3;
-                }
-            }
-        }
-
-        for(y = 0; y < height; y += 1)
-        {
-            for(x = 0; x < width; x += 1)
-            {
-                pixel = this.getPixel(x, y);
-
-                this.setPixel(x, y, {
-                    r: remap(pixel.r),
-                    g: remap(pixel.g),
-                    b: remap(pixel.b),
-                    a: pixel.a
-                });
-            }
         }
     });
 
