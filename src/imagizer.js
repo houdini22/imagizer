@@ -1,5 +1,5 @@
 /**
- * @author Michał Baniowski michal.baniowski@gmail.com
+ * @author baniczek@gmail.com
  * @version 0.1.0
  */
 ;
@@ -2431,7 +2431,7 @@
                 {
                     firstPixelIndex = getIndex(x, y);
 
-                    result = callback.apply(sandbox, [
+                    result = callback.call(sandbox,
                         {
                             r: imageDataCopy[firstPixelIndex + 0],
                             g: imageDataCopy[firstPixelIndex + 1],
@@ -2443,7 +2443,7 @@
                         parameters,
                         imageData.width,
                         imageData.height
-                    ]);
+                    );
 
                     if(typeof result === "object")
                     {
@@ -2493,20 +2493,26 @@
 
             var x, y,
                 i,
+                normalizePixelValue = function(value)
+                {
+                    return Math.min(Math.max(value, 0), 255) | 0;
+                },
                 sandbox = {
-                    data: (additionalParameters && typeof additionalParameters.before === "function")
-                        ? additionalParameters.before.call(null, parameters, imageData.width, imageData.height, imageData)
-                        : {}
+                    data: null
                 },
                 imageDataCopy = new Uint8ClampedArray(imageData.data);
+
+            sandbox.data = (additionalParameters && typeof additionalParameters.before === "function")
+                ? additionalParameters.before.call(null, parameters, imageData.width, imageData.height, imageData)
+                : {};
 
             for(y = 0; y < imageData.height; y += 1)
             {
                 for(x = 0; x < imageData.width; x += 1)
                 {
                     var newXY = callback.call(sandbox, x, y, parameters, imageData.width, imageData.height),
-                        newX = Math.floor(newXY[0]),
-                        newY = Math.floor(newXY[1]),
+                        newX = normalizePixelValue(newXY[0]),
+                        newY = normalizePixelValue(newXY[1]),
                         oldPixelIndex = y * imageData.width * 4 + x * 4,
                         newPixelIndex = newY * imageData.width * 4 + newX * 4;
 
@@ -2645,9 +2651,7 @@
                     /**
                      * Data created by effect init function
                      */
-                    data: (additionalParameters && typeof additionalParameters.before === "function")
-                        ? additionalParameters.before.call(this, parameters, imageData.width, imageData.height, imageData)
-                        : {},
+                    data: null,
                     /**
                      * ImageData width
                      */
@@ -2657,6 +2661,10 @@
                      */
                     height: imageData.height
                 };
+
+            sandbox.data = (additionalParameters && typeof additionalParameters.before === "function")
+                ? additionalParameters.before.call(sandbox, parameters, imageData.width, imageData.height, imageData)
+                : {};
 
             callback.call(sandbox, imageData.width, imageData.height, parameters);
 
