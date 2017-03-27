@@ -7,7 +7,7 @@ Please check demo to get more examples - this documentation is under development
 
 Imagizer effect algorithms are based on a [Jerry's Java Image Proccesing Library](http://www.jhlabs.com/ip/filters/index.html)
 
-Working demo you can find at [http://imagizer.it/~hud/imagizer/demo/](http://imagizer.baniczek.vipserv.org/)
+Working demo you can find at [http://imagizer.it/~hud/imagizer/demo/](http://imagizer.it/~hud/imagizer/demo/)
 
 ## npm
 Imagizer supports node.js (with node-canvas as requirement) and is available as npm package.
