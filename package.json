@@ -12,7 +12,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/baniczek/imagizer.git"
+    "url": "https://github.com/houdini22/imagizer.git"
   },
   "keywords": [
     "image",
@@ -24,10 +24,10 @@
     "crop",
     "resize"
   ],
-  "author": "Michał Baniowski <baniczek@gmail.com>",
+  "author": "<baniczek@gmail.com>",
   "license": "GPL 2.0",
   "bugs": {
-    "url": "https://github.com/baniczek/imagizer/issues"
+    "url": "https://github.com/houdini22/imagizer/issues"
   },
-  "homepage": "https://github.com/baniczek/imagizer"
+  "homepage": "https://github.com/houdini22/imagizer"
 }
