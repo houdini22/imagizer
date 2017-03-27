@@ -34,6 +34,89 @@
 
 <div class="clearfix"></div>
 
+<div class="test test-50">
+    <h4>auto contrast</h4>
+    <p class="time"></p>
+</div>
+<script>
+    document.addEventListener("DOMContentLoaded", function()
+    {
+        var project = new Imagizer.Project(imageWidth, imageHeight);
+        var layer1 = project.createLayer();
+        var image1 = new Imagizer.Image();
+        image1.load(imageURL, function()
+        {
+            layer1.put(image1, 0, 0);
+            project.applyEffect("auto-contrast");
+            project.exportTo(".test-50");
+            document.querySelector(".test-50 .time").textContent = project.getTime();
+        });
+    }, false);
+</script>
+
+
+<div class="test test-51">
+    <h4>auto white balance</h4>
+    <p class="time"></p>
+</div>
+<script>
+    document.addEventListener("DOMContentLoaded", function()
+    {
+        var project = new Imagizer.Project(imageWidth, imageHeight);
+        var layer1 = project.createLayer();
+        var image1 = new Imagizer.Image();
+        image1.load(imageURL, function()
+        {
+            layer1.put(image1, 0, 0);
+            project.applyEffect("auto-white-balance");
+            project.exportTo(".test-51");
+            document.querySelector(".test-51 .time").textContent = project.getTime();
+        });
+    }, false);
+</script>
+
+<div class="test test-53">
+    <h4>component stretching</h4>
+    <p class="time"></p>
+</div>
+<script>
+    document.addEventListener("DOMContentLoaded", function()
+    {
+        var project = new Imagizer.Project(imageWidth, imageHeight);
+        var layer1 = project.createLayer();
+        var image1 = new Imagizer.Image();
+        image1.load(imageURL, function()
+        {
+            layer1.put(image1, 0, 0);
+            project.applyEffect("component-stretching");
+            project.exportTo(".test-53");
+            document.querySelector(".test-53 .time").textContent = project.getTime();
+        });
+    }, false);
+</script>
+
+<div class="test test-52">
+    <h4>component stretching + auto white balance + auto contrast</h4>
+    <p class="time"></p>
+</div>
+<script>
+    document.addEventListener("DOMContentLoaded", function()
+    {
+        var project = new Imagizer.Project(imageWidth, imageHeight);
+        var layer1 = project.createLayer();
+        var image1 = new Imagizer.Image();
+        image1.load(imageURL, function()
+        {
+            layer1.put(image1, 0, 0);
+            project.applyEffect("component-stretching");
+            project.applyEffect("auto-white-balance");
+            project.applyEffect("auto-contrast");
+            project.exportTo(".test-52");
+            document.querySelector(".test-52 .time").textContent = project.getTime();
+        });
+    }, false);
+</script>
+
 <div class="test test-9">
     <h4>gray-scale effect</h4>
     <p class="time"></p>
@@ -72,29 +155,6 @@
             });
             project.exportTo(".test-10");
             document.querySelector(".test-10 .time").textContent = project.getTime();
-        });
-    }, false);
-</script>
-
-<div class="test test-11">
-    <h4>adjust-contrast-brightness effect</h4>
-    <p class="time"></p>
-</div>
-<script>
-    document.addEventListener("DOMContentLoaded", function()
-    {
-        var project = new Imagizer.Project(imageWidth, imageHeight);
-        var layer1 = project.createLayer();
-        var image1 = new Imagizer.Image();
-        image1.load(imageURL, function()
-        {
-            layer1.put(image1, 0, 0);
-            project.applyEffect("adjust-contrast-brightness", {
-                brightness: 3,
-                contrast: 0.2
-            });
-            project.exportTo(".test-11");
-            document.querySelector(".test-11 .time").textContent = project.getTime();
         });
     }, false);
 </script>
