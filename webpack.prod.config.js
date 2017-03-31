@@ -1,6 +1,6 @@
 require('extract-text-webpack-plugin');
 const webpack = require('webpack');
-const webpackSettings = require('./webpack.config');
+const webpackSettings = require('./webpack.frontend.dev.config.js');
 
 const optimizingPlugins = [
     new webpack.DefinePlugin({
@@ -14,5 +14,9 @@ webpackSettings.plugins = optimizingPlugins;
 webpackSettings.entry = webpackSettings.entry.filter((entryName) => {
     return (entryName.indexOf('hot/dev-server') === -1);
 });
+webpackSettings.externals = {
+    'canvas': 'canvas',
+    'fs': 'fs'
+};
 
 module.exports = webpackSettings;

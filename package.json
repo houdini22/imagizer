@@ -2,7 +2,7 @@
   "name": "imagizer",
   "version": "0.2.0",
   "description": "JavaScript library for image manipulation. Supports crop, resize, layers, blending modes, transform and color effects.",
-  "main": "src/imagizer.js",
+  "main": "dist/imagizer.node.js",
   "devDependencies": {
     "babel-cli": "^6.14.0",
     "babel-loader": "^6.2.5",
@@ -32,8 +32,9 @@
   },
   "scripts": {
     "build": "webpack --config ./webpack.prod.config.js",
-    "dev": "webpack --config ./webpack.config.js",
-    "watch": "webpack --progress --colors --watch --config ./webpack.config.js",
+    "dev_backend": "webpack --config ./webpack.backend.dev.config.js",
+    "dev_frontend": "webpack --config ./webpack.frontend.dev.config.js",
+    "watch": "webpack --progress --colors --watch --config ./webpack.dev.config.js",
     "test": "karma start --reporters html"
   },
   "repository": {

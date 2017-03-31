@@ -2,7 +2,8 @@ import CanvasWrapper from './CanvasWrapper';
 import Layer from './Layer';
 import {
     mergeImageData,
-    mergePixelCallback
+    mergePixelCallback,
+    isNode
 } from '../helpers/common';
 import EffectsRepository from './EffectsRepository';
 
@@ -35,9 +36,9 @@ class Project {
     }
 
     exportTo(selector, imageType = 'image/png') {
-        let i,
+        var i,
             container,
-            exportedImage = new Image();
+            exportedImage = isNode() ? null : new window.Image();
 
         for (i = 0; i < this.layers.length; i++) {
             this.imageData = mergeImageData({
@@ -60,9 +61,19 @@ class Project {
 
         this.canvas.getContext().putImageData(this.imageData, 0, 0);
 
-        container = document.querySelector(selector);
-        exportedImage.src = this.canvas.toDataURL(imageType);
-        container.appendChild(exportedImage);
+        if (isNode()) {
+            let fs = require("fs"),
+                img = this.canvas.toDataURL(),
+                data = img.replace(/^data:image\/\w+;base64,/, ""),
+                buff = new Buffer(data, 'base64');
+
+            fs.writeFile(selector, buff);
+        }
+        else {
+            container = document.querySelector(selector);
+            exportedImage.src = this.canvas.toDataURL(imageType);
+            container.appendChild(exportedImage);
+        }
     }
 
     applyEffect(name, parameters = {}) {

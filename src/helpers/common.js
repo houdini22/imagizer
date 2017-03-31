@@ -239,3 +239,7 @@ export function smoothStep(a, b, x) {
 export function brightness(pixel) {
     return (pixel.r + pixel.g + pixel.b) / 3;
 }
+
+export function isNode() {
+    return typeof window == 'undefined';
+}

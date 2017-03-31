@@ -6,13 +6,13 @@ const webpack = require('webpack');
 module.exports = {
     devtool: 'sourcemap',
     entry: [
-        'babel-polyfill',
-        'webpack/hot/dev-server',
         './src/main.js',
     ],
     output: {
         path: path.resolve('./dist'),
-        filename: 'imagizer.js',
+        filename: 'imagizer.node.js',
+        library: 'imagizer',
+        libraryTarget: 'umd'
     },
     resolve: {
         modulesDirectories: ['node_modules'],
@@ -32,6 +32,9 @@ module.exports = {
     },
     plugins: [
         new webpack.NoErrorsPlugin(),
-        new webpack.HotModuleReplacementPlugin()
     ],
+    externals: {
+        'canvas': 'canvas',
+        'fs': 'fs'
+    }
 };

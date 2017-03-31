@@ -1,3 +1,5 @@
+import {isNode} from '../helpers/common';
+
 class CanvasWrapper {
     constructor(width, height) {
         this.canvas = null;
@@ -8,17 +10,22 @@ class CanvasWrapper {
     }
 
     initialize(width = 0, height = 0) {
-        this.canvas = document.createElement("canvas");
+        if (isNode()) {
+            let Canvas = require('canvas');
+            this.canvas = new Canvas(width, height);
+        } else {
+            this.canvas = document.createElement("canvas");
 
-        // hide from viewport
-        this.canvas.style.position = "absolute";
-        this.canvas.style.left = "-99999px";
-        this.canvas.style.top = "-99999px";
+            // hide from viewport
+            this.canvas.style.position = "absolute";
+            this.canvas.style.left = "-99999px";
+            this.canvas.style.top = "-99999px";
 
-        this.setWidth(width);
-        this.setHeight(height);
+            this.setWidth(width);
+            this.setHeight(height);
 
-        document.body.appendChild(this.canvas);
+            document.body.appendChild(this.canvas);
+        }
     }
 
     setWidth(value) {
@@ -49,7 +56,9 @@ class CanvasWrapper {
     }
 
     destroy() {
-        document.body.removeChild(this.canvas);
+        if (!isNode()) {
+            document.body.removeChild(this.canvas);
+        }
         this.canvas = null;
         this.context = null;
     }

@@ -1,29 +1,38 @@
 import BaseOnLayerObject from './BaseOnLayer';
 import CanvasWrapper from './CanvasWrapper';
+import {isNode} from '../helpers/common';
 
 class Image extends BaseOnLayerObject {
     constructor() {
         super();
         this.url = null;
 
-        this.image = new window.Image();
+        if (isNode()) {
+            let canvas = require('canvas');
+            this.image = new canvas.Image();
+        }
+        else {
+            this.image = new window.Image();
 
-        // hide from viewport
-        this.image.style.position = "absolute";
-        this.image.style.left = "-99999px";
-        this.image.style.top = "-99999px";
+            // hide from viewport
+            this.image.style.position = "absolute";
+            this.image.style.left = "-99999px";
+            this.image.style.top = "-99999px";
+        }
     }
 
     load(url, callback) {
         let load = () => {
-            this.setWidth(this.image.clientWidth);
-            this.setHeight(this.image.clientHeight);
+            this.setWidth(isNode() ? this.image.width : this.image.clientWidth);
+            this.setHeight(isNode() ? this.image.height : this.image.clientHeight);
 
             // get image data
             this.canvas = new CanvasWrapper(this.getWidth(), this.getHeight());
             this.canvas.getContext().drawImage(this.image, 0, 0, this.getWidth(), this.getHeight());
 
-            document.body.removeChild(this.image);
+            if (!isNode()) {
+                document.body.removeChild(this.image);
+            }
 
             if (typeof callback === "function") {
                 callback.call(this);
@@ -32,11 +41,18 @@ class Image extends BaseOnLayerObject {
 
         this.url = url;
 
-        document.body.appendChild(this.image);
-        this.image.onload = function () {
+        if (!isNode()) {
+            document.body.appendChild(this.image);
+            this.image.onload = function () {
+                load();
+            };
+            this.image.src = url;
+        }
+        else {
+            let fs = require("fs");
+            this.image.src = fs.readFileSync(url);
             load();
-        };
-        this.image.src = url;
+        }
     }
 }
 
