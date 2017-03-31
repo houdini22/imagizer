@@ -65,7 +65,7 @@
 /******/ 	}
 /******/ 	
 /******/ 	var hotApplyOnUpdate = true;
-/******/ 	var hotCurrentHash = "519b4a456c56386bf415"; // eslint-disable-line no-unused-vars
+/******/ 	var hotCurrentHash = "14dc91b6b021b941572f"; // eslint-disable-line no-unused-vars
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentParents = []; // eslint-disable-line no-unused-vars
 /******/ 	
@@ -8878,7 +8878,7 @@
 	
 	var _Project2 = _interopRequireDefault(_Project);
 	
-	var _Image = __webpack_require__(328);
+	var _Image = __webpack_require__(350);
 	
 	var _Image2 = _interopRequireDefault(_Image);
 	
@@ -9492,6 +9492,7 @@
 	exports.mod = mod;
 	exports.triangle = triangle;
 	exports.smoothStep = smoothStep;
+	exports.brightness = brightness;
 	var blendingModes = {
 	    lighten: function lighten(bottomPixel, topPixel) {
 	        return topPixel > bottomPixel ? topPixel : bottomPixel;
@@ -9726,6 +9727,10 @@
 	    x = (x - a) / (b - a);
 	    return x * x * (3 - 2 * x);
 	}
+	
+	function brightness(pixel) {
+	    return (pixel.r + pixel.g + pixel.b) / 3;
+	}
 
 /***/ },
 /* 306 */
@@ -9807,17 +9812,109 @@
 	
 	var _Tritone2 = _interopRequireDefault(_Tritone);
 	
-	var _Dissolve = __webpack_require__(333);
+	var _Dissolve = __webpack_require__(328);
 	
 	var _Dissolve2 = _interopRequireDefault(_Dissolve);
 	
-	var _Diffuse = __webpack_require__(331);
+	var _Edge = __webpack_require__(329);
+	
+	var _Edge2 = _interopRequireDefault(_Edge);
+	
+	var _ChannelMix = __webpack_require__(330);
+	
+	var _ChannelMix2 = _interopRequireDefault(_ChannelMix);
+	
+	var _AutoContrast = __webpack_require__(331);
+	
+	var _AutoContrast2 = _interopRequireDefault(_AutoContrast);
+	
+	var _Diffuse = __webpack_require__(333);
 	
 	var _Diffuse2 = _interopRequireDefault(_Diffuse);
 	
-	var _Kaleidoscope = __webpack_require__(334);
+	var _Kaleidoscope = __webpack_require__(335);
 	
 	var _Kaleidoscope2 = _interopRequireDefault(_Kaleidoscope);
+	
+	var _Marble = __webpack_require__(336);
+	
+	var _Marble2 = _interopRequireDefault(_Marble);
+	
+	var _Pinch = __webpack_require__(338);
+	
+	var _Pinch2 = _interopRequireDefault(_Pinch);
+	
+	var _Ripple = __webpack_require__(339);
+	
+	var _Ripple2 = _interopRequireDefault(_Ripple);
+	
+	var _Shear = __webpack_require__(340);
+	
+	var _Shear2 = _interopRequireDefault(_Shear);
+	
+	var _Sphere = __webpack_require__(341);
+	
+	var _Sphere2 = _interopRequireDefault(_Sphere);
+	
+	var _Swim = __webpack_require__(342);
+	
+	var _Swim2 = _interopRequireDefault(_Swim);
+	
+	var _Twirl = __webpack_require__(343);
+	
+	var _Twirl2 = _interopRequireDefault(_Twirl);
+	
+	var _Water = __webpack_require__(344);
+	
+	var _Water2 = _interopRequireDefault(_Water);
+	
+	var _Circle = __webpack_require__(345);
+	
+	var _Circle2 = _interopRequireDefault(_Circle);
+	
+	var _Rotate = __webpack_require__(346);
+	
+	var _Rotate2 = _interopRequireDefault(_Rotate);
+	
+	var _Offset = __webpack_require__(347);
+	
+	var _Offset2 = _interopRequireDefault(_Offset);
+	
+	var _Polar = __webpack_require__(348);
+	
+	var _Polar2 = _interopRequireDefault(_Polar);
+	
+	var _Perspective = __webpack_require__(349);
+	
+	var _Perspective2 = _interopRequireDefault(_Perspective);
+	
+	var _AutoWhiteBalance = __webpack_require__(332);
+	
+	var _AutoWhiteBalance2 = _interopRequireDefault(_AutoWhiteBalance);
+	
+	var _FillColor = __webpack_require__(354);
+	
+	var _FillColor2 = _interopRequireDefault(_FillColor);
+	
+	var _Flip = __webpack_require__(355);
+	
+	var _Flip2 = _interopRequireDefault(_Flip);
+	
+	var _Block = __webpack_require__(356);
+	
+	var _Block2 = _interopRequireDefault(_Block);
+	
+	var _Border = __webpack_require__(357);
+	
+	var _Border2 = _interopRequireDefault(_Border);
+	
+	var _Emboss = __webpack_require__(358);
+	
+	var _Emboss2 = _interopRequireDefault(_Emboss);
+	
+	var _ComponentStretching = __webpack_require__(360);
+	
+	var _ComponentStretching2 = _interopRequireDefault(_ComponentStretching);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
@@ -9826,6 +9923,9 @@
 	var availableEffects = {};
 	
 	function add(_class) {
+	    if (availableEffects[_class.getName()]) {
+	        throw 'Effect: ' + _class.getName() + ' exists already!';
+	    }
 	    availableEffects[_class.getName()] = _class;
 	}
 	
@@ -9849,6 +9949,29 @@
 	add(_Diffuse2.default);
 	add(_Dissolve2.default);
 	add(_Kaleidoscope2.default);
+	add(_Marble2.default);
+	add(_Pinch2.default);
+	add(_Ripple2.default);
+	add(_Shear2.default);
+	add(_Sphere2.default);
+	add(_Swim2.default);
+	add(_Twirl2.default);
+	add(_Water2.default);
+	add(_Edge2.default);
+	add(_ChannelMix2.default);
+	add(_Circle2.default);
+	add(_Rotate2.default);
+	add(_Offset2.default);
+	add(_Polar2.default);
+	add(_Perspective2.default);
+	add(_AutoContrast2.default);
+	add(_AutoWhiteBalance2.default);
+	add(_FillColor2.default);
+	add(_Flip2.default);
+	add(_Block2.default);
+	add(_Border2.default);
+	add(_Emboss2.default);
+	add(_ComponentStretching2.default);
 	
 	var EffectsRepository = function () {
 	    function EffectsRepository() {
@@ -11016,7 +11139,7 @@
 	exports.RGBtoHex = RGBtoHex;
 	exports.RGBtoXYZ = RGBtoXYZ;
 	exports.RGBtoCIELab = RGBtoCIELab;
-	exports.CIELabToXYZl = CIELabToXYZl;
+	exports.CIELabToXYZ = CIELabToXYZ;
 	exports.CIELabToRGB = CIELabToRGB;
 	/**
 	 * RGB to HSB color convert.
@@ -11068,7 +11191,6 @@
 	        b: brightness
 	    };
 	}
-	
 	/**
 	 * HSB to RGB color convert.
 	 * @param hue
@@ -11203,7 +11325,7 @@
 	}
 	
 	function RGBtoCIELab(r, g, b) {
-	    var xyz = helpers.color.RGBtoXYZ(r, g, b);
+	    var xyz = RGBtoXYZ(r, g, b);
 	
 	    var var_X = xyz.x / 95.047; // ref
 	    var var_Y = xyz.y / 100; // ref
@@ -11234,7 +11356,7 @@
 	    };
 	}
 	
-	function CIELabToXYZl(a, b) {
+	function CIELabToXYZ(l, a, b) {
 	    var var_Y = (l + 16) / 116;
 	    var var_X = a / 500 + var_Y;
 	    var var_Z = var_Y - b / 200;
@@ -11265,7 +11387,7 @@
 	}
 	
 	function CIELabToRGB(l, a, b) {
-	    var xyz = helpers.color.CIELabToXYZ(l, a, b);
+	    var xyz = CIELabToXYZ(l, a, b);
 	
 	    var var_X = xyz.x / 100;
 	    var var_Y = xyz.y / 100;
@@ -11936,7 +12058,2298 @@
 	
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 	
-	var _BaseOnLayer = __webpack_require__(329);
+	var _BasePoint = __webpack_require__(308);
+	
+	var _BasePoint2 = _interopRequireDefault(_BasePoint);
+	
+	var _common = __webpack_require__(305);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	
+	var DissolveEffect = function (_BasePointEffect) {
+	    _inherits(DissolveEffect, _BasePointEffect);
+	
+	    function DissolveEffect() {
+	        _classCallCheck(this, DissolveEffect);
+	
+	        return _possibleConstructorReturn(this, (DissolveEffect.__proto__ || Object.getPrototypeOf(DissolveEffect)).apply(this, arguments));
+	    }
+	
+	    _createClass(DissolveEffect, [{
+	        key: 'getDefaultParameters',
+	        value: function getDefaultParameters() {
+	            return {
+	                density: 1,
+	                softness: 0
+	            };
+	        }
+	    }, {
+	        key: 'before',
+	        value: function before(parameters, width, height, imageData) {
+	            var d = (1 - parameters.density) * (1 + parameters.softness);
+	            return {
+	                minDensity: d - parameters.softness,
+	                maxDensity: d
+	            };
+	        }
+	    }, {
+	        key: 'callback',
+	        value: function callback(pixel, x, y, parameters, width, height) {
+	            var v = Math.random(),
+	                f = (0, _common.smoothStep)(this.data.minDensity, this.data.maxDensity, v);
+	            pixel.a = pixel.a * f;
+	            return pixel;
+	        }
+	    }], [{
+	        key: 'getName',
+	        value: function getName() {
+	            return 'dissolve';
+	        }
+	    }]);
+	
+	    return DissolveEffect;
+	}(_BasePoint2.default);
+	
+	exports.default = DissolveEffect;
+
+/***/ },
+/* 329 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	var _BasePoint = __webpack_require__(308);
+	
+	var _BasePoint2 = _interopRequireDefault(_BasePoint);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	
+	var EdgeEffect = function (_BasePointEffect) {
+	    _inherits(EdgeEffect, _BasePointEffect);
+	
+	    function EdgeEffect() {
+	        _classCallCheck(this, EdgeEffect);
+	
+	        return _possibleConstructorReturn(this, (EdgeEffect.__proto__ || Object.getPrototypeOf(EdgeEffect)).apply(this, arguments));
+	    }
+	
+	    _createClass(EdgeEffect, [{
+	        key: 'getDefaultParameters',
+	        value: function getDefaultParameters() {
+	            return {
+	                matrixes: {
+	                    robertsV: [0, 0, -1, 0, 1, 0, 0, 0, 0],
+	                    robertsH: [-1, 0, 0, 0, 1, 0, 0, 0, 0],
+	                    prewittV: [-1, 0, 1, -1, 0, 1, -1, 0, 1],
+	                    prewittH: [-1, -1, -1, 0, 0, 0, 1, 1, 1],
+	                    sobelV: [-1, 0, 1, -2, 0, 2, -1, 0, 1],
+	                    sobelH: [-1, -2, -1, 0, 0, 0, 1, 2, 1],
+	                    freiChenV: [-1, 0, 1, -Math.sqrt(2), 0, Math.sqrt(2), -1, 0, 1],
+	                    freiChenH: [-1, -Math.sqrt(2), -1, 0, 0, 0, 1, Math.sqrt(2), 1]
+	                },
+	                hEdgeMatrix: "sobelV",
+	                vEdgeMatrix: "sobelH"
+	            };
+	        }
+	    }, {
+	        key: 'before',
+	        value: function before(parameters, width, height, imageData) {
+	            var hEdgeMatrix = parameters.hEdgeMatrix,
+	                vEdgeMatrix = parameters.vEdgeMatrix;
+	
+	            if (typeof hEdgeMatrix === "string") {
+	                hEdgeMatrix = parameters.matrixes[parameters.hEdgeMatrix];
+	            }
+	            if (typeof vEdgeMatrix === "string") {
+	                vEdgeMatrix = parameters.matrixes[parameters.vEdgeMatrix];
+	            }
+	            return {
+	                hEdgeMatrix: hEdgeMatrix,
+	                vEdgeMatrix: vEdgeMatrix
+	            };
+	        }
+	    }, {
+	        key: 'callback',
+	        value: function callback(pixel, x, y, parameters, width, height) {
+	            var r = 0,
+	                g = 0,
+	                b = 0,
+	                rh = 0,
+	                gh = 0,
+	                bh = 0,
+	                rv = 0,
+	                gv = 0,
+	                bv = 0,
+	                row,
+	                iy,
+	                col,
+	                ix,
+	                iOffset,
+	                mOffset,
+	                pixel2,
+	                h,
+	                v;
+	
+	            for (row = -1; row <= 1; row += 1) {
+	                iy = y + row;
+	                if (!(0 <= iy && iy < height)) {
+	                    iy = y;
+	                }
+	                mOffset = 3 * (row + 1) + 1;
+	                for (col = -1; col <= 1; col += 1) {
+	                    ix = x + col;
+	                    if (!(0 <= ix && ix < width)) {
+	                        ix = x;
+	                    }
+	                    pixel2 = this.getOriginalPixel(ix, iy);
+	                    h = this.data.hEdgeMatrix[mOffset + col];
+	                    v = this.data.vEdgeMatrix[mOffset + col];
+	
+	                    r = pixel2.r;
+	                    g = pixel2.g;
+	                    b = pixel2.b;
+	
+	                    rh += Math.floor(h * r);
+	                    gh += Math.floor(h * g);
+	                    bh += Math.floor(h * b);
+	
+	                    rv += Math.floor(v * r);
+	                    gv += Math.floor(v * g);
+	                    bv += Math.floor(v + b);
+	                }
+	            }
+	            r = Math.floor(Math.sqrt(rh * rh + rv * rv) / 1.8);
+	            g = Math.floor(Math.sqrt(gh * gh + gv * gv) / 1.8);
+	            b = Math.floor(Math.sqrt(bh * bh + bv * bv) / 1.8);
+	            return {
+	                r: r,
+	                g: g,
+	                b: b,
+	                a: pixel.a
+	            };
+	        }
+	    }], [{
+	        key: 'getName',
+	        value: function getName() {
+	            return 'edge';
+	        }
+	    }]);
+	
+	    return EdgeEffect;
+	}(_BasePoint2.default);
+	
+	exports.default = EdgeEffect;
+
+/***/ },
+/* 330 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	var _BasePoint = __webpack_require__(308);
+	
+	var _BasePoint2 = _interopRequireDefault(_BasePoint);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	
+	var ChannelMixEffect = function (_BasePointEffect) {
+	    _inherits(ChannelMixEffect, _BasePointEffect);
+	
+	    function ChannelMixEffect() {
+	        _classCallCheck(this, ChannelMixEffect);
+	
+	        return _possibleConstructorReturn(this, (ChannelMixEffect.__proto__ || Object.getPrototypeOf(ChannelMixEffect)).apply(this, arguments));
+	    }
+	
+	    _createClass(ChannelMixEffect, [{
+	        key: 'getDefaultParameters',
+	        value: function getDefaultParameters() {
+	            return {
+	                blueGreen: 1,
+	                redBlue: 1,
+	                greenRed: 1,
+	                intoR: 1,
+	                intoG: 1,
+	                intoB: 1
+	            };
+	        }
+	    }, {
+	        key: 'callback',
+	        value: function callback(pixel, x, y, parameters, width, height) {
+	            var r = pixel.r,
+	                g = pixel.g,
+	                b = pixel.b,
+	                a = pixel.a;
+	
+	            return {
+	                r: (parameters.intoR * (parameters.blueGreen * g + (255 - parameters.blueGreen) * b) / 255 + (255 - parameters.intoR) * r) / 255,
+	                g: (parameters.intoG * (parameters.redBlue * g + (255 - parameters.redBlue) * r) / 255 + (255 - parameters.intoG) * g) / 255,
+	                b: (parameters.intoB * (parameters.greenRed * g + (255 - parameters.greenRed) * g) / 255 + (255 - parameters.intoB) * b) / 255,
+	                a: pixel.a
+	            };
+	        }
+	    }], [{
+	        key: 'getName',
+	        value: function getName() {
+	            return 'channel-mix';
+	        }
+	    }]);
+	
+	    return ChannelMixEffect;
+	}(_BasePoint2.default);
+	
+	exports.default = ChannelMixEffect;
+
+/***/ },
+/* 331 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	var _BasePoint = __webpack_require__(308);
+	
+	var _BasePoint2 = _interopRequireDefault(_BasePoint);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	
+	var AutoContrastEffect = function (_BasePointEffect) {
+	    _inherits(AutoContrastEffect, _BasePointEffect);
+	
+	    function AutoContrastEffect() {
+	        _classCallCheck(this, AutoContrastEffect);
+	
+	        return _possibleConstructorReturn(this, (AutoContrastEffect.__proto__ || Object.getPrototypeOf(AutoContrastEffect)).apply(this, arguments));
+	    }
+	
+	    _createClass(AutoContrastEffect, [{
+	        key: 'before',
+	        value: function before(parameters, width, height) {
+	            var x,
+	                y,
+	                pixel,
+	                min = Infinity,
+	                max = -1;
+	
+	            for (y = 0; y < height; y += 1) {
+	                for (x = 0; x < width; x += 1) {
+	                    pixel = this.getPixel(x, y);
+	
+	                    min = Math.min((pixel.r + pixel.g + pixel.b) / 3, min);
+	                    max = Math.max((pixel.r + pixel.g + pixel.b) / 3, max);
+	                }
+	            }
+	
+	            return {
+	                min: min,
+	                max: max,
+	                remap: function remap(value) {
+	                    return (value - min) * 255 / (max - min);
+	                }
+	            };
+	        }
+	    }, {
+	        key: 'callback',
+	        value: function callback(pixel, x, y, parameters, width, height) {
+	            pixel.r = this.data.remap(pixel.r, this.data.min, this.data.max);
+	            pixel.g = this.data.remap(pixel.g, this.data.min, this.data.max);
+	            pixel.b = this.data.remap(pixel.b, this.data.min, this.data.max);
+	
+	            return pixel;
+	        }
+	    }], [{
+	        key: 'getName',
+	        value: function getName() {
+	            return 'auto-contrast';
+	        }
+	    }]);
+	
+	    return AutoContrastEffect;
+	}(_BasePoint2.default);
+	
+	exports.default = AutoContrastEffect;
+
+/***/ },
+/* 332 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	var _BaseCustom = __webpack_require__(353);
+	
+	var _BaseCustom2 = _interopRequireDefault(_BaseCustom);
+	
+	var _color = __webpack_require__(320);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	
+	var AutoWhiteBalanceEffect = function (_BaseCustomEffect) {
+	    _inherits(AutoWhiteBalanceEffect, _BaseCustomEffect);
+	
+	    function AutoWhiteBalanceEffect() {
+	        _classCallCheck(this, AutoWhiteBalanceEffect);
+	
+	        return _possibleConstructorReturn(this, (AutoWhiteBalanceEffect.__proto__ || Object.getPrototypeOf(AutoWhiteBalanceEffect)).apply(this, arguments));
+	    }
+	
+	    _createClass(AutoWhiteBalanceEffect, [{
+	        key: 'getDefaultParameters',
+	        value: function getDefaultParameters() {
+	            return {
+	                intensity: 50
+	            };
+	        }
+	    }, {
+	        key: 'callback',
+	        value: function callback(width, height, parameters) {
+	            var x,
+	                y,
+	                sumA = 0,
+	                sumB = 0,
+	                pixel,
+	                lab,
+	                avgSumA,
+	                avgSumB,
+	                aDelta,
+	                bDelta;
+	
+	            for (y = 0; y < height; y += 1) {
+	                for (x = 0; x < width; x += 1) {
+	                    pixel = this.getPixel(x, y);
+	                    lab = (0, _color.RGBtoCIELab)(pixel.r, pixel.g, pixel.b);
+	                    sumA += lab.a;
+	                    sumB += lab.b;
+	                }
+	            }
+	
+	            avgSumA = 0 - sumA / (width * height);
+	            avgSumB = 0 - sumB / (width * height);
+	
+	            aDelta = avgSumA * (parameters.intensity / 100) * 1.1;
+	            bDelta = avgSumB * (parameters.intensity / 100) * 1.1;
+	
+	            for (y = 0; y < height; y += 1) {
+	                for (x = 0; x < width; x += 1) {
+	                    pixel = this.getPixel(x, y);
+	
+	                    lab = (0, _color.RGBtoCIELab)(pixel.r, pixel.g, pixel.b);
+	
+	                    lab.a += aDelta;
+	                    lab.b += bDelta;
+	
+	                    pixel = (0, _color.CIELabToRGB)(lab.l, lab.a, lab.b);
+	                    pixel.a = this.getPixel(x, y).a;
+	
+	                    this.setPixel(x, y, pixel);
+	                }
+	            }
+	        }
+	    }], [{
+	        key: 'getName',
+	        value: function getName() {
+	            return 'auto-white-balance';
+	        }
+	    }]);
+	
+	    return AutoWhiteBalanceEffect;
+	}(_BaseCustom2.default);
+	
+	exports.default = AutoWhiteBalanceEffect;
+
+/***/ },
+/* 333 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	var _BaseTransform = __webpack_require__(334);
+	
+	var _BaseTransform2 = _interopRequireDefault(_BaseTransform);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	
+	var DiffuseEffect = function (_BaseTransformEffect) {
+	    _inherits(DiffuseEffect, _BaseTransformEffect);
+	
+	    function DiffuseEffect() {
+	        _classCallCheck(this, DiffuseEffect);
+	
+	        return _possibleConstructorReturn(this, (DiffuseEffect.__proto__ || Object.getPrototypeOf(DiffuseEffect)).apply(this, arguments));
+	    }
+	
+	    _createClass(DiffuseEffect, [{
+	        key: 'getDefaultParameters',
+	        value: function getDefaultParameters() {
+	            return {
+	                scale: 4
+	            };
+	        }
+	    }, {
+	        key: 'before',
+	        value: function before(parameters, width, height, imageData) {
+	            var sinTable = new Array(256),
+	                cosTable = new Array(256),
+	                i = void 0,
+	                angle = void 0;
+	            for (i = 0; i < 256; i += 1) {
+	                angle = Math.PI * 2 * i / 256;
+	                sinTable[i] = parameters.scale * Math.sin(angle);
+	                cosTable[i] = parameters.scale * Math.cos(angle);
+	            }
+	            return {
+	                sinTable: sinTable,
+	                cosTable: cosTable
+	            };
+	        }
+	    }, {
+	        key: 'callback',
+	        value: function callback(x, y, parameters) {
+	            var angle = parseInt(Math.random() * 255),
+	                distance = Math.random();
+	
+	            return [x + distance * this.data.sinTable[angle], y + distance * this.data.cosTable[angle]];
+	        }
+	    }], [{
+	        key: 'getName',
+	        value: function getName() {
+	            return 'diffuse';
+	        }
+	    }]);
+	
+	    return DiffuseEffect;
+	}(_BaseTransform2.default);
+	
+	exports.default = DiffuseEffect;
+
+/***/ },
+/* 334 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	var _Base = __webpack_require__(309);
+	
+	var _Base2 = _interopRequireDefault(_Base);
+	
+	var _extend = __webpack_require__(310);
+	
+	var _extend2 = _interopRequireDefault(_extend);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	
+	var BaseTransformEffect = function (_BaseEffect) {
+	    _inherits(BaseTransformEffect, _BaseEffect);
+	
+	    function BaseTransformEffect() {
+	        _classCallCheck(this, BaseTransformEffect);
+	
+	        return _possibleConstructorReturn(this, (BaseTransformEffect.__proto__ || Object.getPrototypeOf(BaseTransformEffect)).apply(this, arguments));
+	    }
+	
+	    _createClass(BaseTransformEffect, [{
+	        key: 'callback',
+	        value: function callback(pixel, x, y, parameters, width, height) {
+	            throw "Extend it.";
+	        }
+	    }, {
+	        key: 'run',
+	        value: function run(imageData, parameters) {
+	
+	            parameters = (0, _extend2.default)(true, {}, this.getDefaultParameters(), parameters);
+	
+	            var x = void 0,
+	                y = void 0,
+	                normalizePixelValue = function normalizePixelValue(value) {
+	                return Math.min(Math.max(value, 0), 255) | 0;
+	            },
+	                sandbox = {
+	                data: null
+	            },
+	                imageDataCopy = new Uint8ClampedArray(imageData.data);
+	
+	            sandbox.data = this.before.call(sandbox, parameters, imageData.width, imageData.height, imageData);
+	
+	            for (y = 0; y < imageData.height; y += 1) {
+	                for (x = 0; x < imageData.width; x += 1) {
+	                    var newXY = this.callback.call(sandbox, x, y, parameters, imageData.width, imageData.height),
+	                        newX = normalizePixelValue(newXY[0]),
+	                        newY = normalizePixelValue(newXY[1]),
+	                        oldPixelIndex = y * imageData.width * 4 + x * 4,
+	                        newPixelIndex = newY * imageData.width * 4 + newX * 4;
+	
+	                    imageDataCopy[oldPixelIndex + 0] = imageData.data[newPixelIndex + 0];
+	                    imageDataCopy[oldPixelIndex + 1] = imageData.data[newPixelIndex + 1];
+	                    imageDataCopy[oldPixelIndex + 2] = imageData.data[newPixelIndex + 2];
+	                    imageDataCopy[oldPixelIndex + 3] = imageData.data[newPixelIndex + 3];
+	                }
+	            }
+	
+	            imageData.data.set(imageDataCopy);
+	            return imageData;
+	        }
+	    }]);
+	
+	    return BaseTransformEffect;
+	}(_Base2.default);
+	
+	exports.default = BaseTransformEffect;
+
+/***/ },
+/* 335 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	var _BaseTransform = __webpack_require__(334);
+	
+	var _BaseTransform2 = _interopRequireDefault(_BaseTransform);
+	
+	var _common = __webpack_require__(305);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	
+	var KaleidoscopeEffect = function (_BaseTransformEffect) {
+	    _inherits(KaleidoscopeEffect, _BaseTransformEffect);
+	
+	    function KaleidoscopeEffect() {
+	        _classCallCheck(this, KaleidoscopeEffect);
+	
+	        return _possibleConstructorReturn(this, (KaleidoscopeEffect.__proto__ || Object.getPrototypeOf(KaleidoscopeEffect)).apply(this, arguments));
+	    }
+	
+	    _createClass(KaleidoscopeEffect, [{
+	        key: 'getDefaultParameters',
+	        value: function getDefaultParameters() {
+	            return {
+	                centreX: 0.5,
+	                centreY: 0.5,
+	                angle: 0,
+	                angle2: 0,
+	                sides: 3,
+	                radius: 0
+	            };
+	        }
+	    }, {
+	        key: 'before',
+	        value: function before(parameters, width, height, imageData) {
+	            return {
+	                icentreX: width * parameters.centreX,
+	                icentreY: height * parameters.centreY
+	            };
+	        }
+	    }, {
+	        key: 'callback',
+	        value: function callback(x, y, parameters) {
+	            var dx = x - this.data.icentreX,
+	                dy = y - this.data.icentreY,
+	                r = Math.sqrt(dx * dx + dy * dy),
+	                theta = Math.atan2(dy, dx) - parameters.angle - parameters.angle2;
+	
+	            theta = (0, _common.triangle)(theta / Math.PI * parameters.sides * 0.5);
+	
+	            if (parameters.radius !== 0) {
+	                var c = Math.cos(theta),
+	                    radiusC = parameters.radius / c;
+	                r = radiusC * (0, _common.triangle)(r / radiusC);
+	            }
+	
+	            theta += parameters.angle;
+	
+	            return [this.data.icentreX + r * Math.cos(theta), this.data.icentreY + r * Math.sin(theta)];
+	        }
+	    }], [{
+	        key: 'getName',
+	        value: function getName() {
+	            return 'kaleidoscope';
+	        }
+	    }]);
+	
+	    return KaleidoscopeEffect;
+	}(_BaseTransform2.default);
+	
+	exports.default = KaleidoscopeEffect;
+
+/***/ },
+/* 336 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	var _BaseTransform = __webpack_require__(334);
+	
+	var _BaseTransform2 = _interopRequireDefault(_BaseTransform);
+	
+	var _noise = __webpack_require__(337);
+	
+	var _noise2 = _interopRequireDefault(_noise);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	
+	var MarbleEffect = function (_BaseTransformEffect) {
+	    _inherits(MarbleEffect, _BaseTransformEffect);
+	
+	    function MarbleEffect() {
+	        _classCallCheck(this, MarbleEffect);
+	
+	        return _possibleConstructorReturn(this, (MarbleEffect.__proto__ || Object.getPrototypeOf(MarbleEffect)).apply(this, arguments));
+	    }
+	
+	    _createClass(MarbleEffect, [{
+	        key: 'getDefaultParameters',
+	        value: function getDefaultParameters() {
+	            return {
+	                xScale: 4,
+	                yScale: 4,
+	                amount: 1,
+	                turbulence: 1
+	            };
+	        }
+	    }, {
+	        key: 'before',
+	        value: function before(parameters, width, height, imageData) {
+	            var sinTable = new Array(256),
+	                cosTable = new Array(256),
+	                i = 0,
+	                angle = void 0;
+	
+	            for (i = 0; i < 256; i += 1) {
+	                angle = Math.PI * 2 * i / 256 * parameters.turbulence;
+	                sinTable[i] = -parameters.yScale * Math.sin(angle);
+	                cosTable[i] = parameters.yScale * Math.cos(angle);
+	            }
+	            return {
+	                sinTable: sinTable,
+	                cosTable: cosTable,
+	                displacementMap: function displacementMap(x, y) {
+	                    var result = 127 * (1 + _noise2.default.noise2(x / parameters.xScale, y / parameters.yScale));
+	                    return Math.min(255, Math.max(0, result));
+	                }
+	            };
+	        }
+	    }, {
+	        key: 'callback',
+	        value: function callback(x, y, parameters) {
+	            var displacement = Math.floor(this.data.displacementMap(x, y));
+	            return [x + this.data.sinTable[displacement], y + this.data.cosTable[displacement]];
+	        }
+	    }], [{
+	        key: 'getName',
+	        value: function getName() {
+	            return 'marble';
+	        }
+	    }]);
+	
+	    return MarbleEffect;
+	}(_BaseTransform2.default);
+	
+	exports.default = MarbleEffect;
+
+/***/ },
+/* 337 */
+/***/ function(module, exports) {
+
+	"use strict";
+	
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	var parameters = {},
+	    isInit = false;
+	
+	var noise = {
+	    init: function init() {
+	        if (isInit) {
+	            return false;
+	        }
+	        isInit = true;
+	
+	        parameters.B = 0x100;
+	        parameters.BM = 0xff;
+	        parameters.N = 0x1000;
+	
+	        parameters.P = new Array(parameters.B + parameters.B + 2);
+	        parameters.G1 = new Array(parameters.B + parameters.B + 2);
+	        parameters.G2 = new Array(parameters.B + parameters.B + 2);
+	        for (i = 0; i < parameters.G2.length; i += 1) {
+	            parameters.G2[i] = new Array(2);
+	        }
+	        parameters.G3 = new Array(parameters.B + parameters.B + 2);
+	        for (i = 0; i < parameters.G3.length; i += 1) {
+	            parameters.G3[i] = new Array(3);
+	        }
+	        var i, j, k;
+	
+	        for (i = 0; i < parameters.B; i += 1) {
+	            parameters.P[i] = i;
+	            parameters.G1[i] = (this.random() % (parameters.B + parameters.B) - parameters.B) / parameters.B;
+	            parameters.G2[i] = [];
+	            for (j = 0; j < 2; j += 1) {
+	                parameters.G2[i][j] = (this.random() % (parameters.B + parameters.B) - parameters.B) / parameters.B;
+	            }
+	            parameters.G2[i] = this.normalize2(parameters.G2[i]);
+	
+	            parameters.G3[i] = [];
+	            for (j = 0; j < 3; j += 1) {
+	                parameters.G3[i][j] = (this.random() % (parameters.B + parameters.B) - parameters.B) / parameters.B;
+	            }
+	            parameters.G3[i] = this.normalize3(parameters.G3[i]);
+	        }
+	
+	        for (i = parameters.B - 1; i >= 0; i -= 1) {
+	            k = parameters.P[i];
+	            parameters.P[i] = parameters.P[j = this.random() % parameters.B];
+	            parameters.P[j] = k;
+	        }
+	
+	        for (i = 0; i < parameters.B + 2; i += 1) {
+	            parameters.P[parameters.B + i] = parameters.P[i];
+	            parameters.G1[parameters.B + i] = parameters.G1[i];
+	            for (j = 0; j < 2; j += 1) {
+	                parameters.G2[parameters.B + i][j] = parameters.G2[i][j];
+	            }
+	            for (j = 0; j < 3; j++) {
+	                parameters.G3[parameters.B + i][j] = parameters.G3[i][j];
+	            }
+	        }
+	    },
+	    random: function random() {
+	        return parseInt(Math.random() * 256 * 256) & 0x7fffffff;
+	    },
+	    normalize2: function normalize2(arr) {
+	        var s = Math.sqrt(arr[0] * arr[0] + arr[1] * arr[1] + arr[2] * arr[2]);
+	        arr[0] = arr[0] / s;
+	        arr[1] = arr[1] / s;
+	        arr[2] = arr[2] / s;
+	        return arr;
+	    },
+	    normalize3: function normalize3(arr) {
+	        var s = Math.sqrt(arr[0] * arr[0] + arr[1] * arr[1]);
+	        arr[0] = arr[0] / s;
+	        arr[1] = arr[1] / s;
+	        return arr;
+	    },
+	    sCurve: function sCurve(t) {
+	        return t * t * (3.0 - 2.0 * t);
+	    },
+	    lerp: function lerp(t, a, b) {
+	        return a + t * (b - a);
+	    },
+	    /**
+	     * Compute 1-dimensional Perlin noise.
+	     * @param x
+	     */
+	    noise1: function noise1(x) {
+	        var bx0, bx1, rx0, rx1, sx, t, u, v;
+	
+	        this.init();
+	
+	        t = x + parameters.N;
+	        bx0 = parseInt(t) & parameters.BM;
+	        bx1 = bx0 + 1 & parameters.BM;
+	        rx0 = t - parseInt(t);
+	        rx1 = rx0 - 1;
+	
+	        sx = this.sCurve(rx0);
+	
+	        u = rx0 * parameters.G1[parameters.P[bx0]];
+	        v = rx1 * parameters.G1[parameters.P[bx1]];
+	
+	        return 2.3 * this.lerp(sx, u, v);
+	    },
+	    /**
+	     * Compute 2-dimensional Perlin noise
+	     * @param x
+	     * @param y
+	     * @returns {number}
+	     */
+	    noise2: function noise2(x, y) {
+	        var bx0,
+	            bx1,
+	            by0,
+	            by1,
+	            b00,
+	            b10,
+	            b01,
+	            b11,
+	            rx0,
+	            rx1,
+	            ry0,
+	            ry1,
+	            q = [],
+	            sx,
+	            sy,
+	            a,
+	            b,
+	            t,
+	            u,
+	            v,
+	            i,
+	            j;
+	
+	        this.init();
+	
+	        t = x + parameters.N;
+	        bx0 = parseInt(t) & parameters.BM;
+	        bx1 = bx0 + 1 & parameters.BM;
+	        rx0 = t - parseInt(t);
+	        rx1 = rx0 - 1;
+	
+	        t = y + parameters.N;
+	        by0 = parseInt(t) & parameters.BM;
+	        by1 = by0 + 1 & parameters.BM;
+	        ry0 = t - parseInt(t);
+	        ry1 = ry0 - 1;
+	
+	        i = parameters.P[bx0];
+	        j = parameters.P[bx1];
+	
+	        b00 = parameters.P[i + by0];
+	        b10 = parameters.P[j + by0];
+	        b01 = parameters.P[i + by1];
+	        b11 = parameters.P[j + by1];
+	
+	        sx = this.sCurve(rx0);
+	        sy = this.sCurve(ry0);
+	
+	        q = parameters.G2[b00];
+	        u = rx0 * q[0] + ry0 * q[1];
+	        q = parameters.G2[b10];
+	        v = rx1 * q[0] + ry0 * q[1];
+	        a = this.lerp(sx, u, v);
+	
+	        q = parameters.G2[b01];
+	        u = rx0 * q[0] + ry1 * q[1];
+	        q = parameters.G2[b11];
+	        v = rx1 * q[0] + ry1 * q[1];
+	        b = this.lerp(sx, u, v);
+	
+	        return 1.5 * this.lerp(sy, a, b);
+	    },
+	    /**
+	     * Compute 3-dimensional Perlin noise.
+	     * @param x
+	     * @param y
+	     * @param z
+	     */
+	    noise3: function noise3(x, y, z) {
+	        var bx0, bx1, by0, by1, bz0, bz1, b00, b10, b01, b11, rx0, rx1, ry0, ry1, rz0, rz1, q, sy, sz, a, b, c, d, t, u, v, i, j;
+	
+	        this.init();
+	
+	        t = x + parameters.N;
+	        bx0 = parseInt(t) & parameters.BM;
+	        bx1 = bx0 + 1 & parameters.BM;
+	        rx0 = t - parseInt(t);
+	        rx1 = rx0 - 1;
+	
+	        t = y + parameters.N;
+	        by0 = parseInt(t) & parameters.BM;
+	        by1 = by0 + 1 & parameters.BM;
+	        ry0 = t - parseInt(t);
+	        ry1 = ry0 - 1;
+	
+	        t = z + parameters.N;
+	        bz0 = parseInt(t) & parameters.BM;
+	        bz1 = bz0 + 1 & parameters.BM;
+	        rz0 = t - parseInt(t);
+	        rz1 = rz0 - 1;
+	
+	        i = parameters.P[bx0];
+	        j = parameters.P[bx1];
+	
+	        b00 = parameters.P[i + by0];
+	        b10 = parameters.P[j + by0];
+	        b01 = parameters.P[i + by1];
+	        b11 = parameters.P[j + by1];
+	
+	        t = this.sCurve(rx0);
+	        sy = this.sCurve(ry0);
+	        sz = this.sCurve(rz0);
+	
+	        q = parameters.G3[b00 + bz0];
+	        u = rx0 * q[0] + ry0 * q[1] + rz0 * q[2];
+	        q = parameters.G3[b10 + bz0];
+	        v = rx1 * q[0] + ry0 * q[1] + rz0 * q[2];
+	        a = this.lerp(t, u, v);
+	
+	        q = parameters.G3[b01 + bz0];
+	        u = rx0 * q[0] + ry1 * q[1] + rz0 * q[2];
+	        q = parameters.G3[b11 + bz0];
+	        v = rx1 * q[0] + ry1 * q[1] + rz0 * q[2];
+	        b = this.lerp(t, u, v);
+	
+	        c = this.lerp(sy, a, b);
+	
+	        q = parameters.G3[b00 + bz1];
+	        u = rx0 * q[0] + ry0 * q[1] + rz1 * q[2];
+	        q = parameters.G3[b10 + bz1];
+	        v = rx1 * q[0] + ry0 * q[1] + rz1 * q[2];
+	        a = this.lerp(t, u, v);
+	
+	        q = parameters.G3[b01 + bz1];
+	        u = rx0 * q[0] + ry1 * q[1] + rz1 * q[2];
+	        q = parameters.G3[b11 + bz1];
+	        v = rx1 * q[0] + ry1 * q[1] + rz1 * q[2];
+	        b = this.lerp(t, u, v);
+	
+	        d = this.lerp(sy, a, b);
+	
+	        return 1.5 * this.lerp(sz, c, d);
+	    },
+	    /**
+	     * Compute turbulence using Perlin noise.
+	     * @param x
+	     * @param y
+	     * @param z
+	     * @param octaves
+	     * @returns {*}
+	     */
+	    turbulence3: function turbulence3(x, y, z, octaves) {
+	        var t = 0,
+	            i;
+	        for (i = 1; i <= octaves; i *= 2) {
+	            t += Math.abs(this.noise3(i * x, i * y, i * z)) / i;
+	        }
+	        return t;
+	    }
+	};
+	
+	exports.default = noise;
+
+/***/ },
+/* 338 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	var _BaseTransform = __webpack_require__(334);
+	
+	var _BaseTransform2 = _interopRequireDefault(_BaseTransform);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	
+	var PinchEffect = function (_BaseTransformEffect) {
+	    _inherits(PinchEffect, _BaseTransformEffect);
+	
+	    function PinchEffect() {
+	        _classCallCheck(this, PinchEffect);
+	
+	        return _possibleConstructorReturn(this, (PinchEffect.__proto__ || Object.getPrototypeOf(PinchEffect)).apply(this, arguments));
+	    }
+	
+	    _createClass(PinchEffect, [{
+	        key: 'getDefaultParameters',
+	        value: function getDefaultParameters() {
+	            return {
+	                angle: 0,
+	                centreX: 0.5,
+	                centreY: 0.5,
+	                radius: 100,
+	                amount: 0.5
+	            };
+	        }
+	    }, {
+	        key: 'before',
+	        value: function before(parameters, width, height, imageData) {
+	            var icentreX = width * parameters.centreX,
+	                icentreY = height * parameters.centreY,
+	                radius = parameters.radius,
+	                radius2;
+	            if (radius === 0) {
+	                radius = Math.min(icentreX, icentreY);
+	            }
+	            radius2 = radius * radius;
+	            return {
+	                icentreX: icentreX,
+	                icentreY: icentreY,
+	                radius: radius,
+	                radius2: radius2
+	            };
+	        }
+	    }, {
+	        key: 'callback',
+	        value: function callback(x, y, parameters) {
+	            var dx = x - this.data.icentreX,
+	                dy = y - this.data.icentreY,
+	                distance = dx * dx + dy * dy,
+	                d,
+	                t,
+	                e,
+	                a,
+	                s,
+	                c;
+	
+	            if (distance > this.data.radius2 || distance === 0) {
+	                return [x, y];
+	            }
+	            d = Math.sqrt(distance / this.data.radius2);
+	            t = Math.pow(Math.sin(Math.PI * 0.5 * d), -parameters.amount);
+	
+	            dx *= t;
+	            dy *= t;
+	
+	            e = 1 - d;
+	            a = parameters.angle * e * e;
+	
+	            s = Math.sin(a);
+	            c = Math.cos(a);
+	
+	            return [this.data.icentreX + c * dx - s * dy, this.data.icentreY + s * dx + c * dy];
+	        }
+	    }], [{
+	        key: 'getName',
+	        value: function getName() {
+	            return 'pinch';
+	        }
+	    }]);
+	
+	    return PinchEffect;
+	}(_BaseTransform2.default);
+	
+	exports.default = PinchEffect;
+
+/***/ },
+/* 339 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	var _BaseTransform = __webpack_require__(334);
+	
+	var _BaseTransform2 = _interopRequireDefault(_BaseTransform);
+	
+	var _common = __webpack_require__(305);
+	
+	var _noise = __webpack_require__(337);
+	
+	var _noise2 = _interopRequireDefault(_noise);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	
+	var RippleEffect = function (_BaseTransformEffect) {
+	    _inherits(RippleEffect, _BaseTransformEffect);
+	
+	    function RippleEffect() {
+	        _classCallCheck(this, RippleEffect);
+	
+	        return _possibleConstructorReturn(this, (RippleEffect.__proto__ || Object.getPrototypeOf(RippleEffect)).apply(this, arguments));
+	    }
+	
+	    _createClass(RippleEffect, [{
+	        key: 'getDefaultParameters',
+	        value: function getDefaultParameters() {
+	            return {
+	                xAmplitude: 5,
+	                yAmplitute: 0,
+	                xWaveLength: 16,
+	                yWaveLength: 16,
+	                waveType: "SINE" // SAWTOOTH TRIANGLE NOISE
+	            };
+	        }
+	    }, {
+	        key: 'callback',
+	        value: function callback(x, y, parameters) {
+	            var nx = y / parameters.xWaveLength,
+	                ny = x / parameters.yWaveLength,
+	                fx,
+	                fy;
+	
+	            switch (parameters.waveType) {
+	                case "SINE":
+	                default:
+	                    fx = Math.sin(nx);
+	                    fy = Math.sin(ny);
+	                    break;
+	
+	                case "SAWTOOTH":
+	                    fx = (0, _common.mod)(nx, 1);
+	                    fy = (0, _common.mod)(ny, 1);
+	                    break;
+	
+	                case "TRIANGLE":
+	                    fx = (0, _common.triangle)(nx);
+	                    fy = (0, _common.triangle)(ny);
+	                    break;
+	
+	                case "NOISE":
+	                    fx = _noise2.default.noise1(nx);
+	                    fy = _noise2.default.noise1(ny);
+	                    break;
+	            }
+	
+	            return [x + parameters.xAmplitude * fx, y + parameters.yAmplitute * fy];
+	        }
+	    }], [{
+	        key: 'getName',
+	        value: function getName() {
+	            return 'ripple';
+	        }
+	    }]);
+	
+	    return RippleEffect;
+	}(_BaseTransform2.default);
+	
+	exports.default = RippleEffect;
+
+/***/ },
+/* 340 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	var _BaseTransform = __webpack_require__(334);
+	
+	var _BaseTransform2 = _interopRequireDefault(_BaseTransform);
+	
+	var _common = __webpack_require__(305);
+	
+	var _noise = __webpack_require__(337);
+	
+	var _noise2 = _interopRequireDefault(_noise);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	
+	var ShearEffect = function (_BaseTransformEffect) {
+	    _inherits(ShearEffect, _BaseTransformEffect);
+	
+	    function ShearEffect() {
+	        _classCallCheck(this, ShearEffect);
+	
+	        return _possibleConstructorReturn(this, (ShearEffect.__proto__ || Object.getPrototypeOf(ShearEffect)).apply(this, arguments));
+	    }
+	
+	    _createClass(ShearEffect, [{
+	        key: 'getDefaultParameters',
+	        value: function getDefaultParameters() {
+	            return {
+	                xAngle: 0,
+	                yAngle: 0,
+	                xOffset: 0,
+	                yOffset: 0
+	            };
+	        }
+	    }, {
+	        key: 'before',
+	        value: function before(parameters, width, height) {
+	            return {
+	                shx: Math.sin(parameters.xAngle),
+	                shy: Math.sin(parameters.yAngle)
+	            };
+	        }
+	    }, {
+	        key: 'callback',
+	        value: function callback(x, y, parameters) {
+	            return [x + parameters.xOffset + y * this.data.shx, y + parameters.yOffset + x * this.data.shy];
+	        }
+	    }], [{
+	        key: 'getName',
+	        value: function getName() {
+	            return 'shear';
+	        }
+	    }]);
+	
+	    return ShearEffect;
+	}(_BaseTransform2.default);
+	
+	exports.default = ShearEffect;
+
+/***/ },
+/* 341 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	var _BaseTransform = __webpack_require__(334);
+	
+	var _BaseTransform2 = _interopRequireDefault(_BaseTransform);
+	
+	var _common = __webpack_require__(305);
+	
+	var _noise = __webpack_require__(337);
+	
+	var _noise2 = _interopRequireDefault(_noise);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	
+	var SphereEffect = function (_BaseTransformEffect) {
+	    _inherits(SphereEffect, _BaseTransformEffect);
+	
+	    function SphereEffect() {
+	        _classCallCheck(this, SphereEffect);
+	
+	        return _possibleConstructorReturn(this, (SphereEffect.__proto__ || Object.getPrototypeOf(SphereEffect)).apply(this, arguments));
+	    }
+	
+	    _createClass(SphereEffect, [{
+	        key: 'getDefaultParameters',
+	        value: function getDefaultParameters() {
+	            return {
+	                a: 0,
+	                b: 0,
+	                centreX: 0.5,
+	                centreY: 0.5,
+	                refractionIndex: 1.5
+	            };
+	        }
+	    }, {
+	        key: 'before',
+	        value: function before(parameters, width, height) {
+	            var icentreX = width * parameters.centreX,
+	                icentreY = height * parameters.centreY,
+	                a = parameters.a,
+	                b = parameters.b,
+	                a2,
+	                b2;
+	            if (a === 0) {
+	                a = width / 2;
+	            }
+	            if (b === 0) {
+	                b = height / 2;
+	            }
+	            a2 = a * a;
+	            b2 = b * b;
+	
+	            return {
+	                icentreX: icentreX,
+	                icentreY: icentreY,
+	                a: a,
+	                b: b,
+	                a2: a2,
+	                b2: b2
+	            };
+	        }
+	    }, {
+	        key: 'callback',
+	        value: function callback(x, y, parameters) {
+	            var dx = x - this.data.icentreX,
+	                dy = y - this.data.icentreY,
+	                x2 = dx * dx,
+	                y2 = dy * dy,
+	                rRefraction = 1 / parameters.refractionIndex,
+	                z = Math.sqrt((1 - x2 / this.data.a2 - y2 / this.data.b2) * (this.data.a * this.data.b)),
+	                z2 = z * z,
+	                xAngle = Math.acos(dx / Math.sqrt(x2 + z2)),
+	                angle1 = Math.PI / 2 - xAngle,
+	                angle2 = Math.asin(Math.sin(angle1) * rRefraction),
+	                yAngle = Math.acos(dy / Math.sqrt(y2 + z2)),
+	                ret = new Array(2);
+	
+	            if (y2 >= this.data.b2 - this.data.b2 / x2 / this.data.a2) {
+	                return [x, y];
+	            }
+	
+	            angle2 = Math.PI / 2 - xAngle - angle2;
+	            ret[0] = x - Math.tan(angle2) * z;
+	
+	            angle1 = Math.PI / 2 - yAngle;
+	            angle2 = Math.asin(Math.sin(angle1) * rRefraction);
+	            angle2 = Math.PI / 2 - yAngle - angle2;
+	            ret[1] = y - Math.tan(angle2) * z;
+	            return ret;
+	        }
+	    }], [{
+	        key: 'getName',
+	        value: function getName() {
+	            return 'sphere';
+	        }
+	    }]);
+	
+	    return SphereEffect;
+	}(_BaseTransform2.default);
+	
+	exports.default = SphereEffect;
+
+/***/ },
+/* 342 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	var _BaseTransform = __webpack_require__(334);
+	
+	var _BaseTransform2 = _interopRequireDefault(_BaseTransform);
+	
+	var _noise = __webpack_require__(337);
+	
+	var _noise2 = _interopRequireDefault(_noise);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	
+	var SwimEffect = function (_BaseTransformEffect) {
+	    _inherits(SwimEffect, _BaseTransformEffect);
+	
+	    function SwimEffect() {
+	        _classCallCheck(this, SwimEffect);
+	
+	        return _possibleConstructorReturn(this, (SwimEffect.__proto__ || Object.getPrototypeOf(SwimEffect)).apply(this, arguments));
+	    }
+	
+	    _createClass(SwimEffect, [{
+	        key: 'getDefaultParameters',
+	        value: function getDefaultParameters() {
+	            return {
+	                scale: 32,
+	                turbulence: 0,
+	                amount: 1,
+	                time: 0,
+	                angle: 0,
+	                stretch: 1
+	            };
+	        }
+	    }, {
+	        key: 'before',
+	        value: function before(parameters, width, height) {
+	            var cos = Math.cos(parameters.angle),
+	                sin = Math.sin(parameters.angle);
+	
+	            return {
+	                m00: cos,
+	                m01: sin,
+	                m10: -sin,
+	                m11: cos
+	            };
+	        }
+	    }, {
+	        key: 'callback',
+	        value: function callback(x, y, parameters) {
+	            var nx = this.data.m00 * x + this.data.m01 * y,
+	                ny = this.data.m10 * x + this.data.m11 * y;
+	
+	            nx /= parameters.scale;
+	            ny /= parameters.scale * parameters.stretch;
+	
+	            if (parameters.turbulence === 1) {
+	                return [x + parameters.amount * _noise2.default.noise3(nx + 0.5, ny, parameters.time), y + parameters.amount * _noise2.default.noise3(nx, ny + 0.5, parameters.time)];
+	            }
+	            return [x + parameters.amount * _noise2.default.turbulence3(nx + 0.5, ny, parameters.turbulence, parameters.time), y + parameters.amount * _noise2.default.turbulence3(nx, ny + 0.5, parameters.turbulence, parameters.time)];
+	        }
+	    }], [{
+	        key: 'getName',
+	        value: function getName() {
+	            return 'swim';
+	        }
+	    }]);
+	
+	    return SwimEffect;
+	}(_BaseTransform2.default);
+	
+	exports.default = SwimEffect;
+
+/***/ },
+/* 343 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	var _BaseTransform = __webpack_require__(334);
+	
+	var _BaseTransform2 = _interopRequireDefault(_BaseTransform);
+	
+	var _noise = __webpack_require__(337);
+	
+	var _noise2 = _interopRequireDefault(_noise);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	
+	var TwirlEffect = function (_BaseTransformEffect) {
+	    _inherits(TwirlEffect, _BaseTransformEffect);
+	
+	    function TwirlEffect() {
+	        _classCallCheck(this, TwirlEffect);
+	
+	        return _possibleConstructorReturn(this, (TwirlEffect.__proto__ || Object.getPrototypeOf(TwirlEffect)).apply(this, arguments));
+	    }
+	
+	    _createClass(TwirlEffect, [{
+	        key: 'getDefaultParameters',
+	        value: function getDefaultParameters() {
+	            return {
+	                angle: 0,
+	                centreX: 0.5,
+	                centreY: 0.5,
+	                radius: 100
+	            };
+	        }
+	    }, {
+	        key: 'before',
+	        value: function before(parameters, width, height) {
+	            var iCentreX = width * parameters.centreX,
+	                iCentreY = height * parameters.centreY,
+	                radius = parameters.radius,
+	                radius2;
+	
+	            if (radius === 0) {
+	                radius = Math.min(iCentreX, iCentreY);
+	            }
+	            radius2 = radius * radius;
+	
+	            return {
+	                iCentreX: iCentreX,
+	                iCentreY: iCentreY,
+	                radius: radius,
+	                radius2: radius2
+	            };
+	        }
+	    }, {
+	        key: 'callback',
+	        value: function callback(x, y, parameters) {
+	            var dx = x - this.data.iCentreX,
+	                dy = y - this.data.iCentreY,
+	                distance = dx * dx + dy * dy,
+	                a;
+	
+	            if (distance > parameters.radius2) {
+	                return [x, y];
+	            }
+	
+	            distance = Math.sqrt(distance);
+	            a = Math.atan2(dy, dx) + parameters.angle * (parameters.radius - distance) / parameters.radius;
+	
+	            return [this.data.iCentreX + distance * Math.cos(a), this.data.iCentreY + distance * Math.sin(a)];
+	        }
+	    }], [{
+	        key: 'getName',
+	        value: function getName() {
+	            return 'twirl';
+	        }
+	    }]);
+	
+	    return TwirlEffect;
+	}(_BaseTransform2.default);
+	
+	exports.default = TwirlEffect;
+
+/***/ },
+/* 344 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	var _BaseTransform = __webpack_require__(334);
+	
+	var _BaseTransform2 = _interopRequireDefault(_BaseTransform);
+	
+	var _noise = __webpack_require__(337);
+	
+	var _noise2 = _interopRequireDefault(_noise);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	
+	var WaterEffect = function (_BaseTransformEffect) {
+	    _inherits(WaterEffect, _BaseTransformEffect);
+	
+	    function WaterEffect() {
+	        _classCallCheck(this, WaterEffect);
+	
+	        return _possibleConstructorReturn(this, (WaterEffect.__proto__ || Object.getPrototypeOf(WaterEffect)).apply(this, arguments));
+	    }
+	
+	    _createClass(WaterEffect, [{
+	        key: 'getDefaultParameters',
+	        value: function getDefaultParameters() {
+	            return {
+	                waveLength: 16,
+	                amplitude: 10,
+	                phase: 0,
+	                centreX: 0.5,
+	                centreY: 0.5,
+	                radius: 50
+	            };
+	        }
+	    }, {
+	        key: 'before',
+	        value: function before(parameters, width, height) {
+	            var iCentreX = width * parameters.centreX,
+	                iCentreY = height * parameters.centreY,
+	                radius = parameters.radius,
+	                radius2;
+	
+	            if (radius === 0) {
+	                radius = Math.min(iCentreX, iCentreY);
+	            }
+	            radius2 = radius * radius;
+	
+	            return {
+	                iCentreX: iCentreX,
+	                iCentreY: iCentreY,
+	                radius: radius,
+	                radius2: radius2
+	            };
+	        }
+	    }, {
+	        key: 'callback',
+	        value: function callback(x, y, parameters) {
+	            var dx = x - this.data.iCentreX,
+	                dy = y - this.data.iCentreY,
+	                distance2 = dx * dx + dy * dy,
+	                distance,
+	                amount;
+	
+	            if (distance2 > this.data.radius2) {
+	                return [x, y];
+	            }
+	            distance = Math.sqrt(distance2);
+	            amount = parameters.amplitude * Math.sin(distance / parameters.waveLength * Math.PI * 2 - parameters.phase);
+	            amount *= (parameters.radius - distance) / parameters.radius;
+	            if (distance !== 0) {
+	                amount *= parameters.waveLength / distance;
+	            }
+	            return [x + dx * amount, y + dy * amount];
+	        }
+	    }], [{
+	        key: 'getName',
+	        value: function getName() {
+	            return 'water';
+	        }
+	    }]);
+	
+	    return WaterEffect;
+	}(_BaseTransform2.default);
+	
+	exports.default = WaterEffect;
+
+/***/ },
+/* 345 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	var _BaseTransform = __webpack_require__(334);
+	
+	var _BaseTransform2 = _interopRequireDefault(_BaseTransform);
+	
+	var _common = __webpack_require__(305);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	
+	var CircleEffect = function (_BaseTransformEffect) {
+	    _inherits(CircleEffect, _BaseTransformEffect);
+	
+	    function CircleEffect() {
+	        _classCallCheck(this, CircleEffect);
+	
+	        return _possibleConstructorReturn(this, (CircleEffect.__proto__ || Object.getPrototypeOf(CircleEffect)).apply(this, arguments));
+	    }
+	
+	    _createClass(CircleEffect, [{
+	        key: 'getDefaultParameters',
+	        value: function getDefaultParameters() {
+	            return {
+	                radius: 10,
+	                height: 20,
+	                angle: 0,
+	                spreadAngle: Math.PI,
+	                centreX: 0.5,
+	                centreY: 0.5
+	            };
+	        }
+	    }, {
+	        key: 'before',
+	        value: function before(parameters, width, height, imageData) {
+	            return {
+	                icentreX: width * parameters.centreX,
+	                icentreY: height * parameters.centreY,
+	                width: --width
+	            };
+	        }
+	    }, {
+	        key: 'callback',
+	        value: function callback(x, y, parameters, width, height) {
+	            var dx = x - this.data.icentreX,
+	                dy = y - this.data.icentreX,
+	                theta = Math.atan2(-dy, -dx) + parameters.angle,
+	                r = Math.sqrt(dx * dx + dy * dy);
+	
+	            theta = (0, _common.mod)(theta, 2 * Math.PI);
+	
+	            return [this.data.width * theta / parameters.spreadAngle + 0.00001, height * (1 - (r - parameters.radius) / (height + 0.00001))];
+	        }
+	    }], [{
+	        key: 'getName',
+	        value: function getName() {
+	            return 'circle';
+	        }
+	    }]);
+	
+	    return CircleEffect;
+	}(_BaseTransform2.default);
+	
+	exports.default = CircleEffect;
+
+/***/ },
+/* 346 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	var _BaseTransform = __webpack_require__(334);
+	
+	var _BaseTransform2 = _interopRequireDefault(_BaseTransform);
+	
+	var _common = __webpack_require__(305);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	
+	var RotateEffect = function (_BaseTransformEffect) {
+	    _inherits(RotateEffect, _BaseTransformEffect);
+	
+	    function RotateEffect() {
+	        _classCallCheck(this, RotateEffect);
+	
+	        return _possibleConstructorReturn(this, (RotateEffect.__proto__ || Object.getPrototypeOf(RotateEffect)).apply(this, arguments));
+	    }
+	
+	    _createClass(RotateEffect, [{
+	        key: 'getDefaultParameters',
+	        value: function getDefaultParameters() {
+	            return {
+	                angle: Math.PI
+	            };
+	        }
+	    }, {
+	        key: 'before',
+	        value: function before(parameters, width, height, imageData) {
+	            return {
+	                cos: Math.cos(parameters.angle),
+	                sin: Math.sin(parameters.angle),
+	                icentreX: width / 2,
+	                icentreY: height / 2
+	            };
+	        }
+	    }, {
+	        key: 'callback',
+	        value: function callback(x, y, parameters, width, height) {
+	            return [this.data.cos * (x - this.data.icentreX) - this.data.sin * (y - this.data.icentreY) + this.data.icentreY, this.data.sin * (x - this.data.icentreX) - this.data.cos * (y - this.data.icentreY) + this.data.icentreY];
+	        }
+	    }], [{
+	        key: 'getName',
+	        value: function getName() {
+	            return 'rotate';
+	        }
+	    }]);
+	
+	    return RotateEffect;
+	}(_BaseTransform2.default);
+	
+	exports.default = RotateEffect;
+
+/***/ },
+/* 347 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	var _BaseTransform = __webpack_require__(334);
+	
+	var _BaseTransform2 = _interopRequireDefault(_BaseTransform);
+	
+	var _common = __webpack_require__(305);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	
+	var RotateEffect = function (_BaseTransformEffect) {
+	    _inherits(RotateEffect, _BaseTransformEffect);
+	
+	    function RotateEffect() {
+	        _classCallCheck(this, RotateEffect);
+	
+	        return _possibleConstructorReturn(this, (RotateEffect.__proto__ || Object.getPrototypeOf(RotateEffect)).apply(this, arguments));
+	    }
+	
+	    _createClass(RotateEffect, [{
+	        key: 'getDefaultParameters',
+	        value: function getDefaultParameters() {
+	            return {
+	                xOffset: 100,
+	                yOffset: 100,
+	                wrap: true
+	            };
+	        }
+	    }, {
+	        key: 'callback',
+	        value: function callback(x, y, parameters, width, height) {
+	            if (parameters.wrap) {
+	                return [(x + width - parameters.xOffset) % width, (y + height - parameters.yOffset) % height];
+	            } else {
+	                return [x - parameters.xOffset, y - parameters.yOffset];
+	            }
+	        }
+	    }], [{
+	        key: 'getName',
+	        value: function getName() {
+	            return 'offset';
+	        }
+	    }]);
+	
+	    return RotateEffect;
+	}(_BaseTransform2.default);
+	
+	exports.default = RotateEffect;
+
+/***/ },
+/* 348 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	var _BaseTransform = __webpack_require__(334);
+	
+	var _BaseTransform2 = _interopRequireDefault(_BaseTransform);
+	
+	var _noise = __webpack_require__(337);
+	
+	var _noise2 = _interopRequireDefault(_noise);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	
+	var PolarEffect = function (_BaseTransformEffect) {
+	    _inherits(PolarEffect, _BaseTransformEffect);
+	
+	    function PolarEffect() {
+	        _classCallCheck(this, PolarEffect);
+	
+	        return _possibleConstructorReturn(this, (PolarEffect.__proto__ || Object.getPrototypeOf(PolarEffect)).apply(this, arguments));
+	    }
+	
+	    _createClass(PolarEffect, [{
+	        key: 'getDefaultParameters',
+	        value: function getDefaultParameters() {
+	            return {
+	                type: "RECT_TO_POLAR" // RECT_TO_POLAR, POLAR_TO_RECT, INVERT_IN_CIRCLE
+	            };
+	        }
+	    }, {
+	        key: 'before',
+	        value: function before(parameters, width, height, imageData) {
+	            return {
+	                centreX: width / 2,
+	                centreY: height / 2,
+	                radius: Math.max(width / 2, height / 2),
+	                sqr: function sqr(x) {
+	                    return x * x;
+	                }
+	            };
+	        }
+	    }, {
+	        key: 'callback',
+	        value: function callback(x, y, parameters, width, height) {
+	            var theta,
+	                theta2,
+	                t,
+	                m,
+	                xMax,
+	                yMax,
+	                nx,
+	                ny,
+	                xmax,
+	                ymax,
+	                dx,
+	                dy,
+	                distance,
+	                r = 0;
+	
+	            switch (parameters.type) {
+	                case "RECT_TO_POLAR":
+	                    if (x >= this.data.centreX) {
+	                        if (y > this.data.centreY) {
+	                            theta = Math.PI - Math.atan((x - this.data.centreX) / (y - this.data.centreY));
+	                            r = Math.sqrt(this.data.sqr(x - this.data.centreX) + this.data.sqr(y - this.data.centreY));
+	                        } else {
+	                            if (y < this.data.centreY) {
+	                                theta = Math.atan((x - this.data.centreX) / (this.data.centreY - y));
+	                                r = Math.sqrt(this.data.sqr(x - this.data.centreX) + this.data.sqr(this.data.centreY - y));
+	                            } else {
+	                                theta = Math.PI / 2;
+	                                r = x - this.data.centreX;
+	                            }
+	                        }
+	                    } else {
+	                        if (x < this.data.centreX) {
+	                            if (y < this.data.centreY) {
+	                                theta = Math.PI * 2 - Math.atan((this.data.centreX - x) / (this.data.centreY - y));
+	                                r = Math.sqrt(this.data.sqr(this.data.centreX - x) + this.data.sqr(this.data.centreY - y));
+	                            } else {
+	                                if (y > this.data.centreY) {
+	                                    theta = Math.PI + Math.atan((this.data.centreX - x) / (y - this.data.centreY));
+	                                    r = Math.sqrt(this.data.sqr(this.data.centreX - x) + this.data.sqr(y - this.data.centreY));
+	                                } else {
+	                                    theta = 1.5 * Math.PI;
+	                                    r = this.data.centreX - x;
+	                                }
+	                            }
+	                        }
+	                    }
+	                    if (x != this.data.centreX) {
+	                        m = Math.abs((y - this.data.centreY) / (x - this.data.centreX));
+	                    } else {
+	                        m = 0;
+	                    }
+	
+	                    if (m <= height / width) {
+	                        if (x == this.data.centreX) {
+	                            xMax = 0;
+	                            yMax = this.data.centreY;
+	                        } else {
+	                            xMax = this.data.centreX;
+	                            yMax = m * xMax;
+	                        }
+	                    } else {
+	                        yMax = this.data.centreY;
+	                        xMax = yMax / m;
+	                    }
+	
+	                    return [width - 1 - (width - 1) / (Math.PI * 2 * theta), height * r / this.data.radius];
+	
+	                case "POLAR_TO_RECT":
+	
+	                    theta = x / width * Math.PI * 2;
+	
+	                    if (theta >= 1.5 * Math.PI) {
+	                        theta2 = Math.PI * 2 - theta;
+	                    } else {
+	                        if (theta >= Math.PI) {
+	                            theta2 = theta - Math.PI;
+	                        } else {
+	                            if (theta >= 0.5 * Math.PI) {
+	                                theta2 = Math.PI - theta;
+	                            } else {
+	                                theta2 = theta;
+	                            }
+	                        }
+	                    }
+	
+	                    t = Math.tan(theta2);
+	                    if (t != 0) {
+	                        m = 1.0 / t;
+	                    } else {
+	                        m = 0;
+	                    }
+	
+	                    if (m <= height / width) {
+	                        if (theta2 == 0) {
+	                            xmax = 0;
+	                            ymax = this.data.centreY;
+	                        } else {
+	                            xmax = this.data.centreX;
+	                            ymax = m * xmax;
+	                        }
+	                    } else {
+	                        ymax = this.data.centreY;
+	                        xmax = ymax / m;
+	                    }
+	
+	                    r = this.data.radius * (y / height);
+	
+	                    nx = -r * Math.sin(theta2);
+	                    ny = r * Math.cos(theta2);
+	
+	                    if (theta >= 1.5 * Math.PI) {
+	                        return [this.data.centreX - nx, this.data.centreY - ny];
+	                    } else {
+	                        if (theta >= Math.PI) {
+	                            return [this.data.centreX - nx, this.data.centreY + ny];
+	                        } else {
+	                            if (theta >= 0.5 * Math.PI) {
+	                                return [this.data.centreX + nx, this.data.centreY + ny];
+	                            } else {
+	                                return [this.data.centreX + nx, this.data.centreY - ny];
+	                            }
+	                        }
+	                    }
+	                    break;
+	
+	                case "INVERT_IN_CIRCLE":
+	                    dx = x - this.data.centreX;
+	                    dy = y - this.data.centreY;
+	                    distance = dx * dx + dy * dy;
+	
+	                    return [this.data.centreX + this.data.centreX * this.data.centreX * dx / distance, this.data.centreY + this.data.centreY * this.data.centreY * dy / distance];
+	            }
+	        }
+	    }], [{
+	        key: 'getName',
+	        value: function getName() {
+	            return 'polar';
+	        }
+	    }]);
+	
+	    return PolarEffect;
+	}(_BaseTransform2.default);
+	
+	exports.default = PolarEffect;
+
+/***/ },
+/* 349 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	var _BaseTransform = __webpack_require__(334);
+	
+	var _BaseTransform2 = _interopRequireDefault(_BaseTransform);
+	
+	var _noise = __webpack_require__(337);
+	
+	var _noise2 = _interopRequireDefault(_noise);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	
+	var PerspectiveEffect = function (_BaseTransformEffect) {
+	    _inherits(PerspectiveEffect, _BaseTransformEffect);
+	
+	    function PerspectiveEffect() {
+	        _classCallCheck(this, PerspectiveEffect);
+	
+	        return _possibleConstructorReturn(this, (PerspectiveEffect.__proto__ || Object.getPrototypeOf(PerspectiveEffect)).apply(this, arguments));
+	    }
+	
+	    _createClass(PerspectiveEffect, [{
+	        key: 'getDefaultParameters',
+	        value: function getDefaultParameters() {
+	            return {
+	                x0: 0,
+	                y0: 0,
+	                x1: 1,
+	                y1: 0,
+	                x2: 1,
+	                y2: 1,
+	                x3: 0,
+	                y3: 1
+	            };
+	        }
+	    }, {
+	        key: 'before',
+	        value: function before(parameters, width, height, imageData) {
+	            function unitSquareToQuad() {
+	                var result = {},
+	                    x0 = Math.floor(width * parameters.x0),
+	                    y0 = Math.floor(height * parameters.y0),
+	                    x1 = Math.floor(width * parameters.x1),
+	                    y1 = Math.floor(height * parameters.y1),
+	                    x2 = Math.floor(width * parameters.x2),
+	                    y2 = Math.floor(height * parameters.y2),
+	                    x3 = Math.floor(width * parameters.x3),
+	                    y3 = Math.floor(height * parameters.y3),
+	                    dx1 = x1 - x2,
+	                    dy1 = y1 - y2,
+	                    dx2 = x3 - x2,
+	                    dy2 = y3 - y2,
+	                    dx3 = x0 - x1 + x2 - x3,
+	                    dy3 = y0 - y1 + y2 - y3;
+	
+	                if (dx3 == 0 && dy3 == 0) {
+	                    result.a11 = x1 - x0;
+	                    result.a21 = x2 - x1;
+	                    result.a31 = x0;
+	                    result.a12 = y1 - y0;
+	                    result.a22 = y2 - y1;
+	                    result.a32 = y0;
+	                    result.a13 = result.a23 = 0;
+	                } else {
+	                    result.a13 = (dx3 * dy2 - dx2 * dy3) / (dx1 * dy2 - dy1 * dx2);
+	                    result.a23 = (dx1 * dy3 - dy1 * dx3) / (dx1 * dy2 - dy1 * dx2);
+	                    result.a11 = x1 - x0 + result.a13 * x1;
+	                    result.a21 = x3 - x0 + result.a23 * x3;
+	                    result.a31 = x0;
+	                    result.a12 = y1 - y0 + result.a13 * y1;
+	                    result.a22 = y3 - y0 + result.a23 * y3;
+	                    result.a32 = y0;
+	                }
+	
+	                result.a33 = 1;
+	
+	                return result;
+	            }
+	
+	            var result = unitSquareToQuad();
+	
+	            result.A = result.a22 * result.a33 - result.a32 * result.a23;
+	            result.B = result.a31 * result.a23 - result.a21 * result.a33;
+	            result.C = result.a21 * result.a32 - result.a31 * result.a22;
+	            result.D = result.a32 * result.a13 - result.a12 * result.a33;
+	            result.E = result.a11 * result.a33 - result.a31 * result.a13;
+	            result.F = result.a31 * result.a12 - result.a11 * result.a32;
+	            result.G = result.a12 * result.a23 - result.a22 * result.a13;
+	            result.H = result.a21 * result.a13 - result.a11 * result.a23;
+	            result.I = result.a11 * result.a22 - result.a21 * result.a12;
+	
+	            return result;
+	        }
+	    }, {
+	        key: 'callback',
+	        value: function callback(x, y, parameters, width, height) {
+	            return [width * (this.data.A * x + this.data.B * y + this.data.C) / (this.data.G * x + this.data.H * y + this.data.I), height * (this.data.D * x + this.data.E * y + this.data.F) / (this.data.G * x + this.data.H * y + this.data.I)];
+	        }
+	    }], [{
+	        key: 'getName',
+	        value: function getName() {
+	            return 'perspective';
+	        }
+	    }]);
+	
+	    return PerspectiveEffect;
+	}(_BaseTransform2.default);
+	
+	exports.default = PerspectiveEffect;
+
+/***/ },
+/* 350 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	var _BaseOnLayer = __webpack_require__(351);
 	
 	var _BaseOnLayer2 = _interopRequireDefault(_BaseOnLayer);
 	
@@ -12007,7 +14420,7 @@
 	exports.default = Image;
 
 /***/ },
-/* 329 */
+/* 351 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -12022,7 +14435,7 @@
 	
 	var _CanvasWrapper2 = _interopRequireDefault(_CanvasWrapper);
 	
-	var _resize = __webpack_require__(330);
+	var _resize = __webpack_require__(352);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
@@ -12113,7 +14526,7 @@
 	exports.default = BaseOnLayerObject;
 
 /***/ },
-/* 330 */
+/* 352 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -12305,84 +14718,7 @@
 	}
 
 /***/ },
-/* 331 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	Object.defineProperty(exports, "__esModule", {
-	    value: true
-	});
-	
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-	
-	var _BaseTransform = __webpack_require__(332);
-	
-	var _BaseTransform2 = _interopRequireDefault(_BaseTransform);
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-	
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-	
-	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-	
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-	
-	var DiffuseEffect = function (_BaseTransformEffect) {
-	    _inherits(DiffuseEffect, _BaseTransformEffect);
-	
-	    function DiffuseEffect() {
-	        _classCallCheck(this, DiffuseEffect);
-	
-	        return _possibleConstructorReturn(this, (DiffuseEffect.__proto__ || Object.getPrototypeOf(DiffuseEffect)).apply(this, arguments));
-	    }
-	
-	    _createClass(DiffuseEffect, [{
-	        key: 'getDefaultParameters',
-	        value: function getDefaultParameters() {
-	            return {
-	                scale: 4
-	            };
-	        }
-	    }, {
-	        key: 'before',
-	        value: function before(parameters, width, height, imageData) {
-	            var sinTable = new Array(256),
-	                cosTable = new Array(256),
-	                i = void 0,
-	                angle = void 0;
-	            for (i = 0; i < 256; i += 1) {
-	                angle = Math.PI * 2 * i / 256;
-	                sinTable[i] = parameters.scale * Math.sin(angle);
-	                cosTable[i] = parameters.scale * Math.cos(angle);
-	            }
-	            return {
-	                sinTable: sinTable,
-	                cosTable: cosTable
-	            };
-	        }
-	    }, {
-	        key: 'callback',
-	        value: function callback(x, y, parameters) {
-	            var angle = parseInt(Math.random() * 255),
-	                distance = Math.random();
-	
-	            return [x + distance * this.data.sinTable[angle], y + distance * this.data.cosTable[angle]];
-	        }
-	    }], [{
-	        key: 'getName',
-	        value: function getName() {
-	            return 'diffuse';
-	        }
-	    }]);
-	
-	    return DiffuseEffect;
-	}(_BaseTransform2.default);
-	
-	exports.default = DiffuseEffect;
-
-/***/ },
-/* 332 */
+/* 353 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -12409,16 +14745,16 @@
 	
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 	
-	var BaseTransformEffect = function (_BaseEffect) {
-	    _inherits(BaseTransformEffect, _BaseEffect);
+	var BaseCustomEffect = function (_BaseEffect) {
+	    _inherits(BaseCustomEffect, _BaseEffect);
 	
-	    function BaseTransformEffect() {
-	        _classCallCheck(this, BaseTransformEffect);
+	    function BaseCustomEffect() {
+	        _classCallCheck(this, BaseCustomEffect);
 	
-	        return _possibleConstructorReturn(this, (BaseTransformEffect.__proto__ || Object.getPrototypeOf(BaseTransformEffect)).apply(this, arguments));
+	        return _possibleConstructorReturn(this, (BaseCustomEffect.__proto__ || Object.getPrototypeOf(BaseCustomEffect)).apply(this, arguments));
 	    }
 	
-	    _createClass(BaseTransformEffect, [{
+	    _createClass(BaseCustomEffect, [{
 	        key: 'callback',
 	        value: function callback(pixel, x, y, parameters, width, height) {
 	            throw "Extend it.";
@@ -12429,45 +14765,120 @@
 	
 	            parameters = (0, _extend2.default)(true, {}, this.getDefaultParameters(), parameters);
 	
-	            var x = void 0,
-	                y = void 0,
+	            var imageDataCopy = new Uint8ClampedArray(imageData.data),
+	                // copy image data
+	            /**
+	             * Get ImageData array index from x and y position
+	             * @param x
+	             * @param y
+	             * @returns {number}
+	             */
+	            getIndex = function getIndex(x, y) {
+	                return y * imageData.width * 4 + x * 4;
+	            },
 	                normalizePixelValue = function normalizePixelValue(value) {
 	                return Math.min(Math.max(value, 0), 255) | 0;
 	            },
-	                sandbox = {
-	                data: null
-	            },
-	                imageDataCopy = new Uint8ClampedArray(imageData.data);
+	                sandbox = { // object invoked as this in effect callback
+	                /**
+	                 * Get changed pixel
+	                 * @param {int} x
+	                 * @param {int} y
+	                 * @returns {{r: *, g: *, b: *, a: *}}
+	                 */
+	                getPixel: function getPixel(x, y) {
+	                    var index = getIndex(x, y);
+	                    return {
+	                        r: imageDataCopy[index + 0],
+	                        g: imageDataCopy[index + 1],
+	                        b: imageDataCopy[index + 2],
+	                        a: imageDataCopy[index + 3]
+	                    };
+	                },
+	                /**
+	                 * Get pixel by its index
+	                 * @param index
+	                 */
+	                getOriginalPixelByIndex: function getOriginalPixelByIndex(index) {
+	                    index *= 4;
+	                    return {
+	                        r: imageData.data[index],
+	                        g: imageData.data[index + 1],
+	                        b: imageData.data[index + 2],
+	                        a: imageData.data[index + 3]
+	                    };
+	                },
+	                /**
+	                 * Get original pixel.
+	                 * @param {int} x
+	                 * @param {int} y
+	                 * @returns {{r: *, g: *, b: *, a: *}}
+	                 */
+	                getOriginalPixel: function getOriginalPixel(x, y) {
+	                    var index = getIndex(x, y);
+	                    return {
+	                        r: imageData.data[index + 0],
+	                        g: imageData.data[index + 1],
+	                        b: imageData.data[index + 2],
+	                        a: imageData.data[index + 3]
+	                    };
+	                },
+	                /**
+	                 * Set new pixel
+	                 * @param {int} x
+	                 * @param {int} y
+	                 * @param {object} rgba
+	                 */
+	                setPixel: function setPixel(x, y, rgba) {
+	                    var index = getIndex(x, y);
+	                    imageDataCopy[index + 0] = normalizePixelValue(rgba.r);
+	                    imageDataCopy[index + 1] = normalizePixelValue(rgba.g);
+	                    imageDataCopy[index + 2] = normalizePixelValue(rgba.b);
+	                    imageDataCopy[index + 3] = normalizePixelValue(rgba.a);
+	                },
+	                /**
+	                 * Set pixel by index.
+	                 * @param index
+	                 * @param rgba
+	                 */
+	                setPixelByIndex: function setPixelByIndex(index, rgba) {
+	                    index *= 4;
+	                    imageDataCopy[index + 0] = normalizePixelValue(rgba.r);
+	                    imageDataCopy[index + 1] = normalizePixelValue(rgba.g);
+	                    imageDataCopy[index + 2] = normalizePixelValue(rgba.b);
+	                    imageDataCopy[index + 3] = normalizePixelValue(rgba.a);
+	                },
+	                /**
+	                 * Data created by effect init function
+	                 */
+	                data: null,
+	                /**
+	                 * ImageData width
+	                 */
+	                width: imageData.width,
+	                /**
+	                 * ImageData height
+	                 */
+	                height: imageData.height
+	            };
 	
 	            sandbox.data = this.before.call(sandbox, parameters, imageData.width, imageData.height, imageData);
 	
-	            for (y = 0; y < imageData.height; y += 1) {
-	                for (x = 0; x < imageData.width; x += 1) {
-	                    var newXY = this.callback.call(sandbox, x, y, parameters, imageData.width, imageData.height),
-	                        newX = normalizePixelValue(newXY[0]),
-	                        newY = normalizePixelValue(newXY[1]),
-	                        oldPixelIndex = y * imageData.width * 4 + x * 4,
-	                        newPixelIndex = newY * imageData.width * 4 + newX * 4;
-	
-	                    imageDataCopy[oldPixelIndex + 0] = imageData.data[newPixelIndex + 0];
-	                    imageDataCopy[oldPixelIndex + 1] = imageData.data[newPixelIndex + 1];
-	                    imageDataCopy[oldPixelIndex + 2] = imageData.data[newPixelIndex + 2];
-	                    imageDataCopy[oldPixelIndex + 3] = imageData.data[newPixelIndex + 3];
-	                }
-	            }
+	            this.callback.call(sandbox, imageData.width, imageData.height, parameters);
 	
 	            imageData.data.set(imageDataCopy);
+	
 	            return imageData;
 	        }
 	    }]);
 	
-	    return BaseTransformEffect;
+	    return BaseCustomEffect;
 	}(_Base2.default);
 	
-	exports.default = BaseTransformEffect;
+	exports.default = BaseCustomEffect;
 
 /***/ },
-/* 333 */
+/* 354 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -12478,83 +14889,11 @@
 	
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 	
-	var _BasePoint = __webpack_require__(308);
+	var _BaseCustom = __webpack_require__(353);
 	
-	var _BasePoint2 = _interopRequireDefault(_BasePoint);
+	var _BaseCustom2 = _interopRequireDefault(_BaseCustom);
 	
-	var _common = __webpack_require__(305);
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-	
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-	
-	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-	
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-	
-	var DissolveEffect = function (_BasePointEffect) {
-	    _inherits(DissolveEffect, _BasePointEffect);
-	
-	    function DissolveEffect() {
-	        _classCallCheck(this, DissolveEffect);
-	
-	        return _possibleConstructorReturn(this, (DissolveEffect.__proto__ || Object.getPrototypeOf(DissolveEffect)).apply(this, arguments));
-	    }
-	
-	    _createClass(DissolveEffect, [{
-	        key: 'getDefaultParameters',
-	        value: function getDefaultParameters() {
-	            return {
-	                density: 1,
-	                softness: 0
-	            };
-	        }
-	    }, {
-	        key: 'before',
-	        value: function before(parameters, width, height, imageData) {
-	            var d = (1 - parameters.density) * (1 + parameters.softness);
-	            return {
-	                minDensity: d - parameters.softness,
-	                maxDensity: d
-	            };
-	        }
-	    }, {
-	        key: 'callback',
-	        value: function callback(pixel, x, y, parameters, width, height) {
-	            var v = Math.random(),
-	                f = (0, _common.smoothStep)(this.data.minDensity, this.data.maxDensity, v);
-	            pixel.a = pixel.a * f;
-	            return pixel;
-	        }
-	    }], [{
-	        key: 'getName',
-	        value: function getName() {
-	            return 'dissolve';
-	        }
-	    }]);
-	
-	    return DissolveEffect;
-	}(_BasePoint2.default);
-	
-	exports.default = DissolveEffect;
-
-/***/ },
-/* 334 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	Object.defineProperty(exports, "__esModule", {
-	    value: true
-	});
-	
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-	
-	var _BaseTransform = __webpack_require__(332);
-	
-	var _BaseTransform2 = _interopRequireDefault(_BaseTransform);
-	
-	var _common = __webpack_require__(305);
+	var _color = __webpack_require__(320);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
@@ -12564,66 +14903,616 @@
 	
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 	
-	var KaleidoscopeEffect = function (_BaseTransformEffect) {
-	    _inherits(KaleidoscopeEffect, _BaseTransformEffect);
+	var FillColorEffect = function (_BaseCustomEffect) {
+	    _inherits(FillColorEffect, _BaseCustomEffect);
 	
-	    function KaleidoscopeEffect() {
-	        _classCallCheck(this, KaleidoscopeEffect);
+	    function FillColorEffect() {
+	        _classCallCheck(this, FillColorEffect);
 	
-	        return _possibleConstructorReturn(this, (KaleidoscopeEffect.__proto__ || Object.getPrototypeOf(KaleidoscopeEffect)).apply(this, arguments));
+	        return _possibleConstructorReturn(this, (FillColorEffect.__proto__ || Object.getPrototypeOf(FillColorEffect)).apply(this, arguments));
 	    }
 	
-	    _createClass(KaleidoscopeEffect, [{
+	    _createClass(FillColorEffect, [{
 	        key: 'getDefaultParameters',
 	        value: function getDefaultParameters() {
 	            return {
-	                centreX: 0.5,
-	                centreY: 0.5,
-	                angle: 0,
-	                angle2: 0,
-	                sides: 3,
-	                radius: 0
-	            };
-	        }
-	    }, {
-	        key: 'before',
-	        value: function before(parameters, width, height, imageData) {
-	            return {
-	                icentreX: width * parameters.centreX,
-	                icentreY: height * parameters.centreY
+	                color: "transparent"
 	            };
 	        }
 	    }, {
 	        key: 'callback',
-	        value: function callback(x, y, parameters) {
-	            var dx = x - this.data.icentreX,
-	                dy = y - this.data.icentreY,
-	                r = Math.sqrt(dx * dx + dy * dy),
-	                theta = Math.atan2(dy, dx) - parameters.angle - parameters.angle2;
+	        value: function callback(width, height, parameters) {
+	            var x, y, color;
 	
-	            theta = (0, _common.triangle)(theta / Math.PI * parameters.sides * 0.5);
-	
-	            if (parameters.radius !== 0) {
-	                var c = Math.cos(theta),
-	                    radiusC = parameters.radius / c;
-	                r = radiusC * (0, _common.triangle)(r / radiusC);
+	            if (parameters.color === "transparent") {
+	                color = {
+	                    r: 0,
+	                    g: 0,
+	                    b: 0,
+	                    a: 0
+	                };
+	            } else {
+	                color = (0, _color.hexToRGB)(parameters.color);
+	                color.a = 255;
 	            }
 	
-	            theta += parameters.angle;
-	
-	            return [this.data.icentreX + r * Math.cos(theta), this.data.icentreY + r * Math.sin(theta)];
+	            for (y = 0; y < height; y += 1) {
+	                for (x = 0; x < width; x += 1) {
+	                    this.setPixel(x, y, color);
+	                }
+	            }
 	        }
 	    }], [{
 	        key: 'getName',
 	        value: function getName() {
-	            return 'kaleidoscope';
+	            return 'fill-color';
 	        }
 	    }]);
 	
-	    return KaleidoscopeEffect;
-	}(_BaseTransform2.default);
+	    return FillColorEffect;
+	}(_BaseCustom2.default);
 	
-	exports.default = KaleidoscopeEffect;
+	exports.default = FillColorEffect;
+
+/***/ },
+/* 355 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	var _BaseCustom = __webpack_require__(353);
+	
+	var _BaseCustom2 = _interopRequireDefault(_BaseCustom);
+	
+	var _color = __webpack_require__(320);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	
+	var FlipEffect = function (_BaseCustomEffect) {
+	    _inherits(FlipEffect, _BaseCustomEffect);
+	
+	    function FlipEffect() {
+	        _classCallCheck(this, FlipEffect);
+	
+	        return _possibleConstructorReturn(this, (FlipEffect.__proto__ || Object.getPrototypeOf(FlipEffect)).apply(this, arguments));
+	    }
+	
+	    _createClass(FlipEffect, [{
+	        key: 'getDefaultParameters',
+	        value: function getDefaultParameters() {
+	            return {
+	                operation: "FLIP_H" // FLIP_H, FLIP_V, FLIP_HV, FLIP_90CW, FLIP_90CCW, FLIP_180
+	            };
+	        }
+	    }, {
+	        key: 'callback',
+	        value: function callback(width, height, parameters) {
+	            var x = 0,
+	                y = 0,
+	                w = width,
+	                h = height,
+	                newX = 0,
+	                newY = 0,
+	                newW = w,
+	                newH = h,
+	                newRow,
+	                newCol;
+	
+	            switch (parameters.operation) {
+	                case "FLIP_H":
+	                    newX = width - (x + w);
+	                    break;
+	                case "FLIP_V":
+	                    newY = height - (y + h);
+	                    break;
+	                case "FLIP_HV":
+	                    newW = h;
+	                    newH = w;
+	                    newX = y;
+	                    newY = x;
+	                    break;
+	                case "FLIP_90CW":
+	                    newW = h;
+	                    newH = w;
+	                    newX = height - (y + h);
+	                    newY = x;
+	                    break;
+	                case "FLIP_90CCW":
+	                    newW = h;
+	                    newH = w;
+	                    newX = y;
+	                    newY = width - (x + w);
+	                    break;
+	                case "FLIP_180":
+	                    newX = width - (x + w);
+	                    newY = height - (y + h);
+	                    break;
+	            }
+	
+	            for (y = 0; y < height; y += 1) {
+	                for (x = 0; x < width; x += 1) {
+	                    newRow = y;
+	                    newCol = x;
+	
+	                    switch (parameters.operation) {
+	                        case "FLIP_H":
+	                            newCol = w - x - 1;
+	                            break;
+	                        case "FLIP_V":
+	                            newRow = h - y - 1;
+	                            break;
+	                        case "FLIP_HV":
+	                            newRow = x;
+	                            newCol = y;
+	                            break;
+	                        case "FLIP_90CW":
+	                            newRow = x;
+	                            newCol = h - y - 1;
+	                            break;
+	                        case "FLIP_90CCW":
+	                            newRow = w - x - 1;
+	                            newCol = y;
+	                            break;
+	                        case "FLIP_180":
+	                            newRow = h - y - 1;
+	                            newCol = w - x - 1;
+	                            break;
+	                    }
+	
+	                    this.setPixel(newCol, newRow, this.getOriginalPixel(x, y));
+	                }
+	            }
+	        }
+	    }], [{
+	        key: 'getName',
+	        value: function getName() {
+	            return 'flip';
+	        }
+	    }]);
+	
+	    return FlipEffect;
+	}(_BaseCustom2.default);
+	
+	exports.default = FlipEffect;
+
+/***/ },
+/* 356 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	var _BaseCustom = __webpack_require__(353);
+	
+	var _BaseCustom2 = _interopRequireDefault(_BaseCustom);
+	
+	var _color = __webpack_require__(320);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	
+	var BlockEffect = function (_BaseCustomEffect) {
+	    _inherits(BlockEffect, _BaseCustomEffect);
+	
+	    function BlockEffect() {
+	        _classCallCheck(this, BlockEffect);
+	
+	        return _possibleConstructorReturn(this, (BlockEffect.__proto__ || Object.getPrototypeOf(BlockEffect)).apply(this, arguments));
+	    }
+	
+	    _createClass(BlockEffect, [{
+	        key: 'getDefaultParameters',
+	        value: function getDefaultParameters() {
+	            return {
+	                blockSize: 5
+	            };
+	        }
+	    }, {
+	        key: 'callback',
+	        value: function callback(width, height, parameters) {
+	            var x, y, w, h, t, r, g, b, pixel, by, bx;
+	
+	            for (y = 0; y < height; y += parameters.blockSize) {
+	                for (x = 0; x < width; x += parameters.blockSize) {
+	                    w = Math.min(parameters.blockSize, width - x);
+	                    h = Math.min(parameters.blockSize, height - y);
+	                    t = w * h;
+	
+	                    r = 0;
+	                    g = 0;
+	                    b = 0;
+	
+	                    for (by = 0; by < h; by += 1) {
+	                        for (bx = 0; bx < w; bx += 1) {
+	                            pixel = this.getOriginalPixel(x + bx, y + by);
+	
+	                            r += pixel.r & 0xFF;
+	                            g += pixel.g & 0XFF;
+	                            b += pixel.b & 0xFF;
+	                        }
+	                    }
+	
+	                    r = r / t;
+	                    g = g / t;
+	                    b = b / t;
+	
+	                    for (by = 0; by < h; by += 1) {
+	                        for (bx = 0; bx < w; bx += 1) {
+	                            this.setPixel(x + bx, y + by, {
+	                                r: r,
+	                                g: g,
+	                                b: b,
+	                                a: 255
+	                            });
+	                        }
+	                    }
+	                }
+	            }
+	        }
+	    }], [{
+	        key: 'getName',
+	        value: function getName() {
+	            return 'block';
+	        }
+	    }]);
+	
+	    return BlockEffect;
+	}(_BaseCustom2.default);
+	
+	exports.default = BlockEffect;
+
+/***/ },
+/* 357 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	var _BaseCustom = __webpack_require__(353);
+	
+	var _BaseCustom2 = _interopRequireDefault(_BaseCustom);
+	
+	var _color = __webpack_require__(320);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	
+	var BorderEffect = function (_BaseCustomEffect) {
+	    _inherits(BorderEffect, _BaseCustomEffect);
+	
+	    function BorderEffect() {
+	        _classCallCheck(this, BorderEffect);
+	
+	        return _possibleConstructorReturn(this, (BorderEffect.__proto__ || Object.getPrototypeOf(BorderEffect)).apply(this, arguments));
+	    }
+	
+	    _createClass(BorderEffect, [{
+	        key: 'getDefaultParameters',
+	        value: function getDefaultParameters() {
+	            return {
+	                leftBorder: 10,
+	                rightBorder: 10,
+	                topBorder: 10,
+	                bottomBorder: 10,
+	                borderColor: {
+	                    r: 0,
+	                    b: 0,
+	                    g: 0,
+	                    a: 255
+	                }
+	            };
+	        }
+	    }, {
+	        key: 'before',
+	        value: function before(parameters, width, height, imageData) {
+	            return {
+	                leftBorder: parameters.leftBorder | 0,
+	                rightBorder: parameters.rightBorder | 0,
+	                topBorder: parameters.rightBorder | 0,
+	                bottomBorder: parameters.bottomBorder | 0
+	            };
+	        }
+	    }, {
+	        key: 'callback',
+	        value: function callback(width, height, parameters) {
+	            var x, y;
+	
+	            for (y = 0; y < height; y += 1) {
+	                for (x = 0; x < width; x += 1) {
+	                    if (this.data.leftBorder > 0 && x < this.data.leftBorder) {
+	                        this.setPixel(x, y, parameters.borderColor);
+	                    }
+	                    if (this.data.rightBorder > 0 && width - this.data.rightBorder < x) {
+	                        this.setPixel(x, y, parameters.borderColor);
+	                    }
+	                    if (this.data.topBorder > 0 && y < this.data.topBorder) {
+	                        this.setPixel(x, y, parameters.borderColor);
+	                    }
+	                    if (this.data.bottomBorder > 0 && height - this.data.bottomBorder < y) {
+	                        this.setPixel(x, y, parameters.borderColor);
+	                    }
+	                }
+	            }
+	        }
+	    }], [{
+	        key: 'getName',
+	        value: function getName() {
+	            return 'border';
+	        }
+	    }]);
+	
+	    return BorderEffect;
+	}(_BaseCustom2.default);
+	
+	exports.default = BorderEffect;
+
+/***/ },
+/* 358 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	var _BaseCustom = __webpack_require__(353);
+	
+	var _BaseCustom2 = _interopRequireDefault(_BaseCustom);
+	
+	var _common = __webpack_require__(305);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	
+	var EmbossEffect = function (_BaseCustomEffect) {
+	    _inherits(EmbossEffect, _BaseCustomEffect);
+	
+	    function EmbossEffect() {
+	        _classCallCheck(this, EmbossEffect);
+	
+	        return _possibleConstructorReturn(this, (EmbossEffect.__proto__ || Object.getPrototypeOf(EmbossEffect)).apply(this, arguments));
+	    }
+	
+	    _createClass(EmbossEffect, [{
+	        key: 'getDefaultParameters',
+	        value: function getDefaultParameters() {
+	            return {
+	                azimuth: 135 * Math.PI / 180,
+	                elevation: 30 * Math.PI / 180,
+	                width45: 3,
+	                emboss: true
+	            };
+	        }
+	    }, {
+	        key: 'callback',
+	        value: function callback(width, height, parameters) {
+	            var x,
+	                y,
+	                bumpMapWidth = width,
+	                bumpMapHeight = height,
+	                bumpPixels = [],
+	                Nx,
+	                Ny,
+	                Nz,
+	                Lx,
+	                Ly,
+	                Lz,
+	                Nz2,
+	                NzLz,
+	                NdotL,
+	                s1,
+	                s2,
+	                s3,
+	                shade,
+	                background,
+	                pixelScale = 255.9,
+	                bumpIndex = 0,
+	                index = 0,
+	                pixel,
+	                r,
+	                g,
+	                b;
+	
+	            Lx = Math.cos(parameters.azimuth) * Math.cos(parameters.elevation) * pixelScale | 0;
+	            Ly = Math.sin(parameters.azimuth) * Math.cos(parameters.elevation) * pixelScale | 0;
+	            Lz = Math.sin(parameters.elevation) * pixelScale | 0;
+	
+	            Nz = 6 * 255 / parameters.width45 | 0;
+	            Nz2 = Nz * Nz;
+	            NzLz = Nz * Lz;
+	
+	            background = Lz;
+	
+	            for (y = 0; y < height; y += 1) {
+	                for (x = 0; x < width; x += 1) {
+	                    bumpPixels.push((0, _common.brightness)(this.getOriginalPixel(x, y)) | 0);
+	                }
+	            }
+	
+	            for (y = 0; y < height; y += 1, bumpIndex += bumpMapWidth) {
+	                s1 = bumpIndex;
+	                s2 = s1 + bumpMapWidth;
+	                s3 = s2 + bumpMapWidth;
+	
+	                for (x = 0; x < width; x += 1, s1 += 1, s2 += 1, s3 += 1) {
+	                    if (y != 0 && y < height - 2 && x != 0 && x < width - 2) {
+	                        Nx = bumpPixels[s1 - 1] + bumpPixels[s2 - 1] + bumpPixels[s3 - 1] - bumpPixels[s1 + 1] - bumpPixels[s2 + 1] - bumpPixels[s3 + 1];
+	                        Ny = bumpPixels[s3 - 1] + bumpPixels[s3] + bumpPixels[s3 + 1] - bumpPixels[s1 - 1] - bumpPixels[s1] - bumpPixels[s1 + 1];
+	
+	                        if (Nx == 0 && Ny == 0) {
+	                            shade = background;
+	                        } else {
+	                            if ((NdotL = Nx * Lx + Ny * Ly + NzLz) < 0) {
+	                                shade = 0;
+	                            } else {
+	                                shade = NdotL / Math.sqrt(Nx * Nx + Ny * Ny + Nz2);
+	                            }
+	                        }
+	                    } else {
+	                        shade = background;
+	                    }
+	
+	                    if (parameters.emboss) {
+	                        pixel = this.getOriginalPixelByIndex(index);
+	                        r = pixel.r * shade >> 8;
+	                        g = pixel.g * shade >> 8;
+	                        b = pixel.b * shade >> 8;
+	                        this.setPixelByIndex(index++, {
+	                            r: r,
+	                            g: g,
+	                            b: b,
+	                            a: pixel.a
+	                        });
+	                    } else {
+	                        this.setPixelByIndex(index++, {
+	                            r: shade,
+	                            g: shade << 8,
+	                            b: shade << 16,
+	                            a: 255
+	                        });
+	                    }
+	                }
+	            }
+	        }
+	    }], [{
+	        key: 'getName',
+	        value: function getName() {
+	            return 'emboss';
+	        }
+	    }]);
+	
+	    return EmbossEffect;
+	}(_BaseCustom2.default);
+	
+	exports.default = EmbossEffect;
+
+/***/ },
+/* 359 */,
+/* 360 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	var _BaseCustom = __webpack_require__(353);
+	
+	var _BaseCustom2 = _interopRequireDefault(_BaseCustom);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	
+	var ComponentStretchingEffect = function (_BaseCustomEffect) {
+	    _inherits(ComponentStretchingEffect, _BaseCustomEffect);
+	
+	    function ComponentStretchingEffect() {
+	        _classCallCheck(this, ComponentStretchingEffect);
+	
+	        return _possibleConstructorReturn(this, (ComponentStretchingEffect.__proto__ || Object.getPrototypeOf(ComponentStretchingEffect)).apply(this, arguments));
+	    }
+	
+	    _createClass(ComponentStretchingEffect, [{
+	        key: 'callback',
+	        value: function callback(width, height, parameters) {
+	            var x,
+	                y,
+	                minR = Infinity,
+	                minG = Infinity,
+	                minB = Infinity,
+	                maxR = -1,
+	                maxG = -1,
+	                maxB = -1,
+	                pixel,
+	                remap = function remap(value, min, max) {
+	                return (value - min) * 255 / (max - min);
+	            };
+	
+	            for (y = 0; y < height; y += 1) {
+	                for (x = 0; x < width; x += 1) {
+	                    pixel = this.getPixel(x, y);
+	
+	                    minR = Math.min(pixel.r, minR);
+	                    minG = Math.min(pixel.g, minG);
+	                    minB = Math.min(pixel.b, minB);
+	
+	                    maxR = Math.max(pixel.r, maxR);
+	                    maxG = Math.max(pixel.g, maxG);
+	                    maxB = Math.max(pixel.b, maxB);
+	                }
+	            }
+	
+	            for (y = 0; y < height; y += 1) {
+	                for (x = 0; x < width; x += 1) {
+	                    pixel = this.getPixel(x, y);
+	
+	                    pixel.r = remap(pixel.r, minR, maxR);
+	                    pixel.g = remap(pixel.g, minG, maxG);
+	                    pixel.b = remap(pixel.b, minB, maxB);
+	
+	                    this.setPixel(x, y, pixel);
+	                }
+	            }
+	        }
+	    }], [{
+	        key: 'getName',
+	        value: function getName() {
+	            return 'component-stretching';
+	        }
+	    }]);
+	
+	    return ComponentStretchingEffect;
+	}(_BaseCustom2.default);
+	
+	exports.default = ComponentStretchingEffect;
 
 /***/ }
 /******/ ]);

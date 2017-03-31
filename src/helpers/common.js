@@ -235,3 +235,7 @@ export function smoothStep(a, b, x) {
     x = (x - a) / (b - a);
     return x * x * (3 - 2 * x);
 }
+
+export function brightness(pixel) {
+    return (pixel.r + pixel.g + pixel.b) / 3;
+}

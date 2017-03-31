@@ -270,26 +270,6 @@
     }, false);
 </script>
 
-<div class="test test-17">
-    <h4>gray effect</h4>
-    <p class="time"></p>
-</div>
-<script>
-    document.addEventListener("DOMContentLoaded", function()
-    {
-        var project = new Imagizer.Project(imageWidth, imageHeight);
-        var layer1 = project.createLayer();
-        var image1 = new Imagizer.Image();
-        image1.load(imageURL, function()
-        {
-            layer1.put(image1, 0, 0);
-            project.applyEffect("gray");
-            project.exportTo(".test-17");
-            document.querySelector(".test-17 .time").textContent = project.getTime();
-        });
-    }, false);
-</script>
-
 <div class="test test-18">
     <h4>hsb-adjust effect</h4>
     <p class="time"></p>
@@ -815,7 +795,7 @@
 </script>
 
 <div class="test test-39">
-    <h4>fillColor effect</h4>
+    <h4>fill-color effect</h4>
     <p class="time"></p>
 </div>
 <script>

@@ -50,7 +50,6 @@ export function RGBtoHSB(r, g, b) {
         b: brightness
     };
 }
-
 /**
  * HSB to RGB color convert.
  * @param hue
@@ -189,7 +188,7 @@ export function RGBtoXYZ(r, g, b) {
 }
 
 export function RGBtoCIELab(r, g, b) {
-    var xyz = helpers.color.RGBtoXYZ(r, g, b);
+    var xyz = RGBtoXYZ(r, g, b);
 
     var var_X = xyz.x / 95.047; // ref
     var var_Y = xyz.y / 100; // ref
@@ -223,7 +222,7 @@ export function RGBtoCIELab(r, g, b) {
     };
 }
 
-export function CIELabToXYZl(a, b) {
+export function CIELabToXYZ(l, a, b) {
     var var_Y = ( l + 16 ) / 116;
     var var_X = a / 500 + var_Y;
     var var_Z = var_Y - b / 200;
@@ -257,7 +256,7 @@ export function CIELabToXYZl(a, b) {
 }
 
 export function CIELabToRGB(l, a, b) {
-    var xyz = helpers.color.CIELabToXYZ(l, a, b);
+    var xyz = CIELabToXYZ(l, a, b);
 
     var var_X = xyz.x / 100;
     var var_Y = xyz.y / 100;
