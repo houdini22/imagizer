@@ -20,7 +20,6 @@ class EmbossEffect extends BaseCustomEffect {
     callback(width, height, parameters) {
         var x, y,
             bumpMapWidth = width,
-            bumpMapHeight = height,
             bumpPixels = [],
             Nx, Ny, Nz, Lx, Ly, Lz, Nz2, NzLz, NdotL,
             s1, s2, s3,

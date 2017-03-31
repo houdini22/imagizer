@@ -158,7 +158,6 @@ class LevelsEffect extends BasePointEffect {
         };
 
         let histogram = new Histogram(imageData, width, height, 0, width),
-            scale = 255 / histogram.getNumSamples(),
             lut = new Array(3),
             low = parameters.low * 255,
             high = parameters.high * 255,

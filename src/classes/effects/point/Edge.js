@@ -74,7 +74,7 @@ class EdgeEffect extends BasePointEffect {
         var r = 0, g = 0, b = 0,
             rh = 0, gh = 0, bh = 0,
             rv = 0, gv = 0, bv = 0,
-            row, iy, col, ix, iOffset, mOffset,
+            row, iy, col, ix, mOffset,
             pixel2, h, v;
 
         for (row = -1; row <= 1; row += 1) {

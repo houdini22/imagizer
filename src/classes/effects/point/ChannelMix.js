@@ -19,8 +19,7 @@ class ChannelMixEffect extends BasePointEffect {
     callback(pixel, x, y, parameters, width, height) {
         var r = pixel.r,
             g = pixel.g,
-            b = pixel.b,
-            a = pixel.a;
+            b = pixel.b;
 
         return {
             r: ((parameters.intoR * (parameters.blueGreen * g + (255 - parameters.blueGreen) * b) / 255 + (255 - parameters.intoR) * r) / 255),

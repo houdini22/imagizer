@@ -1,9 +1,4 @@
 import BaseTransformEffect from '../BaseTransform';
-import {
-    triangle,
-    mod
-} from '../../../helpers/common';
-import noise from '../../../helpers/noise';
 
 class ShearEffect extends BaseTransformEffect {
     static getName() {

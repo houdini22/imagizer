@@ -1,5 +1,4 @@
 import BaseTransformEffect from '../BaseTransform';
-import {mod} from '../../../helpers/common';
 
 class RotateEffect extends BaseTransformEffect {
     static getName() {

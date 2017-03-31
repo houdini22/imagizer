@@ -1,7 +1,4 @@
 import BaseCustomEffect from '../BaseCustom';
-import {
-    hexToRGB,
-} from '../../../helpers/color'
 
 class BlockEffect extends BaseCustomEffect {
     static getName() {

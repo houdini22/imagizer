@@ -1,5 +1,4 @@
 import BaseTransformEffect from '../BaseTransform';
-import noiseHelper from '../../../helpers/noise';
 
 class PolarEffect extends BaseTransformEffect {
     static getName() {
