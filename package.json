@@ -31,7 +31,8 @@
     "extend": "^3.0.0"
   },
   "scripts": {
-    "build": "webpack --config ./webpack.prod.config.js",
+    "build_frontend": "webpack --config ./webpack.frontend.prod.config.js",
+    "build_backend": "webpack --config ./webpack.backend.prod.config.js",
     "dev_backend": "webpack --config ./webpack.backend.dev.config.js",
     "dev_frontend": "webpack --config ./webpack.frontend.dev.config.js",
     "watch": "webpack --progress --colors --watch --config ./webpack.dev.config.js",

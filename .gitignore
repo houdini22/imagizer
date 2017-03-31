@@ -6,3 +6,4 @@ npm-debug.log
 .htaccess
 dist/*
 !dist/imagizer.*
+demo/node_result.png

@@ -13,6 +13,8 @@ module.exports = {
     output: {
         path: path.resolve('./dist'),
         filename: 'imagizer.browser.js',
+        library: 'Imagizer',
+        libratyTarget: 'var'
     },
     resolve: {
         modulesDirectories: ['node_modules'],

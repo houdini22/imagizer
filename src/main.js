@@ -1,12 +1,13 @@
 import Project from './classes/Project';
 import Image from './classes/Image';
+import {isNode} from './helpers/common';
 
 let imagizer = {
     Project,
     Image
 };
 
-if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
+if (isNode()) {
     module.exports = imagizer;
 }
 else {
