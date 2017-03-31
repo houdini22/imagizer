@@ -210,3 +210,28 @@ export function cropImageData(oldImageData, newImageData, startX, startY, width,
 
     return newImageData;
 }
+
+export function mod(a, b) {
+    var n = Math.floor(a / b);
+    a -= n * b;
+    if (a < 0) {
+        return a + b;
+    }
+    return a;
+}
+
+export function triangle(x) {
+    var r = mod(x, 1);
+    return 2 * (r < 0.5 ? r : 1 - r);
+}
+
+export function smoothStep(a, b, x) {
+    if (x < a) {
+        return 0;
+    }
+    if (x >= b) {
+        return 1;
+    }
+    x = (x - a) / (b - a);
+    return x * x * (3 - 2 * x);
+}

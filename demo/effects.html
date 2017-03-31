@@ -1062,6 +1062,47 @@
     }, false);
 </script>
 
+<div class="test test-54">
+    <h4>contrast</h4>
+    <p class="time"></p>
+</div>
+<script>
+    document.addEventListener("DOMContentLoaded", function()
+    {
+        var project = new Imagizer.Project(imageWidth, imageHeight);
+        var layer1 = project.createLayer();
+        var image1 = new Imagizer.Image();
+        image1.load(imageURL, function()
+        {
+            layer1.put(image1, 0, 0);
+            project.applyEffect("contrast");
+            project.exportTo(".test-54");
+            document.querySelector(".test-54 .time").textContent = project.getTime();
+        });
+    }, false);
+</script>
+
+<div class="test test-55">
+    <h4>brightness</h4>
+    <p class="time"></p>
+</div>
+<script>
+    document.addEventListener("DOMContentLoaded", function()
+    {
+        var project = new Imagizer.Project(imageWidth, imageHeight);
+        var layer1 = project.createLayer();
+        var image1 = new Imagizer.Image();
+        image1.load(imageURL, function()
+        {
+            layer1.put(image1, 0, 0);
+            project.applyEffect("brightness");
+            project.exportTo(".test-55");
+            document.querySelector(".test-55 .time").textContent = project.getTime();
+        });
+    }, false);
+</script>
+
+
 <script src="../dist/imagizer.js"></script>
 </body>
 </html>

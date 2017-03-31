@@ -1,12 +1,12 @@
 import BaseEffect from './Base';
+import extend from 'extend';
 
 class BaseTransformEffect extends BaseEffect {
     callback(pixel, x, y, parameters, width, height) {
-
+        throw "Extend it."
     }
 
     run(imageData, parameters) {
-        //additionalParameters && additionalParameters.defaults && (parameters = helpers.extend(additionalParameters.defaults, parameters));
 
         parameters = extend(true, {}, this.getDefaultParameters(), parameters);
 
@@ -19,10 +19,8 @@ class BaseTransformEffect extends BaseEffect {
             },
             imageDataCopy = new Uint8ClampedArray(imageData.data);
 
-        /*sandbox.data = (additionalParameters && typeof additionalParameters.before === "function")
-         ? additionalParameters.before.call(null, parameters, imageData.width, imageData.height, imageData)
-         : {};
-         */
+        sandbox.data = this.before.call(sandbox, parameters, imageData.width, imageData.height, imageData);
+
         for (y = 0; y < imageData.height; y += 1) {
             for (x = 0; x < imageData.width; x += 1) {
                 var newXY = this.callback.call(sandbox, x, y, parameters, imageData.width, imageData.height),

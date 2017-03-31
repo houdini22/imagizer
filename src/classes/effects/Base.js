@@ -7,6 +7,10 @@ class BaseEffect {
         return {};
     }
 
+    before(parameters, width, height, imageData) {
+        return {};
+    }
+
     static getName() {
         throw 'Extend it.';
     }

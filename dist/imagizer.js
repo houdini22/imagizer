@@ -65,7 +65,7 @@
 /******/ 	}
 /******/ 	
 /******/ 	var hotApplyOnUpdate = true;
-/******/ 	var hotCurrentHash = "b3a9ce90439919f325b2"; // eslint-disable-line no-unused-vars
+/******/ 	var hotCurrentHash = "519b4a456c56386bf415"; // eslint-disable-line no-unused-vars
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentParents = []; // eslint-disable-line no-unused-vars
 /******/ 	
@@ -8878,7 +8878,7 @@
 	
 	var _Project2 = _interopRequireDefault(_Project);
 	
-	var _Image = __webpack_require__(312);
+	var _Image = __webpack_require__(328);
 	
 	var _Image2 = _interopRequireDefault(_Image);
 	
@@ -9489,6 +9489,9 @@
 	exports.mergeImageData = mergeImageData;
 	exports.mergePixelCallback = mergePixelCallback;
 	exports.cropImageData = cropImageData;
+	exports.mod = mod;
+	exports.triangle = triangle;
+	exports.smoothStep = smoothStep;
 	var blendingModes = {
 	    lighten: function lighten(bottomPixel, topPixel) {
 	        return topPixel > bottomPixel ? topPixel : bottomPixel;
@@ -9698,6 +9701,31 @@
 	
 	    return newImageData;
 	}
+	
+	function mod(a, b) {
+	    var n = Math.floor(a / b);
+	    a -= n * b;
+	    if (a < 0) {
+	        return a + b;
+	    }
+	    return a;
+	}
+	
+	function triangle(x) {
+	    var r = mod(x, 1);
+	    return 2 * (r < 0.5 ? r : 1 - r);
+	}
+	
+	function smoothStep(a, b, x) {
+	    if (x < a) {
+	        return 0;
+	    }
+	    if (x >= b) {
+	        return 1;
+	    }
+	    x = (x - a) / (b - a);
+	    return x * x * (3 - 2 * x);
+	}
 
 /***/ },
 /* 306 */
@@ -9719,18 +9747,108 @@
 	
 	var _Sepia2 = _interopRequireDefault(_Sepia);
 	
+	var _Contrast = __webpack_require__(312);
+	
+	var _Contrast2 = _interopRequireDefault(_Contrast);
+	
+	var _Brightness = __webpack_require__(313);
+	
+	var _Brightness2 = _interopRequireDefault(_Brightness);
+	
+	var _Diffusion = __webpack_require__(314);
+	
+	var _Diffusion2 = _interopRequireDefault(_Diffusion);
+	
+	var _Dither = __webpack_require__(315);
+	
+	var _Dither2 = _interopRequireDefault(_Dither);
+	
+	var _Exposure = __webpack_require__(316);
+	
+	var _Exposure2 = _interopRequireDefault(_Exposure);
+	
+	var _Gain = __webpack_require__(317);
+	
+	var _Gain2 = _interopRequireDefault(_Gain);
+	
+	var _Gamma = __webpack_require__(318);
+	
+	var _Gamma2 = _interopRequireDefault(_Gamma);
+	
+	var _HSBAdjust = __webpack_require__(319);
+	
+	var _HSBAdjust2 = _interopRequireDefault(_HSBAdjust);
+	
+	var _InvertAlpha = __webpack_require__(321);
+	
+	var _InvertAlpha2 = _interopRequireDefault(_InvertAlpha);
+	
+	var _Invert = __webpack_require__(322);
+	
+	var _Invert2 = _interopRequireDefault(_Invert);
+	
+	var _Levels = __webpack_require__(323);
+	
+	var _Levels2 = _interopRequireDefault(_Levels);
+	
+	var _Rescale = __webpack_require__(324);
+	
+	var _Rescale2 = _interopRequireDefault(_Rescale);
+	
+	var _Solarize = __webpack_require__(325);
+	
+	var _Solarize2 = _interopRequireDefault(_Solarize);
+	
+	var _Threshold = __webpack_require__(326);
+	
+	var _Threshold2 = _interopRequireDefault(_Threshold);
+	
+	var _Tritone = __webpack_require__(327);
+	
+	var _Tritone2 = _interopRequireDefault(_Tritone);
+	
+	var _Dissolve = __webpack_require__(333);
+	
+	var _Dissolve2 = _interopRequireDefault(_Dissolve);
+	
+	var _Diffuse = __webpack_require__(331);
+	
+	var _Diffuse2 = _interopRequireDefault(_Diffuse);
+	
+	var _Kaleidoscope = __webpack_require__(334);
+	
+	var _Kaleidoscope2 = _interopRequireDefault(_Kaleidoscope);
+	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 	
 	var availableEffects = {};
 	
-	function add(name, _class) {
-	    availableEffects[name] = _class;
+	function add(_class) {
+	    availableEffects[_class.getName()] = _class;
 	}
 	
-	add('gray-scale', _GrayScale2.default);
-	add('sepia', _Sepia2.default);
+	add(_GrayScale2.default);
+	add(_Sepia2.default);
+	add(_Contrast2.default);
+	add(_Brightness2.default);
+	add(_Diffusion2.default);
+	add(_Dither2.default);
+	add(_Exposure2.default);
+	add(_Gain2.default);
+	add(_Gamma2.default);
+	add(_HSBAdjust2.default);
+	add(_InvertAlpha2.default);
+	add(_Invert2.default);
+	add(_Levels2.default);
+	add(_Rescale2.default);
+	add(_Solarize2.default);
+	add(_Threshold2.default);
+	add(_Tritone2.default);
+	add(_Diffuse2.default);
+	add(_Dissolve2.default);
+	add(_Kaleidoscope2.default);
 	
 	var EffectsRepository = function () {
 	    function EffectsRepository() {
@@ -9761,9 +9879,9 @@
 	
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 	
-	var _BaseColor = __webpack_require__(308);
+	var _BasePoint = __webpack_require__(308);
 	
-	var _BaseColor2 = _interopRequireDefault(_BaseColor);
+	var _BasePoint2 = _interopRequireDefault(_BasePoint);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
@@ -9773,8 +9891,8 @@
 	
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 	
-	var GrayScaleEffect = function (_BaseColorEffect) {
-	    _inherits(GrayScaleEffect, _BaseColorEffect);
+	var GrayScaleEffect = function (_BasePointEffect) {
+	    _inherits(GrayScaleEffect, _BasePointEffect);
 	
 	    function GrayScaleEffect() {
 	        _classCallCheck(this, GrayScaleEffect);
@@ -9801,7 +9919,7 @@
 	    }]);
 	
 	    return GrayScaleEffect;
-	}(_BaseColor2.default);
+	}(_BasePoint2.default);
 	
 	exports.default = GrayScaleEffect;
 
@@ -9835,16 +9953,16 @@
 	
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 	
-	var BaseColorEffect = function (_BaseEffect) {
-	    _inherits(BaseColorEffect, _BaseEffect);
+	var BasePointEffect = function (_BaseEffect) {
+	    _inherits(BasePointEffect, _BaseEffect);
 	
-	    function BaseColorEffect() {
-	        _classCallCheck(this, BaseColorEffect);
+	    function BasePointEffect() {
+	        _classCallCheck(this, BasePointEffect);
 	
-	        return _possibleConstructorReturn(this, (BaseColorEffect.__proto__ || Object.getPrototypeOf(BaseColorEffect)).apply(this, arguments));
+	        return _possibleConstructorReturn(this, (BasePointEffect.__proto__ || Object.getPrototypeOf(BasePointEffect)).apply(this, arguments));
 	    }
 	
-	    _createClass(BaseColorEffect, [{
+	    _createClass(BasePointEffect, [{
 	        key: 'callback',
 	        value: function callback(pixel, x, y, parameters, width, height) {
 	            throw "Extend it.";
@@ -9931,9 +10049,7 @@
 	                height: imageData.height
 	            };
 	
-	            /*sandbox.data = (this.opts && typeof this.opts.before === "function")
-	             ? additionalParameters.before.call(sandbox, parameters, imageData.width, imageData.height, imageData)
-	             : {};*/
+	            sandbox.data = this.before.call(sandbox, parameters, imageData.width, imageData.height, imageData);
 	
 	            for (y = 0; y < imageData.height; y += 1) {
 	                for (x = 0; x < imageData.width; x += 1) {
@@ -9960,10 +10076,10 @@
 	        }
 	    }]);
 	
-	    return BaseColorEffect;
+	    return BasePointEffect;
 	}(_Base2.default);
 	
-	exports.default = BaseColorEffect;
+	exports.default = BasePointEffect;
 
 /***/ },
 /* 309 */
@@ -9991,6 +10107,11 @@
 	    _createClass(BaseEffect, [{
 	        key: 'getDefaultParameters',
 	        value: function getDefaultParameters() {
+	            return {};
+	        }
+	    }, {
+	        key: 'before',
+	        value: function before(parameters, width, height, imageData) {
 	            return {};
 	        }
 	    }], [{
@@ -10109,9 +10230,9 @@
 	
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 	
-	var _BaseColor = __webpack_require__(308);
+	var _BasePoint = __webpack_require__(308);
 	
-	var _BaseColor2 = _interopRequireDefault(_BaseColor);
+	var _BasePoint2 = _interopRequireDefault(_BasePoint);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
@@ -10121,8 +10242,8 @@
 	
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 	
-	var GrayScaleEffect = function (_BaseColorEffect) {
-	    _inherits(GrayScaleEffect, _BaseColorEffect);
+	var GrayScaleEffect = function (_BasePointEffect) {
+	    _inherits(GrayScaleEffect, _BasePointEffect);
 	
 	    function GrayScaleEffect() {
 	        _classCallCheck(this, GrayScaleEffect);
@@ -10134,7 +10255,7 @@
 	        key: 'getDefaultParameters',
 	        value: function getDefaultParameters() {
 	            return {
-	                sepiaValue: 4
+	                sepiaValue: 1
 	            };
 	        }
 	    }, {
@@ -10156,7 +10277,7 @@
 	    }]);
 	
 	    return GrayScaleEffect;
-	}(_BaseColor2.default);
+	}(_BasePoint2.default);
 	
 	exports.default = GrayScaleEffect;
 
@@ -10172,7 +10293,1650 @@
 	
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 	
-	var _BaseOnLayer = __webpack_require__(313);
+	var _BasePoint = __webpack_require__(308);
+	
+	var _BasePoint2 = _interopRequireDefault(_BasePoint);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	
+	var ContrastEffect = function (_BasePointEffect) {
+	    _inherits(ContrastEffect, _BasePointEffect);
+	
+	    function ContrastEffect() {
+	        _classCallCheck(this, ContrastEffect);
+	
+	        return _possibleConstructorReturn(this, (ContrastEffect.__proto__ || Object.getPrototypeOf(ContrastEffect)).apply(this, arguments));
+	    }
+	
+	    _createClass(ContrastEffect, [{
+	        key: 'getDefaultParameters',
+	        value: function getDefaultParameters() {
+	            return {
+	                contrast: 0.5
+	            };
+	        }
+	    }, {
+	        key: 'before',
+	        value: function before(parameters) {
+	            return {
+	                factor: 259 * (parameters.contrast * 255 + 255) / (255 * (259 - parameters.contrast * 255))
+	            };
+	        }
+	    }, {
+	        key: 'callback',
+	        value: function callback(pixel, x, y, parameters, width, height) {
+	            pixel.r = this.data.factor * (pixel.r - 128) + 128;
+	            pixel.g = this.data.factor * (pixel.g - 128) + 128;
+	            pixel.b = this.data.factor * (pixel.b - 128) + 128;
+	
+	            return pixel;
+	        }
+	    }], [{
+	        key: 'getName',
+	        value: function getName() {
+	            return 'contrast';
+	        }
+	    }]);
+	
+	    return ContrastEffect;
+	}(_BasePoint2.default);
+	
+	exports.default = ContrastEffect;
+
+/***/ },
+/* 313 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	var _BasePoint = __webpack_require__(308);
+	
+	var _BasePoint2 = _interopRequireDefault(_BasePoint);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	
+	var BrightnessEffect = function (_BasePointEffect) {
+	    _inherits(BrightnessEffect, _BasePointEffect);
+	
+	    function BrightnessEffect() {
+	        _classCallCheck(this, BrightnessEffect);
+	
+	        return _possibleConstructorReturn(this, (BrightnessEffect.__proto__ || Object.getPrototypeOf(BrightnessEffect)).apply(this, arguments));
+	    }
+	
+	    _createClass(BrightnessEffect, [{
+	        key: 'getDefaultParameters',
+	        value: function getDefaultParameters() {
+	            return {
+	                brightness: 0.5
+	            };
+	        }
+	    }, {
+	        key: 'before',
+	        value: function before(parameters) {
+	            return {
+	                brightness: 255 * parameters.brightness
+	            };
+	        }
+	    }, {
+	        key: 'callback',
+	        value: function callback(pixel, x, y, parameters, width, height) {
+	            pixel.r = pixel.r + this.data.brightness;
+	            pixel.g = pixel.g + this.data.brightness;
+	            pixel.b = pixel.b + this.data.brightness;
+	
+	            return pixel;
+	        }
+	    }], [{
+	        key: 'getName',
+	        value: function getName() {
+	            return 'brightness';
+	        }
+	    }]);
+	
+	    return BrightnessEffect;
+	}(_BasePoint2.default);
+	
+	exports.default = BrightnessEffect;
+
+/***/ },
+/* 314 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	var _BasePoint = __webpack_require__(308);
+	
+	var _BasePoint2 = _interopRequireDefault(_BasePoint);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	
+	var DiffusionEffect = function (_BasePointEffect) {
+	    _inherits(DiffusionEffect, _BasePointEffect);
+	
+	    function DiffusionEffect() {
+	        _classCallCheck(this, DiffusionEffect);
+	
+	        return _possibleConstructorReturn(this, (DiffusionEffect.__proto__ || Object.getPrototypeOf(DiffusionEffect)).apply(this, arguments));
+	    }
+	
+	    _createClass(DiffusionEffect, [{
+	        key: 'getDefaultParameters',
+	        value: function getDefaultParameters() {
+	            return {
+	                matrix: [0, 0, 0, 0, 0, 7, 3, 5, 1],
+	                levels: 6,
+	                colorDither: true,
+	                granulate: true
+	            };
+	        }
+	    }, {
+	        key: 'before',
+	        value: function before(parameters, width, height, imageData) {
+	            var i = void 0,
+	                sum = 0,
+	                map = [],
+	                div = [];
+	
+	            for (i = 0; i < parameters.matrix.length; i += 1) {
+	                sum += parameters.matrix[i];
+	            }
+	
+	            for (i = 0; i < parameters.levels; i += 1) {
+	                map[i] = parseInt(255 * i / (parameters.levels - 1));
+	            }
+	
+	            for (i = 0; i < 256; i += 1) {
+	                div[i] = parseInt(parameters.levels * i / 256);
+	            }
+	
+	            return {
+	                sum: sum,
+	                map: map,
+	                div: div
+	            };
+	        }
+	    }, {
+	        key: 'callback',
+	        value: function callback(pixel, x, y, parameters, width, height) {
+	            var red1 = pixel.r,
+	                green1 = pixel.g,
+	                blue1 = pixel.b,
+	                red2 = void 0,
+	                green2 = void 0,
+	                blue2 = void 0,
+	                data = this.data,
+	                tmpPixel = void 0,
+	                tmpRed = void 0,
+	                tmpGreen = void 0,
+	                tmpBlue = void 0,
+	                i = void 0,
+	                j = void 0,
+	                iy = void 0,
+	                jx = void 0,
+	                w = void 0,
+	                grayScale = void 0;
+	
+	            if (!parameters.colorDither) {
+	                grayScale = (red1 + green1 + blue1) / 3;
+	                red1 = grayScale;
+	                green1 = grayScale;
+	                blue1 = grayScale;
+	            }
+	
+	            red2 = data.map[data.div[red1]];
+	            green2 = data.map[data.div[green1]];
+	            blue2 = data.map[data.div[blue1]];
+	
+	            tmpRed = red1 - red2;
+	            tmpGreen = green1 - green2;
+	            tmpBlue = blue1 - blue2;
+	
+	            if (parameters.granulate) {
+	                for (i = -1; i <= 1; i += 1) {
+	                    iy = i + y;
+	                    if (iy < 0 || iy >= height) {
+	                        continue;
+	                    }
+	                    for (j = -1; j <= 1; j += 1) {
+	                        jx = j + x;
+	                        if (jx < 0 || jx >= width) {
+	                            continue;
+	                        }
+	                        w = parameters.matrix[(i + 1) * 3 + j + 1];
+	                        if (w !== 0) {
+	                            tmpPixel = this.getPixel(jx, iy);
+	                            tmpPixel.r += tmpRed * w / data.sum;
+	                            tmpPixel.g += tmpGreen * w / data.sum;
+	                            tmpPixel.b += tmpBlue * w / data.sum;
+	                            this.setPixel(jx, iy, tmpPixel);
+	                        }
+	                    }
+	                }
+	            }
+	
+	            return {
+	                r: red2,
+	                g: green2,
+	                b: blue2,
+	                a: pixel.a
+	            };
+	        }
+	    }], [{
+	        key: 'getName',
+	        value: function getName() {
+	            return 'diffusion';
+	        }
+	    }]);
+	
+	    return DiffusionEffect;
+	}(_BasePoint2.default);
+	
+	exports.default = DiffusionEffect;
+
+/***/ },
+/* 315 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	var _BasePoint = __webpack_require__(308);
+	
+	var _BasePoint2 = _interopRequireDefault(_BasePoint);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	
+	var DitherEffect = function (_BasePointEffect) {
+	    _inherits(DitherEffect, _BasePointEffect);
+	
+	    function DitherEffect() {
+	        _classCallCheck(this, DitherEffect);
+	
+	        return _possibleConstructorReturn(this, (DitherEffect.__proto__ || Object.getPrototypeOf(DitherEffect)).apply(this, arguments));
+	    }
+	
+	    _createClass(DitherEffect, [{
+	        key: 'getDefaultParameters',
+	        value: function getDefaultParameters() {
+	            return {
+	                matrices: {
+	                    ditherMagic4x4Matrix: [0, 14, 3, 13, 11, 5, 8, 6, 12, 2, 15, 1, 7, 9, 4, 10],
+	                    ditherOrdered4x4Matrix: [0, 8, 2, 10, 12, 4, 14, 6, 3, 11, 1, 9, 15, 7, 13, 5],
+	                    ditherLines4x4Matrix: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15],
+	                    dither90Halftone6x6Matrix: [29, 18, 12, 19, 30, 34, 17, 7, 4, 8, 20, 28, 11, 3, 0, 1, 9, 27, 16, 6, 2, 5, 13, 26, 25, 15, 10, 14, 21, 31, 33, 25, 24, 23, 33, 36],
+	                    ditherOrdered6x6Matrix: [1, 59, 15, 55, 2, 56, 12, 52, 33, 17, 47, 31, 34, 18, 44, 28, 9, 49, 5, 63, 10, 50, 6, 60, 41, 25, 37, 21, 42, 26, 38, 22, 3, 57, 13, 53, 0, 58, 14, 54, 35, 19, 45, 29, 32, 16, 46, 30, 11, 51, 7, 61, 8, 48, 4, 62, 43, 27, 39, 23, 40, 24, 36, 20],
+	                    ditherOrdered8x8Matrix: [1, 235, 59, 219, 15, 231, 55, 215, 2, 232, 56, 216, 12, 228, 52, 212, 129, 65, 187, 123, 143, 79, 183, 119, 130, 66, 184, 120, 140, 76, 180, 116, 33, 193, 17, 251, 47, 207, 31, 247, 34, 194, 18, 248, 44, 204, 28, 244, 161, 97, 145, 81, 175, 111, 159, 95, 162, 98, 146, 82, 172, 108, 156, 92, 9, 225, 49, 209, 5, 239, 63, 223, 10, 226, 50, 210, 6, 236, 60, 220, 137, 73, 177, 113, 133, 69, 191, 127, 138, 74, 178, 114, 134, 70, 188, 124, 41, 201, 25, 241, 37, 197, 21, 255, 42, 202, 26, 242, 38, 198, 22, 252, 169, 105, 153, 89, 165, 101, 149, 85, 170, 106, 154, 90, 166, 102, 150, 86, 3, 233, 57, 217, 13, 229, 53, 213, 0, 234, 58, 218, 14, 230, 54, 214, 131, 67, 185, 121, 141, 77, 181, 117, 128, 64, 186, 122, 142, 78, 182, 118, 35, 195, 19, 249, 45, 205, 29, 245, 32, 192, 16, 250, 46, 206, 30, 246, 163, 99, 147, 83, 173, 109, 157, 93, 160, 96, 144, 80, 174, 110, 158, 94, 11, 227, 51, 211, 7, 237, 61, 221, 8, 224, 48, 208, 4, 238, 62, 222, 139, 75, 179, 115, 135, 71, 189, 125, 136, 72, 176, 112, 132, 68, 190, 126, 43, 203, 27, 243, 39, 199, 23, 253, 40, 200, 24, 240, 36, 196, 20, 254, 171, 107, 155, 91, 167, 103, 151, 87, 168, 104, 152, 88, 164, 100, 148, 84],
+	                    ditherCluster3Matrix: [9, 11, 10, 8, 6, 7, 12, 17, 16, 5, 0, 1, 13, 14, 15, 4, 3, 2, 8, 6, 7, 9, 11, 10, 5, 0, 1, 12, 17, 16, 4, 3, 2, 13, 14, 15],
+	                    ditherCluster4Matrix: [18, 20, 19, 16, 13, 11, 12, 15, 27, 28, 29, 22, 4, 3, 2, 9, 26, 31, 30, 21, 5, 0, 1, 10, 23, 25, 24, 17, 8, 6, 7, 14, 13, 11, 12, 15, 18, 20, 19, 16, 4, 3, 2, 9, 27, 28, 29, 22, 5, 0, 1, 10, 26, 31, 30, 21, 8, 6, 7, 14, 23, 25, 24, 17],
+	                    ditherCluster8Matrix: [64, 69, 77, 87, 86, 76, 68, 67, 63, 58, 50, 40, 41, 51, 59, 60, 70, 94, 100, 109, 108, 99, 93, 75, 57, 33, 27, 18, 19, 28, 34, 52, 78, 101, 114, 116, 115, 112, 98, 83, 49, 26, 13, 11, 12, 15, 29, 44, 88, 110, 123, 124, 125, 118, 107, 85, 39, 17, 4, 3, 2, 9, 20, 42, 89, 111, 122, 127, 126, 117, 106, 84, 38, 16, 5, 0, 1, 10, 21, 43, 79, 102, 119, 121, 120, 113, 97, 82, 48, 25, 8, 6, 7, 14, 30, 45, 71, 95, 103, 104, 105, 96, 92, 74, 56, 32, 24, 23, 22, 31, 35, 53, 65, 72, 80, 90, 91, 81, 73, 66, 62, 55, 47, 37, 36, 46, 54, 61, 63, 58, 50, 40, 41, 51, 59, 60, 64, 69, 77, 87, 86, 76, 68, 67, 57, 33, 27, 18, 19, 28, 34, 52, 70, 94, 100, 109, 108, 99, 93, 75, 49, 26, 13, 11, 12, 15, 29, 44, 78, 101, 114, 116, 115, 112, 98, 83, 39, 17, 4, 3, 2, 9, 20, 42, 88, 110, 123, 124, 125, 118, 107, 85, 38, 16, 5, 0, 1, 10, 21, 43, 89, 111, 122, 127, 126, 117, 106, 84, 48, 25, 8, 6, 7, 14, 30, 45, 79, 102, 119, 121, 120, 113, 97, 82, 56, 32, 24, 23, 22, 31, 35, 53, 71, 95, 103, 104, 105, 96, 92, 74, 62, 55, 47, 37, 36, 46, 54, 61, 65, 72, 80, 90, 91, 81, 73, 66]
+	                },
+	                levels: 6,
+	                matrix: "ditherMagic4x4Matrix",
+	                colorDither: true
+	            };
+	        }
+	    }, {
+	        key: 'before',
+	        value: function before(parameters, width, height, imageData) {
+	            var matrix = parameters.matrix,
+	                rows = void 0,
+	                cols = void 0,
+	                map = [],
+	                div = [],
+	                mod = [],
+	                i = void 0;
+	
+	            if (typeof matrix === "string") {
+	                matrix = parameters.matrices[matrix];
+	            }
+	
+	            rows = Math.sqrt(matrix.length);
+	            cols = Math.sqrt(matrix.length);
+	
+	            for (i = 0; i < parameters.levels; i += 1) {
+	                map[i] = 255 * i / (parameters.levels - 1);
+	            }
+	
+	            for (i = 0; i < 256; i += 1) {
+	                div[i] = parseInt((parameters.levels - 1) * i / 256);
+	                mod[i] = parseInt(i * (rows * cols + 1) / 256);
+	            }
+	
+	            return {
+	                matrix: matrix,
+	                map: map,
+	                div: div,
+	                mod: mod,
+	                cols: cols,
+	                rows: rows
+	            };
+	        }
+	    }, {
+	        key: 'callback',
+	        value: function callback(pixel, x, y, parameters, width, height) {
+	            var col = x % this.data.cols,
+	                row = y % this.data.rows,
+	                v = parameters.matrix[row * this.data.cols + col],
+	                red = pixel.r,
+	                green = pixel.g,
+	                blue = pixel.b,
+	                result = { a: pixel.a },
+	                value = void 0;
+	
+	            if (parameters.colorDither) {
+	                result.r = this.data.map[this.data.mod[red] > v ? this.data.div[red] + 1 : this.data.div[red]];
+	                result.g = this.data.map[this.data.mod[green] > v ? this.data.div[green] + 1 : this.data.div[green]];
+	                result.b = this.data.map[this.data.mod[blue] > v ? this.data.div[blue] + 1 : this.data.div[blue]];
+	            } else {
+	                value = (red + green + blue) / 3;
+	                result.r = result.g = result.b = this.data.map[this.data.mod[value] > v ? this.data.div[value] + 1 : this.data.div[value]];
+	            }
+	
+	            return result;
+	        }
+	    }], [{
+	        key: 'getName',
+	        value: function getName() {
+	            return 'dither';
+	        }
+	    }]);
+	
+	    return DitherEffect;
+	}(_BasePoint2.default);
+	
+	exports.default = DitherEffect;
+
+/***/ },
+/* 316 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	var _BasePoint = __webpack_require__(308);
+	
+	var _BasePoint2 = _interopRequireDefault(_BasePoint);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	
+	var ExposureEffect = function (_BasePointEffect) {
+	    _inherits(ExposureEffect, _BasePointEffect);
+	
+	    function ExposureEffect() {
+	        _classCallCheck(this, ExposureEffect);
+	
+	        return _possibleConstructorReturn(this, (ExposureEffect.__proto__ || Object.getPrototypeOf(ExposureEffect)).apply(this, arguments));
+	    }
+	
+	    _createClass(ExposureEffect, [{
+	        key: 'getDefaultParameters',
+	        value: function getDefaultParameters() {
+	            return {
+	                exposure: 1
+	            };
+	        }
+	    }, {
+	        key: 'callback',
+	        value: function callback(pixel, x, y, parameters, width, height) {
+	            pixel.r = (1 - Math.exp(-pixel.r / 255 * parameters.exposure)) * 255;
+	            pixel.g = (1 - Math.exp(-pixel.g / 255 * parameters.exposure)) * 255;
+	            pixel.b = (1 - Math.exp(-pixel.b / 255 * parameters.exposure)) * 255;
+	
+	            return pixel;
+	        }
+	    }], [{
+	        key: 'getName',
+	        value: function getName() {
+	            return 'exposure';
+	        }
+	    }]);
+	
+	    return ExposureEffect;
+	}(_BasePoint2.default);
+	
+	exports.default = ExposureEffect;
+
+/***/ },
+/* 317 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	var _BasePoint = __webpack_require__(308);
+	
+	var _BasePoint2 = _interopRequireDefault(_BasePoint);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	
+	var GainEffect = function (_BasePointEffect) {
+	    _inherits(GainEffect, _BasePointEffect);
+	
+	    function GainEffect() {
+	        _classCallCheck(this, GainEffect);
+	
+	        return _possibleConstructorReturn(this, (GainEffect.__proto__ || Object.getPrototypeOf(GainEffect)).apply(this, arguments));
+	    }
+	
+	    _createClass(GainEffect, [{
+	        key: 'getDefaultParameters',
+	        value: function getDefaultParameters() {
+	            return {
+	                gain: 1,
+	                bias: 1
+	            };
+	        }
+	    }, {
+	        key: 'callback',
+	        value: function callback(pixel, x, y, parameters, width, height) {
+	            var red = (1 / parameters.gain - 2) * (1 - 2 * pixel.r / 255),
+	                green = (1 / parameters.gain - 2) * (1 - 2 * pixel.g / 255),
+	                blue = (1 / parameters.gain - 2) * (1 - 2 * pixel.b / 255);
+	
+	            if (pixel.r / 255 < 0.5) {
+	                red = pixel.r / 255 / red + 1;
+	            } else {
+	                red = (red - pixel.r / 255) / (red - 1);
+	            }
+	
+	            if (pixel.g / 255 < 0.5) {
+	                green = pixel.g / 255 / green + 1;
+	            } else {
+	                green = (green - pixel.g / 255) / (green - 1);
+	            }
+	
+	            if (pixel.b / 255 < 0.5) {
+	                blue = pixel.b / 255 / blue + 1;
+	            } else {
+	                blue = (blue - pixel.b / 255) / (blue - 1);
+	            }
+	
+	            red = red / ((1 / parameters.bias - 2) * (1 - red) + 1);
+	            green = green / ((1 / parameters.bias - 2) * (1 - green) + 1);
+	            blue = blue / ((1 / parameters.bias - 2) * (1 - blue) + 1);
+	
+	            pixel.r = red * 255;
+	            pixel.g = green * 255;
+	            pixel.b = blue * 255;
+	
+	            return pixel;
+	        }
+	    }], [{
+	        key: 'getName',
+	        value: function getName() {
+	            return 'gain';
+	        }
+	    }]);
+	
+	    return GainEffect;
+	}(_BasePoint2.default);
+	
+	exports.default = GainEffect;
+
+/***/ },
+/* 318 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	var _BasePoint = __webpack_require__(308);
+	
+	var _BasePoint2 = _interopRequireDefault(_BasePoint);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	
+	var GammaEffect = function (_BasePointEffect) {
+	    _inherits(GammaEffect, _BasePointEffect);
+	
+	    function GammaEffect() {
+	        _classCallCheck(this, GammaEffect);
+	
+	        return _possibleConstructorReturn(this, (GammaEffect.__proto__ || Object.getPrototypeOf(GammaEffect)).apply(this, arguments));
+	    }
+	
+	    _createClass(GammaEffect, [{
+	        key: 'getDefaultParameters',
+	        value: function getDefaultParameters() {
+	            return {
+	                gammaRed: 1,
+	                gammaGreen: 1,
+	                gammaBlue: 1
+	            };
+	        }
+	    }, {
+	        key: 'before',
+	        value: function before(parameters, width, height, imageData) {
+	            var table = {
+	                r: [],
+	                g: [],
+	                b: []
+	            },
+	                i = void 0;
+	
+	            for (i = 0; i < 256; i += 1) {
+	                table.r[i] = parseInt(255 * Math.pow(i / 255, 1 / parameters.gammaRed) + 0.5);
+	                table.g[i] = parseInt(255 * Math.pow(i / 255, 1 / parameters.gammaGreen) + 0.5);
+	                table.b[i] = parseInt(255 * Math.pow(i / 255, 1 / parameters.gammaBlue) + 0.5);
+	            }
+	
+	            return {
+	                table: table
+	            };
+	        }
+	    }, {
+	        key: 'callback',
+	        value: function callback(pixel, x, y, parameters, width, height) {
+	            return {
+	                r: this.data.table.r[pixel.r],
+	                g: this.data.table.g[pixel.g],
+	                b: this.data.table.b[pixel.b],
+	                a: pixel.a
+	            };
+	        }
+	    }], [{
+	        key: 'getName',
+	        value: function getName() {
+	            return 'gamma';
+	        }
+	    }]);
+	
+	    return GammaEffect;
+	}(_BasePoint2.default);
+	
+	exports.default = GammaEffect;
+
+/***/ },
+/* 319 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	var _BasePoint = __webpack_require__(308);
+	
+	var _BasePoint2 = _interopRequireDefault(_BasePoint);
+	
+	var _color = __webpack_require__(320);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	
+	var HSBAdjustEffect = function (_BasePointEffect) {
+	    _inherits(HSBAdjustEffect, _BasePointEffect);
+	
+	    function HSBAdjustEffect() {
+	        _classCallCheck(this, HSBAdjustEffect);
+	
+	        return _possibleConstructorReturn(this, (HSBAdjustEffect.__proto__ || Object.getPrototypeOf(HSBAdjustEffect)).apply(this, arguments));
+	    }
+	
+	    _createClass(HSBAdjustEffect, [{
+	        key: 'getDefaultParameters',
+	        value: function getDefaultParameters() {
+	            return {
+	                h: 1,
+	                s: 1,
+	                b: 1
+	            };
+	        }
+	    }, {
+	        key: 'callback',
+	        value: function callback(pixel, x, y, parameters, width, height) {
+	            var hsb = (0, _color.RGBtoHSB)(pixel.r, pixel.g, pixel.b);
+	
+	            hsb.h += parameters.h;
+	            while (hsb.h < 0) {
+	                hsb.h += Math.PI * 2;
+	            }
+	
+	            hsb.s += parameters.s;
+	            hsb.s = Math.max(Math.min(hsb.s, 1), 0);
+	
+	            hsb.b += parameters.b;
+	            hsb.b = Math.max(Math.min(hsb.b, 1), 0);
+	
+	            var result = (0, _color.HSBtoRGB)(hsb.h, hsb.s, hsb.b);
+	            pixel.r = result.r;
+	            pixel.g = result.g;
+	            pixel.b = result.b;
+	
+	            return pixel;
+	        }
+	    }], [{
+	        key: 'getName',
+	        value: function getName() {
+	            return 'hsb-adjust';
+	        }
+	    }]);
+	
+	    return HSBAdjustEffect;
+	}(_BasePoint2.default);
+	
+	exports.default = HSBAdjustEffect;
+
+/***/ },
+/* 320 */
+/***/ function(module, exports) {
+
+	"use strict";
+	
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	exports.RGBtoHSB = RGBtoHSB;
+	exports.HSBtoRGB = HSBtoRGB;
+	exports.mixColors = mixColors;
+	exports.hexToRGB = hexToRGB;
+	exports.RGBtoHex = RGBtoHex;
+	exports.RGBtoXYZ = RGBtoXYZ;
+	exports.RGBtoCIELab = RGBtoCIELab;
+	exports.CIELabToXYZl = CIELabToXYZl;
+	exports.CIELabToRGB = CIELabToRGB;
+	/**
+	 * RGB to HSB color convert.
+	 * @param r
+	 * @param g
+	 * @param b
+	 * @returns {{h: number, s: number, b: number}}
+	 */
+	function RGBtoHSB(r, g, b) {
+	    var hue,
+	        saturation,
+	        brightness,
+	        cmax = Math.max(r, g, b),
+	        cmin = Math.min(r, g, b);
+	
+	    brightness = cmax / 255;
+	    if (cmax !== 0) {
+	        saturation = (cmax - cmin) / cmax;
+	    } else {
+	        saturation = 0;
+	    }
+	
+	    if (saturation === 0) {
+	        hue = 0;
+	    } else {
+	        var redc = (cmax - r) / (cmax - cmin),
+	            greenc = (cmax - g) / (cmax - cmin),
+	            bluec = (cmax - b) / (cmax - cmin);
+	
+	        if (r === cmax) {
+	            hue = bluec - greenc;
+	        } else {
+	            if (g === cmax) {
+	                hue = 2 + redc - bluec;
+	            } else {
+	                hue = 4 + greenc - redc;
+	            }
+	        }
+	
+	        hue /= 6;
+	        if (hue < 0) {
+	            hue += 1;
+	        }
+	    }
+	
+	    return {
+	        h: hue,
+	        s: saturation,
+	        b: brightness
+	    };
+	}
+	
+	/**
+	 * HSB to RGB color convert.
+	 * @param hue
+	 * @param saturation
+	 * @param brightness
+	 * @returns {{r: Number, g: Number, b: Number}}
+	 */
+	function HSBtoRGB(hue, saturation, brightness) {
+	    var red, green, blue;
+	    if (saturation === 0) {
+	        red = brightness * 255 + 0.5;
+	        green = brightness * 255 + 0.5;
+	        blue = brightness * 255 + 0.5;
+	    } else {
+	        var h = (hue - Math.floor(hue)) * 6,
+	            f = h - Math.floor(h),
+	            p = brightness * (1 - saturation),
+	            q = brightness * (1 - saturation * f),
+	            t = brightness * (1 - saturation * (1 - f));
+	
+	        switch (parseInt(h)) {
+	            case 0:
+	                red = brightness * 255 + 0.5;
+	                green = t * 255 + 0.5;
+	                blue = p * 255 + 0.5;
+	                break;
+	
+	            case 1:
+	                red = q * 255 + 0.5;
+	                green = brightness * 255 + 0.5;
+	                blue = p * 255 + 0.5;
+	                break;
+	
+	            case 2:
+	                red = p * 255 + 0.5;
+	                green = brightness * 255 + 0.5;
+	                blue = t * 255 + 0.5;
+	                break;
+	
+	            case 3:
+	                red = p * 255 + 0.5;
+	                green = q * 255 + 0.5;
+	                blue = brightness * 255 + 0.5;
+	                break;
+	
+	            case 4:
+	                red = t * 255 + 0.5;
+	                green = p * 255 + 0.5;
+	                blue = brightness * 255 + 0.5;
+	                break;
+	
+	            case 5:
+	                red = brightness * 255 + 0.5;
+	                green = p * 255 + 0.5;
+	                blue = q * 255 + 0.5;
+	                break;
+	
+	            default:
+	                red = 0;
+	                green = 0;
+	                blue = 0;
+	                break;
+	        }
+	    }
+	    return {
+	        r: parseInt(red),
+	        g: parseInt(green),
+	        b: parseInt(blue)
+	    };
+	}
+	
+	function mixColors(t, rgb1, rgb2) {
+	    return {
+	        r: rgb1.r + t * (rgb2.r - rgb1.r),
+	        g: rgb1.g + t * (rgb2.g - rgb1.g),
+	        b: rgb1.b + t * (rgb2.b - rgb1.b),
+	        a: rgb1.a + t * (rgb2.a - rgb1.a)
+	    };
+	}
+	
+	function hexToRGB(hex) {
+	    hex = parseInt(hex.replace("#", ""), 16);
+	    var r = hex >> 16;
+	    var g = hex >> 8 & 0xFF;
+	    var b = hex & 0xFF;
+	    return {
+	        r: r,
+	        g: g,
+	        b: b
+	    };
+	}
+	
+	function RGBtoHex(pixel) {
+	    var bin = pixel.r << 16 | pixel.g << 8 | pixel.b;
+	    return function (h) {
+	        return new Array(7 - h.length).join("0") + h;
+	    }(bin.toString(16).toUpperCase());
+	}
+	
+	function RGBtoXYZ(r, g, b) {
+	    var var_R = r / 255;
+	    var var_G = g / 255;
+	    var var_B = b / 255;
+	
+	    if (var_R > 0.04045) {
+	        var_R = Math.pow((var_R + 0.055) / 1.055, 2.4);
+	    } else {
+	        var_R = var_R / 12.92;
+	    }
+	
+	    if (var_G > 0.04045) {
+	        var_G = Math.pow((var_G + 0.055) / 1.055, 2.4);
+	    } else {
+	        var_G = var_G / 12.92;
+	    }
+	
+	    if (var_B > 0.04045) {
+	        var_B = Math.pow((var_B + 0.055) / 1.055, 2.4);
+	    } else {
+	        var_B = var_B / 12.92;
+	    }
+	
+	    var_R = var_R * 100;
+	    var_G = var_G * 100;
+	    var_B = var_B * 100;
+	
+	    return {
+	        x: var_R * 0.4124 + var_G * 0.3576 + var_B * 0.1805,
+	        y: var_R * 0.2126 + var_G * 0.7152 + var_B * 0.0722,
+	        z: var_R * 0.0193 + var_G * 0.1192 + var_B * 0.9505
+	    };
+	}
+	
+	function RGBtoCIELab(r, g, b) {
+	    var xyz = helpers.color.RGBtoXYZ(r, g, b);
+	
+	    var var_X = xyz.x / 95.047; // ref
+	    var var_Y = xyz.y / 100; // ref
+	    var var_Z = xyz.z / 108.883; // ref
+	
+	    if (var_X > 0.008856) {
+	        var_X = Math.pow(var_X, 1 / 3);
+	    } else {
+	        var_X = 7.787 * var_X + 16 / 116;
+	    }
+	
+	    if (var_Y > 0.008856) {
+	        var_Y = Math.pow(var_Y, 1 / 3);
+	    } else {
+	        var_Y = 7.787 * var_Y + 16 / 116;
+	    }
+	
+	    if (var_Z > 0.008856) {
+	        var_Z = Math.pow(var_Z, 1 / 3);
+	    } else {
+	        var_Z = 7.787 * var_Z + 16 / 116;
+	    }
+	
+	    return {
+	        l: 116 * var_Y - 16,
+	        a: 500 * (var_X - var_Y),
+	        b: 200 * (var_Y - var_Z)
+	    };
+	}
+	
+	function CIELabToXYZl(a, b) {
+	    var var_Y = (l + 16) / 116;
+	    var var_X = a / 500 + var_Y;
+	    var var_Z = var_Y - b / 200;
+	
+	    if (Math.pow(var_Y, 3) > 0.008856) {
+	        var_Y = Math.pow(var_Y, 3);
+	    } else {
+	        var_Y = (var_Y - 16 / 116) / 7.787;
+	    }
+	
+	    if (Math.pow(var_X, 3) > 0.008856) {
+	        var_X = Math.pow(var_X, 3);
+	    } else {
+	        var_X = (var_X - 16 / 116) / 7.787;
+	    }
+	
+	    if (Math.pow(var_Z, 3) > 0.008856) {
+	        var_Z = Math.pow(var_Z, 3);
+	    } else {
+	        var_Z = (var_Z - 16 / 116) / 7.787;
+	    }
+	
+	    return {
+	        x: 95.047 * var_X, // ref
+	        y: 100 * var_Y, // ref
+	        z: 108.883 * var_Z // ref
+	    };
+	}
+	
+	function CIELabToRGB(l, a, b) {
+	    var xyz = helpers.color.CIELabToXYZ(l, a, b);
+	
+	    var var_X = xyz.x / 100;
+	    var var_Y = xyz.y / 100;
+	    var var_Z = xyz.z / 100;
+	
+	    var var_R = var_X * 3.2406 + var_Y * -1.5372 + var_Z * -0.4986;
+	    var var_G = var_X * -0.9689 + var_Y * 1.8758 + var_Z * 0.0415;
+	    var var_B = var_X * 0.0557 + var_Y * -0.2040 + var_Z * 1.0570;
+	
+	    if (var_R > 0.0031308) {
+	        var_R = 1.055 * Math.pow(var_R, 1 / 2.4) - 0.055;
+	    } else {
+	        var_R = 12.92 * var_R;
+	    }
+	
+	    if (var_G > 0.0031308) {
+	        var_G = 1.055 * Math.pow(var_G, 1 / 2.4) - 0.055;
+	    } else {
+	        var_G = 12.92 * var_G;
+	    }
+	
+	    if (var_B > 0.0031308) {
+	        var_B = 1.055 * Math.pow(var_B, 1 / 2.4) - 0.055;
+	    } else {
+	        var_B = 12.92 * var_B;
+	    }
+	
+	    return {
+	        r: var_R * 255,
+	        g: var_G * 255,
+	        b: var_B * 255
+	    };
+	}
+
+/***/ },
+/* 321 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	var _BasePoint = __webpack_require__(308);
+	
+	var _BasePoint2 = _interopRequireDefault(_BasePoint);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	
+	var InvertAlphaEffect = function (_BasePointEffect) {
+	    _inherits(InvertAlphaEffect, _BasePointEffect);
+	
+	    function InvertAlphaEffect() {
+	        _classCallCheck(this, InvertAlphaEffect);
+	
+	        return _possibleConstructorReturn(this, (InvertAlphaEffect.__proto__ || Object.getPrototypeOf(InvertAlphaEffect)).apply(this, arguments));
+	    }
+	
+	    _createClass(InvertAlphaEffect, [{
+	        key: 'callback',
+	        value: function callback(pixel, x, y, parameters, width, height) {
+	            pixel.a = 255 - pixel.a;
+	            return pixel;
+	        }
+	    }], [{
+	        key: 'getName',
+	        value: function getName() {
+	            return 'invert-alpha';
+	        }
+	    }]);
+	
+	    return InvertAlphaEffect;
+	}(_BasePoint2.default);
+	
+	exports.default = InvertAlphaEffect;
+
+/***/ },
+/* 322 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	var _BasePoint = __webpack_require__(308);
+	
+	var _BasePoint2 = _interopRequireDefault(_BasePoint);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	
+	var InvertEffect = function (_BasePointEffect) {
+	    _inherits(InvertEffect, _BasePointEffect);
+	
+	    function InvertEffect() {
+	        _classCallCheck(this, InvertEffect);
+	
+	        return _possibleConstructorReturn(this, (InvertEffect.__proto__ || Object.getPrototypeOf(InvertEffect)).apply(this, arguments));
+	    }
+	
+	    _createClass(InvertEffect, [{
+	        key: 'callback',
+	        value: function callback(pixel, x, y, parameters, width, height) {
+	            pixel.r = 255 - pixel.r;
+	            pixel.g = 255 - pixel.g;
+	            pixel.b = 255 - pixel.b;
+	            return pixel;
+	        }
+	    }], [{
+	        key: 'getName',
+	        value: function getName() {
+	            return 'invert';
+	        }
+	    }]);
+	
+	    return InvertEffect;
+	}(_BasePoint2.default);
+	
+	exports.default = InvertEffect;
+
+/***/ },
+/* 323 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	var _BasePoint = __webpack_require__(308);
+	
+	var _BasePoint2 = _interopRequireDefault(_BasePoint);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	
+	var LevelsEffect = function (_BasePointEffect) {
+	    _inherits(LevelsEffect, _BasePointEffect);
+	
+	    function LevelsEffect() {
+	        _classCallCheck(this, LevelsEffect);
+	
+	        return _possibleConstructorReturn(this, (LevelsEffect.__proto__ || Object.getPrototypeOf(LevelsEffect)).apply(this, arguments));
+	    }
+	
+	    _createClass(LevelsEffect, [{
+	        key: 'getDefaultParameters',
+	        value: function getDefaultParameters() {
+	            return {
+	                low: 0,
+	                high: 1,
+	                lowOutput: 0,
+	                highOutput: 1
+	            };
+	        }
+	    }, {
+	        key: 'before',
+	        value: function before(parameters, width, height, imageData) {
+	            var Histogram = function Histogram(imageData, width, height, offset, stride) {
+	                var i = void 0,
+	                    j = void 0,
+	                    index = void 0,
+	                    x = void 0,
+	                    y = void 0,
+	                    histogram = new Array(3),
+	                    minValue = new Array(4),
+	                    maxValue = new Array(4),
+	                    minFrequency = new Array(3),
+	                    maxFrequency = new Array(3),
+	                    mean = new Array(3),
+	                    numSamples = width * height,
+	                    isGray = true,
+	                    RED = 0,
+	                    GREEN = 1,
+	                    BLUE = 2,
+	                    GRAY = 3;
+	
+	                for (i = 0; i < histogram.length; i += 1) {
+	                    histogram[i] = new Array(256);
+	                    for (j = 0; j < 256; j += 1) {
+	                        histogram[i][j] = 0;
+	                    }
+	                }
+	
+	                for (y = 0; y < height; y += 1) {
+	                    for (x = 0; x < width; x += 1) {
+	                        index = y * width * 4 + x * 4;
+	                        histogram[RED][imageData.data[index]]++;
+	                        histogram[GREEN][imageData.data[index + 1]]++;
+	                        histogram[BLUE][imageData.data[index + 2]]++;
+	                    }
+	                }
+	
+	                for (i = 0; i < 256; i += 1) {
+	                    if (histogram[RED][i] !== histogram[GREEN][i] || histogram[GREEN][i] !== histogram[BLUE][i]) {
+	                        isGray = false;
+	                        break;
+	                    }
+	                }
+	
+	                for (i = 0; i < 3; i += 1) {
+	                    for (j = 0; j < 256; j += 1) {
+	                        if (histogram[i][j] > 0) {
+	                            minValue[i] = j;
+	                            break;
+	                        }
+	                    }
+	                    for (j = 255; j >= 0; j -= 1) {
+	                        if (histogram[i][j] > 0) {
+	                            maxValue[i] = j;
+	                            break;
+	                        }
+	                    }
+	                    minFrequency[i] = Infinity;
+	                    maxFrequency[i] = 0;
+	                    for (j = 0; j < 256; j += 1) {
+	                        minFrequency[i] = Math.min(minFrequency[i], histogram[i][j]);
+	                        maxFrequency[i] = Math.max(maxFrequency[i], histogram[i][j]);
+	                        mean[i] += j * histogram[i][j];
+	                    }
+	                    mean[i] /= numSamples;
+	                    minValue[GRAY] = Math.min(minValue[RED], minValue[GREEN], minValue[BLUE]);
+	                    maxValue[GRAY] = Math.max(maxValue[RED], maxValue[GREEN], maxValue[BLUE]);
+	                }
+	
+	                this.getNumSamples = function () {
+	                    return numSamples;
+	                };
+	
+	                this.isGray = function () {
+	                    return isGray;
+	                };
+	
+	                this.getFrequency = function (channel, value) {
+	                    if (!value) {
+	                        if (numSamples > 0 && isGray && value >= 0 && value <= 255) {
+	                            return histogram[0][value];
+	                        }
+	                        return -1;
+	                    }
+	                    if (numSamples < 1 || channel < 0 || channel > 2 || value < 0 || value > 255) {
+	                        return -1;
+	                    }
+	                    return histogram[channel][value];
+	                };
+	
+	                this.getMinFrequency = function (channel) {
+	                    if (!channel) {
+	                        if (numSamples > 0 && isGray) {
+	                            return minFrequency[0];
+	                        }
+	                        return -1;
+	                    }
+	                    if (numSamples < 1 || channel < 0 || channel > 2) {
+	                        return -1;
+	                    }
+	                    return minFrequency[channel];
+	                };
+	
+	                this.getMaxFrequency = function (channel) {
+	                    if (!channel) {
+	                        if (numSamples > 0 && isGray) {
+	                            return maxFrequency[0];
+	                        }
+	                        return -1;
+	                    }
+	                    if (numSamples < 1 || channel < 0 || channel > 2) {
+	                        return -1;
+	                    }
+	                    return maxFrequency[channel];
+	                };
+	
+	                this.getMinValue = function (channel) {
+	                    if (!channel) {
+	                        if (numSamples > 0 && isGray) {
+	                            return minValue[0];
+	                        }
+	                        return -1;
+	                    }
+	                    return minValue[channel];
+	                };
+	
+	                this.getMaxValue = function (channel) {
+	                    if (!channel) {
+	                        if (numSamples > 0 && isGray) {
+	                            return maxValue[0];
+	                        }
+	                        return -1;
+	                    }
+	                    return maxValue[channel];
+	                };
+	
+	                this.getMeanValue = function (channel) {
+	                    if (!channel) {
+	                        if (numSamples > 0 && isGray) {
+	                            return mean[0];
+	                        }
+	                        return -1;
+	                    }
+	                    return mean[channel];
+	                };
+	            };
+	
+	            var histogram = new Histogram(imageData, width, height, 0, width),
+	                scale = 255 / histogram.getNumSamples(),
+	                lut = new Array(3),
+	                low = parameters.low * 255,
+	                high = parameters.high * 255,
+	                i = void 0,
+	                j = void 0;
+	
+	            for (i = 0; i < lut.length; i += 1) {
+	                lut[i] = new Array(256);
+	            }
+	            if (low === high) {
+	                high++;
+	            }
+	
+	            for (i = 0; i < 3; i += 1) {
+	                for (j = 0; j < 256; j += 1) {
+	                    lut[i][j] = 255 * (parameters.lowOutput + (parameters.highOutput - parameters.lowOutput) * (j - low) / (high - low));
+	                }
+	            }
+	
+	            return {
+	                lut: lut
+	            };
+	        }
+	    }, {
+	        key: 'callback',
+	        value: function callback(pixel, x, y, parameters, width, height) {
+	            return {
+	                r: this.data.lut[0][pixel.r],
+	                g: this.data.lut[1][pixel.g],
+	                b: this.data.lut[2][pixel.b],
+	                a: pixel.a
+	            };
+	        }
+	    }], [{
+	        key: 'getName',
+	        value: function getName() {
+	            return 'levels';
+	        }
+	    }]);
+	
+	    return LevelsEffect;
+	}(_BasePoint2.default);
+	
+	exports.default = LevelsEffect;
+
+/***/ },
+/* 324 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	var _BasePoint = __webpack_require__(308);
+	
+	var _BasePoint2 = _interopRequireDefault(_BasePoint);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	
+	var RescaleEffect = function (_BasePointEffect) {
+	    _inherits(RescaleEffect, _BasePointEffect);
+	
+	    function RescaleEffect() {
+	        _classCallCheck(this, RescaleEffect);
+	
+	        return _possibleConstructorReturn(this, (RescaleEffect.__proto__ || Object.getPrototypeOf(RescaleEffect)).apply(this, arguments));
+	    }
+	
+	    _createClass(RescaleEffect, [{
+	        key: 'getDefaultParameters',
+	        value: function getDefaultParameters() {
+	            return {
+	                scale: 1
+	            };
+	        }
+	    }, {
+	        key: 'callback',
+	        value: function callback(pixel, x, y, parameters, width, height) {
+	            pixel.r = parameters.scale * pixel.r;
+	            pixel.g = parameters.scale * pixel.g;
+	            pixel.b = parameters.scale * pixel.b;
+	
+	            return pixel;
+	        }
+	    }], [{
+	        key: 'getName',
+	        value: function getName() {
+	            return 'rescale';
+	        }
+	    }]);
+	
+	    return RescaleEffect;
+	}(_BasePoint2.default);
+	
+	exports.default = RescaleEffect;
+
+/***/ },
+/* 325 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	var _BasePoint = __webpack_require__(308);
+	
+	var _BasePoint2 = _interopRequireDefault(_BasePoint);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	
+	var SolarizeEffect = function (_BasePointEffect) {
+	    _inherits(SolarizeEffect, _BasePointEffect);
+	
+	    function SolarizeEffect() {
+	        _classCallCheck(this, SolarizeEffect);
+	
+	        return _possibleConstructorReturn(this, (SolarizeEffect.__proto__ || Object.getPrototypeOf(SolarizeEffect)).apply(this, arguments));
+	    }
+	
+	    _createClass(SolarizeEffect, [{
+	        key: 'callback',
+	        value: function callback(pixel, x, y, parameters, width, height) {
+	            var red = pixel.r / 255 > 0.5 ? 2 * (pixel.r / 255 - 0.5) : 2 * (0.5 - pixel.r / 255),
+	                green = pixel.g / 255 > 0.5 ? 2 * (pixel.g / 255 - 0.5) : 2 * (0.5 - pixel.g / 255),
+	                blue = pixel.b / 255 > 0.5 ? 2 * (pixel.b / 255 - 0.5) : 2 * (0.5 - pixel.b / 255);
+	
+	            return {
+	                r: red * 255,
+	                g: green * 255,
+	                b: blue * 255,
+	                a: pixel.a
+	            };
+	        }
+	    }], [{
+	        key: 'getName',
+	        value: function getName() {
+	            return 'solarize';
+	        }
+	    }]);
+	
+	    return SolarizeEffect;
+	}(_BasePoint2.default);
+	
+	exports.default = SolarizeEffect;
+
+/***/ },
+/* 326 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	var _BasePoint = __webpack_require__(308);
+	
+	var _BasePoint2 = _interopRequireDefault(_BasePoint);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	
+	var ThresholdEffect = function (_BasePointEffect) {
+	    _inherits(ThresholdEffect, _BasePointEffect);
+	
+	    function ThresholdEffect() {
+	        _classCallCheck(this, ThresholdEffect);
+	
+	        return _possibleConstructorReturn(this, (ThresholdEffect.__proto__ || Object.getPrototypeOf(ThresholdEffect)).apply(this, arguments));
+	    }
+	
+	    _createClass(ThresholdEffect, [{
+	        key: 'callback',
+	        value: function callback(pixel, x, y, parameters, width, height) {
+	            var grayscale = (pixel.r + pixel.g + pixel.b) / 3;
+	
+	            if (grayscale >= 127) {
+	                return {
+	                    r: 255,
+	                    g: 255,
+	                    b: 255,
+	                    a: pixel.a
+	                };
+	            }
+	
+	            return {
+	                r: 0,
+	                g: 0,
+	                b: 0,
+	                a: pixel.a
+	            };
+	        }
+	    }], [{
+	        key: 'getName',
+	        value: function getName() {
+	            return 'threshold';
+	        }
+	    }]);
+	
+	    return ThresholdEffect;
+	}(_BasePoint2.default);
+	
+	exports.default = ThresholdEffect;
+
+/***/ },
+/* 327 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	var _BasePoint = __webpack_require__(308);
+	
+	var _BasePoint2 = _interopRequireDefault(_BasePoint);
+	
+	var _color = __webpack_require__(320);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	
+	var TritoneEffect = function (_BasePointEffect) {
+	    _inherits(TritoneEffect, _BasePointEffect);
+	
+	    function TritoneEffect() {
+	        _classCallCheck(this, TritoneEffect);
+	
+	        return _possibleConstructorReturn(this, (TritoneEffect.__proto__ || Object.getPrototypeOf(TritoneEffect)).apply(this, arguments));
+	    }
+	
+	    _createClass(TritoneEffect, [{
+	        key: 'getDefaultParameters',
+	        value: function getDefaultParameters() {
+	            return {
+	                shadowColor: {
+	                    r: 0,
+	                    g: 0,
+	                    b: 0,
+	                    a: 255
+	                },
+	                midColor: {
+	                    r: 136,
+	                    g: 136,
+	                    b: 136,
+	                    a: 255
+	                },
+	                highColor: {
+	                    r: 255,
+	                    g: 255,
+	                    b: 255,
+	                    a: 255
+	                }
+	            };
+	        }
+	    }, {
+	        key: 'before',
+	        value: function before(parameters) {
+	            var lut = [],
+	                i = void 0,
+	                t = void 0;
+	
+	            for (i = 0; i < 128; i += 1) {
+	                t = i / 127;
+	                lut[i] = (0, _color.mixColors)(t, parameters.shadowColor, parameters.midColor);
+	            }
+	            for (i = 128; i < 256; i += 1) {
+	                t = (i - 127) / 128;
+	                lut[i] = (0, _color.mixColors)(t, parameters.midColor, parameters.highColor);
+	            }
+	            return {
+	                lut: lut
+	            };
+	        }
+	    }, {
+	        key: 'callback',
+	        value: function callback(pixel, x, y, parameters, width, height) {
+	            var brightness = Math.floor((pixel.r + pixel.g + pixel.b) / 3);
+	            return this.data.lut[brightness];
+	        }
+	    }], [{
+	        key: 'getName',
+	        value: function getName() {
+	            return 'tritone';
+	        }
+	    }]);
+	
+	    return TritoneEffect;
+	}(_BasePoint2.default);
+	
+	exports.default = TritoneEffect;
+
+/***/ },
+/* 328 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	var _BaseOnLayer = __webpack_require__(329);
 	
 	var _BaseOnLayer2 = _interopRequireDefault(_BaseOnLayer);
 	
@@ -10243,7 +12007,7 @@
 	exports.default = Image;
 
 /***/ },
-/* 313 */
+/* 329 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -10258,7 +12022,7 @@
 	
 	var _CanvasWrapper2 = _interopRequireDefault(_CanvasWrapper);
 	
-	var _resize = __webpack_require__(314);
+	var _resize = __webpack_require__(330);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
@@ -10349,7 +12113,7 @@
 	exports.default = BaseOnLayerObject;
 
 /***/ },
-/* 314 */
+/* 330 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -10539,6 +12303,327 @@
 	
 	    return newImageData;
 	}
+
+/***/ },
+/* 331 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	var _BaseTransform = __webpack_require__(332);
+	
+	var _BaseTransform2 = _interopRequireDefault(_BaseTransform);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	
+	var DiffuseEffect = function (_BaseTransformEffect) {
+	    _inherits(DiffuseEffect, _BaseTransformEffect);
+	
+	    function DiffuseEffect() {
+	        _classCallCheck(this, DiffuseEffect);
+	
+	        return _possibleConstructorReturn(this, (DiffuseEffect.__proto__ || Object.getPrototypeOf(DiffuseEffect)).apply(this, arguments));
+	    }
+	
+	    _createClass(DiffuseEffect, [{
+	        key: 'getDefaultParameters',
+	        value: function getDefaultParameters() {
+	            return {
+	                scale: 4
+	            };
+	        }
+	    }, {
+	        key: 'before',
+	        value: function before(parameters, width, height, imageData) {
+	            var sinTable = new Array(256),
+	                cosTable = new Array(256),
+	                i = void 0,
+	                angle = void 0;
+	            for (i = 0; i < 256; i += 1) {
+	                angle = Math.PI * 2 * i / 256;
+	                sinTable[i] = parameters.scale * Math.sin(angle);
+	                cosTable[i] = parameters.scale * Math.cos(angle);
+	            }
+	            return {
+	                sinTable: sinTable,
+	                cosTable: cosTable
+	            };
+	        }
+	    }, {
+	        key: 'callback',
+	        value: function callback(x, y, parameters) {
+	            var angle = parseInt(Math.random() * 255),
+	                distance = Math.random();
+	
+	            return [x + distance * this.data.sinTable[angle], y + distance * this.data.cosTable[angle]];
+	        }
+	    }], [{
+	        key: 'getName',
+	        value: function getName() {
+	            return 'diffuse';
+	        }
+	    }]);
+	
+	    return DiffuseEffect;
+	}(_BaseTransform2.default);
+	
+	exports.default = DiffuseEffect;
+
+/***/ },
+/* 332 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	var _Base = __webpack_require__(309);
+	
+	var _Base2 = _interopRequireDefault(_Base);
+	
+	var _extend = __webpack_require__(310);
+	
+	var _extend2 = _interopRequireDefault(_extend);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	
+	var BaseTransformEffect = function (_BaseEffect) {
+	    _inherits(BaseTransformEffect, _BaseEffect);
+	
+	    function BaseTransformEffect() {
+	        _classCallCheck(this, BaseTransformEffect);
+	
+	        return _possibleConstructorReturn(this, (BaseTransformEffect.__proto__ || Object.getPrototypeOf(BaseTransformEffect)).apply(this, arguments));
+	    }
+	
+	    _createClass(BaseTransformEffect, [{
+	        key: 'callback',
+	        value: function callback(pixel, x, y, parameters, width, height) {
+	            throw "Extend it.";
+	        }
+	    }, {
+	        key: 'run',
+	        value: function run(imageData, parameters) {
+	
+	            parameters = (0, _extend2.default)(true, {}, this.getDefaultParameters(), parameters);
+	
+	            var x = void 0,
+	                y = void 0,
+	                normalizePixelValue = function normalizePixelValue(value) {
+	                return Math.min(Math.max(value, 0), 255) | 0;
+	            },
+	                sandbox = {
+	                data: null
+	            },
+	                imageDataCopy = new Uint8ClampedArray(imageData.data);
+	
+	            sandbox.data = this.before.call(sandbox, parameters, imageData.width, imageData.height, imageData);
+	
+	            for (y = 0; y < imageData.height; y += 1) {
+	                for (x = 0; x < imageData.width; x += 1) {
+	                    var newXY = this.callback.call(sandbox, x, y, parameters, imageData.width, imageData.height),
+	                        newX = normalizePixelValue(newXY[0]),
+	                        newY = normalizePixelValue(newXY[1]),
+	                        oldPixelIndex = y * imageData.width * 4 + x * 4,
+	                        newPixelIndex = newY * imageData.width * 4 + newX * 4;
+	
+	                    imageDataCopy[oldPixelIndex + 0] = imageData.data[newPixelIndex + 0];
+	                    imageDataCopy[oldPixelIndex + 1] = imageData.data[newPixelIndex + 1];
+	                    imageDataCopy[oldPixelIndex + 2] = imageData.data[newPixelIndex + 2];
+	                    imageDataCopy[oldPixelIndex + 3] = imageData.data[newPixelIndex + 3];
+	                }
+	            }
+	
+	            imageData.data.set(imageDataCopy);
+	            return imageData;
+	        }
+	    }]);
+	
+	    return BaseTransformEffect;
+	}(_Base2.default);
+	
+	exports.default = BaseTransformEffect;
+
+/***/ },
+/* 333 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	var _BasePoint = __webpack_require__(308);
+	
+	var _BasePoint2 = _interopRequireDefault(_BasePoint);
+	
+	var _common = __webpack_require__(305);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	
+	var DissolveEffect = function (_BasePointEffect) {
+	    _inherits(DissolveEffect, _BasePointEffect);
+	
+	    function DissolveEffect() {
+	        _classCallCheck(this, DissolveEffect);
+	
+	        return _possibleConstructorReturn(this, (DissolveEffect.__proto__ || Object.getPrototypeOf(DissolveEffect)).apply(this, arguments));
+	    }
+	
+	    _createClass(DissolveEffect, [{
+	        key: 'getDefaultParameters',
+	        value: function getDefaultParameters() {
+	            return {
+	                density: 1,
+	                softness: 0
+	            };
+	        }
+	    }, {
+	        key: 'before',
+	        value: function before(parameters, width, height, imageData) {
+	            var d = (1 - parameters.density) * (1 + parameters.softness);
+	            return {
+	                minDensity: d - parameters.softness,
+	                maxDensity: d
+	            };
+	        }
+	    }, {
+	        key: 'callback',
+	        value: function callback(pixel, x, y, parameters, width, height) {
+	            var v = Math.random(),
+	                f = (0, _common.smoothStep)(this.data.minDensity, this.data.maxDensity, v);
+	            pixel.a = pixel.a * f;
+	            return pixel;
+	        }
+	    }], [{
+	        key: 'getName',
+	        value: function getName() {
+	            return 'dissolve';
+	        }
+	    }]);
+	
+	    return DissolveEffect;
+	}(_BasePoint2.default);
+	
+	exports.default = DissolveEffect;
+
+/***/ },
+/* 334 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	var _BaseTransform = __webpack_require__(332);
+	
+	var _BaseTransform2 = _interopRequireDefault(_BaseTransform);
+	
+	var _common = __webpack_require__(305);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	
+	var KaleidoscopeEffect = function (_BaseTransformEffect) {
+	    _inherits(KaleidoscopeEffect, _BaseTransformEffect);
+	
+	    function KaleidoscopeEffect() {
+	        _classCallCheck(this, KaleidoscopeEffect);
+	
+	        return _possibleConstructorReturn(this, (KaleidoscopeEffect.__proto__ || Object.getPrototypeOf(KaleidoscopeEffect)).apply(this, arguments));
+	    }
+	
+	    _createClass(KaleidoscopeEffect, [{
+	        key: 'getDefaultParameters',
+	        value: function getDefaultParameters() {
+	            return {
+	                centreX: 0.5,
+	                centreY: 0.5,
+	                angle: 0,
+	                angle2: 0,
+	                sides: 3,
+	                radius: 0
+	            };
+	        }
+	    }, {
+	        key: 'before',
+	        value: function before(parameters, width, height, imageData) {
+	            return {
+	                icentreX: width * parameters.centreX,
+	                icentreY: height * parameters.centreY
+	            };
+	        }
+	    }, {
+	        key: 'callback',
+	        value: function callback(x, y, parameters) {
+	            var dx = x - this.data.icentreX,
+	                dy = y - this.data.icentreY,
+	                r = Math.sqrt(dx * dx + dy * dy),
+	                theta = Math.atan2(dy, dx) - parameters.angle - parameters.angle2;
+	
+	            theta = (0, _common.triangle)(theta / Math.PI * parameters.sides * 0.5);
+	
+	            if (parameters.radius !== 0) {
+	                var c = Math.cos(theta),
+	                    radiusC = parameters.radius / c;
+	                r = radiusC * (0, _common.triangle)(r / radiusC);
+	            }
+	
+	            theta += parameters.angle;
+	
+	            return [this.data.icentreX + r * Math.cos(theta), this.data.icentreY + r * Math.sin(theta)];
+	        }
+	    }], [{
+	        key: 'getName',
+	        value: function getName() {
+	            return 'kaleidoscope';
+	        }
+	    }]);
+	
+	    return KaleidoscopeEffect;
+	}(_BaseTransform2.default);
+	
+	exports.default = KaleidoscopeEffect;
 
 /***/ }
 /******/ ]);

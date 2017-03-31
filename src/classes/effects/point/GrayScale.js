@@ -1,6 +1,6 @@
-import BaseColorEffect from '../BaseColor';
+import BasePointEffect from '../BasePoint';
 
-class GrayScaleEffect extends BaseColorEffect {
+class GrayScaleEffect extends BasePointEffect {
     static getName() {
         return 'gray-scale';
     }

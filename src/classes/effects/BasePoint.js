@@ -1,7 +1,7 @@
 import BaseEffect from './Base';
 import extend from 'extend';
 
-class BaseColorEffect extends BaseEffect {
+class BasePointEffect extends BaseEffect {
     callback(pixel, x, y, parameters, width, height) {
         throw "Extend it."
     }
@@ -84,9 +84,7 @@ class BaseColorEffect extends BaseEffect {
                 height: imageData.height
             };
 
-        /*sandbox.data = (this.opts && typeof this.opts.before === "function")
-         ? additionalParameters.before.call(sandbox, parameters, imageData.width, imageData.height, imageData)
-         : {};*/
+        sandbox.data = this.before.call(sandbox, parameters, imageData.width, imageData.height, imageData);
 
         for (y = 0; y < imageData.height; y += 1) {
             for (x = 0; x < imageData.width; x += 1) {
@@ -120,4 +118,4 @@ class BaseColorEffect extends BaseEffect {
     }
 }
 
-export default BaseColorEffect;
+export default BasePointEffect;
