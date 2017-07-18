@@ -14,18 +14,17 @@ module.exports = {
     path: path.resolve('./dist'),
     filename: 'imagizer.browser.dev.js',
     library: 'Imagizer',
-    libratyTarget: 'var'
+    libraryTarget: 'var'
   },
   resolve: {
-    modulesDirectories: ['node_modules'],
-    extensions: ['', '.js'],
+    extensions: ['.js'],
   },
   module: {
     loaders: [
       {
         test: [/\.js?$/],
         exclude: /node_modules/,
-        loader: 'babel',
+        loader: 'babel-loader',
         query: {
           presets: ['es2015'],
         },

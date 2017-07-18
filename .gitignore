@@ -7,3 +7,4 @@ npm-debug.log
 dist/*
 !dist/imagizer.*
 demo/node_result.png
+package-lock.json

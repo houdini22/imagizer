@@ -11,12 +11,12 @@ module.exports = {
   output: {
     path: path.resolve('./dist'),
     filename: 'imagizer.node.dev.js',
-    library: 'Imagizer',
-    libraryTarget: 'umd'
+    library: '',
+    libraryTarget: 'commonjs'
   },
   resolve: {
-    modulesDirectories: ['node_modules'],
-    extensions: ['', '.js'],
+    //modulesDirectories: ['node_modules'],
+    extensions: ['.js'],
   },
   module: {
     loaders: [
@@ -29,13 +29,14 @@ module.exports = {
           presets: ['es2015'],
         },
       },
+      {test: /\.node$/, loader: 'node-loader'}
     ],
   },
   plugins: [
     new webpack.NoErrorsPlugin(),
   ],
   externals: {
-    //'canvas': 'canvas',
+    'canvas': 'canvas',
     'fs': 'fs'
   },
   target: 'node'
