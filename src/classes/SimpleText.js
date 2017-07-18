@@ -1,9 +1,9 @@
 import BaseOnLayerObject from './BaseOnLayer';
 
 class SimpleText extends BaseOnLayerObject {
-    constructor() {
-        super();
-    }
+  constructor() {
+    super();
+  }
 }
 
 export default SimpleText

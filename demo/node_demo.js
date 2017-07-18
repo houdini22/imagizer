@@ -1,4 +1,7 @@
-var Imagizer = require("../dist/imagizer.node");
+var Imagizer = require("../dist/imagizer.node.dev");
+
+console.log(Imagizer);
+
 var Project = Imagizer.Project;
 var Image = Imagizer.Image;
 

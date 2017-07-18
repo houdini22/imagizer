@@ -3,57 +3,57 @@ import CanvasWrapper from './CanvasWrapper';
 import {isNode} from '../helpers/common';
 
 class Image extends BaseOnLayerObject {
-    constructor() {
-        super();
-        this.url = null;
+  constructor() {
+    super();
+    this.url = null;
 
-        if (isNode()) {
-            let canvas = require('canvas');
-            this.image = new canvas.Image();
-        }
-        else {
-            this.image = new window.Image();
-
-            // hide from viewport
-            this.image.style.position = "absolute";
-            this.image.style.left = "-99999px";
-            this.image.style.top = "-99999px";
-        }
+    if (isNode()) {
+      let canvas = require('canvas');
+      this.image = new canvas.Image();
     }
+    else {
+      this.image = new window.Image();
 
-    load(url, callback) {
-        let load = () => {
-            this.setWidth(isNode() ? this.image.width : this.image.clientWidth);
-            this.setHeight(isNode() ? this.image.height : this.image.clientHeight);
-
-            // get image data
-            this.canvas = new CanvasWrapper(this.getWidth(), this.getHeight());
-            this.canvas.getContext().drawImage(this.image, 0, 0, this.getWidth(), this.getHeight());
-
-            if (!isNode()) {
-                document.body.removeChild(this.image);
-            }
-
-            if (typeof callback === "function") {
-                callback.call(this);
-            }
-        };
-
-        this.url = url;
-
-        if (!isNode()) {
-            document.body.appendChild(this.image);
-            this.image.onload = function () {
-                load();
-            };
-            this.image.src = url;
-        }
-        else {
-            let fs = require("fs");
-            this.image.src = fs.readFileSync(url);
-            load();
-        }
+      // hide from viewport
+      this.image.style.position = "absolute";
+      this.image.style.left = "-99999px";
+      this.image.style.top = "-99999px";
     }
+  }
+
+  load(url, callback) {
+    let load = () => {
+      this.setWidth(isNode() ? this.image.width : this.image.clientWidth);
+      this.setHeight(isNode() ? this.image.height : this.image.clientHeight);
+
+      // get image data
+      this.canvas = new CanvasWrapper(this.getWidth(), this.getHeight());
+      this.canvas.getContext().drawImage(this.image, 0, 0, this.getWidth(), this.getHeight());
+
+      if (!isNode()) {
+        document.body.removeChild(this.image);
+      }
+
+      if (typeof callback === "function") {
+        callback.call(this);
+      }
+    };
+
+    this.url = url;
+
+    if (!isNode()) {
+      document.body.appendChild(this.image);
+      this.image.onload = function () {
+        load();
+      };
+      this.image.src = url;
+    }
+    else {
+      let fs = require("fs");
+      this.image.src = fs.readFileSync(url);
+      load();
+    }
+  }
 }
 
 export default Image;

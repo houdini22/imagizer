@@ -47,10 +47,10 @@ import ComponentStretching from './effects/custom/ComponentStretching';
 let availableEffects = {};
 
 function add(_class) {
-    if (availableEffects[_class.getName()]) {
-        throw `Effect: ${_class.getName()} exists already!`;
-    }
-    availableEffects[_class.getName()] = _class;
+  if (availableEffects[_class.getName()]) {
+    throw `Effect: ${_class.getName()} exists already!`;
+  }
+  availableEffects[_class.getName()] = _class;
 }
 
 add(GrayScale);
@@ -98,9 +98,9 @@ add(Emboss);
 add(ComponentStretching);
 
 class EffectsRepository {
-    static get(name) {
-        return availableEffects[name];
-    }
+  static get(name) {
+    return availableEffects[name];
+  }
 }
 
 export default EffectsRepository;

@@ -31,10 +31,10 @@
     "extend": "^3.0.0"
   },
   "scripts": {
-    "build_frontend": "webpack --config ./webpack.frontend.prod.config.js",
-    "build_backend": "webpack --config ./webpack.backend.prod.config.js",
-    "dev_backend": "webpack --config ./webpack.backend.dev.config.js",
-    "dev_frontend": "webpack --config ./webpack.frontend.dev.config.js",
+    "build_prod_frontend": "webpack --config ./webpack.frontend.prod.config.js",
+    "build_prod_backend": "webpack --config ./webpack.backend.prod.config.js",
+    "build_dev_backend": "webpack --config ./webpack.backend.dev.config.js",
+    "build_dev_frontend": "webpack --config ./webpack.frontend.dev.config.js",
     "watch": "webpack --progress --colors --watch --config ./webpack.dev.config.js",
     "test": "karma start --reporters html"
   },

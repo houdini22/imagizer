@@ -3,20 +3,20 @@ import Image from './classes/Image';
 import {isNode} from './helpers/common';
 
 let imagizer = {
-    Project,
-    Image
+  Project,
+  Image
 };
 
 if (isNode()) {
-    module.exports = imagizer;
+  module.exports = imagizer;
 }
 else {
-    if (typeof define === 'function' && define.amd) {
-        define([], function () {
-            return imagizer;
-        });
-    }
-    else {
-        window.Imagizer = imagizer;
-    }
+  if (typeof define === 'function' && define.amd) {
+    define([], function () {
+      return imagizer;
+    });
+  }
+  else {
+    window.Imagizer = imagizer;
+  }
 }
