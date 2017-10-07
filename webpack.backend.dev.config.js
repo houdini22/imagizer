@@ -32,9 +32,7 @@ module.exports = {
       {test: /\.node$/, loader: 'node-loader'}
     ],
   },
-  plugins: [
-    new webpack.NoErrorsPlugin(),
-  ],
+  plugins: [],
   externals: {
     'canvas': 'canvas',
     'fs': 'fs'

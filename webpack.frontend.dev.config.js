@@ -31,10 +31,7 @@ module.exports = {
       },
     ],
   },
-  plugins: [
-    new webpack.NoErrorsPlugin(),
-    new webpack.HotModuleReplacementPlugin()
-  ],
+  plugins: [],
   externals: {
     'canvas': 'canvas',
     'fs': 'fs'
