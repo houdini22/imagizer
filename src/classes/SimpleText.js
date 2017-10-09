@@ -1,8 +1,8 @@
-import BaseOnLayerObject from './BaseOnLayer';
+import BaseOnLayerObject from './BaseOnLayer'
 
 class SimpleText extends BaseOnLayerObject {
-  constructor() {
-    super();
+  constructor () {
+    super()
   }
 }
 

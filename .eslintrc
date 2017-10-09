@@ -1,0 +1,35 @@
+{
+  "parser": "babel-eslint",
+  "parserOptions": {
+    "ecmaVersion": 6
+  },
+  "extends": [
+    "standard"
+  ],
+  "plugins": [
+    "babel",
+    "promise"
+  ],
+  "env": {
+    "browser": true
+  },
+  "globals": {
+    "__DEV__": false,
+    "__TEST__": false,
+    "__PROD__": false,
+    "__COVERAGE__": false
+  },
+  "rules": {
+    "key-spacing": "off",
+    "max-len": [
+      2,
+      240,
+      2
+    ],
+    "object-curly-spacing": [
+      2,
+      "always"
+    ],
+    "comma-dangle": "off"
+  }
+}

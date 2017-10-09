@@ -1,29 +1,29 @@
-import BasePointEffect from '../BasePoint';
+import BasePointEffect from '../BasePoint'
 
 class BrightnessEffect extends BasePointEffect {
-  static getName() {
-    return 'brightness';
+  static getName () {
+    return 'brightness'
   }
 
-  getDefaultParameters() {
+  getDefaultParameters () {
     return {
       brightness: 0.5
-    };
+    }
   }
 
-  before(parameters) {
+  before (parameters) {
     return {
       brightness: 255 * parameters.brightness
-    };
+    }
   }
 
-  callback(pixel, x, y, parameters, width, height) {
-    pixel.r = pixel.r + this.data.brightness;
-    pixel.g = pixel.g + this.data.brightness;
-    pixel.b = pixel.b + this.data.brightness;
+  callback (pixel, x, y, parameters, width, height) {
+    pixel.r = pixel.r + this.data.brightness
+    pixel.g = pixel.g + this.data.brightness
+    pixel.b = pixel.b + this.data.brightness
 
-    return pixel;
+    return pixel
   }
 }
 
-export default BrightnessEffect;
+export default BrightnessEffect

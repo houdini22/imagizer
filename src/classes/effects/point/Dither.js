@@ -1,11 +1,11 @@
-import BasePointEffect from '../BasePoint';
+import BasePointEffect from '../BasePoint'
 
 class DitherEffect extends BasePointEffect {
-  static getName() {
-    return 'dither';
+  static getName () {
+    return 'dither'
   }
 
-  getDefaultParameters() {
+  getDefaultParameters () {
     return {
       matrices: {
         ditherMagic4x4Matrix: [
@@ -100,31 +100,31 @@ class DitherEffect extends BasePointEffect {
         ]
       },
       levels: 6,
-      matrix: "ditherMagic4x4Matrix",
+      matrix: 'ditherMagic4x4Matrix',
       colorDither: true
-    };
+    }
   }
 
-  before(parameters, width, height, imageData) {
+  before (parameters, width, height, imageData) {
     let matrix = parameters.matrix,
       rows, cols,
       map = [], div = [], mod = [],
-      i;
+      i
 
-    if (typeof matrix === "string") {
-      matrix = parameters.matrices[matrix];
+    if (typeof matrix === 'string') {
+      matrix = parameters.matrices[matrix]
     }
 
-    rows = Math.sqrt(matrix.length);
-    cols = Math.sqrt(matrix.length);
+    rows = Math.sqrt(matrix.length)
+    cols = Math.sqrt(matrix.length)
 
     for (i = 0; i < parameters.levels; i += 1) {
-      map[i] = 255 * i / (parameters.levels - 1);
+      map[i] = 255 * i / (parameters.levels - 1)
     }
 
     for (i = 0; i < 256; i += 1) {
-      div[i] = parseInt((parameters.levels - 1) * i / 256);
-      mod[i] = parseInt(i * (rows * cols + 1) / 256);
+      div[i] = parseInt((parameters.levels - 1) * i / 256)
+      mod[i] = parseInt(i * (rows * cols + 1) / 256)
     }
 
     return {
@@ -134,29 +134,29 @@ class DitherEffect extends BasePointEffect {
       mod: mod,
       cols: cols,
       rows: rows
-    };
+    }
   }
 
-  callback(pixel, x, y, parameters, width, height) {
+  callback (pixel, x, y, parameters, width, height) {
     let col = x % this.data.cols,
       row = y % this.data.rows,
       v = parameters.matrix[row * this.data.cols + col],
       red = pixel.r, green = pixel.g, blue = pixel.b,
-      result = {a: pixel.a},
-      value;
+      result = { a: pixel.a },
+      value
 
     if (parameters.colorDither) {
-      result.r = this.data.map[this.data.mod[red] > v ? this.data.div[red] + 1 : this.data.div[red]];
-      result.g = this.data.map[this.data.mod[green] > v ? this.data.div[green] + 1 : this.data.div[green]];
-      result.b = this.data.map[this.data.mod[blue] > v ? this.data.div[blue] + 1 : this.data.div[blue]];
+      result.r = this.data.map[this.data.mod[red] > v ? this.data.div[red] + 1 : this.data.div[red]]
+      result.g = this.data.map[this.data.mod[green] > v ? this.data.div[green] + 1 : this.data.div[green]]
+      result.b = this.data.map[this.data.mod[blue] > v ? this.data.div[blue] + 1 : this.data.div[blue]]
     }
     else {
-      value = (red + green + blue) / 3;
-      result.r = result.g = result.b = this.data.map[this.data.mod[value] > v ? this.data.div[value] + 1 : this.data.div[value]];
+      value = (red + green + blue) / 3
+      result.r = result.g = result.b = this.data.map[this.data.mod[value] > v ? this.data.div[value] + 1 : this.data.div[value]]
     }
 
-    return result;
+    return result
   }
 }
 
-export default DitherEffect;
+export default DitherEffect

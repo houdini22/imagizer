@@ -1,56 +1,56 @@
-import CanvasWrapper from './CanvasWrapper';
-import LayerObject from './LayerObject';
+import CanvasWrapper from './CanvasWrapper'
+import LayerObject from './LayerObject'
 import {
   mergeImageData,
   mergePixelCallback
-} from '../helpers/common';
-import EffectsRepository from './EffectsRepository';
+} from '../helpers/common'
+import EffectsRepository from './EffectsRepository'
 
 class Layer {
-  constructor(width, height, parameters = {}) {
-    this.objects = [];
-    this.effects = [];
-    this.x = 0;
-    this.y = 0;
-    this.initialize(width, height, parameters);
+  constructor (width, height, parameters = {}) {
+    this.objects = []
+    this.effects = []
+    this.x = 0
+    this.y = 0
+    this.initialize(width, height, parameters)
 
-    if (parameters.background_color && parameters.background_color !== "transparent") {
-      this.applyEffect("fill-color", {
+    if (parameters.background_color && parameters.background_color !== 'transparent') {
+      this.applyEffect('fill-color', {
         color: parameters.background_color
-      });
+      })
     }
   }
 
-  initialize(width, height, parameters) {
-    this.canvas = new CanvasWrapper(width, height);
-    this.imageData = this.canvas.getContext().createImageData(width, height);
-    this.width = width;
-    this.height = height;
-    this.parameters = parameters;
+  initialize (width, height, parameters) {
+    this.canvas = new CanvasWrapper(width, height)
+    this.imageData = this.canvas.getContext().createImageData(width, height)
+    this.width = width
+    this.height = height
+    this.parameters = parameters
   }
 
-  put(obj, x, y) {
-    let put = new LayerObject(obj, this, x, y, {});
-    this.objects.push(put);
-    return put;
+  put (obj, x, y) {
+    let put = new LayerObject(obj, this, x, y, {})
+    this.objects.push(put)
+    return put
   }
 
-  exportTo(selector, imageType = 'image/png') {
-    this.exportLayer();
+  exportTo (selector, imageType = 'image/png') {
+    this.exportLayer()
 
     let container = document.querySelector(selector),
-      exportedImage = new Image();
+      exportedImage = new Image()
 
-    exportedImage.src = canvas.toDataURL(imageType);
-    container.appendChild(exportedImage);
+    exportedImage.src = canvas.toDataURL(imageType)
+    container.appendChild(exportedImage)
   }
 
-  exportLayer() {
+  exportLayer () {
     let i,
-      layerObject;
+      layerObject
 
     for (i = 0; i < this.objects.length; i += 1) {
-      layerObject = this.objects[i];
+      layerObject = this.objects[i]
       this.imageData = mergeImageData({
         width: this.width,
         height: this.height,
@@ -61,99 +61,99 @@ class Layer {
         width: layerObject.getWidth(),
         height: layerObject.getHeight(),
         imageData: layerObject.exportObject()
-      }, mergePixelCallback);
+      }, mergePixelCallback)
     }
 
     for (i = 0; i < this.effects.length; i++) {
-      this.imageData = this.effects[i].effect.run(this.imageData, this.effects[i].params);
+      this.imageData = this.effects[i].effect.run(this.imageData, this.effects[i].params)
     }
 
-    return this.imageData;
+    return this.imageData
   }
 
-  applyEffect(name, parameters) {
+  applyEffect (name, parameters) {
     this.effects.push({
       name,
       effect: new (EffectsRepository.get(name)),
       parameters
-    });
+    })
   }
 
-  resize(newWidth, newHeight, mode) {
-    let i;
+  resize (newWidth, newHeight, mode) {
+    let i
 
-    this.canvas.destroy();
-    this.canvas = null;
-    this.imageData = null;
+    this.canvas.destroy()
+    this.canvas = null
+    this.imageData = null
 
-    this.initialize(newWidth, newHeight, this.parameters);
+    this.initialize(newWidth, newHeight, this.parameters)
 
     for (i = 0; i < this.objects.length; i += 1) {
-      this.objects[i].resize(newWidth, newHeight, mode, true);
+      this.objects[i].resize(newWidth, newHeight, mode, true)
     }
 
-    return this;
+    return this
   }
 
-  crop(startX, startY, width, height) {
-    let i;
+  crop (startX, startY, width, height) {
+    let i
 
     for (i = 0; i < this.objects.length; i += 1) {
-      this.objects[i].crop(startX, startY, width, height);
+      this.objects[i].crop(startX, startY, width, height)
     }
 
-    return this;
+    return this
   }
 
-  moveXY(x, y) {
-    this.moveX(x);
-    this.moveY(y);
-    return this;
+  moveXY (x, y) {
+    this.moveX(x)
+    this.moveY(y)
+    return this
   }
 
-  moveX(x) {
-    this.x += (x | 0);
-    return this;
+  moveX (x) {
+    this.x += (x | 0)
+    return this
   }
 
-  moveY(y) {
-    this.y += (y | 0);
-    return this;
+  moveY (y) {
+    this.y += (y | 0)
+    return this
   }
 
-  setX(x) {
-    this.x = x;
-    return this;
+  setX (x) {
+    this.x = x
+    return this
   }
 
-  setY(y) {
-    this.y = y;
-    return this;
+  setY (y) {
+    this.y = y
+    return this
   }
 
-  setBlendingMode(blendingMode) {
-    this.parameters.blendingMode = blendingMode;
+  setBlendingMode (blendingMode) {
+    this.parameters.blendingMode = blendingMode
   }
 
-  getX() {
-    return this.x;
+  getX () {
+    return this.x
   }
 
-  getY() {
+  getY () {
     return this.y
   }
 
-  getWidth() {
-    return this.width;
+  getWidth () {
+    return this.width
   }
 
-  getHeight() {
-    return this.height;
+  getHeight () {
+    return this.height
   }
 
-  getParameter(name) {
-    return this.parameters[name];
+  getParameter (name) {
+    return this.parameters[name]
   }
 }
 
-export default Layer;
+export default Layer

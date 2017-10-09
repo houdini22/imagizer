@@ -4,7 +4,5 @@ node_modules
 build
 npm-debug.log
 .htaccess
-dist/*
-!dist/imagizer.*
 demo/node_result.png
 package-lock.json

@@ -1,20 +1,19 @@
-require('extract-text-webpack-plugin');
+require('extract-text-webpack-plugin')
 
-const path = require('path');
-const webpack = require('webpack');
+const path = require('path')
+const webpack = require('webpack')
 
 module.exports = {
   devtool: 'sourcemap',
   entry: [
     'babel-polyfill',
-    'webpack/hot/dev-server',
     './src/main.js',
   ],
   output: {
     path: path.resolve('./dist'),
-    filename: 'imagizer.browser.dev.js',
-    library: 'Imagizer',
-    libraryTarget: 'var'
+    filename: 'imagizer.js',
+    library: '',
+    libraryTarget: 'commonjs'
   },
   resolve: {
     extensions: ['.js'],
@@ -31,9 +30,15 @@ module.exports = {
       },
     ],
   },
-  plugins: [],
+  plugins: [
+    new webpack.DefinePlugin({
+      'process.env.NODE_ENV': JSON.stringify('production'),
+    }),
+    new webpack.optimize.OccurrenceOrderPlugin,
+    new webpack.optimize.UglifyJsPlugin
+  ],
   externals: {
     'canvas': 'canvas',
     'fs': 'fs'
   }
-};
+}

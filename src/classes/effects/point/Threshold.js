@@ -1,12 +1,12 @@
-import BasePointEffect from '../BasePoint';
+import BasePointEffect from '../BasePoint'
 
 class ThresholdEffect extends BasePointEffect {
-  static getName() {
-    return 'threshold';
+  static getName () {
+    return 'threshold'
   }
 
-  callback(pixel, x, y, parameters, width, height) {
-    var grayscale = (pixel.r + pixel.g + pixel.b) / 3;
+  callback (pixel, x, y, parameters, width, height) {
+    let grayscale = (pixel.r + pixel.g + pixel.b) / 3
 
     if (grayscale >= 127) {
       return {
@@ -14,7 +14,7 @@ class ThresholdEffect extends BasePointEffect {
         g: 255,
         b: 255,
         a: pixel.a
-      };
+      }
     }
 
     return {
@@ -22,8 +22,8 @@ class ThresholdEffect extends BasePointEffect {
       g: 0,
       b: 0,
       a: pixel.a
-    };
+    }
   }
 }
 
-export default ThresholdEffect;
+export default ThresholdEffect

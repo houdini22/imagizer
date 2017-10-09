@@ -1,41 +1,41 @@
-import BaseCustomEffect from '../BaseCustom';
+import BaseCustomEffect from '../BaseCustom'
 import {
   hexToRGB,
 } from '../../../helpers/color'
 
 class FillColorEffect extends BaseCustomEffect {
-  static getName() {
-    return 'fill-color';
+  static getName () {
+    return 'fill-color'
   }
 
-  getDefaultParameters() {
+  getDefaultParameters () {
     return {
-      color: "transparent"
-    };
+      color: 'transparent'
+    }
   }
 
-  callback(width, height, parameters) {
-    var x, y, color;
+  callback (width, height, parameters) {
+    let x, y, color
 
-    if (parameters.color === "transparent") {
+    if (parameters.color === 'transparent') {
       color = {
         r: 0,
         g: 0,
         b: 0,
         a: 0
-      };
+      }
     }
     else {
-      color = hexToRGB(parameters.color);
-      color.a = 255;
+      color = hexToRGB(parameters.color)
+      color.a = 255
     }
 
     for (y = 0; y < height; y += 1) {
       for (x = 0; x < width; x += 1) {
-        this.setPixel(x, y, color);
+        this.setPixel(x, y, color)
       }
     }
   }
 }
 
-export default FillColorEffect;
+export default FillColorEffect

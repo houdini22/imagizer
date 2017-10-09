@@ -2,25 +2,36 @@
   "name": "imagizer",
   "version": "0.3.0",
   "description": "JavaScript library for image manipulation. Supports crop, resize, layers, blending modes, transform and color effects.",
-  "main": "dist/imagizer.node.js",
+  "main": "./dist/imagizer.js",
   "devDependencies": {
-    "babel-loader": "^7.1.1",
-    "extract-text-webpack-plugin": "^2.0.0",
-    "webpack": "^2.6.1",
     "babel-core": "^6.25.0",
+    "babel-eslint": "^8.0.1",
+    "babel-loader": "^7.1.1",
+    "babel-plugin-transform-class-properties": "^6.24.1",
+    "babel-plugin-transform-object-rest-spread": "^6.26.0",
+    "babel-plugin-transform-runtime": "^6.23.0",
     "babel-polyfill": "^6.23.0",
-    "babel-preset-es2015": "^6.24.1"
+    "babel-preset-env": "^1.6.0",
+    "babel-preset-es2015": "^6.24.1",
+    "babel-preset-react": "^6.24.1",
+    "eslint": "^4.8.0",
+    "eslint-config-standard": "^10.2.1",
+    "eslint-plugin-babel": "^4.1.2",
+    "eslint-plugin-import": "^2.7.0",
+    "eslint-plugin-node": "^5.2.0",
+    "eslint-plugin-promise": "^3.5.0",
+    "eslint-plugin-standard": "^3.0.1",
+    "extract-text-webpack-plugin": "^2.0.0",
+    "webpack": "^2.6.1"
   },
   "dependencies": {
     "canvas": "^1.6.5",
     "extend": "^3.0.0"
   },
   "scripts": {
-    "build:prod:browser": "webpack --config ./webpack.frontend.prod.config.js",
-    "build:prod:node": "webpack --config ./webpack.backend.prod.config.js",
-    "build:dev:browser": "webpack --config ./webpack.frontend.dev.config.js",
-    "build:dev:node": "webpack --config ./webpack.backend.dev.config.js",
-    "build:all": "npm run build:prod:browser && npm run build:prod:node && npm run build:dev:browser && npm run build:dev:node"
+    "build": "webpack --config ./webpack.config.js",
+    "lint": "eslint src",
+    "lint:fix": "npm run lint -- --fix"
   },
   "repository": {
     "type": "git",

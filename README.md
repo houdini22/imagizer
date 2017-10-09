@@ -1,55 +1,83 @@
 # imagizer
 
-Imagizer is a JavaScript library for image manipulation.
-
-To run demo in your browser locally you have to create vhost that points on main repo directory - this is required to avoid cross-domain errors.
-Please check demo to get more examples - this documentation is under development.
+Imagizer is a JavaScript library for image manipulation written in ES6. 
+It supports both node.js (with node-canvas dependency) and browser!
 
 Imagizer effect algorithms are based on a [Jerry's Java Image Proccesing Library](http://www.jhlabs.com/ip/filters/index.html)
 
-Working demo you can find at [http://imagizer.it/~hud/imagizer/demo/](http://imagizer.it/~hud/imagizer/demo/)
+Working demo you can find at [http://demo.imagizer.it/](http://demo.imagizer.it/)
 
-## npm
-Imagizer supports node.js (with node-canvas as requirement) and is available as npm package.
-To install type:
+## Installation
 ```
 npm install imagizer
 ```
 
-Check ./demo/node_demo.js for example of usage.
+If you are using webpack in your project with imagizer you must add [externals](https://webpack.js.org/configuration/externals/) definitions to your webpack configuration:
+
+```
+{
+  'canvas': 'canvas',
+  'fs': 'fs'
+}
+```
+
+This prevents from throwing errors when bundled script is trying to load backend libraries in your frontend environment.
 
 ## Usage
-To create a Project just execute following lines:
-In browser:
-```javascript
-var project = new Imagizer.Project(projectWidth, projectHeight);
-```
-or in node.js:
-```javascript
-var Imagizer = require("imagizer");
-var project = new Imagizer.Project(projectWidth, projectHeight);
-```
-where projectWidth and projectHeight are dimensions of result image.
 
-To a project you can add a layer:
+### Project
+
+To start an imagizer project:
+
+##### browser
+
 ```javascript
-var layer1 = project.createLayer();
+import imagizer from 'imagizer';
+const project = new imagizer.Project(projectWidth, projectHeight);
 ```
-and to a layer you can add image:
+
+##### node.js
+
 ```javascript
-var image1 = new Imagizer.Image();
-image1.load("my-image.png", function()
-{
-    var onLayerObject = layer1.put(image1, 0, 0); // put image1 to a layer with position 0, 0
+const imagizer = require('imagizer');
+const project = new imagizer.Project(projectWidth, projectHeight);
+```
+
+projectWidth and projectHeight are dimensions of result image.
+
+### Layer
+
+To the project you can add layer:
+
+```javascript
+const layer1 = project.createLayer({
+  blendingMode: 'normal' // optional
 });
 ```
-Then you can add efects to a object (image):
+
+To the layer you can add image:
+```javascript
+const image1 = new Imagizer.Image();
+image1.load("my-image.png", function()
+{
+    const onLayerObject = layer1.put(image1, 0, 0); // put image1 on the layer1 on position 0, 0 (left upper corner)
+});
+```
+
+"my-image.png" is a path to the image 
+ - in frontend environment - visible in the browser at given url "<domain>/my-image.png"
+ - in node.js environment - path to file in filesystem
+
+### Effects
+
+You can add multiple effects to the 'onLayerObject' - in this example it is image.
+
 ```javascript
 image1.load("my-image.png", function()
 {
-    var obj = layer1.put(image1, 0, 0); // put image1 to a layer with position 0, 0
+    const obj = layer1.put(image1, 0, 0); // put image1 on the layer with position 0, 0
     // edge detection combo
-    obj.applyEffect("edge"/*, {parameter1: "someValue"}*/);
+    obj.applyEffect("edge");
     obj.applyEffect("gray-scale");
     obj.applyEffect("invert");
 });
@@ -57,32 +85,43 @@ image1.load("my-image.png", function()
 
 Some effects has a parameters, but if you don't pass any then the default parameters will be used.
 
+```javascript
+obj.applyEffect(effectName, {
+  parameter1: "value1",
+  parameter2: 255
+});
+```
+
 You can add effect to a whole layer:
 ```javascript
 image1.load("my-image.png", function()
 {
-    var obj = layer1.put(image1, 0, 0); // put image1 to a layer with position 0, 0
+    const obj = layer1.put(image1, 0, 0); // put image1 on the a layer with position 0, 0
     layer1.applyEffect("invert");
 });
 ```
+
 or whole project:
+
 ```javascript
 image1.load("my-image.png", function()
 {
-    var obj = layer1.put(image1, 0, 0); // put image1 to a layer with position 0, 0
+    const obj = layer1.put(image1, 0, 0); // put image1 on the layer with position 0, 0
     project.applyEffect("sepia");
 });
 ```
 
-Layers support alpha compositing and the blending modes. While alpha compositing is internal process and do not require your attention the blending mode you can set by:
+Layers support alpha compositing and the blending modes. While alpha compositing is internal process and do not require your attention the blending mode you can set by
+passing parameters to ```createLayer``` method.
 
 ```javascript
-var layer2 = project.createLayer({
-    blendingMode: "average"
+const layer2 = project.createLayer({
+  blendingMode: "average"
 });
 ```
 
-The following blending modes are supported:
+##### Supported blending modes
+
 - lighten
 - darken
 - multiply
@@ -108,19 +147,24 @@ The following blending modes are supported:
 - glow
 - phoenix
 
-You can also crop added image:
+### Resize, crop
+
+##### Crop
+
 ```javascript
 image1.load("img/pencils.jpg", function()
 {
-    var obj = layer1.put(image1, 0, 0);
-    obj.crop(100, 100, 100, 100); // startX, startY, width, height
+  const obj = layer1.put(image1, 0, 0);
+  obj.crop(100, 100, 100, 100); // startX, startY, width, height
 });
 ```
-or resize image, whole layer or project:
+
+##### Resize
+
 ```javascript
 image1.load("img/pencils.jpg", function()
 {
-    var obj = layer1.put(image1, 200, 150);
+    const obj = layer1.put(image1, 200, 150);
     obj.resize(200, 150 /*, mode */);
     // or
     layer1.resize(200, 150 /*, mode */);
@@ -129,7 +173,7 @@ image1.load("img/pencils.jpg", function()
 });
 ```
 
-Note that 'obj' and 'layer' resize do not modify result image dimensions. To rescale result image you have to change size o a project.
+Note that 'obj' and 'layer' resize do not modify Project  dimensions. To rescale result image you have to change size o a project.
 
 The following resize modes are supported:
 
@@ -138,8 +182,8 @@ The following resize modes are supported:
 - "biquadratic-interpolation".
 
 
-## Effects
-The following effects are supported:
+##### Supported effects
+
 - gray-scale
 - sepia
 - contrast
@@ -160,7 +204,6 @@ The following effects are supported:
 - levels
 - diffuse
 - kaleidoscope
-- marble
 - pinch
 - ripple
 - shear
@@ -184,12 +227,14 @@ The following effects are supported:
 ### Effect parameters
 
 Some effects support parameters. If none passed - the default value will be used.
+
 To use effect params pass it as a second argument:
 ```javascript
 onLayerObject.applyEffect("edge", {parameter1: "someValue"});
 ```
 
 #### Effect specific parameters:
+
 ##### contrast
 defaults:
 ```
@@ -197,6 +242,7 @@ defaults: {
     contrast: 0 // between -1 and 1
 }
 ```
+
 ##### brightness
 defaults:
 ```
@@ -204,6 +250,7 @@ defaults: {
     brightness: 0 // between -1 and 1
 }
 ```
+
 ##### diffusion
 ```
 defaults: {
@@ -213,6 +260,7 @@ defaults: {
     granulate: true
 },
 ```
+
 ##### dither
 ```
 defaults: {
@@ -320,6 +368,7 @@ defaults: {
     exposure: 1
 }
 ```
+
 ##### gain
 ```
 defaults: {
@@ -328,6 +377,7 @@ defaults: {
     gammaBlue: 1
 },
 ```
+
 ##### hsb-adjust
 ```
 defaults: {
@@ -336,6 +386,7 @@ defaults: {
     b: 1
 }
 ```
+
 ##### levels
 ```
 defaults: {
@@ -345,12 +396,14 @@ defaults: {
     highOutput: 1
 },
 ```
+
 ##### posterize
 ```
 defaults: {
     levels: 6
 },
 ```
+
 ##### quantize
 ```
 defaults: {
@@ -364,12 +417,14 @@ defaults: {
     serpentine: true
 },
 ```
+
 ##### rescale
 ```
 defaults: {
     scale: 1
 }
 ```
+
 ##### tritone
 ```
 defaults: {
@@ -393,11 +448,13 @@ defaults: {
     }
 },
 ```
+
 ##### diffuse
 ```
 defaults: {
     scale: 4
 },
+
 ```
 ##### dissolve
 ```
@@ -406,6 +463,7 @@ defaults: {
     softness: 0
 },
 ```
+
 ##### kaleidoscope
 ```
 defaults: {
@@ -417,15 +475,7 @@ defaults: {
     radius: 0
 },
 ```
-##### marble
-```
-defaults: {
-    xScale: 4,
-    yScale: 4,
-    amount: 1,
-    turbulence: 1
-},
-```
+
 ##### pinch
 ```
 defaults: {
@@ -436,6 +486,7 @@ defaults: {
     amount: 0.5
 },
 ```
+
 ##### ripple
 ```
 defaults: {
@@ -446,6 +497,7 @@ defaults: {
     waveType: "SINE" // SAWTOOTH TRIANGLE NOISE
 }
 ```
+
 ##### shear
 ```
 defaults: {
@@ -455,6 +507,7 @@ defaults: {
     yOffset: 0
 },
 ```
+
 ##### sphere
 ```
 defaults: {
@@ -465,6 +518,7 @@ defaults: {
     refractionIndex: 1.5
 },
 ```
+
 ##### swim
 ```
 defaults: {
@@ -476,6 +530,7 @@ defaults: {
     stretch: 1
 },
 ```
+
 ##### twirl
 ```
 defaults: {
@@ -485,6 +540,7 @@ defaults: {
     radius: 100
 },
 ```
+
 ##### water
 ```
 defaults: {
@@ -496,6 +552,7 @@ defaults: {
     radius: 50
 },
 ```
+
 ##### edge
 ```
 defaults: {
@@ -545,12 +602,14 @@ defaults: {
     vEdgeMatrix: "sobelH"
 },
 ```
+
 ##### fill-color
 ```
 defaults: {
     color: "transparent"
 }
 ```
+
 ##### channel-mix-filter
 ```
 defaults: {
@@ -562,6 +621,7 @@ defaults: {
     intoB: 1
 }
 ```
+
 ##### circle
 ```
 defaults: {
@@ -573,18 +633,21 @@ defaults: {
     centreY: 0.5
 },
 ```
+
 ##### rotate
 ```
 defaults: {
     angle: Math.PI
 },
 ```
+
 ##### flip
 ```
 defaults: {
     operation: "FLIP_H" // FLIP_H, FLIP_V, FLIP_HV, FLIP_90CW, FLIP_90CCW, FLIP_180
 }
 ```
+
 ##### offset
 ```
 defaults: {
@@ -593,18 +656,21 @@ defaults: {
     wrap: true
 },
 ```
+
 ##### polar
 ```
 defaults: {
     type: "RECT_TO_POLAR" // RECT_TO_POLAR, POLAR_TO_RECT, INVERT_IN_CIRCLE
 },
 ```
+
 ##### block
 ```
 defaults: {
     blockSize: 5
 }
 ```
+
 ##### border 
 ```
 defaults: {
@@ -620,6 +686,7 @@ defaults: {
     }
 },
 ```
+
 ##### emboss
 ```
 defaults: {
@@ -646,34 +713,15 @@ defaults: {
 
 ## Exporting result image
 To export the Project (result image) you have to call:
-In browser:
+
+##### browser
+
 ```javascript
-project.exportTo(".test-2");
+project.render(); // returns HTML Image object with src attribute set.
 ```
-or in node.js:
+
+##### node.js
+
 ```javascript
-project.exportTo("path/to/file.png");
+project.save("path/to/file.png");
 ```
-Just pass DOM selector (browser) or path (node.js) to 'exportTo' method and (optionally) valid mime type of the image as a second parameter.
-
-Imagizer is under heavy development, feel free to ask or contribute!
-
-Enjoy!
-
-## Changelog
-
-0.1.7 Splitted adjust-contrast-brightness effect to separate effects contrast and brightness
-
-0.1.6 ---
-
-0.1.5 Updated docs. Added effects: perspective. Changed licence.
-
-0.1.4 Refactoring, resize project, move layer in the project, resize layer fix
-
-0.1.3 Added effects: circle, mix-channels, rotate, flip, offset, polar. Updated node.js demo. Updated docs.
-
-0.1.2 ---
-
-0.1.1 ---
-
-0.1.0 Initial commit

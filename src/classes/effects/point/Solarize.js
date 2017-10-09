@@ -1,14 +1,14 @@
-import BasePointEffect from '../BasePoint';
+import BasePointEffect from '../BasePoint'
 
 class SolarizeEffect extends BasePointEffect {
-  static getName() {
-    return 'solarize';
+  static getName () {
+    return 'solarize'
   }
 
-  callback(pixel, x, y, parameters, width, height) {
-    var red = pixel.r / 255 > 0.5 ? 2 * ((pixel.r / 255) - 0.5) : 2 * (0.5 - (pixel.r / 255)),
+  callback (pixel, x, y, parameters, width, height) {
+    let red = pixel.r / 255 > 0.5 ? 2 * ((pixel.r / 255) - 0.5) : 2 * (0.5 - (pixel.r / 255)),
       green = pixel.g / 255 > 0.5 ? 2 * ((pixel.g / 255) - 0.5) : 2 * (0.5 - (pixel.g / 255)),
-      blue = pixel.b / 255 > 0.5 ? 2 * ((pixel.b / 255) - 0.5) : 2 * (0.5 - (pixel.b / 255));
+      blue = pixel.b / 255 > 0.5 ? 2 * ((pixel.b / 255) - 0.5) : 2 * (0.5 - (pixel.b / 255))
 
     return {
       r: red * 255,
@@ -19,4 +19,4 @@ class SolarizeEffect extends BasePointEffect {
   }
 }
 
-export default SolarizeEffect;
+export default SolarizeEffect
