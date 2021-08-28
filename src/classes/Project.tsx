@@ -24,11 +24,11 @@ class Project {
 
   canvas = null;
 
-  constructor(width, height, parameters = {}) {
+  constructor(width: number, height: number, parameters: object = {}) {
     this.initialize(width, height, parameters);
   }
 
-  initialize(width, height, parameters) {
+  initialize(width: number, height: number, parameters: object = {}) {
     this.parameters = parameters;
     this.width = width;
     this.height = height;
@@ -47,7 +47,7 @@ class Project {
     return end.getTime() - this.startTime.getTime();
   }
 
-  save(selector, imageType = "image/png") {
+  save(selector: string, imageType: string = "image/png") {
     if (isBrowser()) {
       throw new Error("Available only in node.js environment");
     }
@@ -88,7 +88,7 @@ class Project {
     fs.writeFile(selector, buff);
   }
 
-  render(imageType = "image/png") {
+  render(imageType: string = "image/png") {
     if (!isBrowser()) {
       throw new Error("Available only in browser environment");
     }
@@ -128,7 +128,7 @@ class Project {
     return exportedImage;
   }
 
-  applyEffect(name, parameters = {}) {
+  applyEffect(name: string, parameters: object = {}) {
     this.effects.push({
       name,
       effect: new (EffectsRepository.get(name))(),
@@ -136,11 +136,11 @@ class Project {
     });
   }
 
-  resize(newWidth, newHeight, mode) {
+  resize(newWidth: number, newHeight: number, mode: string) {
     this.canvas.destroy();
     this.canvas = null;
     this.imageData = null;
-    this.initialize(newWidth, newHeight, mode);
+    this.initialize(newWidth, newHeight);
 
     for (let i = 0; i < this.layers.length; i += 1) {
       this.layers[i].resize(newWidth, newHeight, mode);

@@ -1,5 +1,4 @@
 import BaseTransformEffect from "../BaseTransform";
-import noise from "../../../helpers/noise";
 
 class TwirlEffect extends BaseTransformEffect {
   static getName() {

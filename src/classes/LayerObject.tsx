@@ -15,7 +15,7 @@ class LayerObject {
 
   effects = [];
 
-  constructor(obj, layer, x, y, opts) {
+  constructor(obj, layer, x: number, y: number, opts: object) {
     this.obj = obj;
     this.layer = this;
     this.x = x;
@@ -52,7 +52,7 @@ class LayerObject {
     return imageData;
   }
 
-  applyEffect(name, parameters) {
+  applyEffect(name: string, parameters: object = {}) {
     this.effects.push({
       name,
       effect: new (EffectsRepository.get(name))(),
@@ -60,39 +60,39 @@ class LayerObject {
     });
   }
 
-  moveXY(x, y) {
+  moveXY(x: number, y: number) {
     this.moveX(x);
     this.moveY(y);
     return this;
   }
 
-  moveX(x) {
+  moveX(x: number) {
     this.x += x | 0;
     return this;
   }
 
-  moveY(y) {
+  moveY(y: number) {
     this.y += y | 0;
     return this;
   }
 
-  setXY(x, y) {
+  setXY(x: number, y: number) {
     this.setX(x);
     this.setY(y);
     return this;
   }
 
-  setX(x) {
+  setX(x: number) {
     this.x = x;
     return this;
   }
 
-  setY(y) {
+  setY(y: number) {
     this.y = y;
     return this;
   }
 
-  resize(newWidth, newHeight, mode, isLayerResize) {
+  resize(newWidth: number, newHeight: number, mode: string, isLayerResize: boolean) {
     let oldWidth = this.getWidth(),
       oldHeight = this.getHeight(),
       ratioX = newWidth / oldWidth,
@@ -107,7 +107,7 @@ class LayerObject {
     return this;
   }
 
-  crop(startX, startY, width, height) {
+  crop(startX: number, startY: number, width: number, height: number) {
     let object = this.getObject(),
       oldImageData = object.getImageData(),
       canvas = new CanvasWrapper(width, height),

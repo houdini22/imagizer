@@ -26,9 +26,12 @@ class Layer {
   };
 
   constructor(
-    width,
-    height,
-    parameters = {
+    width: number,
+    height: number,
+    parameters: {
+      background_color: string,
+      blendingMode: string,
+    } = {
       background_color: "transparent",
       blendingMode: "",
     }

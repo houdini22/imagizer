@@ -1,5 +1,4 @@
 import BaseTransformEffect from "../BaseTransform";
-import noise from "../../../helpers/noise";
 
 class WaterEffect extends BaseTransformEffect {
   static getName() {

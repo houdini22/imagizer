@@ -22,12 +22,12 @@ class BaseOnLayerObject {
     return this.height;
   }
 
-  setWidth(value) {
+  setWidth(value: number) {
     this.width = value;
     return this;
   }
 
-  setHeight(value) {
+  setHeight(value: number) {
     this.height = value;
     return this;
   }
@@ -41,12 +41,12 @@ class BaseOnLayerObject {
     return this.imageData;
   }
 
-  setImageData(value) {
+  setImageData(value: number) {
     this.imageData = value;
     return this;
   }
 
-  resize(newWidth, newHeight, mode = "nearest-neighbour") {
+  resize(newWidth: number, newHeight: number, mode: string = "nearest-neighbour") {
     let oldImageData = this.getImageData(),
       canvas = new CanvasWrapper(newWidth, newHeight),
       newImageData = canvas.getContext().createImageData(newWidth, newHeight);

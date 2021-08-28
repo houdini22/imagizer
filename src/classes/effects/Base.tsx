@@ -1,7 +1,7 @@
 class BaseEffect {
   opts = {};
 
-  constructor(opts = {}) {
+  constructor(opts: object = {}) {
     this.opts = opts;
   }
 
@@ -9,7 +9,7 @@ class BaseEffect {
     return {};
   }
 
-  before(parameters, width, height, imageData) {
+  before(parameters: object, width: number, height: number, imageData: any) {
     return {};
   }
 

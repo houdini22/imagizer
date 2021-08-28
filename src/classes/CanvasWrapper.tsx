@@ -9,11 +9,11 @@ class CanvasWrapper {
 
   height = 0;
 
-  constructor(width, height) {
+  constructor(width: number, height: number) {
     this.initialize(width, height);
   }
 
-  initialize(width = 0, height = 0) {
+  initialize(width: number = 0, height: number = 0) {
     if (!isBrowser()) {
       let Canvas = require("canvas");
       this.canvas = new Canvas(width, height);
@@ -32,13 +32,13 @@ class CanvasWrapper {
     }
   }
 
-  setWidth(value) {
+  setWidth(value: number) {
     this.canvas.setAttribute("width", "" + value);
     this.width = value;
     return this;
   }
 
-  setHeight(value) {
+  setHeight(value: number) {
     this.canvas.setAttribute("height", "" + value);
     this.height = value;
     return this;
@@ -55,7 +55,7 @@ class CanvasWrapper {
     return this.canvas;
   }
 
-  toDataURL(type) {
+  toDataURL(type: string) {
     return this.canvas.toDataURL(type);
   }
 

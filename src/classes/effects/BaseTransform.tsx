@@ -1,11 +1,11 @@
 import BaseEffect from "./Base";
 
 class BaseTransformEffect extends BaseEffect {
-  callback(pixel, x, y, parameters, width, height) {
+  callback(pixel, x: number, y: number, parameters: object, width: number, height: number) {
     throw "Extend it.";
   }
 
-  run(imageData, parameters) {
+  run(imageData: any, parameters: object) {
     parameters = {
       ...this.getDefaultParameters(),
       ...parameters,

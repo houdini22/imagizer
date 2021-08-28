@@ -1,5 +1,4 @@
 import BaseTransformEffect from "../BaseTransform";
-import noiseHelper from "../../../helpers/noise";
 
 class PerspectiveEffect extends BaseTransformEffect {
   static getName() {
