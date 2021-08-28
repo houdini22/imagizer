@@ -46,7 +46,11 @@ class BaseOnLayerObject {
     return this;
   }
 
-  resize(newWidth: number, newHeight: number, mode: string = "nearest-neighbour") {
+  resize(
+    newWidth: number,
+    newHeight: number,
+    mode: string = "nearest-neighbour"
+  ) {
     let oldImageData = this.getImageData(),
       canvas = new CanvasWrapper(newWidth, newHeight),
       newImageData = canvas.getContext().createImageData(newWidth, newHeight);

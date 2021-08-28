@@ -1,7 +1,4 @@
-const Imagizer = require('../dist/imagizer.js')
-
-const Project = Imagizer.Project
-const Image = Imagizer.Image
+const {Project, Image} = require('../dist/imagizer.js')
 
 const project = new Project(500, 375)
 const layer1 = project.createLayer()

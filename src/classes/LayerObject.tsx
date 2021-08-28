@@ -92,7 +92,12 @@ class LayerObject {
     return this;
   }
 
-  resize(newWidth: number, newHeight: number, mode: string, isLayerResize: boolean) {
+  resize(
+    newWidth: number,
+    newHeight: number,
+    mode: string,
+    isLayerResize: boolean
+  ) {
     let oldWidth = this.getWidth(),
       oldHeight = this.getHeight(),
       ratioX = newWidth / oldWidth,

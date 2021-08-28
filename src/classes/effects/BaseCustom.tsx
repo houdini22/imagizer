@@ -1,7 +1,14 @@
 import BaseEffect from "./Base";
 
 class BaseCustomEffect extends BaseEffect {
-  callback(pixel, x: number, y: number, parameters: object, width: number, height: number) {
+  callback(
+    pixel,
+    x: number,
+    y: number,
+    parameters: object,
+    width: number,
+    height: number
+  ) {
     throw "Extend it.";
   }
 

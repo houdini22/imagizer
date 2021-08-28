@@ -29,8 +29,8 @@ class Layer {
     width: number,
     height: number,
     parameters: {
-      background_color: string,
-      blendingMode: string,
+      background_color: string;
+      blendingMode: string;
     } = {
       background_color: "transparent",
       blendingMode: "",
