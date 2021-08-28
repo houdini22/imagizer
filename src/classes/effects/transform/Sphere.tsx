@@ -1,11 +1,28 @@
 import BaseTransformEffect from "../BaseTransform";
 
+interface BeforeData {
+  icentreX: number;
+  icentreY: number;
+  a2: number;
+  b2: number;
+  a: number;
+  b: number;
+}
+
+interface Parameters {
+  a: number;
+  b: number;
+  centreX: number;
+  centreY: number;
+  refractionIndex: number;
+}
+
 class SphereEffect extends BaseTransformEffect {
-  static getName() {
+  static getName(): string {
     return "sphere";
   }
 
-  data = {
+  data: BeforeData = {
     icentreX: 0,
     icentreY: 0,
     a2: 0,
@@ -14,7 +31,7 @@ class SphereEffect extends BaseTransformEffect {
     b: 0,
   };
 
-  getDefaultParameters() {
+  getDefaultParameters(): Parameters {
     return {
       a: 0,
       b: 0,
@@ -24,7 +41,7 @@ class SphereEffect extends BaseTransformEffect {
     };
   }
 
-  before(parameters, width, height) {
+  before(parameters: Parameters, width: number, height: number): BeforeData {
     let icentreX = width * parameters.centreX,
       icentreY = height * parameters.centreY,
       a = parameters.a,
@@ -50,7 +67,13 @@ class SphereEffect extends BaseTransformEffect {
     };
   }
 
-  callback(x, y, parameters) {
+  callback(
+    x: number,
+    y: number,
+    parameters: Parameters,
+    width: number,
+    height: number
+  ): Array<number> {
     let dx = x - this.data.icentreX,
       dy = y - this.data.icentreY,
       x2 = dx * dx,

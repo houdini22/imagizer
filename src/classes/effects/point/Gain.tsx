@@ -1,18 +1,40 @@
 import BasePointEffect from "../BasePoint";
 
+interface Parameters {
+  gain: number;
+  bias: number;
+}
+
 class GainEffect extends BasePointEffect {
-  static getName() {
+  static getName(): string {
     return "gain";
   }
 
-  getDefaultParameters() {
+  getDefaultParameters(): Parameters {
     return {
       gain: 1,
       bias: 1,
     };
   }
 
-  callback(pixel, x, y, parameters, width, height) {
+  callback(
+    pixel: {
+      r: number;
+      g: number;
+      b: number;
+      a: number;
+    },
+    x: number,
+    y: number,
+    parameters: Parameters,
+    width: number,
+    height: number
+  ): {
+    r: number;
+    g: number;
+    b: number;
+    a: number;
+  } {
     let red = (1 / parameters.gain - 2) * (1 - (2 * pixel.r) / 255),
       green = (1 / parameters.gain - 2) * (1 - (2 * pixel.g) / 255),
       blue = (1 / parameters.gain - 2) * (1 - (2 * pixel.b) / 255);

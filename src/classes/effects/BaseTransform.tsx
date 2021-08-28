@@ -2,18 +2,12 @@ import BaseEffect from "./Base";
 
 class BaseTransformEffect extends BaseEffect {
   callback(
-    pixel: {
-      r: number;
-      g: number;
-      b: number;
-      a: number;
-    },
     x: number,
     y: number,
     parameters: object,
     width: number,
     height: number
-  ) {
+  ): Array<number> {
     throw "Extend it.";
   }
 

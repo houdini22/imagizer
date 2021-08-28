@@ -1,16 +1,46 @@
 import BasePointEffect from "../BasePoint";
 import { mixColors } from "../../../helpers/color";
 
+interface Parameters {
+  shadowColor: {
+    r: number;
+    g: number;
+    b: number;
+    a: number;
+  };
+  midColor: {
+    r: number;
+    g: number;
+    b: number;
+    a: number;
+  };
+  highColor: {
+    r: number;
+    g: number;
+    b: number;
+    a: number;
+  };
+}
+
+interface BeforeData {
+  lut: Array<{
+    r: number;
+    g: number;
+    b: number;
+    a: number;
+  }>;
+}
+
 class TritoneEffect extends BasePointEffect {
-  static getName() {
+  static getName(): string {
     return "tritone";
   }
 
-  data = {
-    lut: {},
+  data: BeforeData = {
+    lut: [],
   };
 
-  getDefaultParameters() {
+  getDefaultParameters(): Parameters {
     return {
       shadowColor: {
         r: 0,
@@ -33,7 +63,7 @@ class TritoneEffect extends BasePointEffect {
     };
   }
 
-  before(parameters) {
+  before(parameters: Parameters): BeforeData {
     let lut = [],
       i,
       t;
@@ -51,7 +81,24 @@ class TritoneEffect extends BasePointEffect {
     };
   }
 
-  callback(pixel, x, y, parameters, width, height) {
+  callback(
+    pixel: {
+      r: number;
+      g: number;
+      b: number;
+      a: number;
+    },
+    x: number,
+    y: number,
+    parameters: object,
+    width: number,
+    height: number
+  ): {
+    r: number;
+    g: number;
+    b: number;
+    a: number;
+  } {
     let brightness = Math.floor((pixel.r + pixel.g + pixel.b) / 3);
     return this.data.lut[brightness];
   }

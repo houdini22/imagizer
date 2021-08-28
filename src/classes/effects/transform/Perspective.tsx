@@ -1,11 +1,34 @@
 import BaseTransformEffect from "../BaseTransform";
 
+interface BeforeData {
+  A: number;
+  B: number;
+  C: number;
+  D: number;
+  E: number;
+  F: number;
+  G: number;
+  H: number;
+  I: number;
+}
+
+interface Parameters {
+  x0: number;
+  y0: number;
+  x1: number;
+  y1: number;
+  x2: number;
+  y2: number;
+  x3: number;
+  y3: number;
+}
+
 class PerspectiveEffect extends BaseTransformEffect {
-  static getName() {
+  static getName(): string {
     return "perspective";
   }
 
-  data = {
+  data: BeforeData = {
     A: 0,
     B: 0,
     C: 0,
@@ -17,7 +40,7 @@ class PerspectiveEffect extends BaseTransformEffect {
     I: 0,
   };
 
-  getDefaultParameters() {
+  getDefaultParameters(): Parameters {
     return {
       x0: 0,
       y0: 0,
@@ -30,7 +53,12 @@ class PerspectiveEffect extends BaseTransformEffect {
     };
   }
 
-  before(parameters, width, height, imageData) {
+  before(
+    parameters: Parameters,
+    width: number,
+    height: number,
+    imageData: ImageData
+  ): BeforeData {
     function unitSquareToQuad() {
       let result = {
           a11: 0,
@@ -106,7 +134,13 @@ class PerspectiveEffect extends BaseTransformEffect {
     return result;
   }
 
-  callback(x, y, parameters, width, height) {
+  callback(
+    x: number,
+    y: number,
+    parameters: Parameters,
+    width: number,
+    height: number
+  ): Array<number> {
     return [
       (width * (this.data.A * x + this.data.B * y + this.data.C)) /
         (this.data.G * x + this.data.H * y + this.data.I),

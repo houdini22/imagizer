@@ -1187,7 +1187,7 @@ var BaseCustomEffect = /*#__PURE__*/function (_BaseEffect) {
 
   _createClass(BaseCustomEffect, [{
     key: "callback",
-    value: function callback(pixel, x, y, parameters, width, height) {
+    value: function callback(width, height, parameters) {
       throw "Extend it.";
     }
   }, {
@@ -1546,7 +1546,7 @@ var BaseTransformEffect = /*#__PURE__*/function (_BaseEffect) {
 
   _createClass(BaseTransformEffect, [{
     key: "callback",
-    value: function callback(pixel, x, y, parameters, width, height) {
+    value: function callback(x, y, parameters, width, height) {
       throw "Extend it.";
     }
   }, {
@@ -2496,7 +2496,7 @@ var AutoContrastEffect = /*#__PURE__*/function (_BasePointEffect) {
     _this = _super.call.apply(_super, [this].concat(args));
 
     _defineProperty(_assertThisInitialized(_this), "data", {
-      remap: function remap(value, min, max) {
+      remap: function remap(value) {
         return 0;
       },
       min: 0,
@@ -2534,9 +2534,9 @@ var AutoContrastEffect = /*#__PURE__*/function (_BasePointEffect) {
   }, {
     key: "callback",
     value: function callback(pixel, x, y, parameters, width, height) {
-      pixel.r = this.data.remap(pixel.r, this.data.min, this.data.max);
-      pixel.g = this.data.remap(pixel.g, this.data.min, this.data.max);
-      pixel.b = this.data.remap(pixel.b, this.data.min, this.data.max);
+      pixel.r = this.data.remap(pixel.r);
+      pixel.g = this.data.remap(pixel.g);
+      pixel.b = this.data.remap(pixel.b);
       return pixel;
     }
   }], [{
@@ -2904,14 +2904,7 @@ var DiffusionEffect = /*#__PURE__*/function (_BasePointEffect) {
     }
   }, {
     key: "before",
-    value: function before() {
-      var parameters = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {
-        levels: 0,
-        matrix: []
-      };
-      var width = arguments.length > 1 ? arguments[1] : undefined;
-      var height = arguments.length > 2 ? arguments[2] : undefined;
-      var imageData = arguments.length > 3 ? arguments[3] : undefined;
+    value: function before(parameters, width, height, imageData) {
       var i,
           sum = 0,
           map = [],
@@ -3154,6 +3147,8 @@ function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Re
 
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 
 
 var DitherEffect = /*#__PURE__*/function (_BasePointEffect) {
@@ -3162,9 +3157,25 @@ var DitherEffect = /*#__PURE__*/function (_BasePointEffect) {
   var _super = _createSuper(DitherEffect);
 
   function DitherEffect() {
+    var _this;
+
     _classCallCheck(this, DitherEffect);
 
-    return _super.apply(this, arguments);
+    for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
+      args[_key] = arguments[_key];
+    }
+
+    _this = _super.call.apply(_super, [this].concat(args));
+
+    _defineProperty(_assertThisInitialized(_this), "data", {
+      cols: 0,
+      rows: 0,
+      map: {},
+      mod: {},
+      div: {}
+    });
+
+    return _this;
   }
 
   _createClass(DitherEffect, [{
@@ -3347,14 +3358,16 @@ var EdgeEffect = /*#__PURE__*/function (_BasePointEffect) {
   }, {
     key: "before",
     value: function before(parameters, width, height, imageData) {
-      var hEdgeMatrix = parameters.hEdgeMatrix,
-          vEdgeMatrix = parameters.vEdgeMatrix;
+      var _hEdgeMatrix = parameters.hEdgeMatrix,
+          _vEdgeMatrix = parameters.vEdgeMatrix,
+          hEdgeMatrix,
+          vEdgeMatrix;
 
-      if (typeof hEdgeMatrix === "string") {
+      if (typeof _hEdgeMatrix === "string") {
         hEdgeMatrix = parameters.matrixes[parameters.hEdgeMatrix];
       }
 
-      if (typeof vEdgeMatrix === "string") {
+      if (typeof _vEdgeMatrix === "string") {
         vEdgeMatrix = parameters.matrixes[parameters.vEdgeMatrix];
       }
 
@@ -3690,15 +3703,7 @@ var GammaEffect = /*#__PURE__*/function (_BasePointEffect) {
     }
   }, {
     key: "before",
-    value: function before() {
-      var parameters = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {
-        gammaRed: 1,
-        gammaGreen: 1,
-        gammaBlue: 1
-      };
-      var width = arguments.length > 1 ? arguments[1] : undefined;
-      var height = arguments.length > 2 ? arguments[2] : undefined;
-      var imageData = arguments.length > 3 ? arguments[3] : undefined;
+    value: function before(parameters, width, height, imageData) {
       var table = {
         r: [],
         g: [],
@@ -4090,11 +4095,7 @@ var LevelsEffect = /*#__PURE__*/function (_BasePointEffect) {
     _this = _super.call.apply(_super, [this].concat(args));
 
     _defineProperty(_assertThisInitialized(_this), "data", {
-      lut: {
-        0: {},
-        1: {},
-        2: {}
-      }
+      lut: []
     });
 
     return _this;
@@ -4439,18 +4440,18 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
 
 
 
-var GrayScaleEffect = /*#__PURE__*/function (_BasePointEffect) {
-  _inherits(GrayScaleEffect, _BasePointEffect);
+var SepiaEffect = /*#__PURE__*/function (_BasePointEffect) {
+  _inherits(SepiaEffect, _BasePointEffect);
 
-  var _super = _createSuper(GrayScaleEffect);
+  var _super = _createSuper(SepiaEffect);
 
-  function GrayScaleEffect() {
-    _classCallCheck(this, GrayScaleEffect);
+  function SepiaEffect() {
+    _classCallCheck(this, SepiaEffect);
 
     return _super.apply(this, arguments);
   }
 
-  _createClass(GrayScaleEffect, [{
+  _createClass(SepiaEffect, [{
     key: "getDefaultParameters",
     value: function getDefaultParameters() {
       return {
@@ -4473,10 +4474,10 @@ var GrayScaleEffect = /*#__PURE__*/function (_BasePointEffect) {
     }
   }]);
 
-  return GrayScaleEffect;
+  return SepiaEffect;
 }(_BasePoint__WEBPACK_IMPORTED_MODULE_0__.default);
 
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (GrayScaleEffect);
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (SepiaEffect);
 
 /***/ }),
 
@@ -4690,7 +4691,7 @@ var TritoneEffect = /*#__PURE__*/function (_BasePointEffect) {
     _this = _super.call.apply(_super, [this].concat(args));
 
     _defineProperty(_assertThisInitialized(_this), "data", {
-      lut: {}
+      lut: []
     });
 
     return _this;
@@ -4818,6 +4819,7 @@ var CircleEffect = /*#__PURE__*/function (_BaseTransformEffect) {
 
     _defineProperty(_assertThisInitialized(_this), "data", {
       icentreX: 0,
+      icentreY: 0,
       width: 0
     });
 
@@ -4923,8 +4925,8 @@ var DiffuseEffect = /*#__PURE__*/function (_BaseTransformEffect) {
     _this = _super.call.apply(_super, [this].concat(args));
 
     _defineProperty(_assertThisInitialized(_this), "data", {
-      sinTable: {},
-      cosTable: {}
+      sinTable: [],
+      cosTable: []
     });
 
     return _this;
@@ -4958,7 +4960,7 @@ var DiffuseEffect = /*#__PURE__*/function (_BaseTransformEffect) {
     }
   }, {
     key: "callback",
-    value: function callback(x, y, parameters) {
+    value: function callback(x, y, parameters, width, height) {
       var angle = Math.random() * 255 | 0,
           distance = Math.random();
       return [x + distance * this.data.sinTable[angle], y + distance * this.data.cosTable[angle]];
@@ -5062,7 +5064,7 @@ var KaleidoscopeEffect = /*#__PURE__*/function (_BaseTransformEffect) {
     }
   }, {
     key: "callback",
-    value: function callback(x, y, parameters) {
+    value: function callback(x, y, parameters, width, height) {
       var dx = x - this.data.icentreX,
           dy = y - this.data.icentreY,
           r = Math.sqrt(dx * dx + dy * dy),
@@ -5148,8 +5150,8 @@ var MarbleEffect = /*#__PURE__*/function (_BaseTransformEffect) {
     _this = _super.call.apply(_super, [this].concat(args));
 
     _defineProperty(_assertThisInitialized(_this), "data", {
-      sinTable: {},
-      cosTable: {},
+      sinTable: [],
+      cosTable: [],
       displacementMap: function displacementMap(x, y) {
         return 0;
       }
@@ -5193,7 +5195,7 @@ var MarbleEffect = /*#__PURE__*/function (_BaseTransformEffect) {
     }
   }, {
     key: "callback",
-    value: function callback(x, y, parameters) {
+    value: function callback(x, y, parameters, width, height) {
       var displacement = Math.floor(this.data.displacementMap(x, y));
       return [x + this.data.sinTable[displacement], y + this.data.cosTable[displacement]];
     }
@@ -5559,7 +5561,7 @@ var PinchEffect = /*#__PURE__*/function (_BaseTransformEffect) {
     }
   }, {
     key: "callback",
-    value: function callback(x, y, parameters) {
+    value: function callback(x, y, parameters, width, height) {
       var dx = x - this.data.icentreX,
           dy = y - this.data.icentreY,
           distance = dx * dx + dy * dy,
@@ -5898,7 +5900,7 @@ var RippleEffect = /*#__PURE__*/function (_BaseTransformEffect) {
     }
   }, {
     key: "callback",
-    value: function callback(x, y, parameters) {
+    value: function callback(x, y, parameters, width, height) {
       var nx = y / parameters.xWaveLength,
           ny = x / parameters.yWaveLength,
           fx,
@@ -6123,7 +6125,7 @@ var ShearEffect = /*#__PURE__*/function (_BaseTransformEffect) {
     }
   }, {
     key: "callback",
-    value: function callback(x, y, parameters) {
+    value: function callback(x, y, parameters, width, height) {
       return [x + parameters.xOffset + y * this.data.shx, y + parameters.yOffset + x * this.data.shy];
     }
   }], [{
@@ -6247,7 +6249,7 @@ var SphereEffect = /*#__PURE__*/function (_BaseTransformEffect) {
     }
   }, {
     key: "callback",
-    value: function callback(x, y, parameters) {
+    value: function callback(x, y, parameters, width, height) {
       var dx = x - this.data.icentreX,
           dy = y - this.data.icentreY,
           x2 = dx * dx,
@@ -6378,7 +6380,7 @@ var SwimEffect = /*#__PURE__*/function (_BaseTransformEffect) {
     }
   }, {
     key: "callback",
-    value: function callback(x, y, parameters) {
+    value: function callback(x, y, parameters, width, height) {
       var nx = this.data.m00 * x + this.data.m01 * y,
           ny = this.data.m10 * x + this.data.m11 * y;
       nx /= parameters.scale;
@@ -6459,7 +6461,9 @@ var TwirlEffect = /*#__PURE__*/function (_BaseTransformEffect) {
 
     _defineProperty(_assertThisInitialized(_this), "data", {
       iCentreX: 0,
-      iCentreY: 0
+      iCentreY: 0,
+      radius: 0,
+      radius2: 0
     });
 
     return _this;
@@ -6472,7 +6476,8 @@ var TwirlEffect = /*#__PURE__*/function (_BaseTransformEffect) {
         angle: 0,
         centreX: 0.5,
         centreY: 0.5,
-        radius: 100
+        radius: 100,
+        radius2: 100
       };
     }
   }, {
@@ -6497,7 +6502,7 @@ var TwirlEffect = /*#__PURE__*/function (_BaseTransformEffect) {
     }
   }, {
     key: "callback",
-    value: function callback(x, y, parameters) {
+    value: function callback(x, y, parameters, width, height) {
       var dx = x - this.data.iCentreX,
           dy = y - this.data.iCentreY,
           distance = dx * dx + dy * dy,
@@ -6581,7 +6586,8 @@ var WaterEffect = /*#__PURE__*/function (_BaseTransformEffect) {
     _defineProperty(_assertThisInitialized(_this), "data", {
       iCentreX: 0,
       iCentreY: 0,
-      radius2: 0
+      radius2: 0,
+      radius: 0
     });
 
     return _this;
@@ -6621,7 +6627,7 @@ var WaterEffect = /*#__PURE__*/function (_BaseTransformEffect) {
     }
   }, {
     key: "callback",
-    value: function callback(x, y, parameters) {
+    value: function callback(x, y, parameters, width, height) {
       var dx = x - this.data.iCentreX,
           dy = y - this.data.iCentreY,
           distance2 = dx * dx + dy * dy,

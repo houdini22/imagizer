@@ -1,12 +1,19 @@
 import BaseCustomEffect from "../BaseCustom";
 import { brightness } from "../../../helpers/common";
 
+interface Parameters {
+  azimuth: number;
+  elevation: number;
+  width45: number;
+  emboss: boolean;
+}
+
 class EmbossEffect extends BaseCustomEffect {
-  static getName() {
+  static getName(): string {
     return "emboss";
   }
 
-  getDefaultParameters() {
+  getDefaultParameters(): Parameters {
     return {
       azimuth: (135 * Math.PI) / 180,
       elevation: (30 * Math.PI) / 180,
@@ -15,7 +22,7 @@ class EmbossEffect extends BaseCustomEffect {
     };
   }
 
-  callback(width, height, parameters) {
+  callback(width: number, height: number, parameters: Parameters) {
     let x,
       y,
       bumpMapWidth = width,

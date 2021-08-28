@@ -1,12 +1,18 @@
 import BasePointEffect from "../BasePoint";
 import { RGBtoHSB, HSBtoRGB } from "../../../helpers/color";
 
+interface Parameters {
+  h: number;
+  s: number;
+  b: number;
+}
+
 class HSBAdjustEffect extends BasePointEffect {
-  static getName() {
+  static getName(): string {
     return "hsb-adjust";
   }
 
-  getDefaultParameters() {
+  getDefaultParameters(): Parameters {
     return {
       h: 1,
       s: 1,
@@ -14,7 +20,24 @@ class HSBAdjustEffect extends BasePointEffect {
     };
   }
 
-  callback(pixel, x, y, parameters, width, height) {
+  callback(
+    pixel: {
+      r: number;
+      g: number;
+      b: number;
+      a: number;
+    },
+    x: number,
+    y: number,
+    parameters: Parameters,
+    width: number,
+    height: number
+  ): {
+    r: number;
+    g: number;
+    b: number;
+    a: number;
+  } {
     let hsb = RGBtoHSB(pixel.r, pixel.g, pixel.b);
 
     hsb.h += parameters.h;

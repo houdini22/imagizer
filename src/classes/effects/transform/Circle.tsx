@@ -1,17 +1,33 @@
 import BaseTransformEffect from "../BaseTransform";
 import { mod } from "../../../helpers/common";
 
+interface Parameters {
+  radius: number;
+  height: number;
+  angle: number;
+  spreadAngle: number;
+  centreX: number;
+  centreY: number;
+}
+
+interface BeforeData {
+  icentreX: number;
+  icentreY: number;
+  width: number;
+}
+
 class CircleEffect extends BaseTransformEffect {
-  static getName() {
+  static getName(): string {
     return "circle";
   }
 
-  data = {
+  data: BeforeData = {
     icentreX: 0,
+    icentreY: 0,
     width: 0,
   };
 
-  getDefaultParameters() {
+  getDefaultParameters(): Parameters {
     return {
       radius: 10,
       height: 20,
@@ -22,7 +38,12 @@ class CircleEffect extends BaseTransformEffect {
     };
   }
 
-  before(parameters, width, height, imageData) {
+  before(
+    parameters: Parameters,
+    width: number,
+    height: number,
+    imageData: ImageData
+  ): BeforeData {
     return {
       icentreX: width * parameters.centreX,
       icentreY: height * parameters.centreY,
@@ -30,7 +51,13 @@ class CircleEffect extends BaseTransformEffect {
     };
   }
 
-  callback(x, y, parameters, width, height) {
+  callback(
+    x: number,
+    y: number,
+    parameters: Parameters,
+    width: number,
+    height: number
+  ): Array<number> {
     let dx = x - this.data.icentreX,
       dy = y - this.data.icentreX,
       theta = Math.atan2(-dy, -dx) + parameters.angle,

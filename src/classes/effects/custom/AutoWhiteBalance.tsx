@@ -1,18 +1,22 @@
 import BaseCustomEffect from "../BaseCustom";
 import { RGBtoCIELab, CIELabToRGB } from "../../../helpers/color";
 
+interface Parameters {
+  intensity: number;
+}
+
 class AutoWhiteBalanceEffect extends BaseCustomEffect {
-  static getName() {
+  static getName(): string {
     return "auto-white-balance";
   }
 
-  getDefaultParameters() {
+  getDefaultParameters(): Parameters {
     return {
       intensity: 50,
     };
   }
 
-  callback(width, height, parameters) {
+  callback(width: number, height: number, parameters: Parameters) {
     let x,
       y,
       sumA = 0,

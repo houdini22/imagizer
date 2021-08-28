@@ -1,22 +1,36 @@
 import BaseTransformEffect from "../BaseTransform";
 
+interface Parameters {
+  scale: number;
+}
+
+interface BeforeData {
+  sinTable: Array<number>;
+  cosTable: Array<number>;
+}
+
 class DiffuseEffect extends BaseTransformEffect {
-  static getName() {
+  static getName(): string {
     return "diffuse";
   }
 
-  data = {
-    sinTable: {},
-    cosTable: {},
+  data: BeforeData = {
+    sinTable: [],
+    cosTable: [],
   };
 
-  getDefaultParameters() {
+  getDefaultParameters(): Parameters {
     return {
       scale: 4,
     };
   }
 
-  before(parameters, width, height, imageData) {
+  before(
+    parameters: Parameters,
+    width: number,
+    height: number,
+    imageData: ImageData
+  ): BeforeData {
     let sinTable = new Array(256),
       cosTable = new Array(256),
       i,
@@ -32,7 +46,13 @@ class DiffuseEffect extends BaseTransformEffect {
     };
   }
 
-  callback(x, y, parameters) {
+  callback(
+    x: number,
+    y: number,
+    parameters: Parameters,
+    width: number,
+    height: number
+  ): Array<number> {
     let angle = (Math.random() * 255) | 0,
       distance = Math.random();
 

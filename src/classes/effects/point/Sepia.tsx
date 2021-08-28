@@ -1,17 +1,38 @@
 import BasePointEffect from "../BasePoint";
 
-class GrayScaleEffect extends BasePointEffect {
-  static getName() {
+interface Parameters {
+  sepiaValue: number;
+}
+
+class SepiaEffect extends BasePointEffect {
+  static getName(): string {
     return "sepia";
   }
 
-  getDefaultParameters() {
+  getDefaultParameters(): Parameters {
     return {
       sepiaValue: 1,
     };
   }
 
-  callback(pixel, x, y, parameters, width, height) {
+  callback(
+    pixel: {
+      r: number;
+      g: number;
+      b: number;
+      a: number;
+    },
+    x: number,
+    y: number,
+    parameters: Parameters,
+    width: number,
+    height: number
+  ): {
+    r: number;
+    g: number;
+    b: number;
+    a: number;
+  } {
     let tmp = 0.299 * pixel.r + 0.587 * pixel.g + 0.114 * pixel.b;
 
     pixel.r = tmp + 2 * parameters.sepiaValue;
@@ -22,4 +43,4 @@ class GrayScaleEffect extends BasePointEffect {
   }
 }
 
-export default GrayScaleEffect;
+export default SepiaEffect;

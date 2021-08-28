@@ -1,17 +1,30 @@
 import BasePointEffect from "../BasePoint";
 
+interface Parameters {
+  matrix: Array<number>;
+  levels: number;
+  colorDither: boolean;
+  granulate: boolean;
+}
+
+interface BeforeData {
+  map: object;
+  div: object;
+  sum: number;
+}
+
 class DiffusionEffect extends BasePointEffect {
-  static getName() {
+  static getName(): string {
     return "diffusion";
   }
 
-  data = {
+  data: BeforeData = {
     map: {},
     div: {},
     sum: 0,
   };
 
-  getDefaultParameters() {
+  getDefaultParameters(): Parameters {
     return {
       matrix: [0, 0, 0, 0, 0, 7, 3, 5, 1],
       levels: 6,
@@ -20,7 +33,12 @@ class DiffusionEffect extends BasePointEffect {
     };
   }
 
-  before(parameters = { levels: 0, matrix: [] }, width, height, imageData) {
+  before(
+    parameters: Parameters,
+    width: number,
+    height: number,
+    imageData: ImageData
+  ): BeforeData {
     let i,
       sum = 0,
       map = [],
@@ -45,7 +63,24 @@ class DiffusionEffect extends BasePointEffect {
     };
   }
 
-  callback(pixel, x, y, parameters, width, height) {
+  callback(
+    pixel: {
+      r: number;
+      g: number;
+      b: number;
+      a: number;
+    },
+    x: number,
+    y: number,
+    parameters: Parameters,
+    width: number,
+    height: number
+  ): {
+    r: number;
+    g: number;
+    b: number;
+    a: number;
+  } {
     let red1 = pixel.r,
       green1 = pixel.g,
       blue1 = pixel.b,

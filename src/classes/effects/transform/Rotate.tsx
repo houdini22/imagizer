@@ -1,24 +1,40 @@
 import BaseTransformEffect from "../BaseTransform";
 
+interface BeforeData {
+  sin: number;
+  cos: number;
+  icentreX: number;
+  icentreY: number;
+}
+
+interface Parameters {
+  angle: number;
+}
+
 class RotateEffect extends BaseTransformEffect {
   static getName() {
     return "rotate";
   }
 
-  data = {
+  data: BeforeData = {
     sin: 0,
     cos: 0,
     icentreX: 0,
     icentreY: 0,
   };
 
-  getDefaultParameters() {
+  getDefaultParameters(): Parameters {
     return {
       angle: Math.PI,
     };
   }
 
-  before(parameters, width, height, imageData) {
+  before(
+    parameters: Parameters,
+    width: number,
+    height: number,
+    imageData: ImageData
+  ): BeforeData {
     return {
       cos: Math.cos(parameters.angle),
       sin: Math.sin(parameters.angle),
@@ -27,7 +43,13 @@ class RotateEffect extends BaseTransformEffect {
     };
   }
 
-  callback(x, y, parameters, width, height) {
+  callback(
+    x: number,
+    y: number,
+    parameters: Parameters,
+    width: number,
+    height: number
+  ): Array<number> {
     return [
       this.data.cos * (x - this.data.icentreX) -
         this.data.sin * (y - this.data.icentreY) +

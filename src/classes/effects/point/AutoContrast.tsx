@@ -1,17 +1,23 @@
 import BasePointEffect from "../BasePoint";
 
+interface BeforeData {
+  remap: (value: number) => number;
+  min: number;
+  max: number;
+}
+
 class AutoContrastEffect extends BasePointEffect {
-  static getName() {
+  static getName(): string {
     return "auto-contrast";
   }
 
-  data = {
-    remap: (value, min, max) => 0,
+  data: BeforeData = {
+    remap: (value) => 0,
     min: 0,
     max: 0,
   };
 
-  before(parameters, width, height) {
+  before(parameters: object, width: number, height: number): BeforeData {
     let x,
       y,
       pixel,
@@ -36,10 +42,27 @@ class AutoContrastEffect extends BasePointEffect {
     };
   }
 
-  callback(pixel, x, y, parameters, width, height) {
-    pixel.r = this.data.remap(pixel.r, this.data.min, this.data.max);
-    pixel.g = this.data.remap(pixel.g, this.data.min, this.data.max);
-    pixel.b = this.data.remap(pixel.b, this.data.min, this.data.max);
+  callback(
+    pixel: {
+      r: number;
+      g: number;
+      b: number;
+      a: number;
+    },
+    x: number,
+    y: number,
+    parameters: object,
+    width: number,
+    height: number
+  ): {
+    r: number;
+    g: number;
+    b: number;
+    a: number;
+  } {
+    pixel.r = this.data.remap(pixel.r);
+    pixel.g = this.data.remap(pixel.g);
+    pixel.b = this.data.remap(pixel.b);
 
     return pixel;
   }

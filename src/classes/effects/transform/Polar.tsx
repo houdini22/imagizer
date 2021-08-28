@@ -1,24 +1,40 @@
 import BaseTransformEffect from "../BaseTransform";
 
+interface BeforeData {
+  centreX: number;
+  centreY: number;
+  sqr: (value: number) => number;
+  radius: number;
+}
+
+interface Parameters {
+  type: string;
+}
+
 class PolarEffect extends BaseTransformEffect {
-  static getName() {
+  static getName(): string {
     return "polar";
   }
 
-  data = {
+  data: BeforeData = {
     centreX: 0,
     centreY: 0,
     sqr: (value: number) => 0,
     radius: 0,
   };
 
-  getDefaultParameters() {
+  getDefaultParameters(): Parameters {
     return {
       type: "RECT_TO_POLAR", // RECT_TO_POLAR, POLAR_TO_RECT, INVERT_IN_CIRCLE
     };
   }
 
-  before(parameters, width, height, imageData) {
+  before(
+    parameters: Parameters,
+    width: number,
+    height: number,
+    imageData: ImageData
+  ): BeforeData {
     return {
       centreX: width / 2,
       centreY: height / 2,
@@ -29,7 +45,13 @@ class PolarEffect extends BaseTransformEffect {
     };
   }
 
-  callback(x, y, parameters, width, height) {
+  callback(
+    x: number,
+    y: number,
+    parameters: Parameters,
+    width: number,
+    height: number
+  ): Array<number> {
     let theta,
       theta2,
       t,

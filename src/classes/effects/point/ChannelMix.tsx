@@ -1,11 +1,20 @@
 import BasePointEffect from "../BasePoint";
 
+interface Parameters {
+  blueGreen: number;
+  redBlue: number;
+  greenRed: number;
+  intoR: number;
+  intoG: number;
+  intoB: number;
+}
+
 class ChannelMixEffect extends BasePointEffect {
-  static getName() {
+  static getName(): string {
     return "channel-mix";
   }
 
-  getDefaultParameters() {
+  getDefaultParameters(): Parameters {
     return {
       blueGreen: 1,
       redBlue: 1,
@@ -16,7 +25,24 @@ class ChannelMixEffect extends BasePointEffect {
     };
   }
 
-  callback(pixel, x, y, parameters, width, height) {
+  callback(
+    pixel: {
+      r: number;
+      g: number;
+      b: number;
+      a: number;
+    },
+    x: number,
+    y: number,
+    parameters: Parameters,
+    width: number,
+    height: number
+  ): {
+    r: number;
+    g: number;
+    b: number;
+    a: number;
+  } {
     const { r, g, b } = pixel;
 
     return {

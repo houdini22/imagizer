@@ -1,11 +1,11 @@
 import BaseCustomEffect from "../BaseCustom";
 
 class ComponentStretchingEffect extends BaseCustomEffect {
-  static getName() {
+  static getName(): string {
     return "component-stretching";
   }
 
-  callback(width, height, parameters) {
+  callback(width: number, height: number, parameters: object) {
     let x,
       y,
       minR = Infinity,

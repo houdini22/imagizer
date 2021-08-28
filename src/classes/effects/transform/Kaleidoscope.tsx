@@ -1,17 +1,31 @@
 import BaseTransformEffect from "../BaseTransform";
 import { triangle } from "../../../helpers/common";
 
+interface BeforeData {
+  icentreX: number;
+  icentreY: number;
+}
+
+interface Parameters {
+  centreX: number;
+  centreY: number;
+  angle: number;
+  angle2: number;
+  sides: number;
+  radius: number;
+}
+
 class KaleidoscopeEffect extends BaseTransformEffect {
-  static getName() {
+  static getName(): string {
     return "kaleidoscope";
   }
 
-  data = {
+  data: BeforeData = {
     icentreX: 0,
     icentreY: 0,
   };
 
-  getDefaultParameters() {
+  getDefaultParameters(): Parameters {
     return {
       centreX: 0.5,
       centreY: 0.5,
@@ -22,14 +36,25 @@ class KaleidoscopeEffect extends BaseTransformEffect {
     };
   }
 
-  before(parameters, width, height, imageData) {
+  before(
+    parameters: Parameters,
+    width: number,
+    height: number,
+    imageData: ImageData
+  ): BeforeData {
     return {
       icentreX: width * parameters.centreX,
       icentreY: height * parameters.centreY,
     };
   }
 
-  callback(x, y, parameters) {
+  callback(
+    x: number,
+    y: number,
+    parameters: Parameters,
+    width: number,
+    height: number
+  ): Array<number> {
     let dx = x - this.data.icentreX,
       dy = y - this.data.icentreY,
       r = Math.sqrt(dx * dx + dy * dy),

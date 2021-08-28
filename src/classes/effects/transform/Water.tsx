@@ -1,17 +1,34 @@
 import BaseTransformEffect from "../BaseTransform";
 
+interface BeforeData {
+  iCentreX: number;
+  iCentreY: number;
+  radius2: number;
+  radius: number;
+}
+
+interface Parameters {
+  waveLength: number;
+  amplitude: number;
+  phase: number;
+  centreX: number;
+  centreY: number;
+  radius: number;
+}
+
 class WaterEffect extends BaseTransformEffect {
-  static getName() {
+  static getName(): string {
     return "water";
   }
 
-  data = {
+  data: BeforeData = {
     iCentreX: 0,
     iCentreY: 0,
     radius2: 0,
+    radius: 0,
   };
 
-  getDefaultParameters() {
+  getDefaultParameters(): Parameters {
     return {
       waveLength: 16,
       amplitude: 10,
@@ -22,7 +39,7 @@ class WaterEffect extends BaseTransformEffect {
     };
   }
 
-  before(parameters, width, height) {
+  before(parameters: Parameters, width: number, height: number): BeforeData {
     let iCentreX = width * parameters.centreX,
       iCentreY = height * parameters.centreY,
       radius = parameters.radius,
@@ -34,14 +51,20 @@ class WaterEffect extends BaseTransformEffect {
     radius2 = radius * radius;
 
     return {
-      iCentreX: iCentreX,
-      iCentreY: iCentreY,
-      radius: radius,
-      radius2: radius2,
+      iCentreX,
+      iCentreY,
+      radius,
+      radius2,
     };
   }
 
-  callback(x, y, parameters) {
+  callback(
+    x: number,
+    y: number,
+    parameters: Parameters,
+    width: number,
+    height: number
+  ): Array<number> {
     let dx = x - this.data.iCentreX,
       dy = y - this.data.iCentreY,
       distance2 = dx * dx + dy * dy,

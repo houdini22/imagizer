@@ -1,17 +1,32 @@
 import BaseTransformEffect from "../BaseTransform";
 
+interface Parameters {
+  angle: number;
+  centreX: number;
+  centreY: number;
+  radius: number;
+  amount: number;
+}
+
+interface BeforeData {
+  icentreX: number;
+  icentreY: number;
+  radius2: number;
+  radius: number;
+}
+
 class PinchEffect extends BaseTransformEffect {
   static getName() {
     return "pinch";
   }
 
-  data = {
+  data: BeforeData = {
     icentreX: 0,
     icentreY: 0,
     radius2: 0,
   };
 
-  getDefaultParameters() {
+  getDefaultParameters(): Parameters {
     return {
       angle: 0,
       centreX: 0.5,
@@ -21,7 +36,12 @@ class PinchEffect extends BaseTransformEffect {
     };
   }
 
-  before(parameters, width, height, imageData) {
+  before(
+    parameters: Parameters,
+    width: number,
+    height: number,
+    imageData: ImageData
+  ): BeforeData {
     let icentreX = width * parameters.centreX,
       icentreY = height * parameters.centreY,
       radius = parameters.radius,
@@ -38,7 +58,13 @@ class PinchEffect extends BaseTransformEffect {
     };
   }
 
-  callback(x, y, parameters) {
+  callback(
+    x: number,
+    y: number,
+    parameters: Parameters,
+    width: number,
+    height: number
+  ): Array<number> {
     let dx = x - this.data.icentreX,
       dy = y - this.data.icentreY,
       distance = dx * dx + dy * dy,

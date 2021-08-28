@@ -1,18 +1,22 @@
 import BaseCustomEffect from "../BaseCustom";
 import { hexToRGB } from "../../../helpers/color";
 
+interface Parameters {
+  color: string;
+}
+
 class FillColorEffect extends BaseCustomEffect {
-  static getName() {
+  static getName(): string {
     return "fill-color";
   }
 
-  getDefaultParameters() {
+  getDefaultParameters(): Parameters {
     return {
       color: "transparent",
     };
   }
 
-  callback(width, height, parameters) {
+  callback(width: number, height: number, parameters: Parameters) {
     let x, y, color;
 
     if (parameters.color === "transparent") {

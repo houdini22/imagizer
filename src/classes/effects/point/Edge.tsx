@@ -1,16 +1,36 @@
 import BasePointEffect from "../BasePoint";
 
+interface BeforeData {
+  hEdgeMatrix: Array<number>;
+  vEdgeMatrix: Array<number>;
+}
+
+interface Parameters {
+  matrixes: {
+    robertsV: Array<number>;
+    robertsH: Array<number>;
+    prewittV: Array<number>;
+    prewittH: Array<number>;
+    sobelV: Array<number>;
+    sobelH: Array<number>;
+    freiChenV: Array<number>;
+    freiChenH: Array<number>;
+  };
+  hEdgeMatrix: string;
+  vEdgeMatrix: string;
+}
+
 class EdgeEffect extends BasePointEffect {
-  static getName() {
+  static getName(): string {
     return "edge";
   }
 
-  data = {
+  data: BeforeData = {
     hEdgeMatrix: [],
     vEdgeMatrix: [],
   };
 
-  getDefaultParameters() {
+  getDefaultParameters(): Parameters {
     return {
       matrixes: {
         robertsV: [0, 0, -1, 0, 1, 0, 0, 0, 0],
@@ -27,23 +47,47 @@ class EdgeEffect extends BasePointEffect {
     };
   }
 
-  before(parameters, width, height, imageData) {
-    let hEdgeMatrix = parameters.hEdgeMatrix,
-      vEdgeMatrix = parameters.vEdgeMatrix;
+  before(
+    parameters: Parameters,
+    width: number,
+    height: number,
+    imageData: ImageData
+  ): BeforeData {
+    let _hEdgeMatrix = parameters.hEdgeMatrix,
+      _vEdgeMatrix = parameters.vEdgeMatrix,
+      hEdgeMatrix,
+      vEdgeMatrix;
 
-    if (typeof hEdgeMatrix === "string") {
+    if (typeof _hEdgeMatrix === "string") {
       hEdgeMatrix = parameters.matrixes[parameters.hEdgeMatrix];
     }
-    if (typeof vEdgeMatrix === "string") {
+    if (typeof _vEdgeMatrix === "string") {
       vEdgeMatrix = parameters.matrixes[parameters.vEdgeMatrix];
     }
     return {
-      hEdgeMatrix: hEdgeMatrix,
-      vEdgeMatrix: vEdgeMatrix,
+      hEdgeMatrix,
+      vEdgeMatrix,
     };
   }
 
-  callback(pixel, x, y, parameters, width, height) {
+  callback(
+    pixel: {
+      r: number;
+      g: number;
+      b: number;
+      a: number;
+    },
+    x: number,
+    y: number,
+    parameters: Parameters,
+    width: number,
+    height: number
+  ): {
+    r: number;
+    g: number;
+    b: number;
+    a: number;
+  } {
     let r = 0,
       g = 0,
       b = 0,

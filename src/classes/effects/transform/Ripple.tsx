@@ -2,12 +2,20 @@ import BaseTransformEffect from "../BaseTransform";
 import { triangle, mod } from "../../../helpers/common";
 import noise from "../../../helpers/noise";
 
+interface Parameters {
+  xAmplitude: number;
+  yAmplitute: number;
+  xWaveLength: number;
+  yWaveLength: number;
+  waveType: string;
+}
+
 class RippleEffect extends BaseTransformEffect {
-  static getName() {
+  static getName(): string {
     return "ripple";
   }
 
-  getDefaultParameters() {
+  getDefaultParameters(): Parameters {
     return {
       xAmplitude: 5,
       yAmplitute: 0,
@@ -17,7 +25,13 @@ class RippleEffect extends BaseTransformEffect {
     };
   }
 
-  callback(x, y, parameters) {
+  callback(
+    x: number,
+    y: number,
+    parameters: Parameters,
+    width: number,
+    height: number
+  ): Array<number> {
     let nx = y / parameters.xWaveLength,
       ny = x / parameters.yWaveLength,
       fx,

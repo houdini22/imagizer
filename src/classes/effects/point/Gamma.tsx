@@ -1,11 +1,25 @@
 import BasePointEffect from "../BasePoint";
 
+interface Parameters {
+  gammaRed: number;
+  gammaGreen: number;
+  gammaBlue: number;
+}
+
+interface BeforeData {
+  table: {
+    r: object;
+    g: object;
+    b: object;
+  };
+}
+
 class GammaEffect extends BasePointEffect {
   static getName() {
     return "gamma";
   }
 
-  data = {
+  data: BeforeData = {
     table: {
       r: {},
       g: {},
@@ -13,7 +27,7 @@ class GammaEffect extends BasePointEffect {
     },
   };
 
-  getDefaultParameters() {
+  getDefaultParameters(): Parameters {
     return {
       gammaRed: 1,
       gammaGreen: 1,
@@ -22,11 +36,11 @@ class GammaEffect extends BasePointEffect {
   }
 
   before(
-    parameters = { gammaRed: 1, gammaGreen: 1, gammaBlue: 1 },
-    width,
-    height,
-    imageData
-  ) {
+    parameters: Parameters,
+    width: number,
+    height: number,
+    imageData: ImageData
+  ): BeforeData {
     let table = {
         r: [],
         g: [],
@@ -47,7 +61,24 @@ class GammaEffect extends BasePointEffect {
     };
   }
 
-  callback(pixel, x, y, parameters, width, height) {
+  callback(
+    pixel: {
+      r: number;
+      g: number;
+      b: number;
+      a: number;
+    },
+    x: number,
+    y: number,
+    parameters: Parameters,
+    width: number,
+    height: number
+  ): {
+    r: number;
+    g: number;
+    b: number;
+    a: number;
+  } {
     return {
       r: this.data.table.r[pixel.r],
       g: this.data.table.g[pixel.g],

@@ -1,7 +1,20 @@
 import BaseCustomEffect from "../BaseCustom";
 
+interface Parameters {
+  leftBorder: number;
+  rightBorder: number;
+  topBorder: number;
+  bottomBorder: number;
+  borderColor?: {
+    r: number;
+    b: number;
+    g: number;
+    a: number;
+  };
+}
+
 class BorderEffect extends BaseCustomEffect {
-  static getName() {
+  static getName(): string {
     return "border";
   }
 
@@ -12,7 +25,7 @@ class BorderEffect extends BaseCustomEffect {
     bottomBorder: 0,
   };
 
-  getDefaultParameters() {
+  getDefaultParameters(): Parameters {
     return {
       leftBorder: 10,
       rightBorder: 10,
@@ -27,7 +40,12 @@ class BorderEffect extends BaseCustomEffect {
     };
   }
 
-  before(parameters, width, height, imageData) {
+  before(
+    parameters: Parameters,
+    width: number,
+    height: number,
+    imageData: ImageData
+  ): Parameters {
     return {
       leftBorder: parameters.leftBorder | 0,
       rightBorder: parameters.rightBorder | 0,

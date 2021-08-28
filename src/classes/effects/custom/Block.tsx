@@ -1,17 +1,21 @@
 import BaseCustomEffect from "../BaseCustom";
 
+interface Parameters {
+  blockSize: number;
+}
+
 class BlockEffect extends BaseCustomEffect {
   static getName() {
     return "block";
   }
 
-  getDefaultParameters() {
+  getDefaultParameters(): Parameters {
     return {
       blockSize: 5,
     };
   }
 
-  callback(width, height, parameters) {
+  callback(width: number, height: number, parameters: Parameters) {
     let x, y, w, h, t, r, g, b, pixel, by, bx;
 
     for (y = 0; y < height; y += parameters.blockSize) {

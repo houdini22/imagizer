@@ -1,19 +1,35 @@
 import BaseTransformEffect from "../BaseTransform";
 import noise from "../../../helpers/noise";
 
+interface BeforeData {
+  m00: number;
+  m01: number;
+  m10: number;
+  m11: number;
+}
+
+interface Parameters {
+  scale: number;
+  turbulence: number;
+  amount: number;
+  time: number;
+  angle: number;
+  stretch: number;
+}
+
 class SwimEffect extends BaseTransformEffect {
-  static getName() {
+  static getName(): string {
     return "swim";
   }
 
-  data = {
+  data: BeforeData = {
     m00: 0,
     m01: 0,
     m10: 0,
     m11: 0,
   };
 
-  getDefaultParameters() {
+  getDefaultParameters(): Parameters {
     return {
       scale: 32,
       turbulence: 0,
@@ -24,7 +40,7 @@ class SwimEffect extends BaseTransformEffect {
     };
   }
 
-  before(parameters, width, height) {
+  before(parameters: Parameters, width: number, height: number): BeforeData {
     let cos = Math.cos(parameters.angle),
       sin = Math.sin(parameters.angle);
 
@@ -36,7 +52,13 @@ class SwimEffect extends BaseTransformEffect {
     };
   }
 
-  callback(x, y, parameters) {
+  callback(
+    x: number,
+    y: number,
+    parameters: Parameters,
+    width: number,
+    height: number
+  ): Array<number> {
     let nx = this.data.m00 * x + this.data.m01 * y,
       ny = this.data.m10 * x + this.data.m11 * y;
 

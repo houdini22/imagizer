@@ -1,19 +1,26 @@
 import BasePointEffect from "../BasePoint";
 
+interface Parameters {
+  low: number;
+  high: number;
+  lowOutput: number;
+  highOutput: number;
+}
+
+interface BeforeData {
+  lut: Array<Array<number>>;
+}
+
 class LevelsEffect extends BasePointEffect {
   static getName() {
     return "levels";
   }
 
-  data = {
-    lut: {
-      0: {},
-      1: {},
-      2: {},
-    },
+  data: BeforeData = {
+    lut: [],
   };
 
-  getDefaultParameters() {
+  getDefaultParameters(): Parameters {
     return {
       low: 0,
       high: 1,
@@ -22,7 +29,12 @@ class LevelsEffect extends BasePointEffect {
     };
   }
 
-  before(parameters, width, height, imageData) {
+  before(
+    parameters: Parameters,
+    width: number,
+    height: number,
+    imageData: ImageData
+  ): BeforeData {
     let Histogram = function (imageData, width, height, offset, stride) {
       let i,
         j,
@@ -212,11 +224,28 @@ class LevelsEffect extends BasePointEffect {
     histogram.isGray(); // uglify fix - "Side effects in initialization of unused letiable histogram" warning
 
     return {
-      lut: lut,
+      lut,
     };
   }
 
-  callback(pixel, x, y, parameters, width, height) {
+  callback(
+    pixel: {
+      r: number;
+      g: number;
+      b: number;
+      a: number;
+    },
+    x: number,
+    y: number,
+    parameters: Parameters,
+    width: number,
+    height: number
+  ): {
+    r: number;
+    g: number;
+    b: number;
+    a: number;
+  } {
     return {
       r: this.data.lut[0][pixel.r],
       g: this.data.lut[1][pixel.g],

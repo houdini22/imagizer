@@ -1,18 +1,31 @@
 import BaseTransformEffect from "../BaseTransform";
 import noiseHelper from "../../../helpers/noise";
 
+interface BeforeData {
+  sinTable: Array<number>;
+  cosTable: Array<number>;
+  displacementMap: (x: number, y: number) => number;
+}
+
+interface Parameters {
+  xScale: number;
+  yScale: number;
+  amount: number;
+  turbulence: number;
+}
+
 class MarbleEffect extends BaseTransformEffect {
-  static getName() {
+  static getName(): string {
     return "marble";
   }
 
-  data = {
-    sinTable: {},
-    cosTable: {},
+  data: BeforeData = {
+    sinTable: [],
+    cosTable: [],
     displacementMap: (x: number, y: number) => 0,
   };
 
-  getDefaultParameters() {
+  getDefaultParameters(): Parameters {
     return {
       xScale: 4,
       yScale: 4,
@@ -21,7 +34,12 @@ class MarbleEffect extends BaseTransformEffect {
     };
   }
 
-  before(parameters, width, height, imageData) {
+  before(
+    parameters: Parameters,
+    width: number,
+    height: number,
+    imageData: ImageData
+  ): BeforeData {
     let sinTable = new Array(256),
       cosTable = new Array(256),
       i = 0,
@@ -45,7 +63,13 @@ class MarbleEffect extends BaseTransformEffect {
     };
   }
 
-  callback(x, y, parameters) {
+  callback(
+    x: number,
+    y: number,
+    parameters: Parameters,
+    width: number,
+    height: number
+  ): Array<number> {
     let displacement = Math.floor(this.data.displacementMap(x, y));
     return [
       x + this.data.sinTable[displacement],

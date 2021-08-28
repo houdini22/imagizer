@@ -1,5 +1,5 @@
 import { isBrowser } from "../helpers/common";
-import { NodeCanvasRenderingContext2D, Canvas } from "canvas/types/index";
+import { NodeCanvasRenderingContext2D, Canvas } from "canvas/types";
 
 class CanvasWrapper {
   canvas: Canvas | HTMLCanvasElement = null;

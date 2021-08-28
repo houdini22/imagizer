@@ -1,25 +1,43 @@
 import BaseTransformEffect from "../BaseTransform";
 
+interface BeforeData {
+  iCentreX: number;
+  iCentreY: number;
+  radius: number;
+  radius2: number;
+}
+
+interface Parameters {
+  angle: number;
+  centreX: number;
+  centreY: number;
+  radius: number;
+  radius2: number;
+}
+
 class TwirlEffect extends BaseTransformEffect {
-  static getName() {
+  static getName(): string {
     return "twirl";
   }
 
-  data = {
+  data: BeforeData = {
     iCentreX: 0,
     iCentreY: 0,
+    radius: 0,
+    radius2: 0,
   };
 
-  getDefaultParameters() {
+  getDefaultParameters(): Parameters {
     return {
       angle: 0,
       centreX: 0.5,
       centreY: 0.5,
       radius: 100,
+      radius2: 100,
     };
   }
 
-  before(parameters, width, height) {
+  before(parameters: Parameters, width: number, height: number): BeforeData {
     let iCentreX = width * parameters.centreX,
       iCentreY = height * parameters.centreY,
       radius = parameters.radius,
@@ -38,7 +56,13 @@ class TwirlEffect extends BaseTransformEffect {
     };
   }
 
-  callback(x, y, parameters) {
+  callback(
+    x: number,
+    y: number,
+    parameters: Parameters,
+    width: number,
+    height: number
+  ): Array<number> {
     let dx = x - this.data.iCentreX,
       dy = y - this.data.iCentreY,
       distance = dx * dx + dy * dy,

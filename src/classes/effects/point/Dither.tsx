@@ -1,19 +1,44 @@
 import BasePointEffect from "../BasePoint";
 
+interface BeforeData {
+  cols: number;
+  rows: number;
+  map: object;
+  mod: object;
+  div: object;
+}
+
+interface Parameters {
+  matrices: {
+    ditherMagic4x4Matrix: Array<number>;
+    ditherOrdered4x4Matrix: Array<number>;
+    ditherLines4x4Matrix: Array<number>;
+    dither90Halftone6x6Matrix: Array<number>;
+    ditherOrdered6x6Matrix: Array<number>;
+    ditherOrdered8x8Matrix: Array<number>;
+    ditherCluster3Matrix: Array<number>;
+    ditherCluster4Matrix: Array<number>;
+    ditherCluster8Matrix: Array<number>;
+  };
+  levels: number;
+  matrix: string | Array<number>;
+  colorDither: boolean;
+}
+
 class DitherEffect extends BasePointEffect {
-  static getName() {
+  static getName(): string {
     return "dither";
   }
 
-  data: {
-    cols: 0;
-    rows: 0;
-    map: {};
-    mod: {};
-    div: {};
+  data: BeforeData = {
+    cols: 0,
+    rows: 0,
+    map: {},
+    mod: {},
+    div: {},
   };
 
-  getDefaultParameters() {
+  getDefaultParameters(): Parameters {
     return {
       matrices: {
         ditherMagic4x4Matrix: [
@@ -89,7 +114,12 @@ class DitherEffect extends BasePointEffect {
     };
   }
 
-  before(parameters, width, height, imageData) {
+  before(
+    parameters: Parameters,
+    width: number,
+    height: number,
+    imageData: ImageData
+  ): BeforeData {
     let matrix = parameters.matrix,
       rows,
       cols,
@@ -115,7 +145,7 @@ class DitherEffect extends BasePointEffect {
     }
 
     return {
-      matrix: matrix,
+      matrix,
       map: map,
       div: div,
       mod: mod,
@@ -124,7 +154,24 @@ class DitherEffect extends BasePointEffect {
     };
   }
 
-  callback(pixel, x, y, parameters, width, height) {
+  callback(
+    pixel: {
+      r: number;
+      g: number;
+      b: number;
+      a: number;
+    },
+    x: number,
+    y: number,
+    parameters: Parameters,
+    width: number,
+    height: number
+  ): {
+    r: number;
+    g: number;
+    b: number;
+    a: number;
+  } {
     let col = x % this.data.cols,
       row = y % this.data.rows,
       v = parameters.matrix[row * this.data.cols + col],
