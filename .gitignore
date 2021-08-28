@@ -2,5 +2,4 @@ dev
 node_modules
 .idea
 npm-debug.log
-demo/node_result.png
 package-lock.json

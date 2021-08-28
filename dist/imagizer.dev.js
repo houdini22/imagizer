@@ -986,7 +986,7 @@ var Project = /*#__PURE__*/function () {
     }
   }, {
     key: "save",
-    value: function save(selector) {
+    value: function save(path) {
       var imageType = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : "image/png";
 
       if ((0,_helpers_common__WEBPACK_IMPORTED_MODULE_2__.isBrowser)()) {
@@ -1019,7 +1019,7 @@ var Project = /*#__PURE__*/function () {
           data = img.replace(/^data:image\/\w+;base64,/, ""),
           buff = new Buffer(data, "base64");
 
-      fs.writeFileSync(selector, buff);
+      fs.writeFileSync(path, buff);
     }
   }, {
     key: "render",
@@ -1079,6 +1079,9 @@ var Project = /*#__PURE__*/function () {
 
       return this;
     }
+  }, {
+    key: "exportTo",
+    value: function exportTo(selector) {}
   }]);
 
   return Project;

@@ -1,6 +1,6 @@
 {
   "name": "imagizer",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "description": "JavaScript library for image manipulation. Supports crop, resize, layers, blending modes, transform and color effects.",
   "main": "./dist/imagizer.js",
   "devDependencies": {
@@ -19,10 +19,11 @@
     "canvas": "^2.8.0"
   },
   "scripts": {
-    "build": "npm run build-dev && npm run build-prod && npm run build-node-demo",
+    "build": "npm run build-dev && npm run build-prod && npm run build-node-demo && npm run build-browser-demo",
     "build-dev": "webpack --config ./configs/dev.js",
     "build-prod": "webpack --config ./configs/prod.js",
     "build-node-demo": "webpack --config ./configs/node-demo.js",
+    "build-browser-demo": "webpack --config ./configs/browser-demo.js",
     "prettier-write": "prettier --write \"src/**/*.tsx\""
   },
   "repository": {

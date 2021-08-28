@@ -52,7 +52,7 @@ class Project {
     return end.getTime() - this.startTime.getTime();
   }
 
-  save(selector: string, imageType: string = "image/png") {
+  save(path: string, imageType: string = "image/png") {
     if (isBrowser()) {
       throw new Error("Available only in node.js environment");
     }
@@ -90,7 +90,7 @@ class Project {
       data = img.replace(/^data:image\/\w+;base64,/, ""),
       buff = new Buffer(data, "base64");
 
-    fs.writeFileSync(selector, buff);
+    fs.writeFileSync(path, buff);
   }
 
   render(imageType: string = "image/png") {
@@ -151,6 +151,10 @@ class Project {
     }
 
     return this;
+  }
+
+  exportTo(selector: string) {
+
   }
 }
 
