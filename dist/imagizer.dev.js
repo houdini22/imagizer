@@ -550,7 +550,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 var Layer = /*#__PURE__*/function () {
   function Layer(width, height) {
     var parameters = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {
-      background_color: "transparent",
+      background_color: "",
       blendingMode: ""
     };
 

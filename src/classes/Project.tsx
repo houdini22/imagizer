@@ -38,8 +38,8 @@ class Project {
 
   createLayer(
     parameters: {
-      background_color: string;
-      blendingMode: string;
+      background_color?: string;
+      blendingMode?: string;
     } = { background_color: "", blendingMode: "" }
   ) {
     let layer = new Layer(this.width, this.height, parameters);

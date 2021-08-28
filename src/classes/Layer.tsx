@@ -29,10 +29,10 @@ class Layer {
     width: number,
     height: number,
     parameters: {
-      background_color: string;
-      blendingMode: string;
+      background_color?: string;
+      blendingMode?: string;
     } = {
-      background_color: "transparent",
+      background_color: "",
       blendingMode: "",
     }
   ) {
@@ -48,7 +48,7 @@ class Layer {
     }
   }
 
-  initialize(width, height, parameters) {
+  initialize(width: number, height: number, parameters) {
     this.canvas = new CanvasWrapper(width, height);
     this.imageData = this.canvas.getContext().createImageData(width, height);
     this.width = width;
@@ -56,7 +56,7 @@ class Layer {
     this.parameters = parameters;
   }
 
-  put(obj, x, y) {
+  put(obj: any, x: number, y: number) {
     const put = new LayerObject(obj, this, x, y, {});
     this.objects.push(put);
     return put;
@@ -102,7 +102,7 @@ class Layer {
     return this.imageData;
   }
 
-  applyEffect(name, parameters) {
+  applyEffect(name: string, parameters) {
     this.effects.push({
       name,
       effect: new (EffectsRepository.get(name))(),
@@ -110,7 +110,7 @@ class Layer {
     });
   }
 
-  resize(newWidth, newHeight, mode) {
+  resize(newWidth: number, newHeight: number, mode: string) {
     this.canvas.destroy();
     this.canvas = null;
     this.imageData = null;
@@ -124,7 +124,7 @@ class Layer {
     return this;
   }
 
-  crop(startX, startY, width, height) {
+  crop(startX: number, startY: number, width: number, height: number) {
     for (let i = 0; i < this.objects.length; i += 1) {
       this.objects[i].crop(startX, startY, width, height);
     }
@@ -132,33 +132,33 @@ class Layer {
     return this;
   }
 
-  moveXY(x, y) {
+  moveXY(x: number, y: number) {
     this.moveX(x);
     this.moveY(y);
     return this;
   }
 
-  moveX(x) {
+  moveX(x: number) {
     this.x += x | 0;
     return this;
   }
 
-  moveY(y) {
+  moveY(y: number) {
     this.y += y | 0;
     return this;
   }
 
-  setX(x) {
+  setX(x: number) {
     this.x = x;
     return this;
   }
 
-  setY(y) {
+  setY(y: number) {
     this.y = y;
     return this;
   }
 
-  setBlendingMode(blendingMode) {
+  setBlendingMode(blendingMode: string) {
     this.parameters.blendingMode = blendingMode;
   }
 
@@ -178,7 +178,7 @@ class Layer {
     return this.height;
   }
 
-  getParameter(name) {
+  getParameter(name: string) {
     return this.parameters[name];
   }
 }
