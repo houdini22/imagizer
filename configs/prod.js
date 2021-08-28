@@ -1,14 +1,14 @@
 const path = require('path')
 
 module.exports = {
-  mode: 'development',
+  mode: 'production',
   devtool: 'source-map',
   entry: [
     './src/main.tsx',
   ],
   output: {
     path: path.resolve('./dist'),
-    filename: 'imagizer.dev.js',
+    filename: 'imagizer.js',
     library: 'imagizer',
     libraryTarget: 'commonjs'
   },

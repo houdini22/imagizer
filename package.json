@@ -19,7 +19,8 @@
     "canvas": "^2.8.0"
   },
   "scripts": {
-    "build": "webpack --config ./configs/dev.js",
+    "build-dev": "webpack --config ./configs/dev.js",
+    "build-prod": "webpack --config ./configs/prod.js",
     "prettier-write": "prettier --write \"src/**/*.tsx\""
   },
   "repository": {
