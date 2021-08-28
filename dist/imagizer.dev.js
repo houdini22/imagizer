@@ -827,7 +827,8 @@ var LayerObject = /*#__PURE__*/function () {
     }
   }, {
     key: "applyEffect",
-    value: function applyEffect(name, parameters) {
+    value: function applyEffect(name) {
+      var parameters = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
       this.effects.push({
         name: name,
         effect: new (_EffectsRepository__WEBPACK_IMPORTED_MODULE_2__.default.get(name))(),
@@ -962,7 +963,8 @@ var Project = /*#__PURE__*/function () {
 
   _createClass(Project, [{
     key: "initialize",
-    value: function initialize(width, height, parameters) {
+    value: function initialize(width, height) {
+      var parameters = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
       this.parameters = parameters;
       this.width = width;
       this.height = height;
@@ -1070,7 +1072,7 @@ var Project = /*#__PURE__*/function () {
       this.canvas.destroy();
       this.canvas = null;
       this.imageData = null;
-      this.initialize(newWidth, newHeight, mode);
+      this.initialize(newWidth, newHeight);
 
       for (var i = 0; i < this.layers.length; i += 1) {
         this.layers[i].resize(newWidth, newHeight, mode);
