@@ -12,7 +12,7 @@ interface BeforeData {
 }
 
 class LevelsEffect extends BasePointEffect {
-  static getName() {
+  static getName(): string {
     return "levels";
   }
 

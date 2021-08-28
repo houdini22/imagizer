@@ -15,7 +15,7 @@ interface BeforeData {
 }
 
 class GammaEffect extends BasePointEffect {
-  static getName() {
+  static getName(): string {
     return "gamma";
   }
 

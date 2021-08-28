@@ -12,7 +12,7 @@ interface BeforeData {
 }
 
 class DissolveEffect extends BasePointEffect {
-  static getName() {
+  static getName(): string {
     return "dissolve";
   }
 

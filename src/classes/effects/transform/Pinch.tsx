@@ -16,7 +16,7 @@ interface BeforeData {
 }
 
 class PinchEffect extends BaseTransformEffect {
-  static getName() {
+  static getName(): string {
     return "pinch";
   }
 

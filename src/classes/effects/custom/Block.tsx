@@ -5,7 +5,7 @@ interface Parameters {
 }
 
 class BlockEffect extends BaseCustomEffect {
-  static getName() {
+  static getName(): string {
     return "block";
   }
 

@@ -12,7 +12,7 @@ interface Parameters {
 }
 
 class RotateEffect extends BaseTransformEffect {
-  static getName() {
+  static getName(): string {
     return "rotate";
   }
 
