@@ -1,11 +1,9 @@
 # imagizer
 
-Imagizer is a JavaScript library for image manipulation written in ES6. 
+Imagizer is a JavaScript library for image manipulation written in ES6.
 It supports both node.js (with node-canvas dependency) and browser!
 
 Imagizer effect algorithms are based on a [Jerry's Java Image Proccesing Library](http://www.jhlabs.com/ip/filters/index.html)
-
-Working demo you can find at [http://demo.imagizer.it/](http://demo.imagizer.it/)
 
 ## Installation
 ```
@@ -64,7 +62,7 @@ image1.load("my-image.png", function()
 });
 ```
 
-"my-image.png" is a path to the image 
+"my-image.png" is a path to the image
  - in frontend environment - visible in the browser at given url "<domain>/my-image.png"
  - in node.js environment - path to file in filesystem
 
@@ -671,7 +669,7 @@ defaults: {
 }
 ```
 
-##### border 
+##### border
 ```
 defaults: {
     leftBorder: 10,
