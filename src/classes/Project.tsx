@@ -6,23 +6,24 @@ import {
   isBrowser,
 } from "../helpers/common";
 import EffectsRepository from "./EffectsRepository";
+import BaseEffect from "./effects/Base";
 
 class Project {
-  imageData = null;
+  imageData: ImageData = null;
 
   effects = [];
 
-  layers = [];
+  layers: Layer[] = [];
 
-  startTime = new Date();
+  startTime: Date = new Date();
 
-  parameters = {};
+  parameters: object = {};
 
   width: number = 0;
 
   height: number = 0;
 
-  canvas = null;
+  canvas: CanvasWrapper = null;
 
   constructor(width: number, height: number, parameters: object = {}) {
     this.initialize(width, height, parameters);

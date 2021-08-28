@@ -1,11 +1,12 @@
 import BaseOnLayerObject from "./BaseOnLayer";
 import CanvasWrapper from "./CanvasWrapper";
 import { isBrowser } from "../helpers/common";
+import {Image as ImageType} from 'canvas/types/index'
 
 class Image extends BaseOnLayerObject {
   url: string = null;
 
-  image = null;
+  image: HTMLImageElement | ImageType = null;
 
   constructor() {
     super();

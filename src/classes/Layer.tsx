@@ -12,15 +12,18 @@ class Layer {
 
   y: number = 0;
 
-  canvas = null;
+  canvas: CanvasWrapper = null;
 
-  imageData = null;
+  imageData: ImageData = null;
 
   width: number = 0;
 
   height: number = 0;
 
-  parameters = {
+  parameters: {
+    background_color?: string;
+    blendingMode?: string
+  } = {
     background_color: "",
     blendingMode: "",
   };
@@ -61,16 +64,6 @@ class Layer {
     this.objects.push(put);
     return put;
   }
-
-  /*exportTo(selector, imageType = "image/png") {
-    this.exportLayer();
-
-    let container = document.querySelector(selector),
-      exportedImage = new Image();
-
-    exportedImage.src = canvas.toDataURL(imageType);
-    container.appendChild(exportedImage);
-  }*/
 
   exportLayer() {
     for (let i = 0; i < this.objects.length; i += 1) {

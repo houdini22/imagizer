@@ -201,7 +201,8 @@ var CanvasWrapper = /*#__PURE__*/function () {
     }
   }, {
     key: "toDataURL",
-    value: function toDataURL(type) {
+    value: function toDataURL() {
+      var type = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 'image/png';
       return this.canvas.toDataURL(type);
     }
   }, {
@@ -602,14 +603,6 @@ var Layer = /*#__PURE__*/function () {
       this.objects.push(put);
       return put;
     }
-    /*exportTo(selector, imageType = "image/png") {
-      this.exportLayer();
-       let container = document.querySelector(selector),
-        exportedImage = new Image();
-       exportedImage.src = canvas.toDataURL(imageType);
-      container.appendChild(exportedImage);
-    }*/
-
   }, {
     key: "exportLayer",
     value: function exportLayer() {
@@ -778,7 +771,7 @@ var LayerObject = /*#__PURE__*/function () {
     _defineProperty(this, "effects", []);
 
     this.obj = obj;
-    this.layer = this;
+    this.layer = layer;
     this.x = x;
     this.y = y;
     this.opts = opts;

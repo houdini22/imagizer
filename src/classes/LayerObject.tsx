@@ -1,9 +1,11 @@
 import CanvasWrapper from "./CanvasWrapper";
 import { cropImageData } from "../helpers/common";
 import EffectsRepository from "./EffectsRepository";
+import Image from "./Image";
+import Layer from "./Layer";
 
 class LayerObject {
-  obj = null;
+  obj: Image = null;
 
   layer = null;
 
@@ -11,13 +13,13 @@ class LayerObject {
 
   y: number = 0;
 
-  opts = {};
+  opts: object = {};
 
   effects = [];
 
-  constructor(obj, layer, x: number, y: number, opts: object) {
+  constructor(obj: Image, layer: Layer, x: number, y: number, opts: object) {
     this.obj = obj;
-    this.layer = this;
+    this.layer = layer;
     this.x = x;
     this.y = y;
     this.opts = opts;
