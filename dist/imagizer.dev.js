@@ -1123,6 +1123,11 @@ var BaseEffect = /*#__PURE__*/function () {
     value: function before(parameters, width, height, imageData) {
       return {};
     }
+  }, {
+    key: "run",
+    value: function run(imageData, parameters) {
+      return null;
+    }
   }], [{
     key: "getName",
     value: function getName() {

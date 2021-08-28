@@ -21,6 +21,10 @@ class BaseEffect {
   static getName(): string {
     throw "Extend it.";
   }
+
+  run(imageData: ImageData, parameters: object): ImageData {
+    return null;
+  }
 }
 
 export default BaseEffect;
