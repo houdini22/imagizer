@@ -1,8 +1,6 @@
 dev
 node_modules
 .idea
-build
 npm-debug.log
-.htaccess
 demo/node_result.png
 package-lock.json
