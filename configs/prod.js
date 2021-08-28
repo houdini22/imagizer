@@ -9,8 +9,7 @@ module.exports = {
   output: {
     path: path.resolve('./dist'),
     filename: 'imagizer.js',
-    library: 'imagizer',
-    libraryTarget: 'commonjs'
+    libraryTarget: 'commonjs2'
   },
   resolve: {
     extensions: ['.tsx'],

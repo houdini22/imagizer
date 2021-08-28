@@ -7757,7 +7757,7 @@ __webpack_require__.r(__webpack_exports__);
 });
 })();
 
-exports.imagizer = __webpack_exports__;
+module.exports = __webpack_exports__;
 /******/ })()
 ;
 //# sourceMappingURL=imagizer.dev.js.map

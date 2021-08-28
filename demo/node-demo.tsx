@@ -1,8 +1,8 @@
-import {Project, Image} from '../src/main'
+import * as Imagizer from '../dist/imagizer.js'
 
-const project = new Project(500, 375)
+const project = new Imagizer.Project(500, 375)
 const layer1 = project.createLayer()
-const image1 = new Image()
+const image1 = new Imagizer.Image()
 
 image1.load('../demo/test.png', function () {
   const obj = layer1.put(image1, 0, 0)
