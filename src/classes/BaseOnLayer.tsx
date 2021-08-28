@@ -41,7 +41,7 @@ class BaseOnLayerObject {
     return this.imageData;
   }
 
-  setImageData(value: number) {
+  setImageData(value: ImageData) {
     this.imageData = value;
     return this;
   }

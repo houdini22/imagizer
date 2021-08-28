@@ -133,3 +133,19 @@ document.addEventListener("DOMContentLoaded", function()
     document.querySelector('.test-6').appendChild(project.render())
   });
 }, false);
+
+document.addEventListener("DOMContentLoaded", function()
+{
+  var project = new Imagizer.Project(500, 375);
+  var layer1 = project.createLayer();
+  var image1 = new Imagizer.Image();
+  image1.load("test.png", function()
+  {
+    var obj = layer1.put(image1, 0, 0);
+    obj.applyEffect('edge')
+    obj.applyEffect('gray-scale')
+    obj.applyEffect('invert')
+    document.querySelector(".test-10 .time").textContent = project.getTime();
+    document.querySelector('.test-10').appendChild(project.render())
+  });
+}, false);

@@ -4,7 +4,7 @@ import { NodeCanvasRenderingContext2D, Canvas } from "canvas/types/index";
 class CanvasWrapper {
   canvas: Canvas | HTMLCanvasElement = null;
 
-  context: NodeCanvasRenderingContext2D | CanvasRenderingContext2D = null;
+  context: NodeCanvasRenderingContext2D | RenderingContext = null;
 
   width: number = 0;
 
