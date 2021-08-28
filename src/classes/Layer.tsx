@@ -22,7 +22,7 @@ class Layer {
 
   parameters: {
     background_color?: string;
-    blendingMode?: string
+    blendingMode?: string;
   } = {
     background_color: "",
     blendingMode: "",

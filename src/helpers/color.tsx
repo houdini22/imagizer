@@ -5,7 +5,15 @@
  * @param b
  * @returns {{h: number, s: number, b: number}}
  */
-export function RGBtoHSB(r, g, b) {
+export function RGBtoHSB(
+  r: number,
+  g: number,
+  b: number
+): {
+  h: number;
+  s: number;
+  b: number;
+} {
   let hue,
     saturation,
     brightness,
@@ -56,7 +64,15 @@ export function RGBtoHSB(r, g, b) {
  * @param brightness
  * @returns {{r: Number, g: Number, b: Number}}
  */
-export function HSBtoRGB(hue, saturation, brightness) {
+export function HSBtoRGB(
+  hue: number,
+  saturation: number,
+  brightness: number
+): {
+  r: number;
+  g: number;
+  b: number;
+} {
   let red, green, blue;
   if (saturation === 0) {
     red = brightness * 255 + 0.5;
@@ -120,7 +136,26 @@ export function HSBtoRGB(hue, saturation, brightness) {
   };
 }
 
-export function mixColors(t, rgb1, rgb2) {
+export function mixColors(
+  t: number,
+  rgb1: {
+    r: number;
+    g: number;
+    b: number;
+    a: number;
+  },
+  rgb2: {
+    r: number;
+    g: number;
+    b: number;
+    a: number;
+  }
+): {
+  r: number;
+  g: number;
+  b: number;
+  a: number;
+} {
   return {
     r: rgb1.r + t * (rgb2.r - rgb1.r),
     g: rgb1.g + t * (rgb2.g - rgb1.g),
@@ -129,11 +164,15 @@ export function mixColors(t, rgb1, rgb2) {
   };
 }
 
-export function hexToRGB(hex) {
-  hex = parseInt(hex.replace("#", ""), 16);
-  let r = hex >> 16;
-  let g = (hex >> 8) & 0xff;
-  let b = hex & 0xff;
+export function hexToRGB(hex: string): {
+  r: number;
+  g: number;
+  b: number;
+} {
+  const _hex = parseInt(hex.replace("#", ""), 16);
+  let r = _hex >> 16;
+  let g = (_hex >> 8) & 0xff;
+  let b = _hex & 0xff;
   return {
     r: r,
     g: g,
@@ -141,14 +180,22 @@ export function hexToRGB(hex) {
   };
 }
 
-export function RGBtoHex(pixel) {
+export function RGBtoHex(pixel: { r: number; g: number; b: number }) {
   let bin = (pixel.r << 16) | (pixel.g << 8) | pixel.b;
   return (function (h) {
     return new Array(7 - h.length).join("0") + h;
   })(bin.toString(16).toUpperCase());
 }
 
-export function RGBtoXYZ(r, g, b) {
+export function RGBtoXYZ(
+  r: number,
+  g: number,
+  b: number
+): {
+  x: number;
+  y: number;
+  z: number;
+} {
   let let_R = r / 255;
   let let_G = g / 255;
   let let_B = b / 255;
@@ -182,7 +229,15 @@ export function RGBtoXYZ(r, g, b) {
   };
 }
 
-export function RGBtoCIELab(r, g, b) {
+export function RGBtoCIELab(
+  r: number,
+  g: number,
+  b: number
+): {
+  l: number;
+  a: number;
+  b: number;
+} {
   let xyz = RGBtoXYZ(r, g, b);
 
   let let_X = xyz.x / 95.047; // ref
@@ -214,7 +269,15 @@ export function RGBtoCIELab(r, g, b) {
   };
 }
 
-export function CIELabToXYZ(l, a, b) {
+export function CIELabToXYZ(
+  l: number,
+  a: number,
+  b: number
+): {
+  x: number;
+  y: number;
+  z: number;
+} {
   let let_Y = (l + 16) / 116;
   let let_X = a / 500 + let_Y;
   let let_Z = let_Y - b / 200;
@@ -244,7 +307,15 @@ export function CIELabToXYZ(l, a, b) {
   };
 }
 
-export function CIELabToRGB(l, a, b) {
+export function CIELabToRGB(
+  l: number,
+  a: number,
+  b: number
+): {
+  r: number;
+  g: number;
+  b: number;
+} {
   let xyz = CIELabToXYZ(l, a, b);
 
   let let_X = xyz.x / 100;

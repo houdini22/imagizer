@@ -1,8 +1,16 @@
-let parameters = {},
-  isInit = false;
+const parameters: {
+  B?: number;
+  BM?: number;
+  N?: number;
+  P?: any[];
+  G1?: any[];
+  G2?: any[];
+  G3?: any[];
+} = {};
+let isInit = false;
 
 let noise = {
-  init: function () {
+  init: function (): boolean {
     if (isInit) {
       return false;
     }
@@ -15,11 +23,11 @@ let noise = {
     parameters.P = new Array(parameters.B + parameters.B + 2);
     parameters.G1 = new Array(parameters.B + parameters.B + 2);
     parameters.G2 = new Array(parameters.B + parameters.B + 2);
-    for (i = 0; i < parameters.G2.length; i += 1) {
+    for (let i = 0; i < parameters.G2.length; i += 1) {
       parameters.G2[i] = new Array(2);
     }
     parameters.G3 = new Array(parameters.B + parameters.B + 2);
-    for (i = 0; i < parameters.G3.length; i += 1) {
+    for (let i = 0; i < parameters.G3.length; i += 1) {
       parameters.G3[i] = new Array(3);
     }
     let i, j, k;
@@ -63,33 +71,33 @@ let noise = {
       }
     }
   },
-  random: function () {
-    return parseInt(Math.random() * 256 * 256) & 0x7fffffff;
+  random: function (): number {
+    return ((Math.random() * 256 * 256) | 0) & 0x7fffffff;
   },
-  normalize2: function (arr) {
+  normalize2: function (arr: any[]): any[] {
     let s = Math.sqrt(arr[0] * arr[0] + arr[1] * arr[1] + arr[2] * arr[2]);
     arr[0] = arr[0] / s;
     arr[1] = arr[1] / s;
     arr[2] = arr[2] / s;
     return arr;
   },
-  normalize3: function (arr) {
+  normalize3: function (arr: any[]): any[] {
     let s = Math.sqrt(arr[0] * arr[0] + arr[1] * arr[1]);
     arr[0] = arr[0] / s;
     arr[1] = arr[1] / s;
     return arr;
   },
-  sCurve: function (t) {
+  sCurve: function (t: number): number {
     return t * t * (3.0 - 2.0 * t);
   },
-  lerp: function (t, a, b) {
+  lerp: function (t: number, a: number, b: number): number {
     return a + t * (b - a);
   },
   /**
    * Compute 1-dimensional Perlin noise.
    * @param x
    */
-  noise1: function (x) {
+  noise1: function (x: number): number {
     let bx0, bx1, rx0, rx1, sx, t, u, v;
 
     this.init();
@@ -113,7 +121,7 @@ let noise = {
    * @param y
    * @returns {number}
    */
-  noise2: function (x, y) {
+  noise2: function (x: number, y: number): number {
     let bx0,
       bx1,
       by0,
@@ -182,7 +190,7 @@ let noise = {
    * @param y
    * @param z
    */
-  noise3: function (x, y, z) {
+  noise3: function (x: number, y: number, z: number): number {
     let bx0,
       bx1,
       by0,
@@ -282,7 +290,7 @@ let noise = {
    * @param octaves
    * @returns {*}
    */
-  turbulence3: function (x, y, z, octaves) {
+  turbulence3: function (x: number, y: number, z: number, octaves): number {
     let t = 0,
       i;
     for (i = 1; i <= octaves; i *= 2) {

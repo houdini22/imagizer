@@ -1,5 +1,5 @@
 import { isBrowser } from "../helpers/common";
-import {NodeCanvasRenderingContext2D, Canvas} from 'canvas/types/index'
+import { NodeCanvasRenderingContext2D, Canvas } from "canvas/types/index";
 
 class CanvasWrapper {
   canvas: Canvas | HTMLCanvasElement = null;
@@ -56,7 +56,7 @@ class CanvasWrapper {
     return this.canvas;
   }
 
-  toDataURL(type: string = 'image/png') {
+  toDataURL(type: string = "image/png") {
     return this.canvas.toDataURL(type);
   }
 

@@ -202,7 +202,7 @@ var CanvasWrapper = /*#__PURE__*/function () {
   }, {
     key: "toDataURL",
     value: function toDataURL() {
-      var type = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 'image/png';
+      var type = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : "image/png";
       return this.canvas.toDataURL(type);
     }
   }, {
@@ -6807,10 +6807,11 @@ function mixColors(t, rgb1, rgb2) {
   };
 }
 function hexToRGB(hex) {
-  hex = parseInt(hex.replace("#", ""), 16);
-  var r = hex >> 16;
-  var g = hex >> 8 & 0xff;
-  var b = hex & 0xff;
+  var _hex = parseInt(hex.replace("#", ""), 16);
+
+  var r = _hex >> 16;
+  var g = _hex >> 8 & 0xff;
+  var b = _hex & 0xff;
   return {
     r: r,
     g: g,
@@ -7213,8 +7214,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-var parameters = {},
-    isInit = false;
+var parameters = {};
+var isInit = false;
 var noise = {
   init: function init() {
     if (isInit) {
@@ -7229,14 +7230,14 @@ var noise = {
     parameters.G1 = new Array(parameters.B + parameters.B + 2);
     parameters.G2 = new Array(parameters.B + parameters.B + 2);
 
-    for (i = 0; i < parameters.G2.length; i += 1) {
-      parameters.G2[i] = new Array(2);
+    for (var _i = 0; _i < parameters.G2.length; _i += 1) {
+      parameters.G2[_i] = new Array(2);
     }
 
     parameters.G3 = new Array(parameters.B + parameters.B + 2);
 
-    for (i = 0; i < parameters.G3.length; i += 1) {
-      parameters.G3[i] = new Array(3);
+    for (var _i2 = 0; _i2 < parameters.G3.length; _i2 += 1) {
+      parameters.G3[_i2] = new Array(3);
     }
 
     var i, j, k;
@@ -7280,7 +7281,7 @@ var noise = {
     }
   },
   random: function random() {
-    return parseInt(Math.random() * 256 * 256) & 0x7fffffff;
+    return (Math.random() * 256 * 256 | 0) & 0x7fffffff;
   },
   normalize2: function normalize2(arr) {
     var s = Math.sqrt(arr[0] * arr[0] + arr[1] * arr[1] + arr[2] * arr[2]);

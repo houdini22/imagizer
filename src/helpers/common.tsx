@@ -1,90 +1,90 @@
-let blendingModes = {
-  lighten: function (bottomPixel, topPixel) {
+const blendingModes = {
+  lighten: function (bottomPixel: number, topPixel: number): number {
     return topPixel > bottomPixel ? topPixel : bottomPixel;
   },
-  darken: function (bottomPixel, topPixel) {
+  darken: function (bottomPixel: number, topPixel: number): number {
     return topPixel > bottomPixel ? bottomPixel : topPixel;
   },
-  multiply: function (bottomPixel, topPixel) {
+  multiply: function (bottomPixel: number, topPixel: number): number {
     return (bottomPixel * topPixel) / 255;
   },
-  average: function (bottomPixel, topPixel) {
+  average: function (bottomPixel: number, topPixel: number): number {
     return bottomPixel + topPixel / 2;
   },
-  add: function (bottomPixel, topPixel) {
+  add: function (bottomPixel: number, topPixel: number): number {
     return Math.min(255, bottomPixel + topPixel);
   },
-  subtract: function (bottomPixel, topPixel) {
+  subtract: function (bottomPixel: number, topPixel: number): number {
     return bottomPixel + topPixel < 255 ? 0 : bottomPixel + topPixel - 255;
   },
-  difference: function (bottomPixel, topPixel) {
+  difference: function (bottomPixel: number, topPixel: number): number {
     return Math.abs(bottomPixel - topPixel);
   },
-  negation: function (bottomPixel, topPixel) {
+  negation: function (bottomPixel: number, topPixel: number): number {
     return 255 - Math.abs(255 - bottomPixel - topPixel);
   },
-  screen: function (bottomPixel, topPixel) {
+  screen: function (bottomPixel: number, topPixel: number): number {
     return 255 - (((255 - bottomPixel) * (255 - topPixel)) >> 8);
   },
-  exclusion: function (bottomPixel, topPixel) {
+  exclusion: function (bottomPixel: number, topPixel: number): number {
     return bottomPixel + topPixel - (2 * bottomPixel * topPixel) / 255;
   },
-  overlay: function (bottomPixel, topPixel) {
+  overlay: function (bottomPixel: number, topPixel: number): number {
     return topPixel < 128
       ? (2 * bottomPixel * topPixel) / 255
       : 255 - (2 * (255 - bottomPixel) * (255 - topPixel)) / 255;
   },
-  softLight: function (bottomPixel, topPixel) {
+  softLight: function (bottomPixel: number, topPixel: number): number {
     return topPixel < 128
       ? 2 * ((bottomPixel >> 1) + 64) * (topPixel / 255)
       : 255 - (2 * (255 - ((bottomPixel >> 1) + 64)) * (255 - topPixel)) / 255;
   },
-  hardLight: function (bottomPixel, topPixel) {
+  hardLight: function (bottomPixel: number, topPixel: number): number {
     return blendingModes.softLight(topPixel, bottomPixel);
   },
-  colorDodge: function (bottomPixel, topPixel) {
+  colorDodge: function (bottomPixel: number, topPixel: number): number {
     return topPixel === 255
       ? topPixel
       : Math.min(255, (bottomPixel << 8) / (255 - topPixel));
   },
-  colorBurn: function (bottomPixel, topPixel) {
+  colorBurn: function (bottomPixel: number, topPixel: number): number {
     return topPixel === 0
       ? topPixel
       : Math.max(0, 255 - ((255 - bottomPixel) << 8) / topPixel);
   },
-  linearDodge: function (bottomPixel, topPixel) {
+  linearDodge: function (bottomPixel: number, topPixel: number): number {
     return blendingModes.add(bottomPixel, topPixel);
   },
-  linearBurn: function (bottomPixel, topPixel) {
+  linearBurn: function (bottomPixel: number, topPixel: number): number {
     return blendingModes.subtract(bottomPixel, topPixel);
   },
-  linearLight: function (bottomPixel, topPixel) {
+  linearLight: function (bottomPixel: number, topPixel: number): number {
     return topPixel < 128
       ? blendingModes.linearBurn(bottomPixel, 2 * topPixel)
       : blendingModes.linearDodge(bottomPixel, 2 * (topPixel - 128));
   },
-  vividLight: function (bottomPixel, topPixel) {
+  vividLight: function (bottomPixel: number, topPixel: number): number {
     return topPixel < 128
       ? blendingModes.colorBurn(bottomPixel, 2 * topPixel)
       : blendingModes.colorDodge(bottomPixel, 2 * (topPixel - 128));
   },
-  pinLight: function (bottomPixel, topPixel) {
+  pinLight: function (bottomPixel: number, topPixel: number): number {
     return topPixel < 128
       ? blendingModes.darken(bottomPixel, 2 * topPixel)
       : blendingModes.lighten(bottomPixel, 2 * (topPixel - 128));
   },
-  hardMix: function (bottomPixel, topPixel) {
+  hardMix: function (bottomPixel: number, topPixel: number): number {
     return blendingModes.vividLight(bottomPixel, topPixel) < 128 ? 0 : 255;
   },
-  reflect: function (bottomPixel, topPixel) {
+  reflect: function (bottomPixel: number, topPixel: number): number {
     return topPixel === 255
       ? topPixel
       : Math.min(255, (bottomPixel * bottomPixel) / (255 - topPixel));
   },
-  glow: function (bottomPixel, topPixel) {
+  glow: function (bottomPixel: number, topPixel: number): number {
     return blendingModes.reflect(topPixel, bottomPixel);
   },
-  phoenix: function (bottomPixel, topPixel) {
+  phoenix: function (bottomPixel: number, topPixel: number): number {
     return (
       Math.min(bottomPixel, topPixel) - Math.max(bottomPixel, topPixel) + 255
     );
@@ -142,7 +142,13 @@ export function mergeImageData(bottom, top, pixelCallback) {
   return bottom.imageData;
 }
 
-export function mergePixelCallback(bottomPixel, topPixel, x, y, parameters) {
+export function mergePixelCallback(
+  bottomPixel: { r: number; g: number; b: number; a: number },
+  topPixel: { r: number; g: number; b: number; a: number },
+  x: number,
+  y: number,
+  parameters: { blendingMode: string }
+): { r: number; g: number; b: number; a: number } | boolean {
   if (topPixel.a === 0) {
     return false; // skip change - opacity is full
   }
@@ -219,13 +225,13 @@ export function mergePixelCallback(bottomPixel, topPixel, x, y, parameters) {
 }
 
 export function cropImageData(
-  oldImageData,
-  newImageData,
-  startX,
-  startY,
-  width,
-  height
-) {
+  oldImageData: ImageData,
+  newImageData: ImageData,
+  startX: number,
+  startY: number,
+  width: number,
+  height: number
+): ImageData {
   let oldWidth = oldImageData.width,
     newWidth = newImageData.width,
     x,
@@ -262,7 +268,7 @@ export function cropImageData(
   return newImageData;
 }
 
-export function mod(a, b) {
+export function mod(a: number, b: number): number {
   let n = Math.floor(a / b);
   a -= n * b;
   if (a < 0) {
@@ -271,12 +277,12 @@ export function mod(a, b) {
   return a;
 }
 
-export function triangle(x) {
+export function triangle(x: number) {
   let r = mod(x, 1);
   return 2 * (r < 0.5 ? r : 1 - r);
 }
 
-export function smoothStep(a, b, x) {
+export function smoothStep(a: number, b: number, x: number): number {
   if (x < a) {
     return 0;
   }
@@ -287,10 +293,10 @@ export function smoothStep(a, b, x) {
   return x * x * (3 - 2 * x);
 }
 
-export function brightness(pixel) {
+export function brightness(pixel: { r: number; g: number; b: number }) {
   return (pixel.r + pixel.g + pixel.b) / 3;
 }
 
-export function isBrowser() {
+export function isBrowser(): boolean {
   return typeof window !== "undefined";
 }

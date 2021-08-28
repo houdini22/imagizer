@@ -1,9 +1,9 @@
 export function resizeNearestNeighbour(
-  oldImageData,
-  newImageData,
-  newWidth,
-  newHeight
-) {
+  oldImageData: ImageData,
+  newImageData: ImageData,
+  newWidth: number,
+  newHeight: number
+): ImageData {
   let oldWidth = oldImageData.width,
     oldHeight = oldImageData.height,
     ratioX = oldWidth / newWidth,
@@ -34,11 +34,11 @@ export function resizeNearestNeighbour(
 }
 
 export function resizeBilinearInterpolation(
-  oldImageData,
-  newImageData,
-  newWidth,
-  newHeight
-) {
+  oldImageData: ImageData,
+  newImageData: ImageData,
+  newWidth: number,
+  newHeight: number
+): ImageData {
   let oldWidth = oldImageData.width,
     oldHeight = oldImageData.height,
     ratioX = oldWidth / newWidth,
@@ -118,11 +118,11 @@ export function resizeBilinearInterpolation(
 }
 
 export function resizeBiquadraticInterpolation(
-  oldImageData,
-  newImageData,
-  newWidth,
-  newHeight
-) {
+  oldImageData: ImageData,
+  newImageData: ImageData,
+  newWidth: number,
+  newHeight: number
+): ImageData {
   let interpolate = function interpolate(f1, f2, f3, d) {
       return f2 + (f3 - f1) * d + (f1 - 2 * f2 + f3) * d * d;
     },
