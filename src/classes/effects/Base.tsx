@@ -13,7 +13,7 @@ class BaseEffect {
     parameters: object,
     width: number,
     height: number,
-    imageData: any
+    imageData: ImageData
   ): object {
     return {};
   }
