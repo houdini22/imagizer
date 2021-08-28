@@ -1,4 +1,6 @@
 class BaseEffect {
+  opts = {};
+
   constructor(opts = {}) {
     this.opts = opts;
   }

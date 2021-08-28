@@ -5,6 +5,11 @@ class EdgeEffect extends BasePointEffect {
     return "edge";
   }
 
+  data = {
+    hEdgeMatrix: [],
+    vEdgeMatrix: [],
+  };
+
   getDefaultParameters() {
     return {
       matrixes: {

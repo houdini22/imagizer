@@ -6,6 +6,18 @@ class PerspectiveEffect extends BaseTransformEffect {
     return "perspective";
   }
 
+  data = {
+    A: 0,
+    B: 0,
+    C: 0,
+    D: 0,
+    E: 0,
+    F: 0,
+    G: 0,
+    H: 0,
+    I: 0,
+  };
+
   getDefaultParameters() {
     return {
       x0: 0,
@@ -21,7 +33,26 @@ class PerspectiveEffect extends BaseTransformEffect {
 
   before(parameters, width, height, imageData) {
     function unitSquareToQuad() {
-      let result = {},
+      let result = {
+          a11: 0,
+          a21: 0,
+          a31: 0,
+          a12: 0,
+          a22: 0,
+          a32: 0,
+          a13: 0,
+          a23: 0,
+          a33: 0,
+          A: 0,
+          B: 0,
+          C: 0,
+          D: 0,
+          E: 0,
+          F: 0,
+          G: 0,
+          H: 0,
+          I: 0,
+        },
         x0 = Math.floor(width * parameters.x0),
         y0 = Math.floor(height * parameters.y0),
         x1 = Math.floor(width * parameters.x1),

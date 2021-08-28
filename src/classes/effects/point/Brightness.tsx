@@ -5,6 +5,10 @@ class BrightnessEffect extends BasePointEffect {
     return "brightness";
   }
 
+  data = {
+    brightness: 0,
+  };
+
   getDefaultParameters() {
     return {
       brightness: 0.5,

@@ -5,6 +5,13 @@ class PolarEffect extends BaseTransformEffect {
     return "polar";
   }
 
+  data = {
+    centreX: 0,
+    centreY: 0,
+    sqr: (value: number) => 0,
+    radius: 0,
+  };
+
   getDefaultParameters() {
     return {
       type: "RECT_TO_POLAR", // RECT_TO_POLAR, POLAR_TO_RECT, INVERT_IN_CIRCLE

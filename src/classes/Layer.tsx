@@ -4,11 +4,35 @@ import { mergeImageData, mergePixelCallback } from "../helpers/common";
 import EffectsRepository from "./EffectsRepository";
 
 class Layer {
-  constructor(width, height, parameters = {}) {
-    this.objects = [];
-    this.effects = [];
-    this.x = 0;
-    this.y = 0;
+  objects = [];
+
+  effects = [];
+
+  x = 0;
+
+  y = 0;
+
+  canvas = null;
+
+  imageData = null;
+
+  width = 0;
+
+  height = 0;
+
+  parameters = {
+    background_color: "",
+    blendingMode: "",
+  };
+
+  constructor(
+    width,
+    height,
+    parameters = {
+      background_color: "transparent",
+      blendingMode: "",
+    }
+  ) {
     this.initialize(width, height, parameters);
 
     if (
@@ -35,7 +59,7 @@ class Layer {
     return put;
   }
 
-  exportTo(selector, imageType = "image/png") {
+  /*exportTo(selector, imageType = "image/png") {
     this.exportLayer();
 
     let container = document.querySelector(selector),
@@ -43,7 +67,7 @@ class Layer {
 
     exportedImage.src = canvas.toDataURL(imageType);
     container.appendChild(exportedImage);
-  }
+  }*/
 
   exportLayer() {
     let i, layerObject;

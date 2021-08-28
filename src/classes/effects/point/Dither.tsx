@@ -5,6 +5,14 @@ class DitherEffect extends BasePointEffect {
     return "dither";
   }
 
+  data: {
+    cols: 0;
+    rows: 0;
+    map: {};
+    mod: {};
+    div: {};
+  };
+
   getDefaultParameters() {
     return {
       matrices: {
@@ -102,8 +110,8 @@ class DitherEffect extends BasePointEffect {
     }
 
     for (i = 0; i < 256; i += 1) {
-      div[i] = parseInt(((parameters.levels - 1) * i) / 256);
-      mod[i] = parseInt((i * (rows * cols + 1)) / 256);
+      div[i] = (((parameters.levels - 1) * i) / 256) | 0;
+      mod[i] = ((i * (rows * cols + 1)) / 256) | 0;
     }
 
     return {
@@ -123,7 +131,7 @@ class DitherEffect extends BasePointEffect {
       red = pixel.r,
       green = pixel.g,
       blue = pixel.b,
-      result = { a: pixel.a },
+      result = { a: pixel.a, r: 0, g: 0, b: 0 },
       value;
 
     if (parameters.colorDither) {

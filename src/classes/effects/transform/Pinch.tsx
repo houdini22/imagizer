@@ -5,6 +5,12 @@ class PinchEffect extends BaseTransformEffect {
     return "pinch";
   }
 
+  data = {
+    icentreX: 0,
+    icentreY: 0,
+    radius2: 0,
+  };
+
   getDefaultParameters() {
     return {
       angle: 0,

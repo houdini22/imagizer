@@ -6,6 +6,11 @@ class DissolveEffect extends BasePointEffect {
     return "dissolve";
   }
 
+  data = {
+    minDensity: 0,
+    maxDensity: 0,
+  };
+
   getDefaultParameters() {
     return {
       density: 1,

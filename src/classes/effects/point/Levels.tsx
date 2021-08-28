@@ -5,6 +5,14 @@ class LevelsEffect extends BasePointEffect {
     return "levels";
   }
 
+  data = {
+    lut: {
+      0: {},
+      1: {},
+      2: {},
+    },
+  };
+
   getDefaultParameters() {
     return {
       low: 0,

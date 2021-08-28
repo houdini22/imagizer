@@ -8,11 +8,23 @@ import {
 import EffectsRepository from "./EffectsRepository";
 
 class Project {
+  imageData = null;
+
+  effects = [];
+
+  layers = [];
+
+  startTime = new Date();
+
+  parameters = {};
+
+  width = 0;
+
+  height = 0;
+
+  canvas = null;
+
   constructor(width, height, parameters = {}) {
-    this.imageData = null;
-    this.effects = [];
-    this.layers = [];
-    this.startTime = new Date();
     this.initialize(width, height, parameters);
   }
 

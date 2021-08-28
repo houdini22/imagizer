@@ -6,6 +6,12 @@ class WaterEffect extends BaseTransformEffect {
     return "water";
   }
 
+  data = {
+    iCentreX: 0,
+    iCentreY: 0,
+    radius2: 0,
+  };
+
   getDefaultParameters() {
     return {
       waveLength: 16,

@@ -5,6 +5,12 @@ class AutoContrastEffect extends BasePointEffect {
     return "auto-contrast";
   }
 
+  data = {
+    remap: (value, min, max) => 0,
+    min: 0,
+    max: 0,
+  };
+
   before(parameters, width, height) {
     let x,
       y,

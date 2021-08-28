@@ -5,6 +5,15 @@ class SphereEffect extends BaseTransformEffect {
     return "sphere";
   }
 
+  data = {
+    icentreX: 0,
+    icentreY: 0,
+    a2: 0,
+    b2: 0,
+    a: 0,
+    b: 0,
+  };
+
   getDefaultParameters() {
     return {
       a: 0,

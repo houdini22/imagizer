@@ -6,6 +6,12 @@ class MarbleEffect extends BaseTransformEffect {
     return "marble";
   }
 
+  data = {
+    sinTable: {},
+    cosTable: {},
+    displacementMap: (x: number, y: number) => 0,
+  };
+
   getDefaultParameters() {
     return {
       xScale: 4,

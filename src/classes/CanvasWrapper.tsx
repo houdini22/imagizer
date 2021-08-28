@@ -1,11 +1,15 @@
 import { isBrowser } from "../helpers/common";
 
 class CanvasWrapper {
+  canvas = null;
+
+  context = null;
+
+  width = 0;
+
+  height = 0;
+
   constructor(width, height) {
-    this.canvas = null;
-    this.context = null;
-    this.width = 0;
-    this.height = 0;
     this.initialize(width, height);
   }
 

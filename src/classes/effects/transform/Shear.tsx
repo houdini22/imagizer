@@ -5,6 +5,11 @@ class ShearEffect extends BaseTransformEffect {
     return "shear";
   }
 
+  data = {
+    shx: 0,
+    shy: 0,
+  };
+
   getDefaultParameters() {
     return {
       xAngle: 0,

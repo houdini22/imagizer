@@ -5,6 +5,13 @@ class RotateEffect extends BaseTransformEffect {
     return "rotate";
   }
 
+  data = {
+    sin: 0,
+    cos: 0,
+    icentreX: 0,
+    icentreY: 0,
+  };
+
   getDefaultParameters() {
     return {
       angle: Math.PI,

@@ -6,6 +6,11 @@ class TwirlEffect extends BaseTransformEffect {
     return "twirl";
   }
 
+  data = {
+    iCentreX: 0,
+    iCentreY: 0,
+  };
+
   getDefaultParameters() {
     return {
       angle: 0,

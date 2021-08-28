@@ -6,6 +6,13 @@ class SwimEffect extends BaseTransformEffect {
     return "swim";
   }
 
+  data = {
+    m00: 0,
+    m01: 0,
+    m10: 0,
+    m11: 0,
+  };
+
   getDefaultParameters() {
     return {
       scale: 32,

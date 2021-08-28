@@ -5,6 +5,13 @@ class BorderEffect extends BaseCustomEffect {
     return "border";
   }
 
+  data = {
+    leftBorder: 0,
+    rightBorder: 0,
+    topBorder: 0,
+    bottomBorder: 0,
+  };
+
   getDefaultParameters() {
     return {
       leftBorder: 10,

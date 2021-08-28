@@ -6,6 +6,11 @@ class KaleidoscopeEffect extends BaseTransformEffect {
     return "kaleidoscope";
   }
 
+  data = {
+    icentreX: 0,
+    icentreY: 0,
+  };
+
   getDefaultParameters() {
     return {
       centreX: 0.5,

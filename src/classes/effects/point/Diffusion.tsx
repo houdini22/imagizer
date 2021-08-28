@@ -5,6 +5,12 @@ class DiffusionEffect extends BasePointEffect {
     return "diffusion";
   }
 
+  data = {
+    map: {},
+    div: {},
+    sum: 0,
+  };
+
   getDefaultParameters() {
     return {
       matrix: [0, 0, 0, 0, 0, 7, 3, 5, 1],
@@ -14,7 +20,7 @@ class DiffusionEffect extends BasePointEffect {
     };
   }
 
-  before(parameters, width, height, imageData) {
+  before(parameters = { levels: 0, matrix: [] }, width, height, imageData) {
     let i,
       sum = 0,
       map = [],
@@ -25,11 +31,11 @@ class DiffusionEffect extends BasePointEffect {
     }
 
     for (i = 0; i < parameters.levels; i += 1) {
-      map[i] = parseInt((255 * i) / (parameters.levels - 1));
+      map[i] = ((255 * i) / (parameters.levels - 1)) | 0;
     }
 
     for (i = 0; i < 256; i += 1) {
-      div[i] = parseInt((parameters.levels * i) / 256);
+      div[i] = ((parameters.levels * i) / 256) | 0;
     }
 
     return {

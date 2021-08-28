@@ -5,6 +5,10 @@ class ContrastEffect extends BasePointEffect {
     return "contrast";
   }
 
+  data = {
+    factor: 1,
+  };
+
   getDefaultParameters() {
     return {
       contrast: 0.5,

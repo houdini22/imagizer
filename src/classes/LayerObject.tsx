@@ -3,6 +3,18 @@ import { cropImageData } from "../helpers/common";
 import EffectsRepository from "./EffectsRepository";
 
 class LayerObject {
+  obj = null;
+
+  layer = null;
+
+  x = 0;
+
+  y = 0;
+
+  opts = {};
+
+  effects = [];
+
   constructor(obj, layer, x, y, opts) {
     this.obj = obj;
     this.layer = this;

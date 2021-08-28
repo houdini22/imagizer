@@ -6,6 +6,10 @@ class TritoneEffect extends BasePointEffect {
     return "tritone";
   }
 
+  data = {
+    lut: {},
+  };
+
   getDefaultParameters() {
     return {
       shadowColor: {
