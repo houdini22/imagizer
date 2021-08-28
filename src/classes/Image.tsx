@@ -24,7 +24,7 @@ class Image extends BaseOnLayerObject {
     }
   }
 
-  load(url: string, callback: () => void) {
+  load(url: string, callback: () => void): void {
     const load = () => {
       this.setWidth(!isBrowser() ? this.image.width : this.image.clientWidth);
       this.setHeight(

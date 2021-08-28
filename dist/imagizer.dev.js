@@ -622,7 +622,7 @@ var Layer = /*#__PURE__*/function () {
       }
 
       for (var _i = 0; _i < this.effects.length; _i++) {
-        this.imageData = this.effects[_i].effect.run(this.imageData, this.effects[_i].params);
+        this.imageData = this.effects[_i].effect.run(this.imageData, this.effects[_i].parameters);
       }
 
       return this.imageData;
@@ -635,6 +635,7 @@ var Layer = /*#__PURE__*/function () {
         effect: new (_EffectsRepository__WEBPACK_IMPORTED_MODULE_3__.default.get(name))(),
         parameters: parameters
       });
+      return this;
     }
   }, {
     key: "resize",
@@ -694,6 +695,7 @@ var Layer = /*#__PURE__*/function () {
     key: "setBlendingMode",
     value: function setBlendingMode(blendingMode) {
       this.parameters.blendingMode = blendingMode;
+      return this;
     }
   }, {
     key: "getX",
@@ -822,6 +824,7 @@ var LayerObject = /*#__PURE__*/function () {
         effect: new (_EffectsRepository__WEBPACK_IMPORTED_MODULE_2__.default.get(name))(),
         parameters: parameters
       });
+      return this;
     }
   }, {
     key: "moveXY",
@@ -1056,6 +1059,7 @@ var Project = /*#__PURE__*/function () {
         effect: new (_EffectsRepository__WEBPACK_IMPORTED_MODULE_3__.default.get(name))(),
         parameters: parameters
       });
+      return this;
     }
   }, {
     key: "resize",

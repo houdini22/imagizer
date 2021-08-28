@@ -6,11 +6,18 @@ import {
   isBrowser,
 } from "../helpers/common";
 import EffectsRepository from "./EffectsRepository";
+import BaseEffect from "./effects/Base";
+
+interface EffectType {
+  name: string;
+  effect: BaseEffect[];
+  parameters: object;
+}
 
 class Project {
   imageData: ImageData = null;
 
-  effects = [];
+  effects: EffectType[] = [];
 
   layers: Layer[] = [];
 
@@ -28,7 +35,7 @@ class Project {
     this.initialize(width, height, parameters);
   }
 
-  initialize(width: number, height: number, parameters: object = {}) {
+  initialize(width: number, height: number, parameters: object = {}): void {
     this.parameters = parameters;
     this.width = width;
     this.height = height;
@@ -41,18 +48,18 @@ class Project {
       background_color?: string;
       blendingMode?: string;
     } = { background_color: "", blendingMode: "" }
-  ) {
+  ): Layer {
     let layer = new Layer(this.width, this.height, parameters);
     this.layers.push(layer);
     return layer;
   }
 
-  getTime() {
+  getTime(): number {
     let end = new Date();
     return end.getTime() - this.startTime.getTime();
   }
 
-  save(path: string, imageType: string = "image/png") {
+  save(path: string, imageType: string = "image/png"): void {
     if (isBrowser()) {
       throw new Error("Available only in node.js environment");
     }
@@ -93,7 +100,7 @@ class Project {
     fs.writeFileSync(path, buff);
   }
 
-  render(imageType: string = "image/png") {
+  render(imageType: string = "image/png"): HTMLImageElement {
     if (!isBrowser()) {
       throw new Error("Available only in browser environment");
     }
@@ -132,15 +139,16 @@ class Project {
     return exportedImage;
   }
 
-  applyEffect(name: string, parameters: object = {}) {
+  applyEffect(name: string, parameters: object = {}): Project {
     this.effects.push({
       name,
       effect: new (EffectsRepository.get(name))(),
       parameters,
     });
+    return this;
   }
 
-  resize(newWidth: number, newHeight: number, mode: string) {
+  resize(newWidth: number, newHeight: number, mode: string): Project {
     this.canvas.destroy();
     this.canvas = null;
     this.imageData = null;

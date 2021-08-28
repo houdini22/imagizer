@@ -7,7 +7,7 @@ import Layer from "./Layer";
 class LayerObject {
   obj: Image = null;
 
-  layer = null;
+  layer: Layer = null;
 
   x: number = 0;
 
@@ -25,27 +25,27 @@ class LayerObject {
     this.opts = opts;
   }
 
-  getObject() {
+  getObject(): Image {
     return this.obj;
   }
 
-  getX() {
+  getX(): number {
     return this.x;
   }
 
-  getY() {
+  getY(): number {
     return this.y;
   }
 
-  getWidth() {
+  getWidth(): number {
     return this.obj.getWidth();
   }
 
-  getHeight() {
+  getHeight(): number {
     return this.obj.getHeight();
   }
 
-  exportObject() {
+  exportObject(): ImageData {
     let imageData = this.obj.getImageData();
     for (let i = 0; i < this.effects.length; i += 1) {
       imageData = this.effects[i].effect.run(imageData, this.effects[i].params);
@@ -53,42 +53,43 @@ class LayerObject {
     return imageData;
   }
 
-  applyEffect(name: string, parameters: object = {}) {
+  applyEffect(name: string, parameters: object = {}): LayerObject {
     this.effects.push({
       name,
       effect: new (EffectsRepository.get(name))(),
       parameters,
     });
+    return this;
   }
 
-  moveXY(x: number, y: number) {
+  moveXY(x: number, y: number): LayerObject {
     this.moveX(x);
     this.moveY(y);
     return this;
   }
 
-  moveX(x: number) {
+  moveX(x: number): LayerObject {
     this.x += x | 0;
     return this;
   }
 
-  moveY(y: number) {
+  moveY(y: number): LayerObject {
     this.y += y | 0;
     return this;
   }
 
-  setXY(x: number, y: number) {
+  setXY(x: number, y: number): LayerObject {
     this.setX(x);
     this.setY(y);
     return this;
   }
 
-  setX(x: number) {
+  setX(x: number): LayerObject {
     this.x = x;
     return this;
   }
 
-  setY(y: number) {
+  setY(y: number): LayerObject {
     this.y = y;
     return this;
   }
@@ -98,7 +99,7 @@ class LayerObject {
     newHeight: number,
     mode: string,
     isLayerResize: boolean
-  ) {
+  ): LayerObject {
     const oldWidth = this.getWidth(),
       oldHeight = this.getHeight(),
       ratioX = newWidth / oldWidth,
@@ -113,7 +114,12 @@ class LayerObject {
     return this;
   }
 
-  crop(startX: number, startY: number, width: number, height: number) {
+  crop(
+    startX: number,
+    startY: number,
+    width: number,
+    height: number
+  ): LayerObject {
     const object = this.getObject(),
       oldImageData = object.getImageData(),
       canvas = new CanvasWrapper(width, height),

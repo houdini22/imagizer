@@ -14,7 +14,7 @@ class CanvasWrapper {
     this.initialize(width, height);
   }
 
-  initialize(width: number = 0, height: number = 0) {
+  initialize(width: number = 0, height: number = 0): void {
     if (!isBrowser()) {
       const { createCanvas } = require("canvas");
       this.canvas = createCanvas(width, height);
@@ -33,34 +33,34 @@ class CanvasWrapper {
     }
   }
 
-  setWidth(value: number) {
+  setWidth(value: number): CanvasWrapper {
     this.canvas.setAttribute("width", "" + value);
     this.width = value;
     return this;
   }
 
-  setHeight(value: number) {
+  setHeight(value: number): CanvasWrapper {
     this.canvas.setAttribute("height", "" + value);
     this.height = value;
     return this;
   }
 
-  getContext() {
+  getContext(): NodeCanvasRenderingContext2D | RenderingContext {
     if (!this.context) {
       this.context = this.canvas.getContext("2d");
     }
     return this.context;
   }
 
-  getCanvas() {
+  getCanvas(): Canvas | HTMLCanvasElement {
     return this.canvas;
   }
 
-  toDataURL(type: string = "image/png") {
+  toDataURL(type: string = "image/png"): string {
     return this.canvas.toDataURL(type);
   }
 
-  destroy() {
+  destroy(): void {
     if (isBrowser()) {
       document.body.removeChild(this.canvas);
     }

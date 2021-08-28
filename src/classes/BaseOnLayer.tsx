@@ -6,33 +6,33 @@ import {
 } from "../helpers/resize";
 
 class BaseOnLayerObject {
-  imageData = null;
+  imageData: ImageData = null;
 
-  canvas = null;
+  canvas: CanvasWrapper = null;
 
   width: number = 0;
 
   height: number = 0;
 
-  getWidth() {
+  getWidth(): number {
     return this.width;
   }
 
-  getHeight() {
+  getHeight(): number {
     return this.height;
   }
 
-  setWidth(value: number) {
+  setWidth(value: number): BaseOnLayerObject {
     this.width = value;
     return this;
   }
 
-  setHeight(value: number) {
+  setHeight(value: number): BaseOnLayerObject {
     this.height = value;
     return this;
   }
 
-  getImageData() {
+  getImageData(): ImageData {
     if (!this.imageData) {
       this.imageData = this.canvas
         .getContext()
@@ -41,7 +41,7 @@ class BaseOnLayerObject {
     return this.imageData;
   }
 
-  setImageData(value: ImageData) {
+  setImageData(value: ImageData): BaseOnLayerObject {
     this.imageData = value;
     return this;
   }
@@ -50,7 +50,7 @@ class BaseOnLayerObject {
     newWidth: number,
     newHeight: number,
     mode: string = "nearest-neighbour"
-  ) {
+  ): BaseOnLayerObject {
     const oldImageData = this.getImageData(),
       canvas = new CanvasWrapper(newWidth, newHeight);
     let newImageData = canvas.getContext().createImageData(newWidth, newHeight);

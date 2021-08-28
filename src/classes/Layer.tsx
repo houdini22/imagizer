@@ -2,11 +2,18 @@ import CanvasWrapper from "./CanvasWrapper";
 import LayerObject from "./LayerObject";
 import { mergeImageData, mergePixelCallback } from "../helpers/common";
 import EffectsRepository from "./EffectsRepository";
+import BaseEffect from "./effects/Base";
+
+interface EffectType {
+  name: string;
+  effect: BaseEffect[];
+  parameters: object;
+}
 
 class Layer {
-  objects = [];
+  objects: LayerObject[] = [];
 
-  effects = [];
+  effects: EffectType[] = [];
 
   x: number = 0;
 
@@ -51,7 +58,7 @@ class Layer {
     }
   }
 
-  initialize(width: number, height: number, parameters) {
+  initialize(width: number, height: number, parameters): void {
     this.canvas = new CanvasWrapper(width, height);
     this.imageData = this.canvas.getContext().createImageData(width, height);
     this.width = width;
@@ -59,13 +66,13 @@ class Layer {
     this.parameters = parameters;
   }
 
-  put(obj: any, x: number, y: number) {
+  put(obj: any, x: number, y: number): LayerObject {
     const put = new LayerObject(obj, this, x, y, {});
     this.objects.push(put);
     return put;
   }
 
-  exportLayer() {
+  exportLayer(): ImageData {
     for (let i = 0; i < this.objects.length; i += 1) {
       const layerObject = this.objects[i];
       this.imageData = mergeImageData(
@@ -88,22 +95,23 @@ class Layer {
     for (let i = 0; i < this.effects.length; i++) {
       this.imageData = this.effects[i].effect.run(
         this.imageData,
-        this.effects[i].params
+        this.effects[i].parameters
       );
     }
 
     return this.imageData;
   }
 
-  applyEffect(name: string, parameters) {
+  applyEffect(name: string, parameters: object): Layer {
     this.effects.push({
       name,
       effect: new (EffectsRepository.get(name))(),
       parameters,
     });
+    return this;
   }
 
-  resize(newWidth: number, newHeight: number, mode: string) {
+  resize(newWidth: number, newHeight: number, mode: string): Layer {
     this.canvas.destroy();
     this.canvas = null;
     this.imageData = null;
@@ -117,7 +125,7 @@ class Layer {
     return this;
   }
 
-  crop(startX: number, startY: number, width: number, height: number) {
+  crop(startX: number, startY: number, width: number, height: number): Layer {
     for (let i = 0; i < this.objects.length; i += 1) {
       this.objects[i].crop(startX, startY, width, height);
     }
@@ -125,53 +133,54 @@ class Layer {
     return this;
   }
 
-  moveXY(x: number, y: number) {
+  moveXY(x: number, y: number): Layer {
     this.moveX(x);
     this.moveY(y);
     return this;
   }
 
-  moveX(x: number) {
+  moveX(x: number): Layer {
     this.x += x | 0;
     return this;
   }
 
-  moveY(y: number) {
+  moveY(y: number): Layer {
     this.y += y | 0;
     return this;
   }
 
-  setX(x: number) {
+  setX(x: number): Layer {
     this.x = x;
     return this;
   }
 
-  setY(y: number) {
+  setY(y: number): Layer {
     this.y = y;
     return this;
   }
 
-  setBlendingMode(blendingMode: string) {
+  setBlendingMode(blendingMode: string): Layer {
     this.parameters.blendingMode = blendingMode;
+    return this;
   }
 
-  getX() {
+  getX(): number {
     return this.x;
   }
 
-  getY() {
+  getY(): number {
     return this.y;
   }
 
-  getWidth() {
+  getWidth(): number {
     return this.width;
   }
 
-  getHeight() {
+  getHeight(): number {
     return this.height;
   }
 
-  getParameter(name: string) {
+  getParameter(name: string): any {
     return this.parameters[name];
   }
 }
