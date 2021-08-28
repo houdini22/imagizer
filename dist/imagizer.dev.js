@@ -1202,7 +1202,7 @@ var BaseCustomEffect = /*#__PURE__*/function (_BaseEffect) {
        * Get ImageData array index from x and y position
        * @param x
        * @param y
-       * @returns {number}
+       * @returns {Number}
        */
       getIndex = function getIndex(x, y) {
         return y * imageData.width * 4 + x * 4;
@@ -1263,7 +1263,7 @@ var BaseCustomEffect = /*#__PURE__*/function (_BaseEffect) {
          * Set new pixel
          * @param {int} x
          * @param {int} y
-         * @param {object} rgba
+         * @param {Object} rgba
          */
         setPixel: function setPixel(x, y, rgba) {
           var index = getIndex(x, y);
@@ -5175,10 +5175,9 @@ var MarbleEffect = /*#__PURE__*/function (_BaseTransformEffect) {
     value: function before(parameters, width, height, imageData) {
       var sinTable = new Array(256),
           cosTable = new Array(256),
-          i = 0,
           angle;
 
-      for (i = 0; i < 256; i += 1) {
+      for (var i = 0; i < 256; i += 1) {
         angle = Math.PI * 2 * i / 256 * parameters.turbulence;
         sinTable[i] = -parameters.yScale * Math.sin(angle);
         cosTable[i] = parameters.yScale * Math.cos(angle);
@@ -5522,7 +5521,8 @@ var PinchEffect = /*#__PURE__*/function (_BaseTransformEffect) {
     _defineProperty(_assertThisInitialized(_this), "data", {
       icentreX: 0,
       icentreY: 0,
-      radius2: 0
+      radius2: 0,
+      radius: 0
     });
 
     return _this;

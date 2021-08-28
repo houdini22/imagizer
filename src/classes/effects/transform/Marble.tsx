@@ -42,10 +42,9 @@ class MarbleEffect extends BaseTransformEffect {
   ): BeforeData {
     let sinTable = new Array(256),
       cosTable = new Array(256),
-      i = 0,
       angle;
 
-    for (i = 0; i < 256; i += 1) {
+    for (let i = 0; i < 256; i += 1) {
       angle = ((Math.PI * 2 * i) / 256) * parameters.turbulence;
       sinTable[i] = -parameters.yScale * Math.sin(angle);
       cosTable[i] = parameters.yScale * Math.cos(angle);

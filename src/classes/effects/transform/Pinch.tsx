@@ -24,6 +24,7 @@ class PinchEffect extends BaseTransformEffect {
     icentreX: 0,
     icentreY: 0,
     radius2: 0,
+    radius: 0,
   };
 
   getDefaultParameters(): Parameters {

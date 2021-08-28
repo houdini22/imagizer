@@ -6,7 +6,6 @@ import {
   isBrowser,
 } from "../helpers/common";
 import EffectsRepository from "./EffectsRepository";
-import BaseEffect from "./effects/Base";
 
 class Project {
   imageData: ImageData = null;

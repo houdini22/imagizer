@@ -16,7 +16,7 @@ class BaseCustomEffect extends BaseEffect {
        * Get ImageData array index from x and y position
        * @param x
        * @param y
-       * @returns {number}
+       * @returns {Number}
        */
       getIndex = function getIndex(x, y) {
         return y * imageData.width * 4 + x * 4;
@@ -94,7 +94,7 @@ class BaseCustomEffect extends BaseEffect {
          * Set new pixel
          * @param {int} x
          * @param {int} y
-         * @param {object} rgba
+         * @param {Object} rgba
          */
         setPixel: function (
           x: number,
