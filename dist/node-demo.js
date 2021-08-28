@@ -7658,6 +7658,30 @@ function resizeBiquadraticInterpolation(oldImageData, newImageData, newWidth, ne
 
 /***/ }),
 
+/***/ "./src/main.tsx":
+/*!**********************!*\
+  !*** ./src/main.tsx ***!
+  \**********************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "Project": () => (/* reexport safe */ _classes_Project__WEBPACK_IMPORTED_MODULE_0__.default),
+/* harmony export */   "Image": () => (/* reexport safe */ _classes_Image__WEBPACK_IMPORTED_MODULE_1__.default),
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _classes_Project__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./classes/Project */ "./src/classes/Project.tsx");
+/* harmony import */ var _classes_Image__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./classes/Image */ "./src/classes/Image.tsx");
+
+
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  Project: _classes_Project__WEBPACK_IMPORTED_MODULE_0__.default,
+  Image: _classes_Image__WEBPACK_IMPORTED_MODULE_1__.default
+});
+
+/***/ }),
+
 /***/ "canvas":
 /*!*************************!*\
   !*** external "canvas" ***!
@@ -7737,27 +7761,27 @@ module.exports = require("fs");
 var __webpack_exports__ = {};
 // This entry need to be wrapped in an IIFE because it need to be isolated against other modules in the chunk.
 (() => {
-/*!**********************!*\
-  !*** ./src/main.tsx ***!
-  \**********************/
+/*!****************************!*\
+  !*** ./demo/node-demo.tsx ***!
+  \****************************/
 __webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "Project": () => (/* reexport safe */ _classes_Project__WEBPACK_IMPORTED_MODULE_0__.default),
-/* harmony export */   "Image": () => (/* reexport safe */ _classes_Image__WEBPACK_IMPORTED_MODULE_1__.default),
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
-/* harmony import */ var _classes_Project__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./classes/Project */ "./src/classes/Project.tsx");
-/* harmony import */ var _classes_Image__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./classes/Image */ "./src/classes/Image.tsx");
+/* harmony import */ var _src_main__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../src/main */ "./src/main.tsx");
 
-
-
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
-  Project: _classes_Project__WEBPACK_IMPORTED_MODULE_0__.default,
-  Image: _classes_Image__WEBPACK_IMPORTED_MODULE_1__.default
+var project = new _src_main__WEBPACK_IMPORTED_MODULE_0__.Project(500, 375);
+var layer1 = project.createLayer();
+var image1 = new _src_main__WEBPACK_IMPORTED_MODULE_0__.Image();
+image1.load('../demo/test.png', function () {
+  var obj = layer1.put(image1, 0, 0);
+  obj.applyEffect('edge');
+  obj.applyEffect('gray-scale');
+  obj.applyEffect('invert');
+  project.save('../demo/node_result.png');
 });
 })();
 
-exports.imagizer = __webpack_exports__;
+var __webpack_export_target__ = exports;
+for(var i in __webpack_exports__) __webpack_export_target__[i] = __webpack_exports__[i];
+if(__webpack_exports__.__esModule) Object.defineProperty(__webpack_export_target__, "__esModule", { value: true });
 /******/ })()
 ;
-//# sourceMappingURL=imagizer.dev.js.map
+//# sourceMappingURL=node-demo.js.map

@@ -18,7 +18,7 @@ class BaseCustomEffect extends BaseEffect {
       ...parameters,
     };
 
-    let imageDataCopy = new Uint8ClampedArray(imageData.data), // copy image data
+    const imageDataCopy = new Uint8ClampedArray(imageData.data), // copy image data
       /**
        * Get ImageData array index from x and y position
        * @param x
@@ -40,7 +40,7 @@ class BaseCustomEffect extends BaseEffect {
          * @returns {{r: *, g: *, b: *, a: *}}
          */
         getPixel: function (x, y) {
-          let index = getIndex(x, y);
+          const index = getIndex(x, y);
           return {
             r: imageDataCopy[index + 0],
             g: imageDataCopy[index + 1],
@@ -68,7 +68,7 @@ class BaseCustomEffect extends BaseEffect {
          * @returns {{r: *, g: *, b: *, a: *}}
          */
         getOriginalPixel: function (x, y) {
-          let index = getIndex(x, y);
+          const index = getIndex(x, y);
           return {
             r: imageData.data[index + 0],
             g: imageData.data[index + 1],
@@ -83,7 +83,7 @@ class BaseCustomEffect extends BaseEffect {
          * @param {object} rgba
          */
         setPixel: function (x, y, rgba) {
-          let index = getIndex(x, y);
+          const index = getIndex(x, y);
           imageDataCopy[index + 0] = normalizePixelValue(rgba.r);
           imageDataCopy[index + 1] = normalizePixelValue(rgba.g);
           imageDataCopy[index + 2] = normalizePixelValue(rgba.b);

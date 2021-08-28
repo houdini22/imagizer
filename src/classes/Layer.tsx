@@ -57,7 +57,7 @@ class Layer {
   }
 
   put(obj, x, y) {
-    let put = new LayerObject(obj, this, x, y, {});
+    const put = new LayerObject(obj, this, x, y, {});
     this.objects.push(put);
     return put;
   }
@@ -73,10 +73,8 @@ class Layer {
   }*/
 
   exportLayer() {
-    let i, layerObject;
-
-    for (i = 0; i < this.objects.length; i += 1) {
-      layerObject = this.objects[i];
+    for (let i = 0; i < this.objects.length; i += 1) {
+      const layerObject = this.objects[i];
       this.imageData = mergeImageData(
         {
           width: this.width,
@@ -94,7 +92,7 @@ class Layer {
       );
     }
 
-    for (i = 0; i < this.effects.length; i++) {
+    for (let i = 0; i < this.effects.length; i++) {
       this.imageData = this.effects[i].effect.run(
         this.imageData,
         this.effects[i].params
@@ -113,15 +111,13 @@ class Layer {
   }
 
   resize(newWidth, newHeight, mode) {
-    let i;
-
     this.canvas.destroy();
     this.canvas = null;
     this.imageData = null;
 
     this.initialize(newWidth, newHeight, this.parameters);
 
-    for (i = 0; i < this.objects.length; i += 1) {
+    for (let i = 0; i < this.objects.length; i += 1) {
       this.objects[i].resize(newWidth, newHeight, mode, true);
     }
 
@@ -129,9 +125,7 @@ class Layer {
   }
 
   crop(startX, startY, width, height) {
-    let i;
-
-    for (i = 0; i < this.objects.length; i += 1) {
+    for (let i = 0; i < this.objects.length; i += 1) {
       this.objects[i].crop(startX, startY, width, height);
     }
 

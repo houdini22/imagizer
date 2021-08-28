@@ -18,11 +18,8 @@ class BasePointEffect extends BaseEffect {
       ...parameters,
     };
 
-    let x,
-      y,
-      firstPixelIndex,
-      result,
-      imageDataCopy = new Uint8ClampedArray(imageData.data), // copy image data
+    let x, y, firstPixelIndex, result;
+    const imageDataCopy = new Uint8ClampedArray(imageData.data), // copy image data
       /**
        * Get ImageData array index from x and y position
        * @param x

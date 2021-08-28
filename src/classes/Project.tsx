@@ -36,7 +36,12 @@ class Project {
     this.imageData = this.canvas.getContext().getImageData(0, 0, width, height);
   }
 
-  createLayer(parameters) {
+  createLayer(
+    parameters: {
+      background_color: "";
+      blendingMode: "";
+    } = { background_color: "", blendingMode: "" }
+  ) {
     let layer = new Layer(this.width, this.height, parameters);
     this.layers.push(layer);
     return layer;
@@ -80,12 +85,12 @@ class Project {
 
     this.canvas.getContext().putImageData(this.imageData, 0, 0);
 
-    let fs = require("fs"),
+    const fs = require("fs"),
       img = this.canvas.toDataURL(),
       data = img.replace(/^data:image\/\w+;base64,/, ""),
       buff = new Buffer(data, "base64");
 
-    fs.writeFile(selector, buff);
+    fs.writeFileSync(selector, buff);
   }
 
   render(imageType: string = "image/png") {
@@ -93,10 +98,9 @@ class Project {
       throw new Error("Available only in browser environment");
     }
 
-    let i,
-      exportedImage = new window.Image();
+    const exportedImage = new window.Image();
 
-    for (i = 0; i < this.layers.length; i++) {
+    for (let i = 0; i < this.layers.length; i++) {
       this.imageData = mergeImageData(
         {
           width: this.width,
@@ -115,7 +119,7 @@ class Project {
       );
     }
 
-    for (i = 0; i < this.effects.length; i++) {
+    for (let i = 0; i < this.effects.length; i++) {
       this.imageData = this.effects[i].effect.run(
         this.imageData,
         this.effects[i].parameters

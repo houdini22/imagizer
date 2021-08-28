@@ -51,9 +51,9 @@ class BaseOnLayerObject {
     newHeight: number,
     mode: string = "nearest-neighbour"
   ) {
-    let oldImageData = this.getImageData(),
-      canvas = new CanvasWrapper(newWidth, newHeight),
-      newImageData = canvas.getContext().createImageData(newWidth, newHeight);
+    const oldImageData = this.getImageData(),
+      canvas = new CanvasWrapper(newWidth, newHeight);
+    let newImageData = canvas.getContext().createImageData(newWidth, newHeight);
 
     switch (mode) {
       case "nearest-neighbour":

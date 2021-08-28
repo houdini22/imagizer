@@ -11,7 +11,7 @@ class Image extends BaseOnLayerObject {
     super();
 
     if (!isBrowser()) {
-      let canvas = require("canvas");
+      const canvas = require("canvas");
       this.image = new canvas.Image();
     } else {
       this.image = new window.Image();
@@ -24,7 +24,7 @@ class Image extends BaseOnLayerObject {
   }
 
   load(url: string, callback: () => void) {
-    let load = () => {
+    const load = () => {
       this.setWidth(!isBrowser() ? this.image.width : this.image.clientWidth);
       this.setHeight(
         !isBrowser() ? this.image.height : this.image.clientHeight
@@ -54,7 +54,7 @@ class Image extends BaseOnLayerObject {
       };
       this.image.src = url;
     } else {
-      let fs = require("fs");
+      const fs = require("fs");
       this.image.src = fs.readFileSync(url);
       load();
     }

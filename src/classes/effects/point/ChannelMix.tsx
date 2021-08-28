@@ -17,9 +17,7 @@ class ChannelMixEffect extends BasePointEffect {
   }
 
   callback(pixel, x, y, parameters, width, height) {
-    let r = pixel.r,
-      g = pixel.g,
-      b = pixel.b;
+    const { r, g, b } = pixel;
 
     return {
       r:

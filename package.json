@@ -21,6 +21,7 @@
   "scripts": {
     "build-dev": "webpack --config ./configs/dev.js",
     "build-prod": "webpack --config ./configs/prod.js",
+    "build-node-demo": "webpack --config ./configs/node-demo.js",
     "prettier-write": "prettier --write \"src/**/*.tsx\""
   },
   "repository": {

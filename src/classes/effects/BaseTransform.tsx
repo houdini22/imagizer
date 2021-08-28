@@ -18,9 +18,8 @@ class BaseTransformEffect extends BaseEffect {
       ...parameters,
     };
 
-    let x,
-      y,
-      normalizePixelValue = function (value) {
+    let x, y;
+    const normalizePixelValue = function (value) {
         return Math.min(Math.max(value, 0), 255) | 0;
       },
       sandbox = {
@@ -38,7 +37,7 @@ class BaseTransformEffect extends BaseEffect {
 
     for (y = 0; y < imageData.height; y += 1) {
       for (x = 0; x < imageData.width; x += 1) {
-        let newXY = this.callback.call(
+        const newXY = this.callback.call(
             sandbox,
             x,
             y,

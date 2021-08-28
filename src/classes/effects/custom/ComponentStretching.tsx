@@ -14,10 +14,10 @@ class ComponentStretchingEffect extends BaseCustomEffect {
       maxR = -1,
       maxG = -1,
       maxB = -1,
-      pixel,
-      remap = function remap(value, min, max) {
-        return ((value - min) * 255) / (max - min);
-      };
+      pixel;
+    const remap = function remap(value, min, max) {
+      return ((value - min) * 255) / (max - min);
+    };
 
     for (y = 0; y < height; y += 1) {
       for (x = 0; x < width; x += 1) {

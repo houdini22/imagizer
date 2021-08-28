@@ -15,8 +15,8 @@ class CanvasWrapper {
 
   initialize(width: number = 0, height: number = 0) {
     if (!isBrowser()) {
-      let Canvas = require("canvas");
-      this.canvas = new Canvas(width, height);
+      const { createCanvas } = require("canvas");
+      this.canvas = createCanvas(width, height);
     } else {
       this.canvas = document.createElement("canvas");
 

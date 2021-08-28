@@ -98,7 +98,7 @@ class LayerObject {
     mode: string,
     isLayerResize: boolean
   ) {
-    let oldWidth = this.getWidth(),
+    const oldWidth = this.getWidth(),
       oldHeight = this.getHeight(),
       ratioX = newWidth / oldWidth,
       ratioY = newHeight / oldHeight;
@@ -113,21 +113,20 @@ class LayerObject {
   }
 
   crop(startX: number, startY: number, width: number, height: number) {
-    let object = this.getObject(),
+    const object = this.getObject(),
       oldImageData = object.getImageData(),
       canvas = new CanvasWrapper(width, height),
-      newImageData = canvas.getContext().createImageData(width, height);
+      newImageData = canvas.getContext().createImageData(width, height),
+      result = cropImageData(
+        oldImageData,
+        newImageData,
+        startX,
+        startY,
+        width,
+        height
+      );
 
-    newImageData = cropImageData(
-      oldImageData,
-      newImageData,
-      startX,
-      startY,
-      width,
-      height
-    );
-
-    object.setImageData(newImageData).setWidth(width).setHeight(height);
+    object.setImageData(result).setWidth(width).setHeight(height);
 
     this.setXY(startX, startY);
 

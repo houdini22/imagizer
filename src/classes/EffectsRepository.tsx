@@ -44,7 +44,7 @@ import Border from "./effects/custom/Border";
 import Emboss from "./effects/custom/Emboss";
 import ComponentStretching from "./effects/custom/ComponentStretching";
 
-let availableEffects = {};
+const availableEffects = {};
 
 function add(_class) {
   if (availableEffects[_class.getName()]) {
