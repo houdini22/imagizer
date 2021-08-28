@@ -551,7 +551,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 var Layer = /*#__PURE__*/function () {
   function Layer(width, height) {
     var parameters = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {
-      background_color: "",
+      backgroundColor: "",
       blendingMode: ""
     };
 
@@ -574,15 +574,15 @@ var Layer = /*#__PURE__*/function () {
     _defineProperty(this, "height", 0);
 
     _defineProperty(this, "parameters", {
-      background_color: "",
+      backgroundColor: "",
       blendingMode: ""
     });
 
     this.initialize(width, height, parameters);
 
-    if (parameters.background_color && parameters.background_color !== "transparent") {
+    if (parameters.backgroundColor && parameters.backgroundColor !== "transparent") {
       this.applyEffect("fill-color", {
-        color: parameters.background_color
+        color: parameters.backgroundColor
       });
     }
   }
@@ -966,7 +966,7 @@ var Project = /*#__PURE__*/function () {
     key: "createLayer",
     value: function createLayer() {
       var parameters = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {
-        background_color: "",
+        backgroundColor: "",
         blendingMode: ""
       };
       var layer = new _Layer__WEBPACK_IMPORTED_MODULE_1__.default(this.width, this.height, parameters);

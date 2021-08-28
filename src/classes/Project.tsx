@@ -45,9 +45,9 @@ class Project {
 
   createLayer(
     parameters: {
-      background_color?: string;
+      backgroundColor?: string;
       blendingMode?: string;
-    } = { background_color: "", blendingMode: "" }
+    } = { backgroundColor: "", blendingMode: "" }
   ): Layer {
     let layer = new Layer(this.width, this.height, parameters);
     this.layers.push(layer);

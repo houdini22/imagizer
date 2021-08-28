@@ -28,10 +28,10 @@ class Layer {
   height: number = 0;
 
   parameters: {
-    background_color?: string;
+    backgroundColor?: string;
     blendingMode?: string;
   } = {
-    background_color: "",
+    backgroundColor: "",
     blendingMode: "",
   };
 
@@ -39,21 +39,21 @@ class Layer {
     width: number,
     height: number,
     parameters: {
-      background_color?: string;
+      backgroundColor?: string;
       blendingMode?: string;
     } = {
-      background_color: "",
+      backgroundColor: "",
       blendingMode: "",
     }
   ) {
     this.initialize(width, height, parameters);
 
     if (
-      parameters.background_color &&
-      parameters.background_color !== "transparent"
+      parameters.backgroundColor &&
+      parameters.backgroundColor !== "transparent"
     ) {
       this.applyEffect("fill-color", {
-        color: parameters.background_color,
+        color: parameters.backgroundColor,
       });
     }
   }
