@@ -3,7 +3,7 @@ import CanvasWrapper from "./CanvasWrapper";
 import { isBrowser } from "../helpers/common";
 
 class Image extends BaseOnLayerObject {
-  url = null;
+  url: string = null;
 
   image = null;
 

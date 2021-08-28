@@ -10,9 +10,9 @@ class BaseOnLayerObject {
 
   canvas = null;
 
-  width = 0;
+  width: number = 0;
 
-  height = 0;
+  height: number = 0;
 
   getWidth() {
     return this.width;

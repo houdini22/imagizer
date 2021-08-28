@@ -5,9 +5,9 @@ class CanvasWrapper {
 
   context = null;
 
-  width = 0;
+  width: number = 0;
 
-  height = 0;
+  height: number = 0;
 
   constructor(width: number, height: number) {
     this.initialize(width, height);

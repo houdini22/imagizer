@@ -8,17 +8,17 @@ class Layer {
 
   effects = [];
 
-  x = 0;
+  x: number = 0;
 
-  y = 0;
+  y: number = 0;
 
   canvas = null;
 
   imageData = null;
 
-  width = 0;
+  width: number = 0;
 
-  height = 0;
+  height: number = 0;
 
   parameters = {
     background_color: "",

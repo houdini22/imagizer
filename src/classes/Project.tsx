@@ -18,9 +18,9 @@ class Project {
 
   parameters = {};
 
-  width = 0;
+  width: number = 0;
 
-  height = 0;
+  height: number = 0;
 
   canvas = null;
 
@@ -151,10 +151,6 @@ class Project {
     }
 
     return this;
-  }
-
-  exportTo(selector: string) {
-
   }
 }
 

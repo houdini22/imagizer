@@ -7,9 +7,9 @@ class LayerObject {
 
   layer = null;
 
-  x = 0;
+  x: number = 0;
 
-  y = 0;
+  y: number = 0;
 
   opts = {};
 
@@ -21,7 +21,6 @@ class LayerObject {
     this.x = x;
     this.y = y;
     this.opts = opts;
-    this.effects = [];
   }
 
   getObject() {
