@@ -6,7 +6,7 @@ import BaseEffect from "./effects/Base";
 
 interface EffectType {
   name: string;
-  effect: BaseEffect[];
+  effect: BaseEffect;
   parameters: object;
 }
 

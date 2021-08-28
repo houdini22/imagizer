@@ -3,6 +3,13 @@ import { cropImageData } from "../helpers/common";
 import EffectsRepository from "./EffectsRepository";
 import Image from "./Image";
 import Layer from "./Layer";
+import BaseEffect from "./effects/Base";
+
+interface EffectType {
+  name: string;
+  effect: BaseEffect;
+  parameters: object;
+}
 
 class LayerObject {
   obj: Image = null;
@@ -15,7 +22,7 @@ class LayerObject {
 
   opts: object = {};
 
-  effects = [];
+  effects: EffectType[] = [];
 
   constructor(obj: Image, layer: Layer, x: number, y: number, opts: object) {
     this.obj = obj;
@@ -48,7 +55,10 @@ class LayerObject {
   exportObject(): ImageData {
     let imageData = this.obj.getImageData();
     for (let i = 0; i < this.effects.length; i += 1) {
-      imageData = this.effects[i].effect.run(imageData, this.effects[i].params);
+      imageData = this.effects[i].effect.run(
+        imageData,
+        this.effects[i].parameters
+      );
     }
     return imageData;
   }

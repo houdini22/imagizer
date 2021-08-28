@@ -810,7 +810,7 @@ var LayerObject = /*#__PURE__*/function () {
       var imageData = this.obj.getImageData();
 
       for (var i = 0; i < this.effects.length; i += 1) {
-        imageData = this.effects[i].effect.run(imageData, this.effects[i].params);
+        imageData = this.effects[i].effect.run(imageData, this.effects[i].parameters);
       }
 
       return imageData;
