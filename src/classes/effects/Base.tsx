@@ -1,19 +1,24 @@
 class BaseEffect {
-  opts = {};
+  opts: object = {};
 
   constructor(opts: object = {}) {
     this.opts = opts;
   }
 
-  getDefaultParameters() {
+  getDefaultParameters(): object {
     return {};
   }
 
-  before(parameters: object, width: number, height: number, imageData: any) {
+  before(
+    parameters: object,
+    width: number,
+    height: number,
+    imageData: any
+  ): object {
     return {};
   }
 
-  static getName() {
+  static getName(): string {
     throw "Extend it.";
   }
 }

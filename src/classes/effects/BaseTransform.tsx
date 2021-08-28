@@ -2,7 +2,12 @@ import BaseEffect from "./Base";
 
 class BaseTransformEffect extends BaseEffect {
   callback(
-    pixel,
+    pixel: {
+      r: number;
+      g: number;
+      b: number;
+      a: number;
+    },
     x: number,
     y: number,
     parameters: object,
@@ -12,14 +17,14 @@ class BaseTransformEffect extends BaseEffect {
     throw "Extend it.";
   }
 
-  run(imageData: any, parameters: object) {
+  run(imageData: any, parameters: object): ImageData {
     parameters = {
       ...this.getDefaultParameters(),
       ...parameters,
     };
 
     let x, y;
-    const normalizePixelValue = function (value) {
+    const normalizePixelValue = function (value: number): number {
         return Math.min(Math.max(value, 0), 255) | 0;
       },
       sandbox = {

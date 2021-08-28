@@ -1,30 +1,28 @@
-const path = require('path')
+const path = require("path");
 
 module.exports = {
-  mode: 'production',
-  devtool: 'source-map',
-  entry: [
-    './demo/browser-demo.tsx',
-  ],
+  mode: "production",
+  devtool: "source-map",
+  entry: ["./demo/browser-demo.tsx"],
   output: {
-    path: path.resolve('./dist'),
-    filename: 'browser-demo.js',
-    libraryTarget: 'umd'
+    path: path.resolve("./dist"),
+    filename: "browser-demo.js",
+    libraryTarget: "umd",
   },
   resolve: {
-    extensions: ['.tsx'],
+    extensions: [".tsx"],
   },
   module: {
     rules: [
       {
         test: [/\.tsx?$/],
         exclude: /node_modules/,
-        loader: 'babel-loader',
+        loader: "babel-loader",
       },
     ],
   },
   externals: {
-    'canvas': 'canvas',
-    'fs': 'fs'
-  }
-}
+    canvas: "canvas",
+    fs: "fs",
+  },
+};

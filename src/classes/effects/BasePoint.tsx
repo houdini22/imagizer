@@ -2,7 +2,12 @@ import BaseEffect from "./Base";
 
 class BasePointEffect extends BaseEffect {
   callback(
-    pixel,
+    pixel: {
+      r: number;
+      g: number;
+      b: number;
+      a: number;
+    },
     x: number,
     y: number,
     parameters: object,
@@ -12,7 +17,7 @@ class BasePointEffect extends BaseEffect {
     throw "Extend it.";
   }
 
-  run(imageData: any, parameters: object) {
+  run(imageData: any, parameters: object): ImageData {
     parameters = parameters = {
       ...this.getDefaultParameters(),
       ...parameters,
@@ -26,10 +31,10 @@ class BasePointEffect extends BaseEffect {
        * @param y
        * @returns {number}
        */
-      getIndex = function getIndex(x, y) {
+      getIndex = function getIndex(x: number, y: number): number {
         return y * imageData.width * 4 + x * 4;
       },
-      normalizePixelValue = function (value) {
+      normalizePixelValue = function (value): number {
         return Math.min(Math.max(value, 0), 255) | 0;
       },
       sandbox = {
@@ -40,7 +45,15 @@ class BasePointEffect extends BaseEffect {
          * @param {int} y
          * @returns {{r: *, g: *, b: *, a: *}}
          */
-        getPixel: function (x, y) {
+        getPixel: function (
+          x: number,
+          y: number
+        ): {
+          r: number;
+          g: number;
+          b: number;
+          a: number;
+        } {
           let index = getIndex(x, y);
           return {
             r: imageDataCopy[index + 0],
@@ -55,7 +68,15 @@ class BasePointEffect extends BaseEffect {
          * @param {int} y
          * @returns {{r: *, g: *, b: *, a: *}}
          */
-        getOriginalPixel: function (x, y) {
+        getOriginalPixel: function (
+          x: number,
+          y: number
+        ): {
+          r: number;
+          g: number;
+          b: number;
+          a: number;
+        } {
           let index = getIndex(x, y);
           return {
             r: imageData.data[index + 0],
@@ -70,7 +91,16 @@ class BasePointEffect extends BaseEffect {
          * @param {int} y
          * @param {object} rgba
          */
-        setPixel: function (x, y, rgba) {
+        setPixel: function (
+          x: number,
+          y: number,
+          rgba: {
+            r: number;
+            g: number;
+            b: number;
+            a: number;
+          }
+        ): void {
           let index = getIndex(x, y);
           imageDataCopy[index + 0] = normalizePixelValue(rgba.r);
           imageDataCopy[index + 1] = normalizePixelValue(rgba.g);

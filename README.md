@@ -6,6 +6,7 @@ It supports both node.js (with node-canvas dependency) and browser!
 Imagizer effect algorithms are based on a [Jerry's Java Image Proccesing Library](http://www.jhlabs.com/ip/filters/index.html)
 
 ## Installation
+
 ```
 npm install imagizer
 ```
@@ -30,14 +31,14 @@ To start an imagizer project:
 ##### browser
 
 ```javascript
-import imagizer from 'imagizer';
+import imagizer from "imagizer";
 const project = new imagizer.Project(projectWidth, projectHeight);
 ```
 
 ##### node.js
 
 ```javascript
-const imagizer = require('imagizer');
+const imagizer = require("imagizer");
 const project = new imagizer.Project(projectWidth, projectHeight);
 ```
 
@@ -49,35 +50,35 @@ To the project you can add layer:
 
 ```javascript
 const layer1 = project.createLayer({
-  blendingMode: 'normal' // optional
+  blendingMode: "normal", // optional
 });
 ```
 
 To the layer you can add image:
+
 ```javascript
 const image1 = new Imagizer.Image();
-image1.load("my-image.png", function()
-{
-    const onLayerObject = layer1.put(image1, 0, 0); // put image1 on the layer1 on position 0, 0 (left upper corner)
+image1.load("my-image.png", function () {
+  const onLayerObject = layer1.put(image1, 0, 0); // put image1 on the layer1 on position 0, 0 (left upper corner)
 });
 ```
 
 "my-image.png" is a path to the image
- - in frontend environment - visible in the browser at given url "<domain>/my-image.png"
- - in node.js environment - path to file in filesystem
+
+- in frontend environment - visible in the browser at given url "<domain>/my-image.png"
+- in node.js environment - path to file in filesystem
 
 ### Effects
 
 You can add multiple effects to the 'onLayerObject' - in this example it is image.
 
 ```javascript
-image1.load("my-image.png", function()
-{
-    const obj = layer1.put(image1, 0, 0); // put image1 on the layer with position 0, 0
-    // edge detection combo
-    obj.applyEffect("edge");
-    obj.applyEffect("gray-scale");
-    obj.applyEffect("invert");
+image1.load("my-image.png", function () {
+  const obj = layer1.put(image1, 0, 0); // put image1 on the layer with position 0, 0
+  // edge detection combo
+  obj.applyEffect("edge");
+  obj.applyEffect("gray-scale");
+  obj.applyEffect("invert");
 });
 ```
 
@@ -86,35 +87,34 @@ Some effects has a parameters, but if you don't pass any then the default parame
 ```javascript
 obj.applyEffect(effectName, {
   parameter1: "value1",
-  parameter2: 255
+  parameter2: 255,
 });
 ```
 
 You can add effect to a whole layer:
+
 ```javascript
-image1.load("my-image.png", function()
-{
-    const obj = layer1.put(image1, 0, 0); // put image1 on the a layer with position 0, 0
-    layer1.applyEffect("invert");
+image1.load("my-image.png", function () {
+  const obj = layer1.put(image1, 0, 0); // put image1 on the a layer with position 0, 0
+  layer1.applyEffect("invert");
 });
 ```
 
 or whole project:
 
 ```javascript
-image1.load("my-image.png", function()
-{
-    const obj = layer1.put(image1, 0, 0); // put image1 on the layer with position 0, 0
-    project.applyEffect("sepia");
+image1.load("my-image.png", function () {
+  const obj = layer1.put(image1, 0, 0); // put image1 on the layer with position 0, 0
+  project.applyEffect("sepia");
 });
 ```
 
 Layers support alpha compositing and the blending modes. While alpha compositing is internal process and do not require your attention the blending mode you can set by
-passing parameters to ```createLayer``` method.
+passing parameters to `createLayer` method.
 
 ```javascript
 const layer2 = project.createLayer({
-  blendingMode: "average"
+  blendingMode: "average",
 });
 ```
 
@@ -150,8 +150,7 @@ const layer2 = project.createLayer({
 ##### Crop
 
 ```javascript
-image1.load("img/pencils.jpg", function()
-{
+image1.load("img/pencils.jpg", function () {
   const obj = layer1.put(image1, 0, 0);
   obj.crop(100, 100, 100, 100); // startX, startY, width, height
 });
@@ -160,25 +159,23 @@ image1.load("img/pencils.jpg", function()
 ##### Resize
 
 ```javascript
-image1.load("img/pencils.jpg", function()
-{
-    const obj = layer1.put(image1, 200, 150);
-    obj.resize(200, 150 /*, mode */);
-    // or
-    layer1.resize(200, 150 /*, mode */);
-    // or
-    project.resize(200, 150);
+image1.load("img/pencils.jpg", function () {
+  const obj = layer1.put(image1, 200, 150);
+  obj.resize(200, 150 /*, mode */);
+  // or
+  layer1.resize(200, 150 /*, mode */);
+  // or
+  project.resize(200, 150);
 });
 ```
 
-Note that 'obj' and 'layer' resize do not modify Project  dimensions. To rescale result image you have to change size o a project.
+Note that 'obj' and 'layer' resize do not modify Project dimensions. To rescale result image you have to change size o a project.
 
 The following resize modes are supported:
 
 - "nearest-neighbour" - default
 - "bilinear-interpolation",
 - "biquadratic-interpolation".
-
 
 ##### Supported effects
 
@@ -227,14 +224,17 @@ The following resize modes are supported:
 Some effects support parameters. If none passed - the default value will be used.
 
 To use effect params pass it as a second argument:
+
 ```javascript
-onLayerObject.applyEffect("edge", {parameter1: "someValue"});
+onLayerObject.applyEffect("edge", { parameter1: "someValue" });
 ```
 
 #### Effect specific parameters:
 
 ##### contrast
+
 defaults:
+
 ```
 defaults: {
     contrast: 0 // between -1 and 1
@@ -242,7 +242,9 @@ defaults: {
 ```
 
 ##### brightness
+
 defaults:
+
 ```
 defaults: {
     brightness: 0 // between -1 and 1
@@ -250,6 +252,7 @@ defaults: {
 ```
 
 ##### diffusion
+
 ```
 defaults: {
     matrix: [0, 0, 0, 0, 0, 7, 3, 5, 1],
@@ -260,6 +263,7 @@ defaults: {
 ```
 
 ##### dither
+
 ```
 defaults: {
     matrices: {
@@ -361,6 +365,7 @@ defaults: {
 ```
 
 ##### exposure
+
 ```
 defaults: {
     exposure: 1
@@ -368,6 +373,7 @@ defaults: {
 ```
 
 ##### gain
+
 ```
 defaults: {
     gammaRed: 1,
@@ -377,6 +383,7 @@ defaults: {
 ```
 
 ##### hsb-adjust
+
 ```
 defaults: {
     h: 1,
@@ -386,6 +393,7 @@ defaults: {
 ```
 
 ##### levels
+
 ```
 defaults: {
     low: 0,
@@ -396,6 +404,7 @@ defaults: {
 ```
 
 ##### posterize
+
 ```
 defaults: {
     levels: 6
@@ -403,6 +412,7 @@ defaults: {
 ```
 
 ##### quantize
+
 ```
 defaults: {
     matrix: [
@@ -417,6 +427,7 @@ defaults: {
 ```
 
 ##### rescale
+
 ```
 defaults: {
     scale: 1
@@ -424,6 +435,7 @@ defaults: {
 ```
 
 ##### tritone
+
 ```
 defaults: {
     shadowColor: {
@@ -448,13 +460,16 @@ defaults: {
 ```
 
 ##### diffuse
+
 ```
 defaults: {
     scale: 4
 },
 
 ```
+
 ##### dissolve
+
 ```
 defaults: {
     density: 1,
@@ -463,6 +478,7 @@ defaults: {
 ```
 
 ##### kaleidoscope
+
 ```
 defaults: {
     centreX: 0.5,
@@ -475,6 +491,7 @@ defaults: {
 ```
 
 ##### pinch
+
 ```
 defaults: {
     angle: 0,
@@ -486,6 +503,7 @@ defaults: {
 ```
 
 ##### ripple
+
 ```
 defaults: {
     xAmplitude: 5,
@@ -497,6 +515,7 @@ defaults: {
 ```
 
 ##### shear
+
 ```
 defaults: {
     xAngle: 0,
@@ -507,6 +526,7 @@ defaults: {
 ```
 
 ##### sphere
+
 ```
 defaults: {
     a: 0,
@@ -518,6 +538,7 @@ defaults: {
 ```
 
 ##### swim
+
 ```
 defaults: {
     scale: 32,
@@ -530,6 +551,7 @@ defaults: {
 ```
 
 ##### twirl
+
 ```
 defaults: {
     angle: 0,
@@ -540,6 +562,7 @@ defaults: {
 ```
 
 ##### water
+
 ```
 defaults: {
     waveLength: 16,
@@ -552,6 +575,7 @@ defaults: {
 ```
 
 ##### edge
+
 ```
 defaults: {
     matrixes: {
@@ -602,6 +626,7 @@ defaults: {
 ```
 
 ##### fill-color
+
 ```
 defaults: {
     color: "transparent"
@@ -609,6 +634,7 @@ defaults: {
 ```
 
 ##### channel-mix-filter
+
 ```
 defaults: {
     blueGreen: 1,
@@ -621,6 +647,7 @@ defaults: {
 ```
 
 ##### circle
+
 ```
 defaults: {
     radius: 10,
@@ -633,6 +660,7 @@ defaults: {
 ```
 
 ##### rotate
+
 ```
 defaults: {
     angle: Math.PI
@@ -640,6 +668,7 @@ defaults: {
 ```
 
 ##### flip
+
 ```
 defaults: {
     operation: "FLIP_H" // FLIP_H, FLIP_V, FLIP_HV, FLIP_90CW, FLIP_90CCW, FLIP_180
@@ -647,6 +676,7 @@ defaults: {
 ```
 
 ##### offset
+
 ```
 defaults: {
     xOffset: 100,
@@ -656,6 +686,7 @@ defaults: {
 ```
 
 ##### polar
+
 ```
 defaults: {
     type: "RECT_TO_POLAR" // RECT_TO_POLAR, POLAR_TO_RECT, INVERT_IN_CIRCLE
@@ -663,6 +694,7 @@ defaults: {
 ```
 
 ##### block
+
 ```
 defaults: {
     blockSize: 5
@@ -670,6 +702,7 @@ defaults: {
 ```
 
 ##### border
+
 ```
 defaults: {
     leftBorder: 10,
@@ -686,6 +719,7 @@ defaults: {
 ```
 
 ##### emboss
+
 ```
 defaults: {
     azimuth: 135 * Math.PI / 180,
@@ -696,6 +730,7 @@ defaults: {
 ```
 
 ##### perspective
+
 ```
 defaults: {
     x0: 0,
@@ -710,6 +745,7 @@ defaults: {
 ```
 
 ## Exporting result image
+
 To export the Project (result image) you have to call:
 
 ##### browser

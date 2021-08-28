@@ -1,63 +1,66 @@
 <!DOCTYPE html>
 <html>
-<head lang="en">
-    <meta charset="UTF-8">
+  <head lang="en">
+    <meta charset="UTF-8" />
     <title>Resize demo</title>
-</head>
-<body>
+  </head>
+  <body>
+    <div class="test test-0">
+      <h4>Original image</h4>
+      <p class="time"></p>
+    </div>
 
-<div class="test test-0">
-    <h4>Original image</h4>
-    <p class="time"></p>
-</div>
+    <div class="test test-1">
+      <h4>Layer resize and move layer</h4>
+      <p class="time"></p>
+    </div>
 
-<div class="test test-1">
-    <h4>Layer resize and move layer</h4>
-    <p class="time"></p>
-</div>
+    <div class="test test-8">
+      <h4>Layer resize and move object</h4>
+      <p class="time"></p>
+    </div>
 
-<div class="test test-8">
-    <h4>Layer resize and move object</h4>
-    <p class="time"></p>
-</div>
+    <div class="test test-2">
+      <h4>Simple layer resize (nearest neighbour)</h4>
+      <p class="time"></p>
+    </div>
 
-<div class="test test-2">
-    <h4>Simple layer resize (nearest neighbour)</h4>
-    <p class="time"></p>
-</div>
+    <div class="test test-3">
+      <h4>Crop (without move)</h4>
+      <p class="time"></p>
+    </div>
 
-<div class="test test-3">
-    <h4>Crop (without move)</h4>
-    <p class="time"></p>
-</div>
+    <div class="test test-7">
+      <h4>Project resize</h4>
+      <p class="time"></p>
+    </div>
 
-<div class="test test-7">
-    <h4>Project resize</h4>
-    <p class="time"></p>
-</div>
+    <div class="clearfix"></div>
 
-<div class="clearfix"></div>
+    <div class="test test-4">
+      <h4>Crop, resize (zoom - nearest neighbour) and move to x = 0, y = 0</h4>
+      <p class="time"></p>
+    </div>
 
-<div class="test test-4">
-    <h4>Crop, resize (zoom - nearest neighbour) and move to x = 0, y = 0</h4>
-    <p class="time"></p>
-</div>
+    <div class="test test-5">
+      <h4>
+        Crop, resize (zoom - bilinear interpolation) and move to x = 0, y = 0
+      </h4>
+      <p class="time"></p>
+    </div>
 
-<div class="test test-5">
-    <h4>Crop, resize (zoom - bilinear interpolation) and move to x = 0, y = 0</h4>
-    <p class="time"></p>
-</div>
+    <div class="test test-6">
+      <h4>
+        Crop, resize (zoom - biquadratic interpolation) and move to x = 0, y = 0
+      </h4>
+      <p class="time"></p>
+    </div>
 
-<div class="test test-6">
-    <h4>Crop, resize (zoom - biquadratic interpolation) and move to x = 0, y = 0</h4>
-    <p class="time"></p>
-</div>
+    <div class="test test-10">
+      <h4>Edge detecting (3 effects)</h4>
+      <p class="time"></p>
+    </div>
 
-<div class="test test-10">
-  <h4>Edge detecting (3 effects)</h4>
-  <p class="time"></p>
-</div>
-
-<script src="/browser-demo.js"></script>
-</body>
+    <script src="/browser-demo.js"></script>
+  </body>
 </html>

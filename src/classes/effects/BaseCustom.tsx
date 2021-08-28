@@ -2,7 +2,12 @@ import BaseEffect from "./Base";
 
 class BaseCustomEffect extends BaseEffect {
   callback(
-    pixel,
+    pixel: {
+      r: number;
+      g: number;
+      b: number;
+      a: number;
+    },
     x: number,
     y: number,
     parameters: object,
@@ -12,7 +17,7 @@ class BaseCustomEffect extends BaseEffect {
     throw "Extend it.";
   }
 
-  run(imageData: any, parameters: object) {
+  run(imageData: any, parameters: object): ImageData {
     parameters = {
       ...this.getDefaultParameters(),
       ...parameters,
@@ -39,7 +44,15 @@ class BaseCustomEffect extends BaseEffect {
          * @param {int} y
          * @returns {{r: *, g: *, b: *, a: *}}
          */
-        getPixel: function (x, y) {
+        getPixel: function (
+          x: number,
+          y: number
+        ): {
+          r: number;
+          g: number;
+          b: number;
+          a: number;
+        } {
           const index = getIndex(x, y);
           return {
             r: imageDataCopy[index + 0],
@@ -52,7 +65,12 @@ class BaseCustomEffect extends BaseEffect {
          * Get pixel by its index
          * @param index
          */
-        getOriginalPixelByIndex: function (index) {
+        getOriginalPixelByIndex: function (index: number): {
+          r: number;
+          g: number;
+          b: number;
+          a: number;
+        } {
           index *= 4;
           return {
             r: imageData.data[index],
@@ -67,7 +85,15 @@ class BaseCustomEffect extends BaseEffect {
          * @param {int} y
          * @returns {{r: *, g: *, b: *, a: *}}
          */
-        getOriginalPixel: function (x, y) {
+        getOriginalPixel: function (
+          x: number,
+          y: number
+        ): {
+          r: number;
+          g: number;
+          b: number;
+          a: number;
+        } {
           const index = getIndex(x, y);
           return {
             r: imageData.data[index + 0],
@@ -82,7 +108,16 @@ class BaseCustomEffect extends BaseEffect {
          * @param {int} y
          * @param {object} rgba
          */
-        setPixel: function (x, y, rgba) {
+        setPixel: function (
+          x: number,
+          y: number,
+          rgba: {
+            r: number;
+            g: number;
+            b: number;
+            a: number;
+          }
+        ): void {
           const index = getIndex(x, y);
           imageDataCopy[index + 0] = normalizePixelValue(rgba.r);
           imageDataCopy[index + 1] = normalizePixelValue(rgba.g);
@@ -94,7 +129,15 @@ class BaseCustomEffect extends BaseEffect {
          * @param index
          * @param rgba
          */
-        setPixelByIndex: function (index, rgba) {
+        setPixelByIndex: function (
+          index: number,
+          rgba: {
+            r: number;
+            g: number;
+            b: number;
+            a: number;
+          }
+        ) {
           index *= 4;
           imageDataCopy[index + 0] = normalizePixelValue(rgba.r);
           imageDataCopy[index + 1] = normalizePixelValue(rgba.g);
