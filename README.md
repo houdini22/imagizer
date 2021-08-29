@@ -8,7 +8,7 @@ Imagizer effect algorithms are based on a [Jerry's Java Image Proccesing Library
 ## Installation
 
 ```
-npm install git+https://github.com/houdini22/imagizer.git
+npm install imagizer
 ```
 
 If you are using webpack in your project with imagizer you must add [externals](https://webpack.js.org/configuration/externals/) definitions to your webpack configuration:
@@ -762,7 +762,7 @@ project.save("path/to/file.png");
 
 ## Command line usage
 
-```npm install -g git+https://github.com/houdini22/imagizer.git```
+```npm install -g imagizer```
 
 ##### Examples
 
