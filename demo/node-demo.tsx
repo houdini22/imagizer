@@ -8,7 +8,7 @@ image.load("../demo/test.png", function () {
   obj.applyEffect("edge");
   obj.applyEffect("gray-scale");
   obj.applyEffect("invert");
-  project.save("../demo/node_result.png");
+  project.save("../demo/node_result_1.png");
 });
 
 const image2 = new Imagizer.Image();
@@ -19,5 +19,5 @@ image2.load("../demo/test.png", function () {
   obj.applyEffect('component-stretching')
   obj.applyEffect('auto-white-balance')
   obj.applyEffect('auto-contrast')
-  project.save("../demo/node_result2.png");
+  project.save("../demo/node_result_2.png");
 });

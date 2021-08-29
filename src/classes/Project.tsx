@@ -95,7 +95,7 @@ class Project {
     const fs = require("fs"),
       img = this.canvas.toDataURL(),
       data = img.replace(/^data:image\/\w+;base64,/, ""),
-      buff = new Buffer(data, "base64");
+      buff = Buffer.from(data, "base64");
 
     fs.writeFileSync(path, buff);
   }
