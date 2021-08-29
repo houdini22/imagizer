@@ -2,10 +2,10 @@
 /******/ 	"use strict";
 /******/ 	var __webpack_modules__ = ({
 
-/***/ "./src/classes/BaseOnLayer.tsx":
-/*!*************************************!*\
-  !*** ./src/classes/BaseOnLayer.tsx ***!
-  \*************************************/
+/***/ "./src/classes/BaseOnLayerObject.tsx":
+/*!*******************************************!*\
+  !*** ./src/classes/BaseOnLayerObject.tsx ***!
+  \*******************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
@@ -409,7 +409,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony import */ var _BaseOnLayer__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./BaseOnLayer */ "./src/classes/BaseOnLayer.tsx");
+/* harmony import */ var _BaseOnLayerObject__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./BaseOnLayerObject */ "./src/classes/BaseOnLayerObject.tsx");
 /* harmony import */ var _CanvasWrapper__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./CanvasWrapper */ "./src/classes/CanvasWrapper.tsx");
 /* harmony import */ var _helpers_common__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../helpers/common */ "./src/helpers/common.tsx");
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
@@ -515,7 +515,7 @@ var Image = /*#__PURE__*/function (_BaseOnLayerObject) {
   }]);
 
   return Image;
-}(_BaseOnLayer__WEBPACK_IMPORTED_MODULE_0__.default);
+}(_BaseOnLayerObject__WEBPACK_IMPORTED_MODULE_0__.default);
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (Image);
 

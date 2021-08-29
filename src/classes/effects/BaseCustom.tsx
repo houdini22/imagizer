@@ -5,7 +5,7 @@ class BaseCustomEffect extends BaseEffect {
     throw "Extend it.";
   }
 
-  run(imageData: any, parameters: object): ImageData {
+  run(imageData: ImageData, parameters: object): ImageData {
     parameters = {
       ...this.getDefaultParameters(),
       ...parameters,

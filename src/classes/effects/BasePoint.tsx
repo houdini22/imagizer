@@ -17,7 +17,7 @@ class BasePointEffect extends BaseEffect {
     throw "Extend it.";
   }
 
-  run(imageData: any, parameters: object): ImageData {
+  run(imageData: ImageData, parameters: object): ImageData {
     parameters = parameters = {
       ...this.getDefaultParameters(),
       ...parameters,

@@ -1,9 +1,9 @@
 import CanvasWrapper from "./CanvasWrapper";
 import { cropImageData } from "../helpers/common";
 import EffectsRepository from "./EffectsRepository";
-import Image from "./Image";
 import Layer from "./Layer";
 import BaseEffect from "./effects/Base";
+import BaseOnLayerObject from "./BaseOnLayerObject";
 
 interface EffectType {
   name: string;
@@ -12,7 +12,7 @@ interface EffectType {
 }
 
 class LayerObject {
-  obj: Image = null;
+  obj: BaseOnLayerObject = null;
 
   layer: Layer = null;
 
@@ -24,7 +24,13 @@ class LayerObject {
 
   effects: EffectType[] = [];
 
-  constructor(obj: Image, layer: Layer, x: number, y: number, opts: object) {
+  constructor(
+    obj: BaseOnLayerObject,
+    layer: Layer,
+    x: number,
+    y: number,
+    opts: object
+  ) {
     this.obj = obj;
     this.layer = layer;
     this.x = x;
@@ -32,7 +38,7 @@ class LayerObject {
     this.opts = opts;
   }
 
-  getObject(): Image {
+  getObject(): BaseOnLayerObject {
     return this.obj;
   }
 

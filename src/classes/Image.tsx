@@ -1,4 +1,4 @@
-import BaseOnLayerObject from "./BaseOnLayer";
+import BaseOnLayerObject from "./BaseOnLayerObject";
 import CanvasWrapper from "./CanvasWrapper";
 import { isBrowser } from "../helpers/common";
 import { Image as ImageType } from "canvas/types";
