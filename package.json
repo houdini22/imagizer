@@ -27,7 +27,6 @@
     "build-prod": "webpack --config ./configs/prod.js",
     "build-node-demo": "webpack --config ./configs/node-demo.js",
     "build-browser-demo": "webpack --config ./configs/browser-demo.js",
-    "build-bin": "webpack --config ./configs/bin.js",
     "prettier-write": "prettier --write \"src/**/*.tsx\""
   },
   "repository": {

@@ -20,6 +20,6 @@ if (argv.effect === "EnchanceColors") {
     obj.applyEffect('auto-contrast')
     project.save(argv.output);
 
-    console.log("Done.")
+    console.log(`Saved to ${argv.output}.`);
   });
 }
