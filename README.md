@@ -767,3 +767,9 @@ project.save("path/to/file.png");
 ##### Examples
 
 ```imagizer --effect=EnhanceColors --input=demo/test.png --output=demo/bin-output.png --outputImageType=image/png```
+
+```imagizer --effect=GrayScale --input=demo/test.png --output=demo/bin-output.png --outputImageType=image/png```
+
+```imagizer --effect=Sepia --sepiaValue=1 --input=demo/test.png --output=demo/bin-output.png --outputImageType=image/png```
+
+```imagizer --effect=Resize --width=100 --height=100 --input=demo/test.png --output=demo/bin-output.png --outputImageType=image/png```

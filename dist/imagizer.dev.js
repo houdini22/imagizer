@@ -2518,15 +2518,12 @@ var AutoContrastEffect = /*#__PURE__*/function (_BasePointEffect) {
   _createClass(AutoContrastEffect, [{
     key: "before",
     value: function before(parameters, width, height) {
-      var x,
-          y,
-          pixel,
-          min = Infinity,
+      var min = Infinity,
           max = -1;
 
-      for (y = 0; y < height; y += 1) {
-        for (x = 0; x < width; x += 1) {
-          pixel = this.getPixel(x, y);
+      for (var y = 0; y < height; y += 1) {
+        for (var x = 0; x < width; x += 1) {
+          var pixel = this.getPixel(x, y);
           min = Math.min((pixel.r + pixel.g + pixel.b) / 3, min);
           max = Math.max((pixel.r + pixel.g + pixel.b) / 3, max);
         }
@@ -2914,21 +2911,20 @@ var DiffusionEffect = /*#__PURE__*/function (_BasePointEffect) {
   }, {
     key: "before",
     value: function before(parameters, width, height, imageData) {
-      var i,
-          sum = 0,
-          map = [],
+      var sum = 0;
+      var map = [],
           div = [];
 
-      for (i = 0; i < parameters.matrix.length; i += 1) {
+      for (var i = 0; i < parameters.matrix.length; i += 1) {
         sum += parameters.matrix[i];
       }
 
-      for (i = 0; i < parameters.levels; i += 1) {
-        map[i] = 255 * i / (parameters.levels - 1) | 0;
+      for (var _i = 0; _i < parameters.levels; _i += 1) {
+        map[_i] = 255 * _i / (parameters.levels - 1) | 0;
       }
 
-      for (i = 0; i < 256; i += 1) {
-        div[i] = parameters.levels * i / 256 | 0;
+      for (var _i2 = 0; _i2 < 256; _i2 += 1) {
+        div[_i2] = parameters.levels * _i2 / 256 | 0;
       }
 
       return {

@@ -33,7 +33,7 @@ class SepiaEffect extends BasePointEffect {
     b: number;
     a: number;
   } {
-    let tmp = 0.299 * pixel.r + 0.587 * pixel.g + 0.114 * pixel.b;
+    const tmp = 0.299 * pixel.r + 0.587 * pixel.g + 0.114 * pixel.b;
 
     pixel.r = tmp + 2 * parameters.sepiaValue;
     pixel.g = tmp + parameters.sepiaValue;

@@ -22,7 +22,7 @@
     "yargs": "^16.2.0"
   },
   "scripts": {
-    "build": "npm run build-dev && npm run build-prod && npm run build-node-demo && npm run build-browser-demo && npm run build-bin",
+    "build": "npm run build-dev && npm run build-prod && npm run build-node-demo && npm run build-browser-demo",
     "build-dev": "webpack --config ./configs/dev.js",
     "build-prod": "webpack --config ./configs/prod.js",
     "build-node-demo": "webpack --config ./configs/node-demo.js",

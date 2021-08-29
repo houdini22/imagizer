@@ -23,7 +23,7 @@ class GrayScaleEffect extends BasePointEffect {
     b: number;
     a: number;
   } {
-    let newRGB = 0.299 * pixel.r + 0.587 * pixel.g + 0.114 * pixel.b;
+    const newRGB = 0.299 * pixel.r + 0.587 * pixel.g + 0.114 * pixel.b;
     return {
       r: newRGB,
       g: newRGB,

@@ -23,5 +23,40 @@ if (argv.input && argv.output && argv.outputImageType) {
 
       console.log(`Saved to ${argv.output} as ${argv.outputImageType}.`);
     });
+  } else if (argv.effect === 'GrayScale') {
+    const image = new Imagizer.Image();
+    image.load(argv.input, function () {
+      const project = new Imagizer.Project(image.getWidth(), image.getHeight());
+      const layer1 = project.createLayer();
+      const obj = layer1.put(image, 0, 0);
+      obj.applyEffect('gray-scale')
+      project.save(argv.output, argv.outputImageType);
+
+      console.log(`Saved to ${argv.output} as ${argv.outputImageType}.`);
+    });
+  } else if (argv.effect === 'Sepia' && argv.sepiaValue) {
+    const image = new Imagizer.Image();
+    image.load(argv.input, function () {
+      const project = new Imagizer.Project(image.getWidth(), image.getHeight());
+      const layer1 = project.createLayer();
+      const obj = layer1.put(image, 0, 0);
+      obj.applyEffect('sepia', {
+        sepiaValue: parseFloat(argv.sepiaValue)
+      })
+      project.save(argv.output, argv.outputImageType);
+
+      console.log(`Saved to ${argv.output} as ${argv.outputImageType}.`);
+    });
+  } else if (argv.effect === 'Resize' && argv.width && argv.height) {
+    const image = new Imagizer.Image();
+    image.load(argv.input, function () {
+      const project = new Imagizer.Project(image.getWidth(), image.getHeight());
+      const layer1 = project.createLayer();
+      const obj = layer1.put(image, 0, 0);
+      project.resize(parseInt(argv.width), parseInt(argv.height));
+      project.save(argv.output, argv.outputImageType);
+
+      console.log(`Saved to ${argv.output} as ${argv.outputImageType}.`);
+    });
   }
 }

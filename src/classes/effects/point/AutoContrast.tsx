@@ -12,21 +12,18 @@ class AutoContrastEffect extends BasePointEffect {
   }
 
   data: BeforeData = {
-    remap: (value) => 0,
+    remap: (value: number): number => 0,
     min: 0,
     max: 0,
   };
 
   before(parameters: object, width: number, height: number): BeforeData {
-    let x,
-      y,
-      pixel,
-      min = Infinity,
+    let min = Infinity,
       max = -1;
 
-    for (y = 0; y < height; y += 1) {
-      for (x = 0; x < width; x += 1) {
-        pixel = this.getPixel(x, y);
+    for (let y = 0; y < height; y += 1) {
+      for (let x = 0; x < width; x += 1) {
+        const pixel = this.getPixel(x, y);
 
         min = Math.min((pixel.r + pixel.g + pixel.b) / 3, min);
         max = Math.max((pixel.r + pixel.g + pixel.b) / 3, max);
@@ -36,7 +33,7 @@ class AutoContrastEffect extends BasePointEffect {
     return {
       min: min,
       max: max,
-      remap: function (value) {
+      remap: function (value: number): number {
         return ((value - min) * 255) / (max - min);
       },
     };

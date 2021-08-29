@@ -39,20 +39,19 @@ class DiffusionEffect extends BasePointEffect {
     height: number,
     imageData: ImageData
   ): BeforeData {
-    let i,
-      sum = 0,
-      map = [],
+    let sum = 0;
+    const map = [],
       div = [];
 
-    for (i = 0; i < parameters.matrix.length; i += 1) {
+    for (let i = 0; i < parameters.matrix.length; i += 1) {
       sum += parameters.matrix[i];
     }
 
-    for (i = 0; i < parameters.levels; i += 1) {
+    for (let i = 0; i < parameters.levels; i += 1) {
       map[i] = ((255 * i) / (parameters.levels - 1)) | 0;
     }
 
-    for (i = 0; i < 256; i += 1) {
+    for (let i = 0; i < 256; i += 1) {
       div[i] = ((parameters.levels * i) / 256) | 0;
     }
 
