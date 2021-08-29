@@ -766,4 +766,4 @@ project.save("path/to/file.png");
 
 ##### Examples
 
-```imagizer --effect=EnchanceColors --input=demo/test.png --output=demo/bin-output.png --imageType=image/png```
+```imagizer --effect=EnhanceColors --input=demo/test.png --output=demo/bin-output.png --outputImageType=image/png```

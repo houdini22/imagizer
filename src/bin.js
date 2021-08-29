@@ -9,8 +9,8 @@ const argv = yargs(hideBin(process.argv))
   .alias('help', 'h')
   .argv
 
-if (argv.input && argv.output && argv.imageType) {
-  if (argv.effect === "EnchanceColors") {
+if (argv.input && argv.output && argv.outputImageType) {
+  if (argv.effect === "EnhanceColors") {
     const image = new Imagizer.Image();
     image.load(argv.input, function () {
       const project = new Imagizer.Project(image.getWidth(), image.getHeight());
@@ -19,9 +19,9 @@ if (argv.input && argv.output && argv.imageType) {
       obj.applyEffect('component-stretching')
       obj.applyEffect('auto-white-balance')
       obj.applyEffect('auto-contrast')
-      project.save(argv.output, argv.imageType);
+      project.save(argv.output, argv.outputImageType);
 
-      console.log(`Saved to ${argv.output} as ${argv.imageType}.`);
+      console.log(`Saved to ${argv.output} as ${argv.outputImageType}.`);
     });
   }
 }
