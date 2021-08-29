@@ -18,7 +18,7 @@ if (argv.effect === "EnchanceColors") {
     obj.applyEffect('component-stretching')
     obj.applyEffect('auto-white-balance')
     obj.applyEffect('auto-contrast')
-    project.save(argv.output);
+    project.save(argv.output, argv.imageType);
 
     console.log(`Saved to ${argv.output}.`);
   });

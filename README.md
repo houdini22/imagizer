@@ -759,3 +759,9 @@ project.render(); // returns HTML Image object with src attribute set.
 ```javascript
 project.save("path/to/file.png");
 ```
+
+## Command line usage
+
+##### Examples
+
+```imagizer --effect=EnchanceColors --input=demo/test.png --output=demo/bin-output.png --imageType=image/png```
