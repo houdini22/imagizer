@@ -1,6 +1,6 @@
 import BasePointEffect from "../BasePoint";
 
-interface Parameters {
+export interface ExposureParameters {
   exposure: number;
 }
 
@@ -9,7 +9,7 @@ class ExposureEffect extends BasePointEffect {
     return "exposure";
   }
 
-  getDefaultParameters(): Parameters {
+  getDefaultParameters(): ExposureParameters {
     return {
       exposure: 1,
     };
@@ -24,7 +24,7 @@ class ExposureEffect extends BasePointEffect {
     },
     x: number,
     y: number,
-    parameters: Parameters,
+    parameters: ExposureParameters,
     width: number,
     height: number
   ): {

@@ -7,7 +7,7 @@ interface BeforeData {
   icentreY: number;
 }
 
-interface Parameters {
+export interface RotateParameters {
   angle: number;
 }
 
@@ -23,14 +23,14 @@ class RotateEffect extends BaseTransformEffect {
     icentreY: 0,
   };
 
-  getDefaultParameters(): Parameters {
+  getDefaultParameters(): RotateParameters {
     return {
       angle: Math.PI,
     };
   }
 
   before(
-    parameters: Parameters,
+    parameters: RotateParameters,
     width: number,
     height: number,
     imageData: ImageData
@@ -46,7 +46,7 @@ class RotateEffect extends BaseTransformEffect {
   callback(
     x: number,
     y: number,
-    parameters: Parameters,
+    parameters: RotateParameters,
     width: number,
     height: number
   ): Array<number> {

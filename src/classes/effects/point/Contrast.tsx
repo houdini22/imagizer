@@ -4,7 +4,7 @@ interface BeforeData {
   factor: number;
 }
 
-interface Parameters {
+export interface ContrastParameters {
   contrast: number;
 }
 
@@ -17,13 +17,13 @@ class ContrastEffect extends BasePointEffect {
     factor: 1,
   };
 
-  getDefaultParameters(): Parameters {
+  getDefaultParameters(): ContrastParameters {
     return {
       contrast: 0.5,
     };
   }
 
-  before(parameters: Parameters): BeforeData {
+  before(parameters: ContrastParameters): BeforeData {
     return {
       factor:
         (259 * (parameters.contrast * 255 + 255)) /
@@ -40,7 +40,7 @@ class ContrastEffect extends BasePointEffect {
     },
     x: number,
     y: number,
-    parameters: Parameters,
+    parameters: ContrastParameters,
     width: number,
     height: number
   ): {

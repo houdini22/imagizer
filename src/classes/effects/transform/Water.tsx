@@ -7,7 +7,7 @@ interface BeforeData {
   radius: number;
 }
 
-interface Parameters {
+export interface WaterParameters {
   waveLength: number;
   amplitude: number;
   phase: number;
@@ -28,7 +28,7 @@ class WaterEffect extends BaseTransformEffect {
     radius: 0,
   };
 
-  getDefaultParameters(): Parameters {
+  getDefaultParameters(): WaterParameters {
     return {
       waveLength: 16,
       amplitude: 10,
@@ -39,7 +39,11 @@ class WaterEffect extends BaseTransformEffect {
     };
   }
 
-  before(parameters: Parameters, width: number, height: number): BeforeData {
+  before(
+    parameters: WaterParameters,
+    width: number,
+    height: number
+  ): BeforeData {
     let iCentreX = width * parameters.centreX,
       iCentreY = height * parameters.centreY,
       radius = parameters.radius,
@@ -61,7 +65,7 @@ class WaterEffect extends BaseTransformEffect {
   callback(
     x: number,
     y: number,
-    parameters: Parameters,
+    parameters: WaterParameters,
     width: number,
     height: number
   ): Array<number> {

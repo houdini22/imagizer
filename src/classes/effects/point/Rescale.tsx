@@ -1,6 +1,6 @@
 import BasePointEffect from "../BasePoint";
 
-interface Parameters {
+export interface RescaleParameters {
   scale: number;
 }
 
@@ -9,7 +9,7 @@ class RescaleEffect extends BasePointEffect {
     return "rescale";
   }
 
-  getDefaultParameters(): Parameters {
+  getDefaultParameters(): RescaleParameters {
     return {
       scale: 1,
     };
@@ -24,7 +24,7 @@ class RescaleEffect extends BasePointEffect {
     },
     x: number,
     y: number,
-    parameters: Parameters,
+    parameters: RescaleParameters,
     width: number,
     height: number
   ): {

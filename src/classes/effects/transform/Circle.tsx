@@ -1,7 +1,7 @@
 import BaseTransformEffect from "../BaseTransform";
 import { mod } from "../../../helpers/common";
 
-interface Parameters {
+export interface CircleParameters {
   radius: number;
   height: number;
   angle: number;
@@ -27,7 +27,7 @@ class CircleEffect extends BaseTransformEffect {
     width: 0,
   };
 
-  getDefaultParameters(): Parameters {
+  getDefaultParameters(): CircleParameters {
     return {
       radius: 10,
       height: 20,
@@ -39,7 +39,7 @@ class CircleEffect extends BaseTransformEffect {
   }
 
   before(
-    parameters: Parameters,
+    parameters: CircleParameters,
     width: number,
     height: number,
     imageData: ImageData
@@ -54,7 +54,7 @@ class CircleEffect extends BaseTransformEffect {
   callback(
     x: number,
     y: number,
-    parameters: Parameters,
+    parameters: CircleParameters,
     width: number,
     height: number
   ): Array<number> {

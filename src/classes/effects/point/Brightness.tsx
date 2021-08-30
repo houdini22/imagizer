@@ -4,7 +4,7 @@ interface BeforeData {
   brightness: number;
 }
 
-interface Parameters {
+export interface BrightnessParameters {
   brightness: number;
 }
 
@@ -17,13 +17,13 @@ class BrightnessEffect extends BasePointEffect {
     brightness: 0,
   };
 
-  getDefaultParameters(): Parameters {
+  getDefaultParameters(): BrightnessParameters {
     return {
       brightness: 0.5,
     };
   }
 
-  before(parameters: Parameters): BeforeData {
+  before(parameters: BrightnessParameters): BeforeData {
     return {
       brightness: 255 * parameters.brightness,
     };

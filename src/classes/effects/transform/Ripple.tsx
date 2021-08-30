@@ -2,9 +2,9 @@ import BaseTransformEffect from "../BaseTransform";
 import { triangle, mod } from "../../../helpers/common";
 import noise from "../../../helpers/noise";
 
-interface Parameters {
+export interface RippleParameters {
   xAmplitude: number;
-  yAmplitute: number;
+  yAmplitude: number;
   xWaveLength: number;
   yWaveLength: number;
   waveType: string;
@@ -15,10 +15,10 @@ class RippleEffect extends BaseTransformEffect {
     return "ripple";
   }
 
-  getDefaultParameters(): Parameters {
+  getDefaultParameters(): RippleParameters {
     return {
       xAmplitude: 5,
-      yAmplitute: 0,
+      yAmplitude: 0,
       xWaveLength: 16,
       yWaveLength: 16,
       waveType: "SINE", // SAWTOOTH TRIANGLE NOISE
@@ -28,7 +28,7 @@ class RippleEffect extends BaseTransformEffect {
   callback(
     x: number,
     y: number,
-    parameters: Parameters,
+    parameters: RippleParameters,
     width: number,
     height: number
   ): Array<number> {
@@ -60,7 +60,7 @@ class RippleEffect extends BaseTransformEffect {
         break;
     }
 
-    return [x + parameters.xAmplitude * fx, y + parameters.yAmplitute * fy];
+    return [x + parameters.xAmplitude * fx, y + parameters.yAmplitude * fy];
   }
 }
 

@@ -1,7 +1,7 @@
 import BaseCustomEffect from "../BaseCustom";
 import { RGBtoCIELab, CIELabToRGB } from "../../../helpers/color";
 
-interface Parameters {
+export interface AutoWhiteBalanceParameters {
   intensity: number;
 }
 
@@ -10,16 +10,18 @@ class AutoWhiteBalanceEffect extends BaseCustomEffect {
     return "auto-white-balance";
   }
 
-  getDefaultParameters(): Parameters {
+  getDefaultParameters(): AutoWhiteBalanceParameters {
     return {
       intensity: 50,
     };
   }
 
-  callback(width: number, height: number, parameters: Parameters) {
-    let x,
-      y,
-      sumA = 0,
+  callback(
+    width: number,
+    height: number,
+    parameters: AutoWhiteBalanceParameters
+  ) {
+    let sumA = 0,
       sumB = 0,
       pixel,
       lab,
@@ -28,8 +30,8 @@ class AutoWhiteBalanceEffect extends BaseCustomEffect {
       aDelta,
       bDelta;
 
-    for (y = 0; y < height; y += 1) {
-      for (x = 0; x < width; x += 1) {
+    for (let y = 0; y < height; y += 1) {
+      for (let x = 0; x < width; x += 1) {
         pixel = this.getPixel(x, y);
         lab = RGBtoCIELab(pixel.r, pixel.g, pixel.b);
         sumA += lab.a;
@@ -43,8 +45,8 @@ class AutoWhiteBalanceEffect extends BaseCustomEffect {
     aDelta = avgSumA * (parameters.intensity / 100) * 1.1;
     bDelta = avgSumB * (parameters.intensity / 100) * 1.1;
 
-    for (y = 0; y < height; y += 1) {
-      for (x = 0; x < width; x += 1) {
+    for (let y = 0; y < height; y += 1) {
+      for (let x = 0; x < width; x += 1) {
         pixel = this.getPixel(x, y);
 
         lab = RGBtoCIELab(pixel.r, pixel.g, pixel.b);

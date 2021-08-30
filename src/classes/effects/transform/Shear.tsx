@@ -1,6 +1,6 @@
 import BaseTransformEffect from "../BaseTransform";
 
-interface Parameters {
+export interface ShearParameters {
   xAngle: number;
   yAngle: number;
   xOffset: number;
@@ -22,7 +22,7 @@ class ShearEffect extends BaseTransformEffect {
     shy: 0,
   };
 
-  getDefaultParameters(): Parameters {
+  getDefaultParameters(): ShearParameters {
     return {
       xAngle: 0,
       yAngle: 0,
@@ -31,7 +31,11 @@ class ShearEffect extends BaseTransformEffect {
     };
   }
 
-  before(parameters: Parameters, width: number, height: number): BeforeData {
+  before(
+    parameters: ShearParameters,
+    width: number,
+    height: number
+  ): BeforeData {
     return {
       shx: Math.sin(parameters.xAngle),
       shy: Math.sin(parameters.yAngle),
@@ -41,7 +45,7 @@ class ShearEffect extends BaseTransformEffect {
   callback(
     x: number,
     y: number,
-    parameters: Parameters,
+    parameters: ShearParameters,
     width: number,
     height: number
   ): Array<number> {

@@ -12,7 +12,7 @@ interface BeforeData {
   I: number;
 }
 
-interface Parameters {
+export interface PerspectiveParameters {
   x0: number;
   y0: number;
   x1: number;
@@ -40,7 +40,7 @@ class PerspectiveEffect extends BaseTransformEffect {
     I: 0,
   };
 
-  getDefaultParameters(): Parameters {
+  getDefaultParameters(): PerspectiveParameters {
     return {
       x0: 0,
       y0: 0,
@@ -54,7 +54,7 @@ class PerspectiveEffect extends BaseTransformEffect {
   }
 
   before(
-    parameters: Parameters,
+    parameters: PerspectiveParameters,
     width: number,
     height: number,
     imageData: ImageData
@@ -137,7 +137,7 @@ class PerspectiveEffect extends BaseTransformEffect {
   callback(
     x: number,
     y: number,
-    parameters: Parameters,
+    parameters: PerspectiveParameters,
     width: number,
     height: number
   ): Array<number> {

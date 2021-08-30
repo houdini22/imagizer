@@ -1,6 +1,6 @@
 import BasePointEffect from "../BasePoint";
 
-interface Parameters {
+export interface SepiaParameters {
   sepiaValue: number;
 }
 
@@ -9,7 +9,7 @@ class SepiaEffect extends BasePointEffect {
     return "sepia";
   }
 
-  getDefaultParameters(): Parameters {
+  getDefaultParameters(): SepiaParameters {
     return {
       sepiaValue: 1,
     };
@@ -24,7 +24,7 @@ class SepiaEffect extends BasePointEffect {
     },
     x: number,
     y: number,
-    parameters: Parameters,
+    parameters: SepiaParameters,
     width: number,
     height: number
   ): {

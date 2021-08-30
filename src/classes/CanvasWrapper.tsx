@@ -2,13 +2,14 @@ import { isBrowser } from "../helpers/common";
 import { NodeCanvasRenderingContext2D, Canvas } from "canvas/types";
 
 class CanvasWrapper {
-  canvas: Canvas | HTMLCanvasElement = null;
+  protected canvas: Canvas | HTMLCanvasElement = null;
 
-  context: NodeCanvasRenderingContext2D | CanvasRenderingContext2D = null;
+  protected context: NodeCanvasRenderingContext2D | CanvasRenderingContext2D =
+    null;
 
-  width: number = 0;
+  protected width: number = 0;
 
-  height: number = 0;
+  protected height: number = 0;
 
   constructor(width: number, height: number) {
     this.initialize(width, height);

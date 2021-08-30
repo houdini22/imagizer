@@ -1,6 +1,6 @@
 import BaseCustomEffect from "../BaseCustom";
 
-interface Parameters {
+export interface BlockParameters {
   blockSize: number;
 }
 
@@ -9,17 +9,17 @@ class BlockEffect extends BaseCustomEffect {
     return "block";
   }
 
-  getDefaultParameters(): Parameters {
+  getDefaultParameters(): BlockParameters {
     return {
       blockSize: 5,
     };
   }
 
-  callback(width: number, height: number, parameters: Parameters) {
-    let x, y, w, h, t, r, g, b, pixel, by, bx;
+  callback(width: number, height: number, parameters: BlockParameters) {
+    let w, h, t, r, g, b, pixel;
 
-    for (y = 0; y < height; y += parameters.blockSize) {
-      for (x = 0; x < width; x += parameters.blockSize) {
+    for (let y = 0; y < height; y += parameters.blockSize) {
+      for (let x = 0; x < width; x += parameters.blockSize) {
         w = Math.min(parameters.blockSize, width - x);
         h = Math.min(parameters.blockSize, height - y);
         t = w * h;
@@ -28,8 +28,8 @@ class BlockEffect extends BaseCustomEffect {
         g = 0;
         b = 0;
 
-        for (by = 0; by < h; by += 1) {
-          for (bx = 0; bx < w; bx += 1) {
+        for (let by = 0; by < h; by += 1) {
+          for (let bx = 0; bx < w; bx += 1) {
             pixel = this.getOriginalPixel(x + bx, y + by);
 
             r += pixel.r & 0xff;
@@ -42,8 +42,8 @@ class BlockEffect extends BaseCustomEffect {
         g = g / t;
         b = b / t;
 
-        for (by = 0; by < h; by += 1) {
-          for (bx = 0; bx < w; bx += 1) {
+        for (let by = 0; by < h; by += 1) {
+          for (let bx = 0; bx < w; bx += 1) {
             this.setPixel(x + bx, y + by, {
               r: r,
               g: g,

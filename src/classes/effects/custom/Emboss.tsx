@@ -1,7 +1,7 @@
 import BaseCustomEffect from "../BaseCustom";
 import { brightness } from "../../../helpers/common";
 
-interface Parameters {
+export interface EmbossParameters {
   azimuth: number;
   elevation: number;
   width45: number;
@@ -13,7 +13,7 @@ class EmbossEffect extends BaseCustomEffect {
     return "emboss";
   }
 
-  getDefaultParameters(): Parameters {
+  getDefaultParameters(): EmbossParameters {
     return {
       azimuth: (135 * Math.PI) / 180,
       elevation: (30 * Math.PI) / 180,
@@ -22,10 +22,8 @@ class EmbossEffect extends BaseCustomEffect {
     };
   }
 
-  callback(width: number, height: number, parameters: Parameters) {
-    let x,
-      y,
-      bumpMapWidth = width,
+  callback(width: number, height: number, parameters: EmbossParameters) {
+    let bumpMapWidth = width,
       bumpPixels = [],
       Nx,
       Ny,
@@ -67,18 +65,18 @@ class EmbossEffect extends BaseCustomEffect {
 
     background = Lz;
 
-    for (y = 0; y < height; y += 1) {
-      for (x = 0; x < width; x += 1) {
+    for (let y = 0; y < height; y += 1) {
+      for (let x = 0; x < width; x += 1) {
         bumpPixels.push(brightness(this.getOriginalPixel(x, y)) | 0);
       }
     }
 
-    for (y = 0; y < height; y += 1, bumpIndex += bumpMapWidth) {
+    for (let y = 0; y < height; y += 1, bumpIndex += bumpMapWidth) {
       s1 = bumpIndex;
       s2 = s1 + bumpMapWidth;
       s3 = s2 + bumpMapWidth;
 
-      for (x = 0; x < width; x += 1, s1 += 1, s2 += 1, s3 += 1) {
+      for (let x = 0; x < width; x += 1, s1 += 1, s2 += 1, s3 += 1) {
         if (y != 0 && y < height - 2 && x != 0 && x < width - 2) {
           Nx =
             bumpPixels[s1 - 1] +

@@ -1,6 +1,6 @@
 import BasePointEffect from "../BasePoint";
 
-interface Parameters {
+export interface LevelsParameters {
   low: number;
   high: number;
   lowOutput: number;
@@ -20,7 +20,7 @@ class LevelsEffect extends BasePointEffect {
     lut: [],
   };
 
-  getDefaultParameters(): Parameters {
+  getDefaultParameters(): LevelsParameters {
     return {
       low: 0,
       high: 1,
@@ -30,17 +30,13 @@ class LevelsEffect extends BasePointEffect {
   }
 
   before(
-    parameters: Parameters,
+    parameters: LevelsParameters,
     width: number,
     height: number,
     imageData: ImageData
   ): BeforeData {
     let Histogram = function (imageData, width, height, offset, stride) {
-      let i,
-        j,
-        index,
-        x,
-        y,
+      let index,
         histogram = new Array(3),
         minValue = new Array(4),
         maxValue = new Array(4),
@@ -54,15 +50,15 @@ class LevelsEffect extends BasePointEffect {
         BLUE = 2,
         GRAY = 3;
 
-      for (i = 0; i < histogram.length; i += 1) {
+      for (let i = 0; i < histogram.length; i += 1) {
         histogram[i] = new Array(256);
-        for (j = 0; j < 256; j += 1) {
+        for (let j = 0; j < 256; j += 1) {
           histogram[i][j] = 0;
         }
       }
 
-      for (y = 0; y < height; y += 1) {
-        for (x = 0; x < width; x += 1) {
+      for (let y = 0; y < height; y += 1) {
+        for (let x = 0; x < width; x += 1) {
           index = y * width * 4 + x * 4;
           histogram[RED][imageData.data[index]]++;
           histogram[GREEN][imageData.data[index + 1]]++;
@@ -70,7 +66,7 @@ class LevelsEffect extends BasePointEffect {
         }
       }
 
-      for (i = 0; i < 256; i += 1) {
+      for (let i = 0; i < 256; i += 1) {
         if (
           histogram[RED][i] !== histogram[GREEN][i] ||
           histogram[GREEN][i] !== histogram[BLUE][i]
@@ -80,14 +76,14 @@ class LevelsEffect extends BasePointEffect {
         }
       }
 
-      for (i = 0; i < 3; i += 1) {
-        for (j = 0; j < 256; j += 1) {
+      for (let i = 0; i < 3; i += 1) {
+        for (let j = 0; j < 256; j += 1) {
           if (histogram[i][j] > 0) {
             minValue[i] = j;
             break;
           }
         }
-        for (j = 255; j >= 0; j -= 1) {
+        for (let j = 255; j >= 0; j -= 1) {
           if (histogram[i][j] > 0) {
             maxValue[i] = j;
             break;
@@ -95,7 +91,7 @@ class LevelsEffect extends BasePointEffect {
         }
         minFrequency[i] = Infinity;
         maxFrequency[i] = 0;
-        for (j = 0; j < 256; j += 1) {
+        for (let j = 0; j < 256; j += 1) {
           minFrequency[i] = Math.min(minFrequency[i], histogram[i][j]);
           maxFrequency[i] = Math.max(maxFrequency[i], histogram[i][j]);
           mean[i] += j * histogram[i][j];
@@ -113,15 +109,15 @@ class LevelsEffect extends BasePointEffect {
         );
       }
 
-      this.getNumSamples = function () {
+      this.getNumSamples = () => {
         return numSamples;
       };
 
-      this.isGray = function () {
+      this.isGray = () => {
         return isGray;
       };
 
-      this.getFrequency = function (channel, value) {
+      this.getFrequency = (channel, value) => {
         if (!value) {
           if (numSamples > 0 && isGray && value >= 0 && value <= 255) {
             return histogram[0][value];
@@ -140,7 +136,7 @@ class LevelsEffect extends BasePointEffect {
         return histogram[channel][value];
       };
 
-      this.getMinFrequency = function (channel) {
+      this.getMinFrequency = (channel) => {
         if (!channel) {
           if (numSamples > 0 && isGray) {
             return minFrequency[0];
@@ -153,7 +149,7 @@ class LevelsEffect extends BasePointEffect {
         return minFrequency[channel];
       };
 
-      this.getMaxFrequency = function (channel) {
+      this.getMaxFrequency = (channel) => {
         if (!channel) {
           if (numSamples > 0 && isGray) {
             return maxFrequency[0];
@@ -166,7 +162,7 @@ class LevelsEffect extends BasePointEffect {
         return maxFrequency[channel];
       };
 
-      this.getMinValue = function (channel) {
+      this.getMinValue = (channel) => {
         if (!channel) {
           if (numSamples > 0 && isGray) {
             return minValue[0];
@@ -176,7 +172,7 @@ class LevelsEffect extends BasePointEffect {
         return minValue[channel];
       };
 
-      this.getMaxValue = function (channel) {
+      this.getMaxValue = (channel) => {
         if (!channel) {
           if (numSamples > 0 && isGray) {
             return maxValue[0];
@@ -186,7 +182,7 @@ class LevelsEffect extends BasePointEffect {
         return maxValue[channel];
       };
 
-      this.getMeanValue = function (channel) {
+      this.getMeanValue = (channel) => {
         if (!channel) {
           if (numSamples > 0 && isGray) {
             return mean[0];
@@ -200,19 +196,17 @@ class LevelsEffect extends BasePointEffect {
     let histogram = new Histogram(imageData, width, height, 0, width),
       lut = new Array(3),
       low = parameters.low * 255,
-      high = parameters.high * 255,
-      i,
-      j;
+      high = parameters.high * 255;
 
-    for (i = 0; i < lut.length; i += 1) {
+    for (let i = 0; i < lut.length; i += 1) {
       lut[i] = new Array(256);
     }
     if (low === high) {
       high++;
     }
 
-    for (i = 0; i < 3; i += 1) {
-      for (j = 0; j < 256; j += 1) {
+    for (let i = 0; i < 3; i += 1) {
+      for (let j = 0; j < 256; j += 1) {
         lut[i][j] =
           255 *
           (parameters.lowOutput +
@@ -237,7 +231,7 @@ class LevelsEffect extends BasePointEffect {
     },
     x: number,
     y: number,
-    parameters: Parameters,
+    parameters: LevelsParameters,
     width: number,
     height: number
   ): {

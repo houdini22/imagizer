@@ -1,6 +1,6 @@
 import BasePointEffect from "../BasePoint";
 
-interface Parameters {
+export interface ChannelMixParameters {
   blueGreen: number;
   redBlue: number;
   greenRed: number;
@@ -14,7 +14,7 @@ class ChannelMixEffect extends BasePointEffect {
     return "channel-mix";
   }
 
-  getDefaultParameters(): Parameters {
+  getDefaultParameters(): ChannelMixParameters {
     return {
       blueGreen: 1,
       redBlue: 1,
@@ -34,7 +34,7 @@ class ChannelMixEffect extends BasePointEffect {
     },
     x: number,
     y: number,
-    parameters: Parameters,
+    parameters: ChannelMixParameters,
     width: number,
     height: number
   ): {

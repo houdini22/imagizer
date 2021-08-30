@@ -1,7 +1,7 @@
 import BasePointEffect from "../BasePoint";
 import { smoothStep } from "../../../helpers/common";
 
-interface Parameters {
+export interface DissolveParameters {
   density: number;
   softness: number;
 }
@@ -21,7 +21,7 @@ class DissolveEffect extends BasePointEffect {
     maxDensity: 0,
   };
 
-  getDefaultParameters(): Parameters {
+  getDefaultParameters(): DissolveParameters {
     return {
       density: 1,
       softness: 0,
@@ -29,12 +29,12 @@ class DissolveEffect extends BasePointEffect {
   }
 
   before(
-    parameters: Parameters,
+    parameters: DissolveParameters,
     width: number,
     height: number,
     imageData: ImageData
   ): BeforeData {
-    let d = (1 - parameters.density) * (1 + parameters.softness);
+    const d = (1 - parameters.density) * (1 + parameters.softness);
     return {
       minDensity: d - parameters.softness,
       maxDensity: d,
@@ -50,7 +50,7 @@ class DissolveEffect extends BasePointEffect {
     },
     x: number,
     y: number,
-    parameters: Parameters,
+    parameters: DissolveParameters,
     width: number,
     height: number
   ): {
@@ -59,7 +59,7 @@ class DissolveEffect extends BasePointEffect {
     b: number;
     a: number;
   } {
-    let v = Math.random(),
+    const v = Math.random(),
       f = smoothStep(this.data.minDensity, this.data.maxDensity, v);
     pixel.a = pixel.a * f;
     return pixel;

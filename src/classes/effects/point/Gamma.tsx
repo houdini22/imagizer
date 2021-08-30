@@ -1,6 +1,6 @@
 import BasePointEffect from "../BasePoint";
 
-interface Parameters {
+export interface GammaParameters {
   gammaRed: number;
   gammaGreen: number;
   gammaBlue: number;
@@ -27,7 +27,7 @@ class GammaEffect extends BasePointEffect {
     },
   };
 
-  getDefaultParameters(): Parameters {
+  getDefaultParameters(): GammaParameters {
     return {
       gammaRed: 1,
       gammaGreen: 1,
@@ -36,19 +36,18 @@ class GammaEffect extends BasePointEffect {
   }
 
   before(
-    parameters: Parameters,
+    parameters: GammaParameters,
     width: number,
     height: number,
     imageData: ImageData
   ): BeforeData {
-    let table = {
-        r: [],
-        g: [],
-        b: [],
-      },
-      i;
+    const table = {
+      r: [],
+      g: [],
+      b: [],
+    };
 
-    for (i = 0; i < 256; i += 1) {
+    for (let i = 0; i < 256; i += 1) {
       table.r[i] = (255 * Math.pow(i / 255, 1 / parameters.gammaRed) + 0.5) | 0;
       table.g[i] =
         (255 * Math.pow(i / 255, 1 / parameters.gammaGreen) + 0.5) | 0;
@@ -70,7 +69,7 @@ class GammaEffect extends BasePointEffect {
     },
     x: number,
     y: number,
-    parameters: Parameters,
+    parameters: GammaParameters,
     width: number,
     height: number
   ): {

@@ -1,6 +1,6 @@
 import BasePointEffect from "../BasePoint";
 
-interface Parameters {
+export interface GainParameters {
   gain: number;
   bias: number;
 }
@@ -10,7 +10,7 @@ class GainEffect extends BasePointEffect {
     return "gain";
   }
 
-  getDefaultParameters(): Parameters {
+  getDefaultParameters(): GainParameters {
     return {
       gain: 1,
       bias: 1,
@@ -26,7 +26,7 @@ class GainEffect extends BasePointEffect {
     },
     x: number,
     y: number,
-    parameters: Parameters,
+    parameters: GainParameters,
     width: number,
     height: number
   ): {

@@ -1,6 +1,6 @@
 import BaseTransformEffect from "../BaseTransform";
 
-interface Parameters {
+export interface DiffuseParameters {
   scale: number;
 }
 
@@ -19,23 +19,22 @@ class DiffuseEffect extends BaseTransformEffect {
     cosTable: [],
   };
 
-  getDefaultParameters(): Parameters {
+  getDefaultParameters(): DiffuseParameters {
     return {
       scale: 4,
     };
   }
 
   before(
-    parameters: Parameters,
+    parameters: DiffuseParameters,
     width: number,
     height: number,
     imageData: ImageData
   ): BeforeData {
     let sinTable = new Array(256),
       cosTable = new Array(256),
-      i,
       angle;
-    for (i = 0; i < 256; i += 1) {
+    for (let i = 0; i < 256; i += 1) {
       angle = (Math.PI * 2 * i) / 256;
       sinTable[i] = parameters.scale * Math.sin(angle);
       cosTable[i] = parameters.scale * Math.cos(angle);
@@ -49,7 +48,7 @@ class DiffuseEffect extends BaseTransformEffect {
   callback(
     x: number,
     y: number,
-    parameters: Parameters,
+    parameters: DiffuseParameters,
     width: number,
     height: number
   ): Array<number> {

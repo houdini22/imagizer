@@ -7,7 +7,7 @@ interface BeforeData {
   radius2: number;
 }
 
-interface Parameters {
+export interface TwirlParameters {
   angle: number;
   centreX: number;
   centreY: number;
@@ -27,7 +27,7 @@ class TwirlEffect extends BaseTransformEffect {
     radius2: 0,
   };
 
-  getDefaultParameters(): Parameters {
+  getDefaultParameters(): TwirlParameters {
     return {
       angle: 0,
       centreX: 0.5,
@@ -37,7 +37,11 @@ class TwirlEffect extends BaseTransformEffect {
     };
   }
 
-  before(parameters: Parameters, width: number, height: number): BeforeData {
+  before(
+    parameters: TwirlParameters,
+    width: number,
+    height: number
+  ): BeforeData {
     let iCentreX = width * parameters.centreX,
       iCentreY = height * parameters.centreY,
       radius = parameters.radius,
@@ -59,7 +63,7 @@ class TwirlEffect extends BaseTransformEffect {
   callback(
     x: number,
     y: number,
-    parameters: Parameters,
+    parameters: TwirlParameters,
     width: number,
     height: number
   ): Array<number> {

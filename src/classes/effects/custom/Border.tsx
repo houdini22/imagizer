@@ -1,6 +1,6 @@
 import BaseCustomEffect from "../BaseCustom";
 
-interface Parameters {
+export interface BorderParameters {
   leftBorder: number;
   rightBorder: number;
   topBorder: number;
@@ -25,7 +25,7 @@ class BorderEffect extends BaseCustomEffect {
     bottomBorder: 0,
   };
 
-  getDefaultParameters(): Parameters {
+  getDefaultParameters(): BorderParameters {
     return {
       leftBorder: 10,
       rightBorder: 10,
@@ -41,11 +41,11 @@ class BorderEffect extends BaseCustomEffect {
   }
 
   before(
-    parameters: Parameters,
+    parameters: BorderParameters,
     width: number,
     height: number,
     imageData: ImageData
-  ): Parameters {
+  ): BorderParameters {
     return {
       leftBorder: parameters.leftBorder | 0,
       rightBorder: parameters.rightBorder | 0,
@@ -55,10 +55,8 @@ class BorderEffect extends BaseCustomEffect {
   }
 
   callback(width, height, parameters) {
-    let x, y;
-
-    for (y = 0; y < height; y += 1) {
-      for (x = 0; x < width; x += 1) {
+    for (let y = 0; y < height; y += 1) {
+      for (let x = 0; x < width; x += 1) {
         if (this.data.leftBorder > 0 && x < this.data.leftBorder) {
           this.setPixel(x, y, parameters.borderColor);
         }

@@ -1,6 +1,6 @@
 import BaseTransformEffect from "../BaseTransform";
 
-interface Parameters {
+export interface OffsetParameters {
   xOffset: number;
   yOffset: number;
   wrap: boolean;
@@ -11,7 +11,7 @@ class RotateEffect extends BaseTransformEffect {
     return "offset";
   }
 
-  getDefaultParameters(): Parameters {
+  getDefaultParameters(): OffsetParameters {
     return {
       xOffset: 100,
       yOffset: 100,
@@ -22,7 +22,7 @@ class RotateEffect extends BaseTransformEffect {
   callback(
     x: number,
     y: number,
-    parameters: Parameters,
+    parameters: OffsetParameters,
     width: number,
     height: number
   ): Array<number> {

@@ -1,5 +1,5 @@
 class BaseEffect {
-  opts: object = {};
+  protected opts: object = {};
 
   constructor(opts: object = {}) {
     this.opts = opts;

@@ -7,7 +7,7 @@ interface BeforeData {
   radius: number;
 }
 
-interface Parameters {
+export interface PolarParameters {
   type: string;
 }
 
@@ -23,14 +23,14 @@ class PolarEffect extends BaseTransformEffect {
     radius: 0,
   };
 
-  getDefaultParameters(): Parameters {
+  getDefaultParameters(): PolarParameters {
     return {
       type: "RECT_TO_POLAR", // RECT_TO_POLAR, POLAR_TO_RECT, INVERT_IN_CIRCLE
     };
   }
 
   before(
-    parameters: Parameters,
+    parameters: PolarParameters,
     width: number,
     height: number,
     imageData: ImageData
@@ -48,7 +48,7 @@ class PolarEffect extends BaseTransformEffect {
   callback(
     x: number,
     y: number,
-    parameters: Parameters,
+    parameters: PolarParameters,
     width: number,
     height: number
   ): Array<number> {

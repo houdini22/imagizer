@@ -9,7 +9,7 @@ interface BeforeData {
   b: number;
 }
 
-interface Parameters {
+export interface SphereParameters {
   a: number;
   b: number;
   centreX: number;
@@ -31,7 +31,7 @@ class SphereEffect extends BaseTransformEffect {
     b: 0,
   };
 
-  getDefaultParameters(): Parameters {
+  getDefaultParameters(): SphereParameters {
     return {
       a: 0,
       b: 0,
@@ -41,7 +41,11 @@ class SphereEffect extends BaseTransformEffect {
     };
   }
 
-  before(parameters: Parameters, width: number, height: number): BeforeData {
+  before(
+    parameters: SphereParameters,
+    width: number,
+    height: number
+  ): BeforeData {
     let icentreX = width * parameters.centreX,
       icentreY = height * parameters.centreY,
       a = parameters.a,
@@ -70,7 +74,7 @@ class SphereEffect extends BaseTransformEffect {
   callback(
     x: number,
     y: number,
-    parameters: Parameters,
+    parameters: SphereParameters,
     width: number,
     height: number
   ): Array<number> {

@@ -1,6 +1,6 @@
 import BaseTransformEffect from "../BaseTransform";
 
-interface Parameters {
+export interface PinchParameters {
   angle: number;
   centreX: number;
   centreY: number;
@@ -27,7 +27,7 @@ class PinchEffect extends BaseTransformEffect {
     radius: 0,
   };
 
-  getDefaultParameters(): Parameters {
+  getDefaultParameters(): PinchParameters {
     return {
       angle: 0,
       centreX: 0.5,
@@ -38,7 +38,7 @@ class PinchEffect extends BaseTransformEffect {
   }
 
   before(
-    parameters: Parameters,
+    parameters: PinchParameters,
     width: number,
     height: number,
     imageData: ImageData
@@ -62,7 +62,7 @@ class PinchEffect extends BaseTransformEffect {
   callback(
     x: number,
     y: number,
-    parameters: Parameters,
+    parameters: PinchParameters,
     width: number,
     height: number
   ): Array<number> {

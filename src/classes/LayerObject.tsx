@@ -12,17 +12,17 @@ interface EffectType {
 }
 
 class LayerObject {
-  obj: BaseOnLayerObject = null;
+  protected obj: BaseOnLayerObject = null;
 
-  layer: Layer = null;
+  protected layer: Layer = null;
 
-  x: number = 0;
+  protected x: number = 0;
 
-  y: number = 0;
+  protected y: number = 0;
 
-  opts: object = {};
+  protected opts: object = {};
 
-  effects: EffectType[] = [];
+  protected effects: EffectType[] = [];
 
   constructor(
     obj: BaseOnLayerObject,

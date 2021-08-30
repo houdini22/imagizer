@@ -1,6 +1,6 @@
 import BasePointEffect from "../BasePoint";
 
-interface Parameters {
+export interface DiffusionParameters {
   matrix: Array<number>;
   levels: number;
   colorDither: boolean;
@@ -24,7 +24,7 @@ class DiffusionEffect extends BasePointEffect {
     sum: 0,
   };
 
-  getDefaultParameters(): Parameters {
+  getDefaultParameters(): DiffusionParameters {
     return {
       matrix: [0, 0, 0, 0, 0, 7, 3, 5, 1],
       levels: 6,
@@ -34,7 +34,7 @@ class DiffusionEffect extends BasePointEffect {
   }
 
   before(
-    parameters: Parameters,
+    parameters: DiffusionParameters,
     width: number,
     height: number,
     imageData: ImageData
@@ -71,7 +71,7 @@ class DiffusionEffect extends BasePointEffect {
     },
     x: number,
     y: number,
-    parameters: Parameters,
+    parameters: DiffusionParameters,
     width: number,
     height: number
   ): {
@@ -91,8 +91,6 @@ class DiffusionEffect extends BasePointEffect {
       tmpRed,
       tmpGreen,
       tmpBlue,
-      i,
-      j,
       iy,
       jx,
       w,
@@ -114,12 +112,12 @@ class DiffusionEffect extends BasePointEffect {
     tmpBlue = blue1 - blue2;
 
     if (parameters.granulate) {
-      for (i = -1; i <= 1; i += 1) {
+      for (let i = -1; i <= 1; i += 1) {
         iy = i + y;
         if (iy < 0 || iy >= height) {
           continue;
         }
-        for (j = -1; j <= 1; j += 1) {
+        for (let j = -1; j <= 1; j += 1) {
           jx = j + x;
           if (jx < 0 || jx >= width) {
             continue;

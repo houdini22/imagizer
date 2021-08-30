@@ -8,7 +8,7 @@ interface BeforeData {
   div: object;
 }
 
-interface Parameters {
+export interface DitherParameters {
   matrices: {
     ditherMagic4x4Matrix: Array<number>;
     ditherOrdered4x4Matrix: Array<number>;
@@ -38,7 +38,7 @@ class DitherEffect extends BasePointEffect {
     div: {},
   };
 
-  getDefaultParameters(): Parameters {
+  getDefaultParameters(): DitherParameters {
     return {
       matrices: {
         ditherMagic4x4Matrix: [
@@ -115,7 +115,7 @@ class DitherEffect extends BasePointEffect {
   }
 
   before(
-    parameters: Parameters,
+    parameters: DitherParameters,
     width: number,
     height: number,
     imageData: ImageData
@@ -125,8 +125,7 @@ class DitherEffect extends BasePointEffect {
       cols,
       map = [],
       div = [],
-      mod = [],
-      i;
+      mod = [];
 
     if (typeof matrix === "string") {
       matrix = parameters.matrices[matrix];
@@ -135,22 +134,22 @@ class DitherEffect extends BasePointEffect {
     rows = Math.sqrt(matrix.length);
     cols = Math.sqrt(matrix.length);
 
-    for (i = 0; i < parameters.levels; i += 1) {
+    for (let i = 0; i < parameters.levels; i += 1) {
       map[i] = (255 * i) / (parameters.levels - 1);
     }
 
-    for (i = 0; i < 256; i += 1) {
+    for (let i = 0; i < 256; i += 1) {
       div[i] = (((parameters.levels - 1) * i) / 256) | 0;
       mod[i] = ((i * (rows * cols + 1)) / 256) | 0;
     }
 
     return {
       matrix,
-      map: map,
-      div: div,
-      mod: mod,
-      cols: cols,
-      rows: rows,
+      map,
+      div,
+      mod,
+      cols,
+      rows,
     };
   }
 
@@ -163,7 +162,7 @@ class DitherEffect extends BasePointEffect {
     },
     x: number,
     y: number,
-    parameters: Parameters,
+    parameters: DitherParameters,
     width: number,
     height: number
   ): {

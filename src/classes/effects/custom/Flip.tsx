@@ -1,6 +1,6 @@
 import BaseCustomEffect from "../BaseCustom";
 
-interface Parameters {
+export interface FlipParameters {
   operation: string;
 }
 
@@ -15,7 +15,7 @@ class FlipEffect extends BaseCustomEffect {
     };
   }
 
-  callback(width: number, height: number, parameters: Parameters) {
+  callback(width: number, height: number, parameters: FlipParameters) {
     let x = 0,
       y = 0,
       w = width,

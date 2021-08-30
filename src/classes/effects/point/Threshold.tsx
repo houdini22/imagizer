@@ -23,7 +23,7 @@ class ThresholdEffect extends BasePointEffect {
     b: number;
     a: number;
   } {
-    let grayscale = (pixel.r + pixel.g + pixel.b) / 3;
+    const grayscale = (pixel.r + pixel.g + pixel.b) / 3;
 
     if (grayscale >= 127) {
       return {

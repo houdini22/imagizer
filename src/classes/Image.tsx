@@ -4,9 +4,9 @@ import { isBrowser } from "../helpers/common";
 import { Image as ImageType } from "canvas/types";
 
 class Image extends BaseOnLayerObject {
-  url: string = null;
+  protected url: string = null;
 
-  image: HTMLImageElement | ImageType = null;
+  protected image: HTMLImageElement | ImageType = null;
 
   constructor() {
     super();

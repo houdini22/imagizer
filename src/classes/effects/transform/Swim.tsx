@@ -8,7 +8,7 @@ interface BeforeData {
   m11: number;
 }
 
-interface Parameters {
+export interface SwimParameters {
   scale: number;
   turbulence: number;
   amount: number;
@@ -29,7 +29,7 @@ class SwimEffect extends BaseTransformEffect {
     m11: 0,
   };
 
-  getDefaultParameters(): Parameters {
+  getDefaultParameters(): SwimParameters {
     return {
       scale: 32,
       turbulence: 0,
@@ -40,7 +40,11 @@ class SwimEffect extends BaseTransformEffect {
     };
   }
 
-  before(parameters: Parameters, width: number, height: number): BeforeData {
+  before(
+    parameters: SwimParameters,
+    width: number,
+    height: number
+  ): BeforeData {
     let cos = Math.cos(parameters.angle),
       sin = Math.sin(parameters.angle);
 
@@ -55,7 +59,7 @@ class SwimEffect extends BaseTransformEffect {
   callback(
     x: number,
     y: number,
-    parameters: Parameters,
+    parameters: SwimParameters,
     width: number,
     height: number
   ): Array<number> {

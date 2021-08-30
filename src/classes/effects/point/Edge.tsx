@@ -5,7 +5,7 @@ interface BeforeData {
   vEdgeMatrix: Array<number>;
 }
 
-interface Parameters {
+export interface EdgeParameters {
   matrixes: {
     robertsV: Array<number>;
     robertsH: Array<number>;
@@ -30,7 +30,7 @@ class EdgeEffect extends BasePointEffect {
     vEdgeMatrix: [],
   };
 
-  getDefaultParameters(): Parameters {
+  getDefaultParameters(): EdgeParameters {
     return {
       matrixes: {
         robertsV: [0, 0, -1, 0, 1, 0, 0, 0, 0],
@@ -48,7 +48,7 @@ class EdgeEffect extends BasePointEffect {
   }
 
   before(
-    parameters: Parameters,
+    parameters: EdgeParameters,
     width: number,
     height: number,
     imageData: ImageData
@@ -79,7 +79,7 @@ class EdgeEffect extends BasePointEffect {
     },
     x: number,
     y: number,
-    parameters: Parameters,
+    parameters: EdgeParameters,
     width: number,
     height: number
   ): {
@@ -97,22 +97,20 @@ class EdgeEffect extends BasePointEffect {
       rv = 0,
       gv = 0,
       bv = 0,
-      row,
       iy,
-      col,
       ix,
       mOffset,
       pixel2,
       h,
       v;
 
-    for (row = -1; row <= 1; row += 1) {
+    for (let row = -1; row <= 1; row += 1) {
       iy = y + row;
       if (!(0 <= iy && iy < height)) {
         iy = y;
       }
       mOffset = 3 * (row + 1) + 1;
-      for (col = -1; col <= 1; col += 1) {
+      for (let col = -1; col <= 1; col += 1) {
         ix = x + col;
         if (!(0 <= ix && ix < width)) {
           ix = x;

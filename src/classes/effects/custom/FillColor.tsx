@@ -1,7 +1,7 @@
 import BaseCustomEffect from "../BaseCustom";
 import { hexToRGB } from "../../../helpers/color";
 
-interface Parameters {
+export interface FillColorParameters {
   color: string;
 }
 
@@ -10,14 +10,14 @@ class FillColorEffect extends BaseCustomEffect {
     return "fill-color";
   }
 
-  getDefaultParameters(): Parameters {
+  getDefaultParameters(): FillColorParameters {
     return {
       color: "transparent",
     };
   }
 
-  callback(width: number, height: number, parameters: Parameters) {
-    let x, y, color;
+  callback(width: number, height: number, parameters: FillColorParameters) {
+    let color;
 
     if (parameters.color === "transparent") {
       color = {
@@ -31,8 +31,8 @@ class FillColorEffect extends BaseCustomEffect {
       color.a = 255;
     }
 
-    for (y = 0; y < height; y += 1) {
-      for (x = 0; x < width; x += 1) {
+    for (let y = 0; y < height; y += 1) {
+      for (let x = 0; x < width; x += 1) {
         this.setPixel(x, y, color);
       }
     }

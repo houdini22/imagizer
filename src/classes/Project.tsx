@@ -15,21 +15,21 @@ interface EffectType {
 }
 
 class Project {
-  imageData: ImageData = null;
+  protected imageData: ImageData = null;
 
-  effects: EffectType[] = [];
+  protected effects: EffectType[] = [];
 
-  layers: Layer[] = [];
+  protected layers: Layer[] = [];
 
-  startTime: Date = new Date();
+  protected startTime: Date = new Date();
 
-  parameters: object = {};
+  protected parameters: object = {};
 
-  width: number = 0;
+  protected width: number = 0;
 
-  height: number = 0;
+  protected height: number = 0;
 
-  canvas: CanvasWrapper = null;
+  protected canvas: CanvasWrapper = null;
 
   constructor(width: number, height: number, parameters: object = {}) {
     this.initialize(width, height, parameters);

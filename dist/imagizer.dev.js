@@ -1658,9 +1658,7 @@ var AutoWhiteBalanceEffect = /*#__PURE__*/function (_BaseCustomEffect) {
   }, {
     key: "callback",
     value: function callback(width, height, parameters) {
-      var x,
-          y,
-          sumA = 0,
+      var sumA = 0,
           sumB = 0,
           pixel,
           lab,
@@ -1669,8 +1667,8 @@ var AutoWhiteBalanceEffect = /*#__PURE__*/function (_BaseCustomEffect) {
           aDelta,
           bDelta;
 
-      for (y = 0; y < height; y += 1) {
-        for (x = 0; x < width; x += 1) {
+      for (var y = 0; y < height; y += 1) {
+        for (var x = 0; x < width; x += 1) {
           pixel = this.getPixel(x, y);
           lab = (0,_helpers_color__WEBPACK_IMPORTED_MODULE_1__.RGBtoCIELab)(pixel.r, pixel.g, pixel.b);
           sumA += lab.a;
@@ -1683,15 +1681,15 @@ var AutoWhiteBalanceEffect = /*#__PURE__*/function (_BaseCustomEffect) {
       aDelta = avgSumA * (parameters.intensity / 100) * 1.1;
       bDelta = avgSumB * (parameters.intensity / 100) * 1.1;
 
-      for (y = 0; y < height; y += 1) {
-        for (x = 0; x < width; x += 1) {
-          pixel = this.getPixel(x, y);
+      for (var _y = 0; _y < height; _y += 1) {
+        for (var _x = 0; _x < width; _x += 1) {
+          pixel = this.getPixel(_x, _y);
           lab = (0,_helpers_color__WEBPACK_IMPORTED_MODULE_1__.RGBtoCIELab)(pixel.r, pixel.g, pixel.b);
           lab.a += aDelta;
           lab.b += bDelta;
           pixel = (0,_helpers_color__WEBPACK_IMPORTED_MODULE_1__.CIELabToRGB)(lab.l, lab.a, lab.b);
-          pixel.a = this.getPixel(x, y).a;
-          this.setPixel(x, y, pixel);
+          pixel.a = this.getPixel(_x, _y).a;
+          this.setPixel(_x, _y, pixel);
         }
       }
     }
@@ -1765,10 +1763,10 @@ var BlockEffect = /*#__PURE__*/function (_BaseCustomEffect) {
   }, {
     key: "callback",
     value: function callback(width, height, parameters) {
-      var x, y, w, h, t, r, g, b, pixel, by, bx;
+      var w, h, t, r, g, b, pixel;
 
-      for (y = 0; y < height; y += parameters.blockSize) {
-        for (x = 0; x < width; x += parameters.blockSize) {
+      for (var y = 0; y < height; y += parameters.blockSize) {
+        for (var x = 0; x < width; x += parameters.blockSize) {
           w = Math.min(parameters.blockSize, width - x);
           h = Math.min(parameters.blockSize, height - y);
           t = w * h;
@@ -1776,8 +1774,8 @@ var BlockEffect = /*#__PURE__*/function (_BaseCustomEffect) {
           g = 0;
           b = 0;
 
-          for (by = 0; by < h; by += 1) {
-            for (bx = 0; bx < w; bx += 1) {
+          for (var by = 0; by < h; by += 1) {
+            for (var bx = 0; bx < w; bx += 1) {
               pixel = this.getOriginalPixel(x + bx, y + by);
               r += pixel.r & 0xff;
               g += pixel.g & 0xff;
@@ -1789,9 +1787,9 @@ var BlockEffect = /*#__PURE__*/function (_BaseCustomEffect) {
           g = g / t;
           b = b / t;
 
-          for (by = 0; by < h; by += 1) {
-            for (bx = 0; bx < w; bx += 1) {
-              this.setPixel(x + bx, y + by, {
+          for (var _by = 0; _by < h; _by += 1) {
+            for (var _bx = 0; _bx < w; _bx += 1) {
+              this.setPixel(x + _bx, y + _by, {
                 r: r,
                 g: g,
                 b: b,
@@ -1908,10 +1906,8 @@ var BorderEffect = /*#__PURE__*/function (_BaseCustomEffect) {
   }, {
     key: "callback",
     value: function callback(width, height, parameters) {
-      var x, y;
-
-      for (y = 0; y < height; y += 1) {
-        for (x = 0; x < width; x += 1) {
+      for (var y = 0; y < height; y += 1) {
+        for (var x = 0; x < width; x += 1) {
           if (this.data.leftBorder > 0 && x < this.data.leftBorder) {
             this.setPixel(x, y, parameters.borderColor);
           }
@@ -1993,9 +1989,7 @@ var ComponentStretchingEffect = /*#__PURE__*/function (_BaseCustomEffect) {
   _createClass(ComponentStretchingEffect, [{
     key: "callback",
     value: function callback(width, height, parameters) {
-      var x,
-          y,
-          minR = Infinity,
+      var minR = Infinity,
           minG = Infinity,
           minB = Infinity,
           maxR = -1,
@@ -2007,8 +2001,8 @@ var ComponentStretchingEffect = /*#__PURE__*/function (_BaseCustomEffect) {
         return (value - min) * 255 / (max - min);
       };
 
-      for (y = 0; y < height; y += 1) {
-        for (x = 0; x < width; x += 1) {
+      for (var y = 0; y < height; y += 1) {
+        for (var x = 0; x < width; x += 1) {
           pixel = this.getPixel(x, y);
           minR = Math.min(pixel.r, minR);
           minG = Math.min(pixel.g, minG);
@@ -2019,13 +2013,13 @@ var ComponentStretchingEffect = /*#__PURE__*/function (_BaseCustomEffect) {
         }
       }
 
-      for (y = 0; y < height; y += 1) {
-        for (x = 0; x < width; x += 1) {
-          pixel = this.getPixel(x, y);
+      for (var _y = 0; _y < height; _y += 1) {
+        for (var _x = 0; _x < width; _x += 1) {
+          pixel = this.getPixel(_x, _y);
           pixel.r = remap(pixel.r, minR, maxR);
           pixel.g = remap(pixel.g, minG, maxG);
           pixel.b = remap(pixel.b, minB, maxB);
-          this.setPixel(x, y, pixel);
+          this.setPixel(_x, _y, pixel);
         }
       }
     }
@@ -2104,9 +2098,7 @@ var EmbossEffect = /*#__PURE__*/function (_BaseCustomEffect) {
   }, {
     key: "callback",
     value: function callback(width, height, parameters) {
-      var x,
-          y,
-          bumpMapWidth = width,
+      var bumpMapWidth = width,
           bumpPixels = [],
           Nx,
           Ny,
@@ -2137,19 +2129,19 @@ var EmbossEffect = /*#__PURE__*/function (_BaseCustomEffect) {
       NzLz = Nz * Lz;
       background = Lz;
 
-      for (y = 0; y < height; y += 1) {
-        for (x = 0; x < width; x += 1) {
+      for (var y = 0; y < height; y += 1) {
+        for (var x = 0; x < width; x += 1) {
           bumpPixels.push((0,_helpers_common__WEBPACK_IMPORTED_MODULE_1__.brightness)(this.getOriginalPixel(x, y)) | 0);
         }
       }
 
-      for (y = 0; y < height; y += 1, bumpIndex += bumpMapWidth) {
+      for (var _y = 0; _y < height; _y += 1, bumpIndex += bumpMapWidth) {
         s1 = bumpIndex;
         s2 = s1 + bumpMapWidth;
         s3 = s2 + bumpMapWidth;
 
-        for (x = 0; x < width; x += 1, s1 += 1, s2 += 1, s3 += 1) {
-          if (y != 0 && y < height - 2 && x != 0 && x < width - 2) {
+        for (var _x = 0; _x < width; _x += 1, s1 += 1, s2 += 1, s3 += 1) {
+          if (_y != 0 && _y < height - 2 && _x != 0 && _x < width - 2) {
             Nx = bumpPixels[s1 - 1] + bumpPixels[s2 - 1] + bumpPixels[s3 - 1] - bumpPixels[s1 + 1] - bumpPixels[s2 + 1] - bumpPixels[s3 + 1];
             Ny = bumpPixels[s3 - 1] + bumpPixels[s3] + bumpPixels[s3 + 1] - bumpPixels[s1 - 1] - bumpPixels[s1] - bumpPixels[s1 + 1];
 
@@ -2260,7 +2252,7 @@ var FillColorEffect = /*#__PURE__*/function (_BaseCustomEffect) {
   }, {
     key: "callback",
     value: function callback(width, height, parameters) {
-      var x, y, color;
+      var color;
 
       if (parameters.color === "transparent") {
         color = {
@@ -2274,8 +2266,8 @@ var FillColorEffect = /*#__PURE__*/function (_BaseCustomEffect) {
         color.a = 255;
       }
 
-      for (y = 0; y < height; y += 1) {
-        for (x = 0; x < width; x += 1) {
+      for (var y = 0; y < height; y += 1) {
+        for (var x = 0; x < width; x += 1) {
           this.setPixel(x, y, color);
         }
       }
@@ -2947,8 +2939,6 @@ var DiffusionEffect = /*#__PURE__*/function (_BasePointEffect) {
           tmpRed,
           tmpGreen,
           tmpBlue,
-          i,
-          j,
           iy,
           jx,
           w,
@@ -2969,14 +2959,14 @@ var DiffusionEffect = /*#__PURE__*/function (_BasePointEffect) {
       tmpBlue = blue1 - blue2;
 
       if (parameters.granulate) {
-        for (i = -1; i <= 1; i += 1) {
+        for (var i = -1; i <= 1; i += 1) {
           iy = i + y;
 
           if (iy < 0 || iy >= height) {
             continue;
           }
 
-          for (j = -1; j <= 1; j += 1) {
+          for (var j = -1; j <= 1; j += 1) {
             jx = j + x;
 
             if (jx < 0 || jx >= width) {
@@ -3211,8 +3201,7 @@ var DitherEffect = /*#__PURE__*/function (_BasePointEffect) {
           cols,
           map = [],
           div = [],
-          mod = [],
-          i;
+          mod = [];
 
       if (typeof matrix === "string") {
         matrix = parameters.matrices[matrix];
@@ -3221,13 +3210,13 @@ var DitherEffect = /*#__PURE__*/function (_BasePointEffect) {
       rows = Math.sqrt(matrix.length);
       cols = Math.sqrt(matrix.length);
 
-      for (i = 0; i < parameters.levels; i += 1) {
+      for (var i = 0; i < parameters.levels; i += 1) {
         map[i] = 255 * i / (parameters.levels - 1);
       }
 
-      for (i = 0; i < 256; i += 1) {
-        div[i] = (parameters.levels - 1) * i / 256 | 0;
-        mod[i] = i * (rows * cols + 1) / 256 | 0;
+      for (var _i = 0; _i < 256; _i += 1) {
+        div[_i] = (parameters.levels - 1) * _i / 256 | 0;
+        mod[_i] = _i * (rows * cols + 1) / 256 | 0;
       }
 
       return {
@@ -3393,16 +3382,14 @@ var EdgeEffect = /*#__PURE__*/function (_BasePointEffect) {
           rv = 0,
           gv = 0,
           bv = 0,
-          row,
           iy,
-          col,
           ix,
           mOffset,
           pixel2,
           h,
           v;
 
-      for (row = -1; row <= 1; row += 1) {
+      for (var row = -1; row <= 1; row += 1) {
         iy = y + row;
 
         if (!(0 <= iy && iy < height)) {
@@ -3411,7 +3398,7 @@ var EdgeEffect = /*#__PURE__*/function (_BasePointEffect) {
 
         mOffset = 3 * (row + 1) + 1;
 
-        for (col = -1; col <= 1; col += 1) {
+        for (var col = -1; col <= 1; col += 1) {
           ix = x + col;
 
           if (!(0 <= ix && ix < width)) {
@@ -3713,10 +3700,9 @@ var GammaEffect = /*#__PURE__*/function (_BasePointEffect) {
         r: [],
         g: [],
         b: []
-      },
-          i;
+      };
 
-      for (i = 0; i < 256; i += 1) {
+      for (var i = 0; i < 256; i += 1) {
         table.r[i] = 255 * Math.pow(i / 255, 1 / parameters.gammaRed) + 0.5 | 0;
         table.g[i] = 255 * Math.pow(i / 255, 1 / parameters.gammaGreen) + 0.5 | 0;
         table.b[i] = 255 * Math.pow(i / 255, 1 / parameters.gammaBlue) + 0.5 | 0;
@@ -4120,11 +4106,7 @@ var LevelsEffect = /*#__PURE__*/function (_BasePointEffect) {
     key: "before",
     value: function before(parameters, width, height, imageData) {
       var Histogram = function Histogram(imageData, width, height, offset, stride) {
-        var i,
-            j,
-            index,
-            x,
-            y,
+        var index,
             histogram = new Array(3),
             minValue = new Array(4),
             maxValue = new Array(4),
@@ -4138,16 +4120,16 @@ var LevelsEffect = /*#__PURE__*/function (_BasePointEffect) {
             BLUE = 2,
             GRAY = 3;
 
-        for (i = 0; i < histogram.length; i += 1) {
+        for (var i = 0; i < histogram.length; i += 1) {
           histogram[i] = new Array(256);
 
-          for (j = 0; j < 256; j += 1) {
+          for (var j = 0; j < 256; j += 1) {
             histogram[i][j] = 0;
           }
         }
 
-        for (y = 0; y < height; y += 1) {
-          for (x = 0; x < width; x += 1) {
+        for (var y = 0; y < height; y += 1) {
+          for (var x = 0; x < width; x += 1) {
             index = y * width * 4 + x * 4;
             histogram[RED][imageData.data[index]]++;
             histogram[GREEN][imageData.data[index + 1]]++;
@@ -4155,38 +4137,38 @@ var LevelsEffect = /*#__PURE__*/function (_BasePointEffect) {
           }
         }
 
-        for (i = 0; i < 256; i += 1) {
-          if (histogram[RED][i] !== histogram[GREEN][i] || histogram[GREEN][i] !== histogram[BLUE][i]) {
+        for (var _i = 0; _i < 256; _i += 1) {
+          if (histogram[RED][_i] !== histogram[GREEN][_i] || histogram[GREEN][_i] !== histogram[BLUE][_i]) {
             isGray = false;
             break;
           }
         }
 
-        for (i = 0; i < 3; i += 1) {
-          for (j = 0; j < 256; j += 1) {
-            if (histogram[i][j] > 0) {
-              minValue[i] = j;
+        for (var _i2 = 0; _i2 < 3; _i2 += 1) {
+          for (var _j = 0; _j < 256; _j += 1) {
+            if (histogram[_i2][_j] > 0) {
+              minValue[_i2] = _j;
               break;
             }
           }
 
-          for (j = 255; j >= 0; j -= 1) {
-            if (histogram[i][j] > 0) {
-              maxValue[i] = j;
+          for (var _j2 = 255; _j2 >= 0; _j2 -= 1) {
+            if (histogram[_i2][_j2] > 0) {
+              maxValue[_i2] = _j2;
               break;
             }
           }
 
-          minFrequency[i] = Infinity;
-          maxFrequency[i] = 0;
+          minFrequency[_i2] = Infinity;
+          maxFrequency[_i2] = 0;
 
-          for (j = 0; j < 256; j += 1) {
-            minFrequency[i] = Math.min(minFrequency[i], histogram[i][j]);
-            maxFrequency[i] = Math.max(maxFrequency[i], histogram[i][j]);
-            mean[i] += j * histogram[i][j];
+          for (var _j3 = 0; _j3 < 256; _j3 += 1) {
+            minFrequency[_i2] = Math.min(minFrequency[_i2], histogram[_i2][_j3]);
+            maxFrequency[_i2] = Math.max(maxFrequency[_i2], histogram[_i2][_j3]);
+            mean[_i2] += _j3 * histogram[_i2][_j3];
           }
 
-          mean[i] /= numSamples;
+          mean[_i2] /= numSamples;
           minValue[GRAY] = Math.min(minValue[RED], minValue[GREEN], minValue[BLUE]);
           maxValue[GRAY] = Math.max(maxValue[RED], maxValue[GREEN], maxValue[BLUE]);
         }
@@ -4287,11 +4269,9 @@ var LevelsEffect = /*#__PURE__*/function (_BasePointEffect) {
       var histogram = new Histogram(imageData, width, height, 0, width),
           lut = new Array(3),
           low = parameters.low * 255,
-          high = parameters.high * 255,
-          i,
-          j;
+          high = parameters.high * 255;
 
-      for (i = 0; i < lut.length; i += 1) {
+      for (var i = 0; i < lut.length; i += 1) {
         lut[i] = new Array(256);
       }
 
@@ -4299,9 +4279,9 @@ var LevelsEffect = /*#__PURE__*/function (_BasePointEffect) {
         high++;
       }
 
-      for (i = 0; i < 3; i += 1) {
-        for (j = 0; j < 256; j += 1) {
-          lut[i][j] = 255 * (parameters.lowOutput + (parameters.highOutput - parameters.lowOutput) * (j - low) / (high - low));
+      for (var _i3 = 0; _i3 < 3; _i3 += 1) {
+        for (var j = 0; j < 256; j += 1) {
+          lut[_i3][j] = 255 * (parameters.lowOutput + (parameters.highOutput - parameters.lowOutput) * (j - low) / (high - low));
         }
       }
 
@@ -4730,17 +4710,16 @@ var TritoneEffect = /*#__PURE__*/function (_BasePointEffect) {
     key: "before",
     value: function before(parameters) {
       var lut = [],
-          i,
           t;
 
-      for (i = 0; i < 128; i += 1) {
+      for (var i = 0; i < 128; i += 1) {
         t = i / 127;
         lut[i] = (0,_helpers_color__WEBPACK_IMPORTED_MODULE_1__.mixColors)(t, parameters.shadowColor, parameters.midColor);
       }
 
-      for (i = 128; i < 256; i += 1) {
-        t = (i - 127) / 128;
-        lut[i] = (0,_helpers_color__WEBPACK_IMPORTED_MODULE_1__.mixColors)(t, parameters.midColor, parameters.highColor);
+      for (var _i = 128; _i < 256; _i += 1) {
+        t = (_i - 127) / 128;
+        lut[_i] = (0,_helpers_color__WEBPACK_IMPORTED_MODULE_1__.mixColors)(t, parameters.midColor, parameters.highColor);
       }
 
       return {
@@ -4949,10 +4928,9 @@ var DiffuseEffect = /*#__PURE__*/function (_BaseTransformEffect) {
     value: function before(parameters, width, height, imageData) {
       var sinTable = new Array(256),
           cosTable = new Array(256),
-          i,
           angle;
 
-      for (i = 0; i < 256; i += 1) {
+      for (var i = 0; i < 256; i += 1) {
         angle = Math.PI * 2 * i / 256;
         sinTable[i] = parameters.scale * Math.sin(angle);
         cosTable[i] = parameters.scale * Math.cos(angle);
@@ -5896,7 +5874,7 @@ var RippleEffect = /*#__PURE__*/function (_BaseTransformEffect) {
     value: function getDefaultParameters() {
       return {
         xAmplitude: 5,
-        yAmplitute: 0,
+        yAmplitude: 0,
         xWaveLength: 16,
         yWaveLength: 16,
         waveType: "SINE" // SAWTOOTH TRIANGLE NOISE
@@ -5934,7 +5912,7 @@ var RippleEffect = /*#__PURE__*/function (_BaseTransformEffect) {
           break;
       }
 
-      return [x + parameters.xAmplitude * fx, y + parameters.yAmplitute * fy];
+      return [x + parameters.xAmplitude * fx, y + parameters.yAmplitude * fy];
     }
   }], [{
     key: "getName",

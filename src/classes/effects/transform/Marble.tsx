@@ -7,7 +7,7 @@ interface BeforeData {
   displacementMap: (x: number, y: number) => number;
 }
 
-interface Parameters {
+export interface MarbleParameters {
   xScale: number;
   yScale: number;
   amount: number;
@@ -25,7 +25,7 @@ class MarbleEffect extends BaseTransformEffect {
     displacementMap: (x: number, y: number) => 0,
   };
 
-  getDefaultParameters(): Parameters {
+  getDefaultParameters(): MarbleParameters {
     return {
       xScale: 4,
       yScale: 4,
@@ -35,7 +35,7 @@ class MarbleEffect extends BaseTransformEffect {
   }
 
   before(
-    parameters: Parameters,
+    parameters: MarbleParameters,
     width: number,
     height: number,
     imageData: ImageData
@@ -65,7 +65,7 @@ class MarbleEffect extends BaseTransformEffect {
   callback(
     x: number,
     y: number,
-    parameters: Parameters,
+    parameters: MarbleParameters,
     width: number,
     height: number
   ): Array<number> {

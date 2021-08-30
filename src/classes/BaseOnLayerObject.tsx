@@ -6,13 +6,13 @@ import {
 } from "../helpers/resize";
 
 class BaseOnLayerObject {
-  imageData: ImageData = null;
+  protected imageData: ImageData = null;
 
-  canvas: CanvasWrapper = null;
+  protected canvas: CanvasWrapper = null;
 
-  width: number = 0;
+  protected width: number = 0;
 
-  height: number = 0;
+  protected height: number = 0;
 
   getWidth(): number {
     return this.width;

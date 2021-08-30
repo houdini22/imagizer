@@ -6,7 +6,7 @@ interface BeforeData {
   icentreY: number;
 }
 
-interface Parameters {
+export interface KaleidoscopeParameters {
   centreX: number;
   centreY: number;
   angle: number;
@@ -25,7 +25,7 @@ class KaleidoscopeEffect extends BaseTransformEffect {
     icentreY: 0,
   };
 
-  getDefaultParameters(): Parameters {
+  getDefaultParameters(): KaleidoscopeParameters {
     return {
       centreX: 0.5,
       centreY: 0.5,
@@ -37,7 +37,7 @@ class KaleidoscopeEffect extends BaseTransformEffect {
   }
 
   before(
-    parameters: Parameters,
+    parameters: KaleidoscopeParameters,
     width: number,
     height: number,
     imageData: ImageData
@@ -51,7 +51,7 @@ class KaleidoscopeEffect extends BaseTransformEffect {
   callback(
     x: number,
     y: number,
-    parameters: Parameters,
+    parameters: KaleidoscopeParameters,
     width: number,
     height: number
   ): Array<number> {

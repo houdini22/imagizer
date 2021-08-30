@@ -11,21 +11,21 @@ interface EffectType {
 }
 
 class Layer {
-  objects: LayerObject[] = [];
+  protected objects: LayerObject[] = [];
 
-  effects: EffectType[] = [];
+  protected effects: EffectType[] = [];
 
-  x: number = 0;
+  protected x: number = 0;
 
-  y: number = 0;
+  protected y: number = 0;
 
-  canvas: CanvasWrapper = null;
+  protected canvas: CanvasWrapper = null;
 
-  imageData: ImageData = null;
+  protected imageData: ImageData = null;
 
-  width: number = 0;
+  protected width: number = 0;
 
-  height: number = 0;
+  protected height: number = 0;
 
   parameters: {
     backgroundColor?: string;

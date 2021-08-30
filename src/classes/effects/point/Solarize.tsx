@@ -23,7 +23,7 @@ class SolarizeEffect extends BasePointEffect {
     b: number;
     a: number;
   } {
-    let red =
+    const red =
         pixel.r / 255 > 0.5
           ? 2 * (pixel.r / 255 - 0.5)
           : 2 * (0.5 - pixel.r / 255),

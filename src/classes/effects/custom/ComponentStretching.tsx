@@ -6,21 +6,20 @@ class ComponentStretchingEffect extends BaseCustomEffect {
   }
 
   callback(width: number, height: number, parameters: object) {
-    let x,
-      y,
-      minR = Infinity,
+    let minR = Infinity,
       minG = Infinity,
       minB = Infinity,
       maxR = -1,
       maxG = -1,
       maxB = -1,
       pixel;
+
     const remap = function remap(value, min, max) {
       return ((value - min) * 255) / (max - min);
     };
 
-    for (y = 0; y < height; y += 1) {
-      for (x = 0; x < width; x += 1) {
+    for (let y = 0; y < height; y += 1) {
+      for (let x = 0; x < width; x += 1) {
         pixel = this.getPixel(x, y);
 
         minR = Math.min(pixel.r, minR);
@@ -33,8 +32,8 @@ class ComponentStretchingEffect extends BaseCustomEffect {
       }
     }
 
-    for (y = 0; y < height; y += 1) {
-      for (x = 0; x < width; x += 1) {
+    for (let y = 0; y < height; y += 1) {
+      for (let x = 0; x < width; x += 1) {
         pixel = this.getPixel(x, y);
 
         pixel.r = remap(pixel.r, minR, maxR);
