@@ -7,8 +7,8 @@ export interface BorderParameters {
   bottomBorder: number;
   borderColor?: {
     r: number;
-    b: number;
     g: number;
+    b: number;
     a: number;
   };
 }
@@ -23,6 +23,12 @@ class BorderEffect extends BaseCustomEffect {
     rightBorder: 0,
     topBorder: 0,
     bottomBorder: 0,
+    borderColor: {
+      r: 0,
+      g: 0,
+      b: 0,
+      a: 255,
+    },
   };
 
   getDefaultParameters(): BorderParameters {
@@ -33,8 +39,8 @@ class BorderEffect extends BaseCustomEffect {
       bottomBorder: 10,
       borderColor: {
         r: 0,
-        b: 0,
         g: 0,
+        b: 0,
         a: 255,
       },
     };

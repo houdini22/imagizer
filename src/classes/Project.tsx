@@ -148,11 +148,16 @@ class Project {
     return this;
   }
 
-  resize(newWidth: number, newHeight: number, mode: string): Project {
+  resize(newWidth: number, newHeight: number, mode: string = "nearest-neighbour"): Project {
     this.canvas.destroy();
     this.canvas = null;
     this.imageData = null;
-    this.initialize(newWidth, newHeight);
+
+    if (typeof newHeight === "undefined") {
+      this.initialize((this.width * newWidth) | 0, (this.height * newWidth) | 0)
+    } else {
+      this.initialize(newWidth, newHeight);
+    }
 
     for (let i = 0; i < this.layers.length; i += 1) {
       this.layers[i].resize(newWidth, newHeight, mode);

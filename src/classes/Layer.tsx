@@ -116,7 +116,11 @@ class Layer {
     this.canvas = null;
     this.imageData = null;
 
-    this.initialize(newWidth, newHeight, this.parameters);
+    if (typeof newHeight === "undefined") {
+      this.initialize(this.width * newWidth, this.height * newWidth, this.parameters);
+    } else {
+      this.initialize(newWidth, newHeight, this.parameters);
+    }
 
     for (let i = 0; i < this.objects.length; i += 1) {
       this.objects[i].resize(newWidth, newHeight, mode, true);

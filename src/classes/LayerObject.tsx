@@ -125,7 +125,11 @@ class LayerObject {
       this.moveXY(-this.getX() * ratioX, -this.getY() * ratioY);
     }
 
-    this.getObject().resize(newWidth, newHeight, mode);
+    if (typeof newHeight === "undefined") {
+      this.getObject().resize(oldWidth * newWidth, oldHeight * newWidth, mode);
+    } else {
+      this.getObject().resize(newWidth, newHeight, mode);
+    }
 
     return this;
   }

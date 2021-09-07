@@ -80,7 +80,7 @@ var BaseOnLayerObject = /*#__PURE__*/function () {
     value: function resize(newWidth, newHeight) {
       var mode = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : "nearest-neighbour";
       var oldImageData = this.getImageData(),
-          canvas = new _CanvasWrapper__WEBPACK_IMPORTED_MODULE_0__.default(newWidth, newHeight);
+          canvas = new _CanvasWrapper__WEBPACK_IMPORTED_MODULE_0__["default"](newWidth, newHeight);
       var newImageData = canvas.getContext().createImageData(newWidth, newHeight);
 
       switch (mode) {
@@ -336,49 +336,49 @@ function add(_class) {
   availableEffects[_class.getName()] = _class;
 }
 
-add(_effects_point_GrayScale__WEBPACK_IMPORTED_MODULE_0__.default);
-add(_effects_point_Sepia__WEBPACK_IMPORTED_MODULE_1__.default);
-add(_effects_point_Contrast__WEBPACK_IMPORTED_MODULE_2__.default);
-add(_effects_point_Brightness__WEBPACK_IMPORTED_MODULE_3__.default);
-add(_effects_point_Diffusion__WEBPACK_IMPORTED_MODULE_4__.default);
-add(_effects_point_Dither__WEBPACK_IMPORTED_MODULE_5__.default);
-add(_effects_point_Exposure__WEBPACK_IMPORTED_MODULE_6__.default);
-add(_effects_point_Gain__WEBPACK_IMPORTED_MODULE_7__.default);
-add(_effects_point_Gamma__WEBPACK_IMPORTED_MODULE_8__.default);
-add(_effects_point_HSBAdjust__WEBPACK_IMPORTED_MODULE_9__.default);
-add(_effects_point_InvertAlpha__WEBPACK_IMPORTED_MODULE_10__.default);
-add(_effects_point_Invert__WEBPACK_IMPORTED_MODULE_11__.default);
-add(_effects_point_Levels__WEBPACK_IMPORTED_MODULE_12__.default);
-add(_effects_point_Rescale__WEBPACK_IMPORTED_MODULE_13__.default);
-add(_effects_point_Solarize__WEBPACK_IMPORTED_MODULE_14__.default);
-add(_effects_point_Threshold__WEBPACK_IMPORTED_MODULE_15__.default);
-add(_effects_point_Tritone__WEBPACK_IMPORTED_MODULE_16__.default);
-add(_effects_transform_Diffuse__WEBPACK_IMPORTED_MODULE_21__.default);
-add(_effects_point_Dissolve__WEBPACK_IMPORTED_MODULE_17__.default);
-add(_effects_transform_Kaleidoscope__WEBPACK_IMPORTED_MODULE_22__.default);
-add(_effects_transform_Marble__WEBPACK_IMPORTED_MODULE_23__.default);
-add(_effects_transform_Pinch__WEBPACK_IMPORTED_MODULE_24__.default);
-add(_effects_transform_Ripple__WEBPACK_IMPORTED_MODULE_25__.default);
-add(_effects_transform_Shear__WEBPACK_IMPORTED_MODULE_26__.default);
-add(_effects_transform_Sphere__WEBPACK_IMPORTED_MODULE_27__.default);
-add(_effects_transform_Swim__WEBPACK_IMPORTED_MODULE_28__.default);
-add(_effects_transform_Twirl__WEBPACK_IMPORTED_MODULE_29__.default);
-add(_effects_transform_Water__WEBPACK_IMPORTED_MODULE_30__.default);
-add(_effects_point_Edge__WEBPACK_IMPORTED_MODULE_18__.default);
-add(_effects_point_ChannelMix__WEBPACK_IMPORTED_MODULE_19__.default);
-add(_effects_transform_Circle__WEBPACK_IMPORTED_MODULE_31__.default);
-add(_effects_transform_Rotate__WEBPACK_IMPORTED_MODULE_32__.default);
-add(_effects_transform_Offset__WEBPACK_IMPORTED_MODULE_33__.default);
-add(_effects_transform_Polar__WEBPACK_IMPORTED_MODULE_34__.default);
-add(_effects_transform_Perspective__WEBPACK_IMPORTED_MODULE_35__.default);
-add(_effects_point_AutoContrast__WEBPACK_IMPORTED_MODULE_20__.default);
-add(_effects_custom_AutoWhiteBalance__WEBPACK_IMPORTED_MODULE_36__.default);
-add(_effects_custom_FillColor__WEBPACK_IMPORTED_MODULE_37__.default);
-add(_effects_custom_Flip__WEBPACK_IMPORTED_MODULE_38__.default);
-add(_effects_custom_Block__WEBPACK_IMPORTED_MODULE_39__.default);
-add(_effects_custom_Border__WEBPACK_IMPORTED_MODULE_40__.default);
-add(_effects_custom_Emboss__WEBPACK_IMPORTED_MODULE_41__.default);
-add(_effects_custom_ComponentStretching__WEBPACK_IMPORTED_MODULE_42__.default);
+add(_effects_point_GrayScale__WEBPACK_IMPORTED_MODULE_0__["default"]);
+add(_effects_point_Sepia__WEBPACK_IMPORTED_MODULE_1__["default"]);
+add(_effects_point_Contrast__WEBPACK_IMPORTED_MODULE_2__["default"]);
+add(_effects_point_Brightness__WEBPACK_IMPORTED_MODULE_3__["default"]);
+add(_effects_point_Diffusion__WEBPACK_IMPORTED_MODULE_4__["default"]);
+add(_effects_point_Dither__WEBPACK_IMPORTED_MODULE_5__["default"]);
+add(_effects_point_Exposure__WEBPACK_IMPORTED_MODULE_6__["default"]);
+add(_effects_point_Gain__WEBPACK_IMPORTED_MODULE_7__["default"]);
+add(_effects_point_Gamma__WEBPACK_IMPORTED_MODULE_8__["default"]);
+add(_effects_point_HSBAdjust__WEBPACK_IMPORTED_MODULE_9__["default"]);
+add(_effects_point_InvertAlpha__WEBPACK_IMPORTED_MODULE_10__["default"]);
+add(_effects_point_Invert__WEBPACK_IMPORTED_MODULE_11__["default"]);
+add(_effects_point_Levels__WEBPACK_IMPORTED_MODULE_12__["default"]);
+add(_effects_point_Rescale__WEBPACK_IMPORTED_MODULE_13__["default"]);
+add(_effects_point_Solarize__WEBPACK_IMPORTED_MODULE_14__["default"]);
+add(_effects_point_Threshold__WEBPACK_IMPORTED_MODULE_15__["default"]);
+add(_effects_point_Tritone__WEBPACK_IMPORTED_MODULE_16__["default"]);
+add(_effects_transform_Diffuse__WEBPACK_IMPORTED_MODULE_21__["default"]);
+add(_effects_point_Dissolve__WEBPACK_IMPORTED_MODULE_17__["default"]);
+add(_effects_transform_Kaleidoscope__WEBPACK_IMPORTED_MODULE_22__["default"]);
+add(_effects_transform_Marble__WEBPACK_IMPORTED_MODULE_23__["default"]);
+add(_effects_transform_Pinch__WEBPACK_IMPORTED_MODULE_24__["default"]);
+add(_effects_transform_Ripple__WEBPACK_IMPORTED_MODULE_25__["default"]);
+add(_effects_transform_Shear__WEBPACK_IMPORTED_MODULE_26__["default"]);
+add(_effects_transform_Sphere__WEBPACK_IMPORTED_MODULE_27__["default"]);
+add(_effects_transform_Swim__WEBPACK_IMPORTED_MODULE_28__["default"]);
+add(_effects_transform_Twirl__WEBPACK_IMPORTED_MODULE_29__["default"]);
+add(_effects_transform_Water__WEBPACK_IMPORTED_MODULE_30__["default"]);
+add(_effects_point_Edge__WEBPACK_IMPORTED_MODULE_18__["default"]);
+add(_effects_point_ChannelMix__WEBPACK_IMPORTED_MODULE_19__["default"]);
+add(_effects_transform_Circle__WEBPACK_IMPORTED_MODULE_31__["default"]);
+add(_effects_transform_Rotate__WEBPACK_IMPORTED_MODULE_32__["default"]);
+add(_effects_transform_Offset__WEBPACK_IMPORTED_MODULE_33__["default"]);
+add(_effects_transform_Polar__WEBPACK_IMPORTED_MODULE_34__["default"]);
+add(_effects_transform_Perspective__WEBPACK_IMPORTED_MODULE_35__["default"]);
+add(_effects_point_AutoContrast__WEBPACK_IMPORTED_MODULE_20__["default"]);
+add(_effects_custom_AutoWhiteBalance__WEBPACK_IMPORTED_MODULE_36__["default"]);
+add(_effects_custom_FillColor__WEBPACK_IMPORTED_MODULE_37__["default"]);
+add(_effects_custom_Flip__WEBPACK_IMPORTED_MODULE_38__["default"]);
+add(_effects_custom_Block__WEBPACK_IMPORTED_MODULE_39__["default"]);
+add(_effects_custom_Border__WEBPACK_IMPORTED_MODULE_40__["default"]);
+add(_effects_custom_Emboss__WEBPACK_IMPORTED_MODULE_41__["default"]);
+add(_effects_custom_ComponentStretching__WEBPACK_IMPORTED_MODULE_42__["default"]);
 
 var EffectsRepository = /*#__PURE__*/function () {
   function EffectsRepository() {
@@ -482,7 +482,7 @@ var Image = /*#__PURE__*/function (_BaseOnLayerObject) {
         _this2.setHeight(!(0,_helpers_common__WEBPACK_IMPORTED_MODULE_2__.isBrowser)() ? _this2.image.height : _this2.image.clientHeight); // get image data
 
 
-        _this2.canvas = new _CanvasWrapper__WEBPACK_IMPORTED_MODULE_1__.default(_this2.getWidth(), _this2.getHeight());
+        _this2.canvas = new _CanvasWrapper__WEBPACK_IMPORTED_MODULE_1__["default"](_this2.getWidth(), _this2.getHeight());
 
         _this2.canvas.getContext().drawImage(_this2.image, 0, 0, _this2.getWidth(), _this2.getHeight());
 
@@ -515,7 +515,7 @@ var Image = /*#__PURE__*/function (_BaseOnLayerObject) {
   }]);
 
   return Image;
-}(_BaseOnLayerObject__WEBPACK_IMPORTED_MODULE_0__.default);
+}(_BaseOnLayerObject__WEBPACK_IMPORTED_MODULE_0__["default"]);
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (Image);
 
@@ -590,7 +590,7 @@ var Layer = /*#__PURE__*/function () {
   _createClass(Layer, [{
     key: "initialize",
     value: function initialize(width, height, parameters) {
-      this.canvas = new _CanvasWrapper__WEBPACK_IMPORTED_MODULE_0__.default(width, height);
+      this.canvas = new _CanvasWrapper__WEBPACK_IMPORTED_MODULE_0__["default"](width, height);
       this.imageData = this.canvas.getContext().createImageData(width, height);
       this.width = width;
       this.height = height;
@@ -599,7 +599,7 @@ var Layer = /*#__PURE__*/function () {
   }, {
     key: "put",
     value: function put(obj, x, y) {
-      var put = new _LayerObject__WEBPACK_IMPORTED_MODULE_1__.default(obj, this, x, y, {});
+      var put = new _LayerObject__WEBPACK_IMPORTED_MODULE_1__["default"](obj, this, x, y, {});
       this.objects.push(put);
       return put;
     }
@@ -632,7 +632,7 @@ var Layer = /*#__PURE__*/function () {
     value: function applyEffect(name, parameters) {
       this.effects.push({
         name: name,
-        effect: new (_EffectsRepository__WEBPACK_IMPORTED_MODULE_3__.default.get(name))(),
+        effect: new (_EffectsRepository__WEBPACK_IMPORTED_MODULE_3__["default"].get(name))(),
         parameters: parameters
       });
       return this;
@@ -643,7 +643,12 @@ var Layer = /*#__PURE__*/function () {
       this.canvas.destroy();
       this.canvas = null;
       this.imageData = null;
-      this.initialize(newWidth, newHeight, this.parameters);
+
+      if (typeof newHeight === "undefined") {
+        this.initialize(this.width * newWidth, this.height * newWidth, this.parameters);
+      } else {
+        this.initialize(newWidth, newHeight, this.parameters);
+      }
 
       for (var i = 0; i < this.objects.length; i += 1) {
         this.objects[i].resize(newWidth, newHeight, mode, true);
@@ -821,7 +826,7 @@ var LayerObject = /*#__PURE__*/function () {
       var parameters = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
       this.effects.push({
         name: name,
-        effect: new (_EffectsRepository__WEBPACK_IMPORTED_MODULE_2__.default.get(name))(),
+        effect: new (_EffectsRepository__WEBPACK_IMPORTED_MODULE_2__["default"].get(name))(),
         parameters: parameters
       });
       return this;
@@ -876,7 +881,12 @@ var LayerObject = /*#__PURE__*/function () {
         this.moveXY(-this.getX() * ratioX, -this.getY() * ratioY);
       }
 
-      this.getObject().resize(newWidth, newHeight, mode);
+      if (typeof newHeight === "undefined") {
+        this.getObject().resize(oldWidth * newWidth, oldHeight * newWidth, mode);
+      } else {
+        this.getObject().resize(newWidth, newHeight, mode);
+      }
+
       return this;
     }
   }, {
@@ -884,7 +894,7 @@ var LayerObject = /*#__PURE__*/function () {
     value: function crop(startX, startY, width, height) {
       var object = this.getObject(),
           oldImageData = object.getImageData(),
-          canvas = new _CanvasWrapper__WEBPACK_IMPORTED_MODULE_0__.default(width, height),
+          canvas = new _CanvasWrapper__WEBPACK_IMPORTED_MODULE_0__["default"](width, height),
           newImageData = canvas.getContext().createImageData(width, height),
           result = (0,_helpers_common__WEBPACK_IMPORTED_MODULE_1__.cropImageData)(oldImageData, newImageData, startX, startY, width, height);
       object.setImageData(result).setWidth(width).setHeight(height);
@@ -959,7 +969,7 @@ var Project = /*#__PURE__*/function () {
       this.parameters = parameters;
       this.width = width;
       this.height = height;
-      this.canvas = new _CanvasWrapper__WEBPACK_IMPORTED_MODULE_0__.default(width, height);
+      this.canvas = new _CanvasWrapper__WEBPACK_IMPORTED_MODULE_0__["default"](width, height);
       this.imageData = this.canvas.getContext().getImageData(0, 0, width, height);
     }
   }, {
@@ -969,7 +979,7 @@ var Project = /*#__PURE__*/function () {
         backgroundColor: "",
         blendingMode: ""
       };
-      var layer = new _Layer__WEBPACK_IMPORTED_MODULE_1__.default(this.width, this.height, parameters);
+      var layer = new _Layer__WEBPACK_IMPORTED_MODULE_1__["default"](this.width, this.height, parameters);
       this.layers.push(layer);
       return layer;
     }
@@ -1056,18 +1066,24 @@ var Project = /*#__PURE__*/function () {
       var parameters = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
       this.effects.push({
         name: name,
-        effect: new (_EffectsRepository__WEBPACK_IMPORTED_MODULE_3__.default.get(name))(),
+        effect: new (_EffectsRepository__WEBPACK_IMPORTED_MODULE_3__["default"].get(name))(),
         parameters: parameters
       });
       return this;
     }
   }, {
     key: "resize",
-    value: function resize(newWidth, newHeight, mode) {
+    value: function resize(newWidth, newHeight) {
+      var mode = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : "nearest-neighbour";
       this.canvas.destroy();
       this.canvas = null;
       this.imageData = null;
-      this.initialize(newWidth, newHeight);
+
+      if (typeof newHeight === "undefined") {
+        this.initialize(this.width * newWidth | 0, this.height * newWidth | 0);
+      } else {
+        this.initialize(newWidth, newHeight);
+      }
 
       for (var i = 0; i < this.layers.length; i += 1) {
         this.layers[i].resize(newWidth, newHeight, mode);
@@ -1319,7 +1335,7 @@ var BaseCustomEffect = /*#__PURE__*/function (_BaseEffect) {
   }]);
 
   return BaseCustomEffect;
-}(_Base__WEBPACK_IMPORTED_MODULE_0__.default);
+}(_Base__WEBPACK_IMPORTED_MODULE_0__["default"]);
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (BaseCustomEffect);
 
@@ -1495,7 +1511,7 @@ var BasePointEffect = /*#__PURE__*/function (_BaseEffect) {
   }]);
 
   return BasePointEffect;
-}(_Base__WEBPACK_IMPORTED_MODULE_0__.default);
+}(_Base__WEBPACK_IMPORTED_MODULE_0__["default"]);
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (BasePointEffect);
 
@@ -1594,7 +1610,7 @@ var BaseTransformEffect = /*#__PURE__*/function (_BaseEffect) {
   }]);
 
   return BaseTransformEffect;
-}(_Base__WEBPACK_IMPORTED_MODULE_0__.default);
+}(_Base__WEBPACK_IMPORTED_MODULE_0__["default"]);
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (BaseTransformEffect);
 
@@ -1701,7 +1717,7 @@ var AutoWhiteBalanceEffect = /*#__PURE__*/function (_BaseCustomEffect) {
   }]);
 
   return AutoWhiteBalanceEffect;
-}(_BaseCustom__WEBPACK_IMPORTED_MODULE_0__.default);
+}(_BaseCustom__WEBPACK_IMPORTED_MODULE_0__["default"]);
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (AutoWhiteBalanceEffect);
 
@@ -1808,7 +1824,7 @@ var BlockEffect = /*#__PURE__*/function (_BaseCustomEffect) {
   }]);
 
   return BlockEffect;
-}(_BaseCustom__WEBPACK_IMPORTED_MODULE_0__.default);
+}(_BaseCustom__WEBPACK_IMPORTED_MODULE_0__["default"]);
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (BlockEffect);
 
@@ -1871,7 +1887,13 @@ var BorderEffect = /*#__PURE__*/function (_BaseCustomEffect) {
       leftBorder: 0,
       rightBorder: 0,
       topBorder: 0,
-      bottomBorder: 0
+      bottomBorder: 0,
+      borderColor: {
+        r: 0,
+        g: 0,
+        b: 0,
+        a: 255
+      }
     });
 
     return _this;
@@ -1887,8 +1909,8 @@ var BorderEffect = /*#__PURE__*/function (_BaseCustomEffect) {
         bottomBorder: 10,
         borderColor: {
           r: 0,
-          b: 0,
           g: 0,
+          b: 0,
           a: 255
         }
       };
@@ -1899,7 +1921,7 @@ var BorderEffect = /*#__PURE__*/function (_BaseCustomEffect) {
       return {
         leftBorder: parameters.leftBorder | 0,
         rightBorder: parameters.rightBorder | 0,
-        topBorder: parameters.rightBorder | 0,
+        topBorder: parameters.topBorder | 0,
         bottomBorder: parameters.bottomBorder | 0
       };
     }
@@ -1934,7 +1956,7 @@ var BorderEffect = /*#__PURE__*/function (_BaseCustomEffect) {
   }]);
 
   return BorderEffect;
-}(_BaseCustom__WEBPACK_IMPORTED_MODULE_0__.default);
+}(_BaseCustom__WEBPACK_IMPORTED_MODULE_0__["default"]);
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (BorderEffect);
 
@@ -2031,7 +2053,7 @@ var ComponentStretchingEffect = /*#__PURE__*/function (_BaseCustomEffect) {
   }]);
 
   return ComponentStretchingEffect;
-}(_BaseCustom__WEBPACK_IMPORTED_MODULE_0__.default);
+}(_BaseCustom__WEBPACK_IMPORTED_MODULE_0__["default"]);
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (ComponentStretchingEffect);
 
@@ -2188,7 +2210,7 @@ var EmbossEffect = /*#__PURE__*/function (_BaseCustomEffect) {
   }]);
 
   return EmbossEffect;
-}(_BaseCustom__WEBPACK_IMPORTED_MODULE_0__.default);
+}(_BaseCustom__WEBPACK_IMPORTED_MODULE_0__["default"]);
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (EmbossEffect);
 
@@ -2280,7 +2302,7 @@ var FillColorEffect = /*#__PURE__*/function (_BaseCustomEffect) {
   }]);
 
   return FillColorEffect;
-}(_BaseCustom__WEBPACK_IMPORTED_MODULE_0__.default);
+}(_BaseCustom__WEBPACK_IMPORTED_MODULE_0__["default"]);
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (FillColorEffect);
 
@@ -2437,7 +2459,7 @@ var FlipEffect = /*#__PURE__*/function (_BaseCustomEffect) {
   }]);
 
   return FlipEffect;
-}(_BaseCustom__WEBPACK_IMPORTED_MODULE_0__.default);
+}(_BaseCustom__WEBPACK_IMPORTED_MODULE_0__["default"]);
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (FlipEffect);
 
@@ -2545,7 +2567,7 @@ var AutoContrastEffect = /*#__PURE__*/function (_BasePointEffect) {
   }]);
 
   return AutoContrastEffect;
-}(_BasePoint__WEBPACK_IMPORTED_MODULE_0__.default);
+}(_BasePoint__WEBPACK_IMPORTED_MODULE_0__["default"]);
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (AutoContrastEffect);
 
@@ -2641,7 +2663,7 @@ var BrightnessEffect = /*#__PURE__*/function (_BasePointEffect) {
   }]);
 
   return BrightnessEffect;
-}(_BasePoint__WEBPACK_IMPORTED_MODULE_0__.default);
+}(_BasePoint__WEBPACK_IMPORTED_MODULE_0__["default"]);
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (BrightnessEffect);
 
@@ -2726,7 +2748,7 @@ var ChannelMixEffect = /*#__PURE__*/function (_BasePointEffect) {
   }]);
 
   return ChannelMixEffect;
-}(_BasePoint__WEBPACK_IMPORTED_MODULE_0__.default);
+}(_BasePoint__WEBPACK_IMPORTED_MODULE_0__["default"]);
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (ChannelMixEffect);
 
@@ -2822,7 +2844,7 @@ var ContrastEffect = /*#__PURE__*/function (_BasePointEffect) {
   }]);
 
   return ContrastEffect;
-}(_BasePoint__WEBPACK_IMPORTED_MODULE_0__.default);
+}(_BasePoint__WEBPACK_IMPORTED_MODULE_0__["default"]);
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (ContrastEffect);
 
@@ -3001,7 +3023,7 @@ var DiffusionEffect = /*#__PURE__*/function (_BasePointEffect) {
   }]);
 
   return DiffusionEffect;
-}(_BasePoint__WEBPACK_IMPORTED_MODULE_0__.default);
+}(_BasePoint__WEBPACK_IMPORTED_MODULE_0__["default"]);
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (DiffusionEffect);
 
@@ -3103,7 +3125,7 @@ var DissolveEffect = /*#__PURE__*/function (_BasePointEffect) {
   }]);
 
   return DissolveEffect;
-}(_BasePoint__WEBPACK_IMPORTED_MODULE_0__.default);
+}(_BasePoint__WEBPACK_IMPORTED_MODULE_0__["default"]);
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (DissolveEffect);
 
@@ -3264,7 +3286,7 @@ var DitherEffect = /*#__PURE__*/function (_BasePointEffect) {
   }]);
 
   return DitherEffect;
-}(_BasePoint__WEBPACK_IMPORTED_MODULE_0__.default);
+}(_BasePoint__WEBPACK_IMPORTED_MODULE_0__["default"]);
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (DitherEffect);
 
@@ -3438,7 +3460,7 @@ var EdgeEffect = /*#__PURE__*/function (_BasePointEffect) {
   }]);
 
   return EdgeEffect;
-}(_BasePoint__WEBPACK_IMPORTED_MODULE_0__.default);
+}(_BasePoint__WEBPACK_IMPORTED_MODULE_0__["default"]);
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (EdgeEffect);
 
@@ -3513,7 +3535,7 @@ var ExposureEffect = /*#__PURE__*/function (_BasePointEffect) {
   }]);
 
   return ExposureEffect;
-}(_BasePoint__WEBPACK_IMPORTED_MODULE_0__.default);
+}(_BasePoint__WEBPACK_IMPORTED_MODULE_0__["default"]);
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (ExposureEffect);
 
@@ -3614,7 +3636,7 @@ var GainEffect = /*#__PURE__*/function (_BasePointEffect) {
   }]);
 
   return GainEffect;
-}(_BasePoint__WEBPACK_IMPORTED_MODULE_0__.default);
+}(_BasePoint__WEBPACK_IMPORTED_MODULE_0__["default"]);
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (GainEffect);
 
@@ -3730,7 +3752,7 @@ var GammaEffect = /*#__PURE__*/function (_BasePointEffect) {
   }]);
 
   return GammaEffect;
-}(_BasePoint__WEBPACK_IMPORTED_MODULE_0__.default);
+}(_BasePoint__WEBPACK_IMPORTED_MODULE_0__["default"]);
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (GammaEffect);
 
@@ -3801,7 +3823,7 @@ var GrayScaleEffect = /*#__PURE__*/function (_BasePointEffect) {
   }]);
 
   return GrayScaleEffect;
-}(_BasePoint__WEBPACK_IMPORTED_MODULE_0__.default);
+}(_BasePoint__WEBPACK_IMPORTED_MODULE_0__["default"]);
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (GrayScaleEffect);
 
@@ -3892,7 +3914,7 @@ var HSBAdjustEffect = /*#__PURE__*/function (_BasePointEffect) {
   }]);
 
   return HSBAdjustEffect;
-}(_BasePoint__WEBPACK_IMPORTED_MODULE_0__.default);
+}(_BasePoint__WEBPACK_IMPORTED_MODULE_0__["default"]);
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (HSBAdjustEffect);
 
@@ -3960,7 +3982,7 @@ var InvertEffect = /*#__PURE__*/function (_BasePointEffect) {
   }]);
 
   return InvertEffect;
-}(_BasePoint__WEBPACK_IMPORTED_MODULE_0__.default);
+}(_BasePoint__WEBPACK_IMPORTED_MODULE_0__["default"]);
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (InvertEffect);
 
@@ -4026,7 +4048,7 @@ var InvertAlphaEffect = /*#__PURE__*/function (_BasePointEffect) {
   }]);
 
   return InvertAlphaEffect;
-}(_BasePoint__WEBPACK_IMPORTED_MODULE_0__.default);
+}(_BasePoint__WEBPACK_IMPORTED_MODULE_0__["default"]);
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (InvertAlphaEffect);
 
@@ -4309,7 +4331,7 @@ var LevelsEffect = /*#__PURE__*/function (_BasePointEffect) {
   }]);
 
   return LevelsEffect;
-}(_BasePoint__WEBPACK_IMPORTED_MODULE_0__.default);
+}(_BasePoint__WEBPACK_IMPORTED_MODULE_0__["default"]);
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (LevelsEffect);
 
@@ -4384,7 +4406,7 @@ var RescaleEffect = /*#__PURE__*/function (_BasePointEffect) {
   }]);
 
   return RescaleEffect;
-}(_BasePoint__WEBPACK_IMPORTED_MODULE_0__.default);
+}(_BasePoint__WEBPACK_IMPORTED_MODULE_0__["default"]);
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (RescaleEffect);
 
@@ -4460,7 +4482,7 @@ var SepiaEffect = /*#__PURE__*/function (_BasePointEffect) {
   }]);
 
   return SepiaEffect;
-}(_BasePoint__WEBPACK_IMPORTED_MODULE_0__.default);
+}(_BasePoint__WEBPACK_IMPORTED_MODULE_0__["default"]);
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (SepiaEffect);
 
@@ -4533,7 +4555,7 @@ var SolarizeEffect = /*#__PURE__*/function (_BasePointEffect) {
   }]);
 
   return SolarizeEffect;
-}(_BasePoint__WEBPACK_IMPORTED_MODULE_0__.default);
+}(_BasePoint__WEBPACK_IMPORTED_MODULE_0__["default"]);
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (SolarizeEffect);
 
@@ -4614,7 +4636,7 @@ var ThresholdEffect = /*#__PURE__*/function (_BasePointEffect) {
   }]);
 
   return ThresholdEffect;
-}(_BasePoint__WEBPACK_IMPORTED_MODULE_0__.default);
+}(_BasePoint__WEBPACK_IMPORTED_MODULE_0__["default"]);
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (ThresholdEffect);
 
@@ -4740,7 +4762,7 @@ var TritoneEffect = /*#__PURE__*/function (_BasePointEffect) {
   }]);
 
   return TritoneEffect;
-}(_BasePoint__WEBPACK_IMPORTED_MODULE_0__.default);
+}(_BasePoint__WEBPACK_IMPORTED_MODULE_0__["default"]);
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (TritoneEffect);
 
@@ -4849,7 +4871,7 @@ var CircleEffect = /*#__PURE__*/function (_BaseTransformEffect) {
   }]);
 
   return CircleEffect;
-}(_BaseTransform__WEBPACK_IMPORTED_MODULE_0__.default);
+}(_BaseTransform__WEBPACK_IMPORTED_MODULE_0__["default"]);
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (CircleEffect);
 
@@ -4956,7 +4978,7 @@ var DiffuseEffect = /*#__PURE__*/function (_BaseTransformEffect) {
   }]);
 
   return DiffuseEffect;
-}(_BaseTransform__WEBPACK_IMPORTED_MODULE_0__.default);
+}(_BaseTransform__WEBPACK_IMPORTED_MODULE_0__["default"]);
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (DiffuseEffect);
 
@@ -5071,7 +5093,7 @@ var KaleidoscopeEffect = /*#__PURE__*/function (_BaseTransformEffect) {
   }]);
 
   return KaleidoscopeEffect;
-}(_BaseTransform__WEBPACK_IMPORTED_MODULE_0__.default);
+}(_BaseTransform__WEBPACK_IMPORTED_MODULE_0__["default"]);
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (KaleidoscopeEffect);
 
@@ -5170,7 +5192,7 @@ var MarbleEffect = /*#__PURE__*/function (_BaseTransformEffect) {
         sinTable: sinTable,
         cosTable: cosTable,
         displacementMap: function displacementMap(x, y) {
-          var result = 127 * (1 + _helpers_noise__WEBPACK_IMPORTED_MODULE_1__.default.noise2(x / parameters.xScale, y / parameters.yScale));
+          var result = 127 * (1 + _helpers_noise__WEBPACK_IMPORTED_MODULE_1__["default"].noise2(x / parameters.xScale, y / parameters.yScale));
           return Math.min(255, Math.max(0, result));
         }
       };
@@ -5189,7 +5211,7 @@ var MarbleEffect = /*#__PURE__*/function (_BaseTransformEffect) {
   }]);
 
   return MarbleEffect;
-}(_BaseTransform__WEBPACK_IMPORTED_MODULE_0__.default);
+}(_BaseTransform__WEBPACK_IMPORTED_MODULE_0__["default"]);
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (MarbleEffect);
 
@@ -5267,7 +5289,7 @@ var RotateEffect = /*#__PURE__*/function (_BaseTransformEffect) {
   }]);
 
   return RotateEffect;
-}(_BaseTransform__WEBPACK_IMPORTED_MODULE_0__.default);
+}(_BaseTransform__WEBPACK_IMPORTED_MODULE_0__["default"]);
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (RotateEffect);
 
@@ -5442,7 +5464,7 @@ var PerspectiveEffect = /*#__PURE__*/function (_BaseTransformEffect) {
   }]);
 
   return PerspectiveEffect;
-}(_BaseTransform__WEBPACK_IMPORTED_MODULE_0__.default);
+}(_BaseTransform__WEBPACK_IMPORTED_MODULE_0__["default"]);
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (PerspectiveEffect);
 
@@ -5577,7 +5599,7 @@ var PinchEffect = /*#__PURE__*/function (_BaseTransformEffect) {
   }]);
 
   return PinchEffect;
-}(_BaseTransform__WEBPACK_IMPORTED_MODULE_0__.default);
+}(_BaseTransform__WEBPACK_IMPORTED_MODULE_0__["default"]);
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (PinchEffect);
 
@@ -5813,7 +5835,7 @@ var PolarEffect = /*#__PURE__*/function (_BaseTransformEffect) {
   }]);
 
   return PolarEffect;
-}(_BaseTransform__WEBPACK_IMPORTED_MODULE_0__.default);
+}(_BaseTransform__WEBPACK_IMPORTED_MODULE_0__["default"]);
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (PolarEffect);
 
@@ -5907,8 +5929,8 @@ var RippleEffect = /*#__PURE__*/function (_BaseTransformEffect) {
           break;
 
         case "NOISE":
-          fx = _helpers_noise__WEBPACK_IMPORTED_MODULE_2__.default.noise1(nx);
-          fy = _helpers_noise__WEBPACK_IMPORTED_MODULE_2__.default.noise1(ny);
+          fx = _helpers_noise__WEBPACK_IMPORTED_MODULE_2__["default"].noise1(nx);
+          fy = _helpers_noise__WEBPACK_IMPORTED_MODULE_2__["default"].noise1(ny);
           break;
       }
 
@@ -5922,7 +5944,7 @@ var RippleEffect = /*#__PURE__*/function (_BaseTransformEffect) {
   }]);
 
   return RippleEffect;
-}(_BaseTransform__WEBPACK_IMPORTED_MODULE_0__.default);
+}(_BaseTransform__WEBPACK_IMPORTED_MODULE_0__["default"]);
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (RippleEffect);
 
@@ -6021,7 +6043,7 @@ var RotateEffect = /*#__PURE__*/function (_BaseTransformEffect) {
   }]);
 
   return RotateEffect;
-}(_BaseTransform__WEBPACK_IMPORTED_MODULE_0__.default);
+}(_BaseTransform__WEBPACK_IMPORTED_MODULE_0__["default"]);
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (RotateEffect);
 
@@ -6119,7 +6141,7 @@ var ShearEffect = /*#__PURE__*/function (_BaseTransformEffect) {
   }]);
 
   return ShearEffect;
-}(_BaseTransform__WEBPACK_IMPORTED_MODULE_0__.default);
+}(_BaseTransform__WEBPACK_IMPORTED_MODULE_0__["default"]);
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (ShearEffect);
 
@@ -6266,7 +6288,7 @@ var SphereEffect = /*#__PURE__*/function (_BaseTransformEffect) {
   }]);
 
   return SphereEffect;
-}(_BaseTransform__WEBPACK_IMPORTED_MODULE_0__.default);
+}(_BaseTransform__WEBPACK_IMPORTED_MODULE_0__["default"]);
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (SphereEffect);
 
@@ -6370,10 +6392,10 @@ var SwimEffect = /*#__PURE__*/function (_BaseTransformEffect) {
       ny /= parameters.scale * parameters.stretch;
 
       if (parameters.turbulence === 1) {
-        return [x + parameters.amount * _helpers_noise__WEBPACK_IMPORTED_MODULE_1__.default.noise3(nx + 0.5, ny, parameters.time), y + parameters.amount * _helpers_noise__WEBPACK_IMPORTED_MODULE_1__.default.noise3(nx, ny + 0.5, parameters.time)];
+        return [x + parameters.amount * _helpers_noise__WEBPACK_IMPORTED_MODULE_1__["default"].noise3(nx + 0.5, ny, parameters.time), y + parameters.amount * _helpers_noise__WEBPACK_IMPORTED_MODULE_1__["default"].noise3(nx, ny + 0.5, parameters.time)];
       }
 
-      return [x + parameters.amount * _helpers_noise__WEBPACK_IMPORTED_MODULE_1__.default.turbulence3(nx + 0.5, ny, parameters.turbulence, parameters.time), y + parameters.amount * _helpers_noise__WEBPACK_IMPORTED_MODULE_1__.default.turbulence3(nx, ny + 0.5, parameters.turbulence, parameters.time)];
+      return [x + parameters.amount * _helpers_noise__WEBPACK_IMPORTED_MODULE_1__["default"].turbulence3(nx + 0.5, ny, parameters.turbulence, parameters.time), y + parameters.amount * _helpers_noise__WEBPACK_IMPORTED_MODULE_1__["default"].turbulence3(nx, ny + 0.5, parameters.turbulence, parameters.time)];
     }
   }], [{
     key: "getName",
@@ -6383,7 +6405,7 @@ var SwimEffect = /*#__PURE__*/function (_BaseTransformEffect) {
   }]);
 
   return SwimEffect;
-}(_BaseTransform__WEBPACK_IMPORTED_MODULE_0__.default);
+}(_BaseTransform__WEBPACK_IMPORTED_MODULE_0__["default"]);
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (SwimEffect);
 
@@ -6507,7 +6529,7 @@ var TwirlEffect = /*#__PURE__*/function (_BaseTransformEffect) {
   }]);
 
   return TwirlEffect;
-}(_BaseTransform__WEBPACK_IMPORTED_MODULE_0__.default);
+}(_BaseTransform__WEBPACK_IMPORTED_MODULE_0__["default"]);
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (TwirlEffect);
 
@@ -6639,7 +6661,7 @@ var WaterEffect = /*#__PURE__*/function (_BaseTransformEffect) {
   }]);
 
   return WaterEffect;
-}(_BaseTransform__WEBPACK_IMPORTED_MODULE_0__.default);
+}(_BaseTransform__WEBPACK_IMPORTED_MODULE_0__["default"]);
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (WaterEffect);
 
@@ -7724,8 +7746,8 @@ var __webpack_exports__ = {};
   \**********************/
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "Project": () => (/* reexport safe */ _classes_Project__WEBPACK_IMPORTED_MODULE_0__.default),
-/* harmony export */   "Image": () => (/* reexport safe */ _classes_Image__WEBPACK_IMPORTED_MODULE_1__.default)
+/* harmony export */   "Project": () => (/* reexport safe */ _classes_Project__WEBPACK_IMPORTED_MODULE_0__["default"]),
+/* harmony export */   "Image": () => (/* reexport safe */ _classes_Image__WEBPACK_IMPORTED_MODULE_1__["default"])
 /* harmony export */ });
 /* harmony import */ var _classes_Project__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./classes/Project */ "./src/classes/Project.tsx");
 /* harmony import */ var _classes_Image__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./classes/Image */ "./src/classes/Image.tsx");
