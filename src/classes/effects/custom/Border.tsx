@@ -49,7 +49,7 @@ class BorderEffect extends BaseCustomEffect {
     return {
       leftBorder: parameters.leftBorder | 0,
       rightBorder: parameters.rightBorder | 0,
-      topBorder: parameters.rightBorder | 0,
+      topBorder: parameters.topBorder | 0,
       bottomBorder: parameters.bottomBorder | 0,
     };
   }
