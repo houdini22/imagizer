@@ -50,8 +50,8 @@ class ShearEffect extends BaseTransformEffect {
     height: number
   ): Array<number> {
     return [
-      x + parameters.xOffset + y * this.data.shx,
-      y + parameters.yOffset + x * this.data.shy,
+      (x + parameters.xOffset + y * this.data.shx) | 0,
+      (y + parameters.yOffset + x * this.data.shy) | 0,
     ];
   }
 }
