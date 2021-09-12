@@ -82,8 +82,8 @@ class TwirlEffect extends BaseTransformEffect {
       (parameters.angle * (parameters.radius - distance)) / parameters.radius;
 
     return [
-      this.data.iCentreX + distance * Math.cos(a),
-      this.data.iCentreY + distance * Math.sin(a),
+      this.data.iCentreX + (distance * Math.cos(a)) | 0,
+      this.data.iCentreY + (distance * Math.sin(a)) | 0,
     ];
   }
 }
